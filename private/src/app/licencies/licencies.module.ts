@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdminComponent } from './admin.component';
+import { LicenciesComponent } from './licencies.component';
 
 @NgModule({
   imports: [
     CommonModule
   ],
-  declarations: [AdminComponent]
+  declarations: [LicenciesComponent]
 })
-export class AdminModule { }
+export class LicenciesModule { }
