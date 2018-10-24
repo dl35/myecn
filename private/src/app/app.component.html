@@ -1,2 +1,9 @@
+<div *ngIf="isLoggin" >
+<app-menu ></app-menu>
 <router-outlet></router-outlet>
+</div>
 
+
+<div *ngIf="!isLoggin">
+<router-outlet></router-outlet>
+</div>

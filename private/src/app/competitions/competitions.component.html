@@ -1,3 +1,72 @@
-<p>
-  competitions works!
-</p>
+<mat-toolbar color="primary" >  
+    <mat-toolbar-row >
+       <mat-icon (click)="drawer.toggle()"  style="cursor: pointer;" >menu</mat-icon>
+       <span class="mat-body-2"  >CDK</span>
+       <mat-form-field style="width:80%;margin-left:10%">
+         <input matInput placeholder="rechercher" [formControl]="searchControl" [value]="searchText" >
+         <button mat-button *ngIf="searchControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="searchControl.setValue('')">
+           <mat-icon>close</mat-icon>
+         </button>
+       </mat-form-field>
+  
+  
+     </mat-toolbar-row>
+   </mat-toolbar>
+  
+   <mat-drawer-container class="example-container" *ngIf="show" autosize>
+       <mat-drawer #drawer class="example-sidenav" [mode]="mobileQuery.matches ? 'over' : 'side'"  [opened]="mobileQuery.matches ? 'false' : 'true'"  >
+         <p><span class="mat-body-2" >Les Compétitions</span></p>
+         <div style="padding:10px" >
+           <mat-slide-toggle>
+             <span class="mat-body-2"  >Vérifiées</span>
+           </mat-slide-toggle>
+         </div>
+         <mat-divider></mat-divider>
+         <div style="padding:10px" >
+             <mat-checkbox class="mat-body-2" (change)="doChange($event)" >à Venir</mat-checkbox>
+           </div>
+          <mat-nav-list>
+         <mat-divider></mat-divider>
+         <mat-divider></mat-divider>
+           <a mat-list-item routerLink>Link</a>
+           <a mat-list-item routerLink cdkFocusInitial>Initially focused</a>
+           <a mat-list-item routerLink cdkFocusRegionEnd>Focus region end</a>
+         <mat-divider></mat-divider>
+           <a mat-list-item routerLink>Link</a>
+         </mat-nav-list>
+  
+  
+       </mat-drawer>
+     
+       <div class="example-sidenav-content">
+           
+           <mat-list>
+               <h1 mat-subheader>Les compétitions</h1>
+  
+               <mat-list-item *ngFor="let data of datas$ | async  ; last as last">
+                   <button mat-mini-fab [color]="data.verif == true ? 'accent' : 'warn' " (click)="edit(data)" >{{data.bassin}}</button>
+                 <mat-icon matListIcon color='primary' >folder</mat-icon>
+                 <img mat-list-avatar [src]="'../../assets/images/swimmer.svg'"  [alt]="'D'" >
+                 <p *ngIf="data.verif == true">
+                     <span matBadge="50" matBadgeOverlap="true"></span>
+                 </p>
+                 <h4 mat-line>{{data.nom}} - {{data.lieu}}</h4>
+                 <p mat-line [ngSwitch]=" data.debut !== data.fin ">
+                 <span *ngSwitchCase="true" >{{data.debut | date:'dd MMM' }} au {{data.fin | date:'dd MMM' }}</span>
+                 <span *ngSwitchCase="false" >{{data.debut | date:'dd MMM' }} -- </span>
+                
+                   <span class="demo-secondary-text">&nbsp;&nbsp;{{data.lieu}}</span>
+                 </p>
+                 <mat-divider inset *ngIf="!last"></mat-divider>
+               </mat-list-item>
+               <mat-divider></mat-divider>
+    
+             </mat-list>
+       
+       </div>
+       <div>
+         <button mat-mini-fab color="accent" class="add-button" (click)="add()" ><mat-icon>add</mat-icon></button>
+         </div>
+  
+     </mat-drawer-container>
+<app-competitions-edit [data]="dataSelected" (quitte)="onQuitte()" ></app-competitions-edit>

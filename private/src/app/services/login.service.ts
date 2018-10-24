@@ -43,7 +43,7 @@ public setTest( profile: Profile  ) {
     signup( value: any ) {
 
      this.profile = new Profile(false);
-console.log( value );
+
    return this.http.post('/api/private/signup' , value) ;
     }
 
@@ -53,7 +53,7 @@ console.log( value );
     }
 
 
-
+/*
    getRole() {
 
         if (  ! this.checkCredentials()  ) {
@@ -63,7 +63,7 @@ console.log( value );
             return u.role;
         }
 
-    }
+    }*/
 
 
    checkCredentials() {
