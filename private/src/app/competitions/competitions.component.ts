@@ -2,8 +2,8 @@ import { DataCompet } from './models/data-compet';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, Pipe, Injectable, PipeTransform, ViewChild, ElementRef } from '@angular/core';
 import {MediaMatcher} from '@angular/cdk/layout';
 import { CompetitionsService } from './services/competitions.service';
-import { Observable , interval, Subject , fromEvent, BehaviorSubject, Subscription } from 'rxjs';
-import { merge, map , filter , distinctUntilChanged , debounceTime, tap, catchError} from 'rxjs/operators';
+import { Observable , interval, Subject , fromEvent, BehaviorSubject, Subscription, EMPTY } from 'rxjs';
+import { merge, map , filter , distinctUntilChanged , debounceTime, tap, catchError, finalize, shareReplay} from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 
 
@@ -65,7 +65,6 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
 
-   // console.log( this.dataSelected );
   }
 
   add() {
@@ -119,8 +118,19 @@ doChange($event) {
 
 
     );*/
-    this.datas$ = this.compService.getList();
-  
+    this.datas$ = this.compService.getList().pipe(
+      catchError(error => {
+          console.error('denis' , error);
+          return EMPTY;
+      }),
+      finalize(() => {
+          console.log('Done!');
+
+          this.datas$.pipe(
+            ( map (data  => {} ) )
+      }),
+      shareReplay(1)
+    );
   }
 
   ngOnDestroy(): void {

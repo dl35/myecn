@@ -1,4 +1,3 @@
-import { CompetitionsComponent } from './competitions/competitions.component';
 import { CompetitionsModule } from './competitions/competitions.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './material/material.module';
@@ -22,7 +21,6 @@ import { MenuComponent } from './menu/menu.component';
     AppComponent,
     LoginComponent,
     MenuComponent,
-    CompetitionsComponent
    ],
   imports: [
     BrowserModule,
@@ -32,6 +30,7 @@ import { MenuComponent } from './menu/menu.component';
     MaterialModule,
     FlexLayoutModule,
     BrowserAnimationsModule,
+    CompetitionsModule,
     AppRoutingModule
   ],
   providers: [AuthGuard],

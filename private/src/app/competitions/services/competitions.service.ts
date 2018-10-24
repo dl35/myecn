@@ -33,18 +33,22 @@ export class CompetitionsService {
     private list() {
           if ( !this.competList  ||  this.competList.length === 0 ) {
             this.http.get<DataCompet[]>( this.url )
-            .pipe( catchError( error => throwError( error ) ))
+        //    .pipe( catchError( error => throwError( error ) ))
             .subscribe(
               res => {  this.competList = res ;  this.subject$.next(res) ; },
-            //  error => {  throw(error)  }
+         //     error => {  throw(error);  }
             );
      }
 
       }
 
+      public getList(): Observable<DataCompet[]> {
+             return  this.http.get<DataCompet[]>( this.url );
+           }
 
+    
 
-    public getList() {
+    public getList_() {
 
             this.list();
             return this.datas$;

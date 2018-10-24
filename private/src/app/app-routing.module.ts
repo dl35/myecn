@@ -10,7 +10,6 @@ import { CompetitionsComponent } from './competitions/competitions.component';
 import { LicenciesComponent } from './licencies/licencies.component';
 import { EngagementsComponent } from './engagements/engagements.component';
 import { PiscinesComponent } from './piscines/piscines.component';
-import { CompetitionsRoutingModule } from './competitions/competitions-routing.modules';
 import { MenuComponent } from './menu/menu.component';
 
 export const routes: Routes = [
@@ -22,7 +21,7 @@ export const routes: Routes = [
 //  { path: 'licencies', component: LicenciesComponent },
   { path: '',  loadChildren: './licencies/licencies.module#LicenciesModule' },
 //  { path: '',  loadChildren: './competitions/competitions.module#CompetitionsModule' },
-{ path: '',  component: CompetitionsComponent },
+  { path: 'competitions',  component: CompetitionsComponent },
 
   { path: '',  loadChildren: './engagements/engagements.module#EngagementsModule' },
   { path: '',  loadChildren: './mailto/mailto.module#MailtoModule' },
@@ -35,12 +34,7 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes,
-    {
-      preloadingStrategy: PreloadAllModules
-    }
-    
-    )],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
