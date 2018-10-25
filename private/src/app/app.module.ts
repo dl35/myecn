@@ -1,3 +1,6 @@
+import { PiscinesModule } from './piscines/piscines.module';
+import { RecordsModule } from './records/records.module';
+import { MailtoModule } from './mailto/mailto.module';
 import { CompetitionsModule } from './competitions/competitions.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './material/material.module';
@@ -31,6 +34,9 @@ import { MenuComponent } from './menu/menu.component';
     FlexLayoutModule,
     BrowserAnimationsModule,
     CompetitionsModule,
+    MailtoModule,
+    RecordsModule,
+    PiscinesModule,
     AppRoutingModule
   ],
   providers: [AuthGuard],

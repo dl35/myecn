@@ -15,7 +15,7 @@
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item>
+            <button mat-menu-item [routerLink]="['/admin']"  >
               <mat-icon>dialpad</mat-icon>
               <span>Administration</span>
             </button>
@@ -42,3 +42,6 @@
   
     </div> 
   </mat-toolbar>
+  <div>
+    <router-outlet></router-outlet>
+ </div>

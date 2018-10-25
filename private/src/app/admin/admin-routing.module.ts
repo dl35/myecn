@@ -1,20 +1,13 @@
+import { AdminComponent } from './admin.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { MailtoComponent } from './mailto.component';
-
 
 const routes: Routes = [
-    {   path: 'mailto', component: MailtoComponent }
-   ];
+  {   path: 'admin', component: AdminComponent }
+ ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class MailtoRoutingModule {}
-
-
-
-
-
-
+export class AdminRoutingModule { }

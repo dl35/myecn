@@ -74,8 +74,7 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
 
   }
 
- 
-  edit(data) {
+   edit(data) {
     this.dataSelected = data ;
     this.show = false ;
   }
@@ -110,8 +109,7 @@ doChange($event) {
         });
 
 
- 
-    this.datas$ = this.compService.getList() ;
+     this.datas$ = this.compService.getList() ;
 /*
     this.datas$ = this.compService.getList().pipe(
       catchError(error => {

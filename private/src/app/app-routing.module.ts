@@ -11,22 +11,22 @@ import { LicenciesComponent } from './licencies/licencies.component';
 import { EngagementsComponent } from './engagements/engagements.component';
 import { PiscinesComponent } from './piscines/piscines.component';
 import { MenuComponent } from './menu/menu.component';
+import { RecordsComponent } from './records/records.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
 
- { path: '',   component: AppComponent, canActivate: [AuthGuard] , canActivateChild : [AuthGuard] , children:
+ { path: '',   component: MenuComponent, canActivate: [AuthGuard] , canActivateChild : [AuthGuard] , children:
 [
 
 //  { path: 'licencies', component: LicenciesComponent },
   { path: '',  loadChildren: './licencies/licencies.module#LicenciesModule' },
 //  { path: '',  loadChildren: './competitions/competitions.module#CompetitionsModule' },
   { path: 'competitions',  component: CompetitionsComponent },
-
-  { path: '',  loadChildren: './engagements/engagements.module#EngagementsModule' },
-  { path: '',  loadChildren: './mailto/mailto.module#MailtoModule' },
-  //{ path: 'mailto', component: MenuComponent  },
-  //{ path: 'piscines', component: PiscinesComponent  },
+  { path: 'mailto',  component: MailtoComponent },
+  { path: 'records', component: RecordsComponent  },
+  { path: 'piscines', component: PiscinesComponent  },
+  { path: '',  loadChildren: './admin/admin.module#AdminModule' },
 ]},
 
   { path: '**',   component: LoginComponent   }
