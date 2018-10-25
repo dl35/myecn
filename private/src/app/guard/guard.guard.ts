@@ -9,7 +9,6 @@ export class AuthGuard implements CanActivate , CanActivateChild {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): boolean {
 
-        console.log( 'route'  , route );
       if (sessionStorage.getItem('token') !== null && sessionStorage.getItem('profile') !== null ) {
             return true;
         }
@@ -26,7 +25,7 @@ export class AuthGuard implements CanActivate , CanActivateChild {
 
             }*/
 
-                console.log(  state );
+               
 
 
          return this.canActivate(route , state);

@@ -11,6 +11,7 @@ import { FormControl } from '@angular/forms';
 
 
 
+
 @Pipe({
   name: 'searchfilter'
 })
@@ -39,7 +40,7 @@ export class SearchFilterPipe implements PipeTransform {
 })
 export class CompetitionsComponent implements OnInit , OnDestroy  {
 
-  //searchfilter:searchText
+  // searchfilter:searchText
   // @ViewChild('filter') filter: ElementRef;
   private searchControl: FormControl;
   private searchText: string ;
@@ -68,11 +69,12 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
   }
 
   add() {
-    this.dataSelected = new DataCompet() ;
-    this.show = false ;
-    //this.compService.search();
+   this.dataSelected = new DataCompet() ;
+   this.show = false ;
 
   }
+
+ 
   edit(data) {
     this.dataSelected = data ;
     this.show = false ;
@@ -102,22 +104,15 @@ doChange($event) {
           debounceTime( 200 ),
           distinctUntilChanged()
           ).subscribe(query => {
-         // this.searchText = query ;
           this.myfilter.txt = query ;
-        //  console.log( this.searchText.length  );
-             this.compService.search(this.myfilter );
-
+          this.compService.search(this.myfilter );
 
         });
 
 
-   /* this.compService.getList().subscribe(
-        (response: any) => { console.log( 'res ', response ) ; this.datas$ = response; },
-        (error) => console.log(error),
-        () => console.log( 'completed' )
-
-
-    );*/
+ 
+    this.datas$ = this.compService.getList() ;
+/*
     this.datas$ = this.compService.getList().pipe(
       catchError(error => {
           console.error('denis' , error);
@@ -126,11 +121,9 @@ doChange($event) {
       finalize(() => {
           console.log('Done!');
 
-          this.datas$.pipe(
-            ( map (data  => {} ) )
       }),
-      shareReplay(1)
-    );
+       shareReplay(1)
+    );*/
   }
 
   ngOnDestroy(): void {

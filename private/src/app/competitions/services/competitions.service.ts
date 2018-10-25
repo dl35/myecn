@@ -15,43 +15,27 @@ export interface MessageResponse {
 export class CompetitionsService {
 
   private subject$ = new BehaviorSubject<DataCompet[]>([]) ;
-  public datas$: Observable<DataCompet[]> = this.subject$.asObservable();
-
-  subjectError$: BehaviorSubject<Error> = new BehaviorSubject<Error>(null);
-  public errorMessage$: Observable<Error> = this.subjectError$.asObservable();
-
-  // datas$: Observable<DataCompet[]> ;
- //  datas$: Observable<DataCompet[]> = this.subject$.asObservable;
-  private competList: DataCompet[] = null;
+  public datas$: Observable<DataCompet[]> =  this.subject$.asObservable();
+  private cache: DataCompet[] = null;
   constructor(private http: HttpClient) {
+      this.getListAll() ;
+
     console.log('created');
   }
 
   private url = '/api/private/competitions' ;
 
-
-    private list() {
-          if ( !this.competList  ||  this.competList.length === 0 ) {
+   private getListAll() {
+          if ( !this.cache  ||  this.cache.length === 0 ) {
             this.http.get<DataCompet[]>( this.url )
-        //    .pipe( catchError( error => throwError( error ) ))
             .subscribe(
-              res => {  this.competList = res ;  this.subject$.next(res) ; },
-         //     error => {  throw(error);  }
+              res => { this.cache = res ;  this.subject$.next(res) ; },
             );
      }
-
       }
 
-      public getList(): Observable<DataCompet[]> {
-             return  this.http.get<DataCompet[]>( this.url );
-           }
-
-    
-
-    public getList_() {
-
-            this.list();
-            return this.datas$;
+    public getList() {
+             return this.datas$ ;
     }
 
 
@@ -59,9 +43,9 @@ export class CompetitionsService {
 
       let liste: DataCompet[];
     if ( myfilter.verif && myfilter.verif === true ) {
-       liste = this.competList.filter( item => item.verif === true );
+       liste = this.cache.filter( item => item.verif === true );
     } else {
-      liste = this.competList ;
+      liste = this.cache ;
     }
 
     if ( myfilter.txt && myfilter.txt.length > 0 ) {
@@ -69,52 +53,8 @@ export class CompetitionsService {
       liste = liste.filter( item =>   (item.nom.toLowerCase() + ' ' + item.lieu.toLowerCase() ) .indexOf( myfilter.txt.toLowerCase() ) !== -1   );
    }
 
-
-
       this.subject$.next( liste ) ;
       }
-
-     /* getTest(): Observable<DataCompet> {
-        return this.getList().pipe(
-            map( datas => datas.find(item => item.verif === true))
-        ).;
-    }*/
-
-
- /* private list() {
-         this.http.get<DataCompet[]>( this.url ).subscribe(
-             res => {console.log(res) ; this.subject$.next(res) ; }) ;
-             this.datas$ = this.subject$.asObservable();
-             return this.datas$ ;
-         }
-
-  public getList() {
-
-            if (  this.datas$ === null  ) {
-              return  this.list();
-            } else  {
-              return this.datas$ ;
-            }
-
-
-  } */  
-
-/*
-  private list() {
-      return this.http.get<DataCompet[]>( this.url ).pipe(
-        map(res => res ));
-    }
-
-public getList() {
-
-       if (  !this.datas$   ) {
-        this.datas$ = this.list().pipe( shareReplay(1) );
-       } 
-       return this.datas$ ;
- } */
-
-
-
 
   public store(json) {
     if ( json.id == null ) {
