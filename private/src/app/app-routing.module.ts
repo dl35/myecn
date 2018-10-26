@@ -18,7 +18,6 @@ export const routes: Routes = [
 
  { path: '',   component: MenuComponent, canActivate: [AuthGuard] , canActivateChild : [AuthGuard] , children:
 [
-
 //  { path: 'licencies', component: LicenciesComponent },
   { path: '',  loadChildren: './licencies/licencies.module#LicenciesModule' },
 //  { path: '',  loadChildren: './competitions/competitions.module#CompetitionsModule' },
