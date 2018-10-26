@@ -1,12 +1,13 @@
 import { DataCompet } from './models/data-compet';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, Pipe, Injectable, PipeTransform, ViewChild, ElementRef } from '@angular/core';
-import {MediaMatcher} from '@angular/cdk/layout';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, Pipe, Injectable, PipeTransform, ViewChild } from '@angular/core';
+import { MediaMatcher } from '@angular/cdk/layout';
 import { CompetitionsService } from './services/competitions.service';
 import { Observable , interval, Subject , fromEvent, BehaviorSubject, Subscription, EMPTY } from 'rxjs';
 import { merge, map , filter , distinctUntilChanged , debounceTime, tap, catchError, finalize, shareReplay} from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 
-
+import 'hammerjs';
+import { MatDrawer } from '@angular/material';
 
 
 
@@ -41,7 +42,7 @@ export class SearchFilterPipe implements PipeTransform {
 export class CompetitionsComponent implements OnInit , OnDestroy  {
 
   // searchfilter:searchText
-  // @ViewChild('filter') filter: ElementRef;
+   @ViewChild('mdrawer') mdrawer: MatDrawer;
   private searchControl: FormControl;
   private searchText: string ;
   private subscr: Subscription;
@@ -67,6 +68,13 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
     this.mobileQuery.addListener(this._mobileQueryListener);
 
   }
+
+  switchdrawer() {
+
+    this.mdrawer.opened ? this.mdrawer.close() : this.mdrawer.open() ;
+
+  }
+
 
   add() {
    this.dataSelected = new DataCompet() ;

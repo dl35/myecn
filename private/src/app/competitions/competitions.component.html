@@ -1,7 +1,8 @@
-<mat-toolbar color="primary" >  
-    <mat-toolbar-row >
-       <mat-icon (click)="drawer.toggle()"  style="cursor: pointer;" >menu</mat-icon>
-       <span class="mat-body-2"  >CDK</span>
+   <mat-toolbar color="primary" >  
+    <mat-toolbar-row>
+        
+       <mat-icon (click)="switchdrawer()"  style="cursor: pointer;" >menu</mat-icon>
+      
        <mat-form-field style="width:80%;margin-left:10%">
          <input matInput placeholder="rechercher" [formControl]="searchControl" [value]="searchText" >
          <button mat-button *ngIf="searchControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="searchControl.setValue('')">
@@ -11,10 +12,15 @@
   
   
      </mat-toolbar-row>
+
+
    </mat-toolbar>
   
+
+
+
    <mat-drawer-container class="example-container" *ngIf="show" autosize>
-       <mat-drawer #drawer class="example-sidenav" [mode]="mobileQuery.matches ? 'over' : 'side'"  [opened]="mobileQuery.matches ? 'false' : 'true'"  >
+       <mat-drawer #mdrawer class="example-sidenav" [mode]="mobileQuery.matches ? 'over' : 'side'"  [opened]="mobileQuery.matches ? 'false' : 'true'"  >
          <p><span class="mat-body-2" >Les Compétitions</span></p>
          <div style="padding:10px" >
            <mat-slide-toggle>
@@ -38,6 +44,7 @@
   
        </mat-drawer>
      
+    
        <div class="example-sidenav-content">
            
            <mat-list>
@@ -67,6 +74,8 @@
        <div>
          <button mat-mini-fab color="accent" class="add-button" (click)="add()" ><mat-icon>add</mat-icon></button>
          </div>
-  
+      
      </mat-drawer-container>
+ 
 <app-competitions-edit [data]="dataSelected" (quitte)="onQuitte()" ></app-competitions-edit>
+

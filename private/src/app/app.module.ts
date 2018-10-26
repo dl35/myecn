@@ -18,6 +18,7 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './guard/guard.guard';
 import { MenuComponent } from './menu/menu.component';
 
+import 'hammerjs';
 
 @NgModule({
   declarations: [
