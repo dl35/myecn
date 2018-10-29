@@ -1,3 +1,4 @@
+import { CompetitionsService } from './../services/competitions.service';
 import { DataCompet } from '../models/data-compet';
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -26,6 +27,13 @@ export class CompetitionsEditComponent implements OnInit {
     if ( this.dataForm ) {
         this.dataForm.setValue( data , { onlySelf: true } );
      
+        if ( this.dataForm.get('verif').value  ===  true   )   {
+          this.dataForm.controls['verif'].disable();
+        } else {
+          this.dataForm.controls['verif'].enable();
+        }
+
+
       }
   }
 
@@ -35,7 +43,7 @@ export class CompetitionsEditComponent implements OnInit {
   }
 
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private compService: CompetitionsService ) {}
 
   minDate = new Date(2017, 8, 1);
   maxDate = new Date(2018, 7, 31);
@@ -54,6 +62,15 @@ export class CompetitionsEditComponent implements OnInit {
     this.quitte.emit(true);
     
   }
+
+  saveForm() {
+
+    
+    this.compService.store ( this.dataForm  );
+
+
+  }
+
 
   setVerif() {
 
@@ -85,7 +102,7 @@ export class CompetitionsEditComponent implements OnInit {
       entraineur:  [ null , [Validators.required] ],
       lien: new FormControl(null, Validators.pattern('')),
       commentaires: new FormControl(null),
-      verif: new FormControl({value: false , disabled: true}),
+      verif: new FormControl({value: false , disabled: false}),
     },
     {validator: this.allDateValidator  }
   );

@@ -64,11 +64,16 @@ export class CompetitionsService {
     }
   }
   private post(json) {
-     return  this.http.post( this.url , json ) ;
+    delete json.id;
+    this.http.post<DataCompet>( this.url , json ).subscribe(
+      compet => { this.cache.push ( compet ) ;  this.subject$.next( this.cache ) ; },
+    );
     }
   private put(json) {
     const url = this.url + '/' + json.id;
-    return  this.http.put<MessageResponse>( url , json ) ;
+    this.http.put<DataCompet>( url , json ).subscribe(
+      compet => { this.cache.push ( compet ) ;  this.subject$.next( this.cache ) ; },
+    );
     }
   public delete(id) {
 
