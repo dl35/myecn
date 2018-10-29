@@ -51,12 +51,11 @@
                <h1 mat-subheader>Les compétitions</h1>
   
                <mat-list-item *ngFor="let data of datas$ | async ; last as last">
-                  <button mat-icon-button [color]="data.verif == true ? 'accent' : 'warn' " (click)="delete(data)" > 
+                  <button mat-icon-button    *ngIf="data.del" color="warn" (click)="delete(data)" > 
                   <mat-icon>delete</mat-icon></button>
-                  <button mat-icon-button color="primary" (click)="edit(data)" > 
-                      <mat-icon>edit</mat-icon></button>
+                  <button mat-icon-button matBadge="5" [color]="data.verif  ? 'primary' : 'accent' " (click)="edit(data)" > 
+                      <mat-icon   >edit</mat-icon></button>
 
-                <button mat-mini-fab [color]="data.verif == true ? 'accent' : 'warn' " (click)="edit(data)" >{{data.bassin}}</button>
              
                  <mat-icon matListIcon color='primary' matBadge="5" >folder</mat-icon>
                  <img mat-list-avatar [src]="'../../assets/images/swimmer.svg'"  [alt]="'D'" >
@@ -80,6 +79,6 @@
          </div>
       
      </mat-drawer-container>
- 
-<app-competitions-edit [data]="dataSelected" (quitte)="onQuitte()" ></app-competitions-edit>
+
+<app-competitions-edit  [style.display]="show ? 'none':'block'"  [data]="dataSelected" (quitte)="onQuitte()" ></app-competitions-edit>
 

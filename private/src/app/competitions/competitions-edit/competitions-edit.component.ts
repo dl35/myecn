@@ -1,5 +1,5 @@
 import { DataCompet } from '../models/data-compet';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material';
 
@@ -13,30 +13,29 @@ import { MatDatepickerInputEvent } from '@angular/material';
 export class CompetitionsEditComponent implements OnInit {
 
   // @Input() data: DataCompet;
-  private show = false;
+
   @Output() quitte = new EventEmitter<boolean>();
 
   public dataForm: FormGroup ;
 
 
+  
   @Input()
   set data(data: DataCompet) {
-    console.log('got name: ', data );
+    console.log('edition : ', data  );
     if ( this.dataForm ) {
-   //   delete data.del;
-      this.show = true;
-      this.dataForm.setValue( data , { onlySelf: true } );
-
-    }
+        this.dataForm.setValue( data , { onlySelf: true } );
+     
+      }
   }
 
- /* get data(): DataCompet {
+  get data(): DataCompet {
     // transform value for display
-    return this._data;
-  }*/
+        return this.data;
+  }
 
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder) {}
 
   minDate = new Date(2017, 8, 1);
   maxDate = new Date(2018, 7, 31);
@@ -53,7 +52,7 @@ export class CompetitionsEditComponent implements OnInit {
   }
   doquitte() {
     this.quitte.emit(true);
-    this.show = false;
+    
   }
 
   setVerif() {
@@ -63,7 +62,7 @@ export class CompetitionsEditComponent implements OnInit {
   private createForm() {
     // Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') ,
     this.dataForm = this.formBuilder.group({
-      id: new FormControl(null),
+      id: new FormControl( null ),
       nom: ['', [Validators.required,  Validators.minLength(5)] ],
       lieu:  ['', [Validators.required, Validators.minLength(4)] ],
       categories: new FormGroup({

@@ -1,3 +1,4 @@
+import { IDataCompet } from './models/idata-compet';
 import { DataCompet } from './models/data-compet';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, Pipe, Injectable, PipeTransform, ViewChild } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
@@ -83,13 +84,16 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
   }
 
    edit(data) {
+     
     this.dataSelected = data ;
     this.show = false ;
   }
 
   onQuitte() {
+  console.log('on quitte ...')
   this.show = true ;
-}
+  
+ }
 
 doChange($event) {
  console.log( $event );
