@@ -51,12 +51,16 @@
                <h1 mat-subheader>Les compétitions</h1>
   
                <mat-list-item *ngFor="let data of datas$ | async ; last as last">
-                   <button mat-mini-fab [color]="data.verif == true ? 'accent' : 'warn' " (click)="edit(data)" >{{data.bassin}}</button>
-                 <mat-icon matListIcon color='primary' >folder</mat-icon>
+                  <button mat-icon-button [color]="data.verif == true ? 'accent' : 'warn' " (click)="delete(data)" > 
+                  <mat-icon>delete</mat-icon></button>
+                  <button mat-icon-button color="primary" (click)="edit(data)" > 
+                      <mat-icon>edit</mat-icon></button>
+
+                <button mat-mini-fab [color]="data.verif == true ? 'accent' : 'warn' " (click)="edit(data)" >{{data.bassin}}</button>
+             
+                 <mat-icon matListIcon color='primary' matBadge="5" >folder</mat-icon>
                  <img mat-list-avatar [src]="'../../assets/images/swimmer.svg'"  [alt]="'D'" >
-                 <p *ngIf="data.verif == true">
-                     <span matBadge="50" matBadgeOverlap="true"></span>
-                 </p>
+            
                  <h4 mat-line>{{data.nom}} - {{data.lieu}}</h4>
                  <p mat-line [ngSwitch]=" data.debut !== data.fin ">
                  <span *ngSwitchCase="true" >{{data.debut | date:'dd MMM' }} au {{data.fin | date:'dd MMM' }}</span>
