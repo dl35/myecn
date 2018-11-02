@@ -19,7 +19,7 @@
 
 
 
-   <mat-drawer-container class="example-container" *ngIf="show" autosize>
+   <mat-drawer-container class="example-container" *ngIf="!dataSelected" autosize>
        <mat-drawer #mdrawer class="example-sidenav" [mode]="mobileQuery.matches ? 'over' : 'side'"  [opened]="mobileQuery.matches ? 'false' : 'true'"  >
          <p><span class="mat-body-2" >Les Compétitions</span></p>
          <div style="padding:10px" >
@@ -79,6 +79,6 @@
          </div>
       
      </mat-drawer-container>
-
-<app-competitions-edit  [style.display]="show ? 'none':'block'"  [data]="dataSelected" (quitte)="onQuitte()" ></app-competitions-edit>
-
+<div *ngIf="dataSelected" >
+<app-competitions-edit    [data]="dataSelected" (quitte)="onQuitte()" ></app-competitions-edit>
+</div>

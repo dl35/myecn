@@ -59,7 +59,7 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
   datas$: Observable<DataCompet[]> ;
   dataSelected: DataCompet;
 
-  show = true ;
+ 
 
   private _mobileQueryListener: () => void;
 
@@ -79,28 +79,22 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
 
   add() {
    this.dataSelected = new DataCompet() ;
-   this.show = false ;
-
   }
 
-   edit(data) {
-     
+  edit(data) {
     this.dataSelected = data ;
-    this.show = false ;
   }
 
   onQuitte() {
-  console.log('on quitte ...')
-  this.show = true ;
-  
- }
+  this.dataSelected = null;
+  }
 
-doChange($event) {
- console.log( $event );
- this.myfilter.verif = $event.checked ;
- this.compService.search( this.myfilter );
+  doChange($event) {
+  console.log( $event );
+  this.myfilter.verif = $event.checked ;
+  this.compService.search( this.myfilter );
 
-}
+  }
 
   ngOnInit() {
 
@@ -122,6 +116,7 @@ doChange($event) {
 
 
      this.datas$ = this.compService.getList() ;
+     this.dataSelected = null ;
 /*
     this.datas$ = this.compService.getList().pipe(
       catchError(error => {

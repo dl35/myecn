@@ -13,7 +13,7 @@ import { MatDatepickerInputEvent } from '@angular/material';
 })
 export class CompetitionsEditComponent implements OnInit {
 
-  // @Input() data: DataCompet;
+  //@Input() data: DataCompet;
 
   @Output() quitte = new EventEmitter<boolean>();
 
@@ -23,18 +23,14 @@ export class CompetitionsEditComponent implements OnInit {
   
   @Input()
   set data(data: DataCompet) {
-    console.log('edition : ', data  );
-    if ( this.dataForm ) {
-        this.dataForm.setValue( data , { onlySelf: true } );
-     
-        if ( this.dataForm.get('verif').value  ===  true   )   {
+   
+       this.dataForm.setValue( data , { onlySelf: true } );
+      if ( this.dataForm.get('verif').value  ===  true   )   {
           this.dataForm.controls['verif'].disable();
         } else {
           this.dataForm.controls['verif'].enable();
         }
-
-
-      }
+      
   }
 
   get data(): DataCompet {
@@ -43,7 +39,10 @@ export class CompetitionsEditComponent implements OnInit {
   }
 
 
-  constructor(private formBuilder: FormBuilder, private compService: CompetitionsService ) {}
+  constructor(private formBuilder: FormBuilder, private compService: CompetitionsService ) {
+    this.createForm() ;
+
+  }
 
   minDate = new Date(2017, 8, 1);
   maxDate = new Date(2018, 7, 31);
@@ -55,20 +54,15 @@ export class CompetitionsEditComponent implements OnInit {
 
 
   ngOnInit() {
-
-    this.createForm() ;
+console.log( 'create form NgInit  '  );
+   
   }
   doquitte() {
     this.quitte.emit(true);
-    
   }
 
   saveForm() {
-
-    
     this.compService.store ( this.dataForm  );
-
-
   }
 
 
