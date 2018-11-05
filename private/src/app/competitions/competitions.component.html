@@ -80,5 +80,5 @@
       
      </mat-drawer-container>
 <div *ngIf="dataSelected" >
-<app-competitions-edit    [data]="dataSelected" (quitte)="onQuitte()" ></app-competitions-edit>
+<app-competitions-edit    [data]="dataSelected" (quitte)="onQuitte($event)" ></app-competitions-edit>
 </div>

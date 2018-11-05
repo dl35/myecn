@@ -11,7 +11,7 @@ export class DataCompet implements IDataCompet {
     entraineur = '';
     fin: Date  = null;
     heure = '07';
-    id = -1;
+    id = null;
     lien = '';
     lieu = '';
     limite: Date  = null;

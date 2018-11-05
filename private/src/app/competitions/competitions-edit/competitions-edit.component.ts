@@ -3,6 +3,7 @@ import { DataCompet } from '../models/data-compet';
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material';
+import { MessageResponse, MessageType } from '../models/message-response';
 
 
 
@@ -13,24 +14,20 @@ import { MatDatepickerInputEvent } from '@angular/material';
 })
 export class CompetitionsEditComponent implements OnInit {
 
-  //@Input() data: DataCompet;
-
-  @Output() quitte = new EventEmitter<boolean>();
+  @Output() quitte = new EventEmitter<MessageResponse>();
 
   public dataForm: FormGroup ;
+  public response = new MessageResponse() ;
 
-
-  
   @Input()
   set data(data: DataCompet) {
-   
        this.dataForm.setValue( data , { onlySelf: true } );
-      if ( this.dataForm.get('verif').value  ===  true   )   {
+       
+      if ( this.dataForm.get('verif').value  ===  true  ||  this.dataForm.get('id').value === null )   {
           this.dataForm.controls['verif'].disable();
         } else {
           this.dataForm.controls['verif'].enable();
         }
-      
   }
 
   get data(): DataCompet {
@@ -41,6 +38,7 @@ export class CompetitionsEditComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private compService: CompetitionsService ) {
     this.createForm() ;
+ 
 
   }
 
@@ -49,24 +47,45 @@ export class CompetitionsEditComponent implements OnInit {
 
   meta = {
     // displayForm : false ,
+    'entraineur': [{'name': 'toto@toto.fr' , 'value': 'toto@toto.fr'  }  ] ,
     'bassin': [{'name': '25' , 'value': '25'  } , {'name': '50' , 'value': '50'  }  ] ,
     'type': [{'name': 'Stage' , 'value': 'stage' } , {'name': 'Compétition' , 'value': 'compet'  } ]  };
 
-
   ngOnInit() {
-console.log( 'create form NgInit  '  );
-   
   }
+
   doquitte() {
-    this.quitte.emit(true);
+    this.quitte.emit( this.response );
   }
+
+  delete() {
+    this.compService.delete ( this.dataForm.getRawValue().id );
+  }
+
+  doexit(success: boolean, type: MessageType , message: string) {
+    this.response.success = success ;
+    this.response.type = type ;
+    this.response.message = message ;
+
+    this.quitte.emit( this.response );
+  }
+
 
   saveForm() {
-    this.compService.store ( this.dataForm  );
+    const data = this.dataForm.getRawValue() ;
+
+    if ( data.id === null ) {
+      delete data.id;
+      return this.compService.post( data ).subscribe(
+        (value) =>  { this.compService.updateCache('post', value); this.doexit(true, MessageType.POST , 'Ajout valide' ) ; },
+        (error) =>  { this.doexit(false, MessageType.POST , error ); }
+      );
+   } else {
+    return this.compService.put( data ).subscribe(
+      (value) =>  { this.compService.updateCache('put', value); this.doexit(true, MessageType.PUT , 'Modification valide' ); },
+      (error) =>  {  this.doexit(false, MessageType.PUT , error ); }
+    );
   }
-
-
-  setVerif() {
 
   }
 
@@ -96,7 +115,7 @@ console.log( 'create form NgInit  '  );
       entraineur:  [ null , [Validators.required] ],
       lien: new FormControl(null, Validators.pattern('')),
       commentaires: new FormControl(null),
-      verif: new FormControl({value: false , disabled: false}),
+      verif: new FormControl({value: false , disabled: true}),
     },
     {validator: this.allDateValidator  }
   );
