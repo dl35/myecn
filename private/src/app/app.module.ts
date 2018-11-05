@@ -20,15 +20,14 @@ import { MenuComponent } from './menu/menu.component';
 
 import 'hammerjs';
 import { DialogConfirmComponent } from './dialog-confirm/dialog-confirm.component';
-import { SnackbarInfoComponent } from './snackbar-info/snackbar-info.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     MenuComponent,
-    DialogConfirmComponent,
-    SnackbarInfoComponent,
+    DialogConfirmComponent
    ],
   imports: [
     BrowserModule,
