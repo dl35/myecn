@@ -53,7 +53,7 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
   mobileQuery: MediaQueryList;
   datas$: Observable<DataCompet[]> ;
   dataSelected: DataCompet;
-
+  
 
 
   private _mobileQueryListener: () => void;
