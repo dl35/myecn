@@ -1,0 +1,25 @@
+# docker group .....
+The Docker daemon always runs as the root user.
+1-sudo groupadd docker
+2-sudo usermod -aG docker $USER
+3-log out session ...
+
+
+
+
+
+# remove all images
+#sudo docker rmi $(sudo docker images -q)
+
+# remove all process
+# sudo docker rm $(sudo docker ps -a -q)
+
+
+# supprimer tous les containers
+
+docker  stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+
+# start / stop
+docker start <container-name/ID>
+docker stop <container-name/ID>
