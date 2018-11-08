@@ -19,12 +19,15 @@ import { AuthGuard } from './guard/guard.guard';
 import { MenuComponent } from './menu/menu.component';
 
 import 'hammerjs';
+import { DialogConfirmComponent } from './dialog-confirm/dialog-confirm.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     MenuComponent,
+    DialogConfirmComponent
    ],
   imports: [
     BrowserModule,
@@ -40,6 +43,7 @@ import 'hammerjs';
     PiscinesModule,
     AppRoutingModule
   ],
+  entryComponents: [DialogConfirmComponent],
   providers: [AuthGuard],
   bootstrap: [AppComponent]
 })

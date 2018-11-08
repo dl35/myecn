@@ -4,7 +4,7 @@
        <mat-icon (click)="switchdrawer()"  style="cursor: pointer;" >menu</mat-icon>
       
        <mat-form-field style="width:80%;margin-left:10%">
-         <input matInput placeholder="rechercher" [formControl]="searchControl" [value]="searchText" >
+         <input matInput placeholder="rechercher" [formControl]="searchControl" [value]='' >
          <button mat-button *ngIf="searchControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="searchControl.setValue('')">
            <mat-icon>close</mat-icon>
          </button>
@@ -80,5 +80,5 @@
       
      </mat-drawer-container>
 <div *ngIf="dataSelected" >
-<app-competitions-edit    [data]="dataSelected" (quitte)="onQuitte()" ></app-competitions-edit>
+<app-competitions-edit    [data]="dataSelected" (quitte)="onQuitte($event)" ></app-competitions-edit>
 </div>

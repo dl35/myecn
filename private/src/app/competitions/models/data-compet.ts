@@ -1,5 +1,4 @@
-import { IDataCompet } from './idata-compet';
-import { Categories } from './categories';
+
 
 export class DataCompet implements IDataCompet {
     bassin = '25';
@@ -11,7 +10,7 @@ export class DataCompet implements IDataCompet {
     entraineur = '';
     fin: Date  = null;
     heure = '07';
-    id = -1;
+    id = null;
     lien = '';
     lieu = '';
     limite: Date  = null;
@@ -21,24 +20,37 @@ export class DataCompet implements IDataCompet {
     verif = false;
 
     constructor() { }
-/*constructor(compet?: IDataCompet ) {
-   // if ( compet == null )  return;
-    this.bassin = compet.bassin;
-    this.choixnages = compet.choixnages ;
-    this.commentaires = compet.commentaires;
-    this.debut = compet.debut;
-    this.fin =  compet.fin ;
-    this.limite = compet.limite;
-    this.heure = compet.heure;
-    this.max = compet.max;
-    this.type = compet.type;
-    this.verif = compet.verif;
-    this.nom = compet.nom ;
-    this.id = compet.id ;
-    this.lieu = compet.lieu;
-    this.del = compet.del;
-}*/
+
+}
+
+ interface Categories {
+
+    av: boolean;
+    dep: boolean;
+    je: boolean;
+    ma: boolean;
+    nat: boolean;
+    reg: boolean;
+}
 
 
+ interface IDataCompet {
+    bassin: string;
+    categories: Categories;
+    choixnages: boolean;
+    commentaires?: string;
+    debut: Date;
+    del?: boolean;
+    entraineur: string;
+    fin: Date;
+    heure: string;
+    id: number;
+    lien?: string;
+    lieu: string;
+    limite: Date;
+    max: number;
+    nom: string;
+    type: string;
+    verif: boolean;
 
 }

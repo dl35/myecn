@@ -1,16 +1,16 @@
-import { IDataCompet } from './models/idata-compet';
 import { DataCompet } from './models/data-compet';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, Pipe, Injectable, PipeTransform, ViewChild } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { CompetitionsService } from './services/competitions.service';
-import { Observable , interval, Subject , fromEvent, BehaviorSubject, Subscription, EMPTY } from 'rxjs';
-import { merge, map , filter , distinctUntilChanged , debounceTime, tap, catchError, finalize, shareReplay} from 'rxjs/operators';
+import { Observable , Subscription } from 'rxjs';
+import { filter , distinctUntilChanged , debounceTime} from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 
 import 'hammerjs';
-import { MatDrawer } from '@angular/material';
+import { MatDrawer, MatDialog, MatSnackBar } from '@angular/material';
 
-
+import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
+import { MessageType, MessageResponse } from './models/message-response';
 
 
 
@@ -31,10 +31,6 @@ export class SearchFilterPipe implements PipeTransform {
 
 
 
-
-
-
-
 @Component({
   selector: 'app-competitions',
   templateUrl: './competitions.component.html',
@@ -45,7 +41,6 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
   // searchfilter:searchText
    @ViewChild('mdrawer') mdrawer: MatDrawer;
   private searchControl: FormControl;
-  private searchText: string ;
   private subscr: Subscription;
 
 
@@ -58,17 +53,33 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
   mobileQuery: MediaQueryList;
   datas$: Observable<DataCompet[]> ;
   dataSelected: DataCompet;
+  
 
- 
 
   private _mobileQueryListener: () => void;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private compService: CompetitionsService) {
+
+  constructor(public dialog: MatDialog, private snackBar: MatSnackBar,  changeDetectorRef: ChangeDetectorRef,
+               media: MediaMatcher, private compService: CompetitionsService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
 
   }
+
+  private showSnackBar( message , info) {
+    // tslint:disable-next-line:no-shadowed-variable
+    let style = 'snack-success';
+    if ( !info ) {
+      style = 'snack-error';
+    }
+    this.snackBar.open( message  , '', {
+      duration: 1500,
+      announcementMessage : 'denis',
+      panelClass: [ style ]
+    });
+  }
+
 
   switchdrawer() {
 
@@ -85,8 +96,36 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
     this.dataSelected = data ;
   }
 
-  onQuitte() {
+  delete(data) {
+      const dialogRef = this.dialog.open(DialogConfirmComponent, {
+        width: '50%',
+        data: { id: data.id , info: 'Voulez vous supprimer ' + data.nom + ' ?'  },
+        disableClose: true
+       });
+
+       dialogRef.beforeClosed().subscribe(
+         (result) => {
+                   if (result) {
+                    this.compService.delete( data.id ).subscribe(
+                        () => { this.compService.updateCache('delete', data); this.showSnackBar('Supression valide'  , true ); },
+                        (error) =>  { this.showSnackBar( error   , false ); }
+
+                    ); }},
+         () => { },
+         () => {},
+       );
+
+  }
+
+
+
+
+  onQuitte(message: MessageResponse) {
   this.dataSelected = null;
+  if ( message.type === MessageType.NONE ) {  return ; }
+  this.showSnackBar( message.message  , message.success  );
+
+
   }
 
   doChange($event) {
@@ -100,7 +139,6 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
 
 
 
-    this.searchText = '';
     this.searchControl = new FormControl('');
     this.subscr =  this.searchControl.valueChanges
         .pipe(

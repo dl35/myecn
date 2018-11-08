@@ -1,14 +1,12 @@
-import { BehaviorSubject, Observable, from, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { DataCompet } from '../models/data-compet';
+import { MessageResponse } from '../models/message-response';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, switchMap, shareReplay, publishReplay, filter, tap, catchError } from 'rxjs/operators';
 
 
-export interface MessageResponse {
-  success: boolean;
-  message: string;
-  }
+
+
 
 @Injectable(
 { providedIn: 'root'})
@@ -56,28 +54,28 @@ export class CompetitionsService {
       this.subject$.next( liste ) ;
       }
 
-  public store(json) {
-    if ( json.id == null ) {
-        return this.post(json);
-     } else {
-       return this.put(json);
-    }
-  }
-  private post(json) {
-    delete json.id;
-    this.http.post<DataCompet>( this.url , json ).subscribe(
-      compet => { this.cache.push ( compet ) ;  this.subject$.next( this.cache ) ; },
-    );
-    }
-  private put(json) {
-    const url = this.url + '/' + json.id;
-    this.http.put<DataCompet>( url , json ).subscribe(
-      compet => { this.cache.push ( compet ) ;  this.subject$.next( this.cache ) ; },
-    );
-    }
-  public delete(id) {
 
-    const url = this.url + '/' + id;
-    return  this.http.delete<MessageResponse>( url ) ;
+    public post(json) {
+      return this.http.post<DataCompet>( this.url , json );
+    }
+    public put(json) {
+      const url = this.url + '/' + json.id;
+      return this.http.put<DataCompet>( url , json );
+    }
+    public updateCache( method: string ,  compet: DataCompet ) {
+      if ( method === 'post' ) {
+        this.cache.push ( compet );
+      } else  if ( method === 'put' )  {
+        const index = this.cache.findIndex(item => item.id === compet.id);
+        this.cache[index] = compet;
+      } else {
+        this.cache = this.cache.filter(obj => obj.id !== compet.id );
+      }
+      this.subject$.next( this.cache );
+
+    }
+    public delete(id) {
+      const url = this.url + '/' + id;
+      return  this.http.delete<MessageResponse>( url ) ;
       }
 }
