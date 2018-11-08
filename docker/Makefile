@@ -2,7 +2,7 @@
 
 
 run: ## Run container on port configured in `config.env`
-	docker run -it --rm  -p=4200:4200 -v $(CURDIR):/app  --name="ng-7.0.4" angular-cli-docker:7.0.4
+	docker run -it --rm --network="host"  -p 4200:4200  -v $(CURDIR)/../private:/app  --name="ng-7.0.4" angular-cli-docker:7.0.4
 
 
 
@@ -12,3 +12,6 @@ dev: ## Run container on port configured in `config.env`
 
 build:
 	docker build --rm -f Dockerfile  -t angular-cli-docker:7.0.4 .
+
+stop:
+	docker stop ng-7.0.4

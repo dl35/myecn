@@ -9,10 +9,10 @@ The Docker daemon always runs as the root user.
 
 
 # remove all images
-#sudo docker rmi $(sudo docker images -q)
+#docker rmi $(docker images -q)
 
 # remove all process
-# sudo docker rm $(sudo docker ps -a -q)
+# docker rm $(docker ps -a -q)
 
 
 # supprimer tous les containers
