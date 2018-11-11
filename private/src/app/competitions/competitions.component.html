@@ -54,13 +54,13 @@
                   <button mat-icon-button    *ngIf="data.del" color="warn" (click)="delete(data)" > 
                   <mat-icon>delete</mat-icon></button>
                   <button mat-icon-button matBadge="5" [color]="data.verif  ? 'primary' : 'accent' " (click)="edit(data)" > 
-                      <mat-icon   >edit</mat-icon></button>
+                      <mat-icon>edit</mat-icon></button>
 
-             
-                 <mat-icon matListIcon color='primary' matBadge="5" >folder</mat-icon>
-                 <img mat-list-avatar [src]="'../../assets/images/swimmer.svg'"  [alt]="'D'" >
+                <mat-icon  matListIcon color='primary' matBadge="5" [svgIcon]="data.verif  ? 'swimvalid' : 'swiminvalid' "></mat-icon>
+                
             
-                 <h4 mat-line>{{data.nom}} - {{data.lieu}}</h4>
+
+                 <h4 mat-line>{{data.nom}}</h4>
                  <p mat-line [ngSwitch]=" data.debut !== data.fin ">
                  <span *ngSwitchCase="true" >{{data.debut | date:'dd MMM' }} au {{data.fin | date:'dd MMM' }}</span>
                  <span *ngSwitchCase="false" >{{data.debut | date:'dd MMM' }} -- </span>
