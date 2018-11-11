@@ -7,7 +7,6 @@ import { CompetitionsComponent } from './competitions.component';
 import { CompetitionsEditComponent } from './competitions-edit/competitions-edit.component';
 
 
-
 @NgModule({
   imports: [
     CommonModule,
