@@ -4,7 +4,7 @@ WORKDIR /app
 
 EXPOSE 4200
 
-RUN npm install -g --unsafe-perm node-sass@4.10.0
+
 RUN npm install -g @angular/cli@7.0.5
 
 

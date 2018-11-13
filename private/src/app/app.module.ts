@@ -22,6 +22,7 @@ import 'hammerjs';
 import { DialogConfirmComponent } from './dialog-confirm/dialog-confirm.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,

@@ -37,6 +37,7 @@ export class CompetitionsEditComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private compService: CompetitionsService ) {
     this.createForm() ;
+
   }
 
   minDate = new Date(2017, 8, 1);

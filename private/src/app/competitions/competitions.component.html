@@ -22,27 +22,22 @@
    <mat-drawer-container class="example-container" *ngIf="!dataSelected" autosize>
        <mat-drawer #mdrawer class="example-sidenav" [mode]="mobileQuery.matches ? 'over' : 'side'"  [opened]="mobileQuery.matches ? 'false' : 'true'"  >
          <p><span class="mat-body-2" >Les Compétitions</span></p>
-         <div style="padding:10px" >
-           <mat-slide-toggle>
-             <span class="mat-body-2"  >Vérifiées</span>
-           </mat-slide-toggle>
-         </div>
-         <mat-divider></mat-divider>
-         <div style="padding:10px" >
-             <mat-checkbox class="mat-body-2" (change)="doChange($event)" >à Venir</mat-checkbox>
-           </div>
-          <mat-nav-list>
-         <mat-divider></mat-divider>
-         <mat-divider></mat-divider>
-           <a mat-list-item routerLink>Link</a>
-           <a mat-list-item routerLink cdkFocusInitial>Initially focused</a>
-           <a mat-list-item routerLink cdkFocusRegionEnd>Focus region end</a>
-         <mat-divider></mat-divider>
-           <a mat-list-item routerLink>Link</a>
-         </mat-nav-list>
-  
-  
-       </mat-drawer>
+          <div style="padding:5px" >
+          <mat-checkbox class="mat-body-2" (change)="doChange($event)" >Vérifiées</mat-checkbox>
+          </div>
+          <mat-divider></mat-divider>
+          <div style="padding:5px" >
+          <mat-checkbox class="mat-body-2" (change)="doChange($event)" >Passées</mat-checkbox>
+          &nbsp;
+          <mat-checkbox class="mat-body-2" (change)="doChange($event)" >Futures</mat-checkbox>
+          </div>
+          <mat-divider></mat-divider>
+          <div style="padding:5px" >
+          <mat-checkbox class="mat-body-2" (change)="doChange($event)" >Stages</mat-checkbox>
+          &nbsp;
+          <mat-checkbox class="mat-body-2" (change)="doChange($event)" >Competitions</mat-checkbox>
+          </div>
+          </mat-drawer>
      
     
        <div class="example-sidenav-content">
