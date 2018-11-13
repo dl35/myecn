@@ -6,7 +6,7 @@ export class DataCompet implements IDataCompet {
     choixnages = false;
     commentaires = '';
     debut: Date = null;
-    del = false ;
+    nb = 0 ;
     entraineur = '';
     fin: Date  = null;
     heure = '07';
@@ -40,7 +40,7 @@ export class DataCompet implements IDataCompet {
     choixnages: boolean;
     commentaires?: string;
     debut: Date;
-    del?: boolean;
+    nb: number;
     entraineur: string;
     fin: Date;
     heure: string;

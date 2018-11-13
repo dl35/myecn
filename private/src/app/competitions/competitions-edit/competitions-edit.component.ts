@@ -22,7 +22,6 @@ export class CompetitionsEditComponent implements OnInit {
   @Input()
   set data(data: DataCompet) {
        this.dataForm.setValue( data , { onlySelf: true } );
-       
       if ( this.dataForm.get('verif').value  ===  true  ||  this.dataForm.get('id').value === null )   {
           this.dataForm.controls['verif'].disable();
         } else {
@@ -38,8 +37,6 @@ export class CompetitionsEditComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private compService: CompetitionsService ) {
     this.createForm() ;
- 
-
   }
 
   minDate = new Date(2017, 8, 1);
@@ -109,7 +106,7 @@ export class CompetitionsEditComponent implements OnInit {
       fin: [ null  , [Validators.required] ],
       heure: ['07', [Validators.required] ],
       limite: [ null  , [Validators.required] ],
-      del: new FormControl({value: false}),
+      nb: new FormControl({value: 0}),
       choixnages: new FormControl({value: false}),
       max: new FormControl(0),
       entraineur:  [ null , [Validators.required] ],
