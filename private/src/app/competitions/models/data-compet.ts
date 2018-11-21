@@ -18,6 +18,7 @@ export class DataCompet implements IDataCompet {
     nom = '';
     type = 'compet';
     verif = false;
+    next ? = true;
 
     constructor() { }
 
@@ -52,5 +53,6 @@ export class DataCompet implements IDataCompet {
     nom: string;
     type: string;
     verif: boolean;
+    next?: boolean;
 
 }

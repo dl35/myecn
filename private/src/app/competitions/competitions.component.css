@@ -40,7 +40,7 @@
     _height: 100%;
     _max-height: 96%;
     _overflow: auto;
-    background: ivory;
+    background: rgb(243, 245, 242);
     _min-height: 100% !important;
     min-height: 100vh;
 
@@ -53,12 +53,13 @@
     _flex: 1 1 auto;
     height: 100%;
     width : 85%;
+    background: rgb(243, 245, 242);
     _align-items: center;
     _justify-content: center;
   }
   
   .example-sidenav {
-    background: rgb(243, 245, 242);
+    background: #c3ccbe;
     padding: 20px;
   }
   

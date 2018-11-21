@@ -1,0 +1,32 @@
+
+.example-container {
+    width: 100%;
+    _height: 100%;
+    /*calc(100vh - 200px);*/
+    _overflow-y:auto;
+    _position: absolute;
+    _height: 100%;
+    _max-height: 96%;
+    _overflow: auto;
+    background: rgb(243, 245, 242);
+    _min-height: 100% !important;
+    min-height: 100vh;
+
+    _border: 1px solid rgba(0, 0, 0, 0.5);
+  }
+  
+  .example-sidenav-content {
+     margin-left: 5px;  
+    _display: flex;
+    _flex: 1 1 auto;
+    height: 100%;
+    width : 85%;
+    background: rgb(243, 245, 242);
+    _align-items: center;
+    _justify-content: center;
+  }
+  
+  .example-sidenav {
+    background: #c3ccbe;
+    padding: 20px;
+  }

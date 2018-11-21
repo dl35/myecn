@@ -22,6 +22,7 @@ export const routes: Routes = [
   { path: '',  loadChildren: './licencies/licencies.module#LicenciesModule' },
 //  { path: '',  loadChildren: './competitions/competitions.module#CompetitionsModule' },
   { path: 'competitions',  component: CompetitionsComponent },
+  { path: 'engagements',  component: EngagementsComponent },
   { path: 'mailto',  component: MailtoComponent },
   { path: 'records', component: RecordsComponent  },
   { path: 'piscines', component: PiscinesComponent  },

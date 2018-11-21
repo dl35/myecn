@@ -22,35 +22,30 @@
    <mat-drawer-container class="example-container" *ngIf="!dataSelected" autosize>
        <mat-drawer #mdrawer class="example-sidenav" [mode]="mobileQuery.matches ? 'over' : 'side'"  [opened]="mobileQuery.matches ? 'false' : 'true'"  >
          <p><span class="mat-body-2" >Les Compétitions</span></p>
+         
           <div style="padding:5px" >
-          <mat-checkbox class="mat-body-2" (change)="doChange($event)" >Vérifiées</mat-checkbox>
+          <mat-checkbox class="mat-body-2" (change)="doChange($event,'v')" >Vérifiées</mat-checkbox>
+          &nbsp;
+          <mat-checkbox class="mat-body-2" (change)="doChange($event,'n')" checked='true' >Futures</mat-checkbox>
           </div>
           <mat-divider></mat-divider>
           <div style="padding:5px" >
-          <mat-checkbox class="mat-body-2" (change)="doChange($event)" >Passées</mat-checkbox>
+          <mat-checkbox class="mat-body-2" (change)="doChange($event,'s')" checked='true'  >Stages</mat-checkbox>
           &nbsp;
-          <mat-checkbox class="mat-body-2" (change)="doChange($event)" >Futures</mat-checkbox>
-          </div>
-          <mat-divider></mat-divider>
-          <div style="padding:5px" >
-          <mat-checkbox class="mat-body-2" (change)="doChange($event)" >Stages</mat-checkbox>
-          &nbsp;
-          <mat-checkbox class="mat-body-2" (change)="doChange($event)" >Competitions</mat-checkbox>
+          <mat-checkbox class="mat-body-2" (change)="doChange($event,'c')" checked='true'  >Competitions</mat-checkbox>
           </div>
           </mat-drawer>
      
     
        <div class="example-sidenav-content">
            
-           <mat-list>
-               <h1 mat-subheader>Les compétitions</h1>
+        <mat-list>
+               <h2 mat-subheader>Les compétitions</h2>
+        
   
-               <mat-list-item *ngFor="let data of datas$ | async ; last as last">
-                  <button mat-icon-button    *ngIf="data.nb === 0" color="warn" (click)="delete(data)" > 
+               <mat-list-item *ngFor="let data of datas$ | async ; last as last"  (click)="edit(data)"  style='margin-bottom:20px' class="mat-elevation-z8"  matRipple  [matRippleCentered]="centered" [matRippleColor]="warn" >
+                  <button mat-icon-button    *ngIf="data.nb === 0" color="warn" (click)="delete(data);$event.stopPropagation()" > 
                   <mat-icon>delete</mat-icon></button>
-                  <button mat-icon-button  color="primary" (click)="edit(data)" > 
-                  <mat-icon>edit</mat-icon>
-                  </button>
                   <mat-icon  *ngIf="data.nb > 0" matListIcon color='primary' [matBadge]="data.nb" [svgIcon]="data.verif  ? 'swimvalid' : 'swiminvalid' "></mat-icon>
                   <mat-icon  *ngIf="data.nb === 0" matListIcon color='primary'  [svgIcon]="data.verif  ? 'swimvalid' : 'swiminvalid' "></mat-icon>
      
@@ -65,12 +60,13 @@
                 
                    <span class="demo-secondary-text">&nbsp;&nbsp;{{data.lieu}}</span>
                  </p>
-                 <mat-divider inset *ngIf="!last"></mat-divider>
+                <!--
+                 <mat-divider inset *ngIf="!last"></mat-divider> -->
                </mat-list-item>
-               <mat-divider></mat-divider>
+               
     
              </mat-list>
-       
+     
        </div>
        <div>
          <button mat-mini-fab color="accent" class="add-button" (click)="add()" ><mat-icon>add</mat-icon></button>

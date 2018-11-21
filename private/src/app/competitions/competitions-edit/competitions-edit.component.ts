@@ -108,6 +108,7 @@ export class CompetitionsEditComponent implements OnInit {
       heure: ['07', [Validators.required] ],
       limite: [ null  , [Validators.required] ],
       nb: new FormControl({value: 0}),
+      next: new FormControl({value: true}),
       choixnages: new FormControl({value: false}),
       max: new FormControl(0),
       entraineur:  [ null , [Validators.required] ],

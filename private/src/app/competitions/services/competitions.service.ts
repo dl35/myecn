@@ -6,8 +6,6 @@ import { HttpClient } from '@angular/common/http';
 
 
 
-
-
 @Injectable(
 { providedIn: 'root'})
 export class CompetitionsService {
@@ -16,20 +14,19 @@ export class CompetitionsService {
   public datas$: Observable<DataCompet[]> =  this.subject$.asObservable();
   private cache: DataCompet[] = null;
   constructor(private http: HttpClient) {
-      this.getListAll() ;
+     // this.getListAll() ;
 
-    console.log('created');
   }
 
   private url = '/api/private/competitions' ;
 
-   private getListAll() {
-          if ( !this.cache  ||  this.cache.length === 0 ) {
+   public getListAll() {
+        //  if ( !this.cache  ||  this.cache.length === 0 ) {
             this.http.get<DataCompet[]>( this.url )
             .subscribe(
-              res => { this.cache = res ;  this.subject$.next(res) ; },
+              res => { this.cache = res ;  res = res.filter( item => item.next === true );  this.subject$.next(res) ; },
             );
-     }
+   //  }
       }
 
     public getList() {
@@ -40,11 +37,21 @@ export class CompetitionsService {
     public search(myfilter) {
 
       let liste: DataCompet[];
-    if ( myfilter.verif && myfilter.verif === true ) {
+    if (  myfilter.verif === true ) {
        liste = this.cache.filter( item => item.verif === true );
     } else {
       liste = this.cache ;
     }
+    if (  myfilter.compet === false  &&  myfilter.stage === false ) {
+      liste = liste.filter( item => item.type === ''  );
+    } else if (  myfilter.compet === true  &&  myfilter.stage === false ) {
+      liste = liste.filter( item => item.type === 'compet'  );
+   } else if (  myfilter.stage === true  &&  myfilter.compet === false ) {
+      liste = liste.filter( item => item.type === 'stage'  );
+    }
+    if (  myfilter.next === true ) {
+      liste = liste.filter( item => item.next === true );
+   }
 
     if ( myfilter.txt && myfilter.txt.length > 0 ) {
       // tslint:disable-next-line:max-line-length

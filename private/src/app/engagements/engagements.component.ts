@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { MediaMatcher } from '@angular/cdk/layout';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-engagements',
@@ -7,7 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EngagementsComponent implements OnInit {
 
-  constructor() { }
+
+  showFiller = false;
+  hideSide = true;
+  mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;
+
+
+  constructor( changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher ) {
+this.mobileQuery = media.matchMedia('(max-width: 600px)');
+this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+this.mobileQuery.addListener(this._mobileQueryListener);
+
+}
+
 
   ngOnInit() {
   }

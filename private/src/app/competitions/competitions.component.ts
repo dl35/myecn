@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit, Pipe, Injectable, Pipe
 import { MediaMatcher } from '@angular/cdk/layout';
 import { CompetitionsService } from './services/competitions.service';
 import { Observable , Subscription } from 'rxjs';
-import { filter , distinctUntilChanged , debounceTime} from 'rxjs/operators';
+import { filter , distinctUntilChanged , debounceTime, map} from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 
 import 'hammerjs';
@@ -42,18 +42,13 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
    @ViewChild('mdrawer') mdrawer: MatDrawer;
   private searchControl: FormControl;
   private subscr: Subscription;
-
-
-  private myfilter = {'verif': false , 'txt' : ''} ;
-
-
+  private myfilter = {verif: false , compet: true , stage: true , next: true , last: true , txt: '' } ;
 
   showFiller = false;
   hideSide = true;
   mobileQuery: MediaQueryList;
   datas$: Observable<DataCompet[]> ;
   dataSelected: DataCompet;
-  
 
 
   private _mobileQueryListener: () => void;
@@ -126,18 +121,30 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
   this.showSnackBar( message.message  , message.success  );
 
 
+
   }
 
-  doChange($event) {
-  console.log( $event );
-  this.myfilter.verif = $event.checked ;
+  doChange($event, type ) {
+
+  if ( type === 'v' ) {
+    this.myfilter.verif = $event.checked ;
+    console.log(  this.myfilter );
+  } else if ( type === 'c'  ) {
+     this.myfilter.compet = $event.checked ;
+  } else if ( type === 's' ) {
+    this.myfilter.stage = $event.checked ;
+  } else if (type === 'n') {
+    this.myfilter.next = $event.checked ;
+  }
+
   this.compService.search( this.myfilter );
+
 
   }
 
   ngOnInit() {
 
-
+    this.compService.getListAll();
 
     this.searchControl = new FormControl('');
     this.subscr =  this.searchControl.valueChanges

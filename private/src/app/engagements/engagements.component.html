@@ -1,3 +1,58 @@
-<p>
-  engagements works!
-</p>
+<mat-toolbar color="primary" >  
+  <mat-toolbar-row>
+      
+     <mat-icon (click)="switchdrawer()"  style="cursor: pointer;" >menu</mat-icon>
+    
+   </mat-toolbar-row>
+
+ </mat-toolbar>
+
+
+
+
+ <mat-drawer-container class="example-container" *ngIf="!dataSelected" autosize>
+  <mat-drawer #mdrawer class="example-sidenav" [mode]="mobileQuery.matches ? 'over' : 'side'"  [opened]="mobileQuery.matches ? 'false' : 'true'"  >
+    <p><span class="mat-body-2" >Les Engagements</span></p>
+    
+     <div style="padding:5px" >
+     <mat-checkbox class="mat-body-2" (change)="doChange($event,'v')" >Vérifiées</mat-checkbox>
+     &nbsp;
+     <mat-checkbox class="mat-body-2" (change)="doChange($event,'n')" checked='true' >Futures</mat-checkbox>
+     </div>
+     <mat-divider></mat-divider>
+     <div style="padding:5px" >
+     <mat-checkbox class="mat-body-2" (change)="doChange($event,'s')" checked='true'  >Stages</mat-checkbox>
+     &nbsp;
+     <mat-checkbox class="mat-body-2" (change)="doChange($event,'c')" checked='true'  >Competitions</mat-checkbox>
+     </div>
+     </mat-drawer>
+
+
+  <div class="example-sidenav-content">
+      
+        <mat-list>
+          <h2 mat-subheader>Les Engagements</h2>
+        
+         
+          <mat-form-field style="width:80%;margin-left:10%"  >
+            <mat-select placeholder="Selection des compétitions"  >
+              <mat-option value="1">Option 1</mat-option>
+              <mat-option value="2">Option 2</mat-option>
+              <mat-option value="3">Option 3</mat-option>
+            </mat-select>
+           </mat-form-field>
+         
+          <mat-list-item   (click)="edit(data)"  style='margin-bottom:20px' class="mat-elevation-z8"  matRipple  [matRippleCentered]="centered" [matRippleColor]="warn" >
+
+         
+          </mat-list-item>
+          
+
+        </mat-list>
+      
+        <app-engagement-create></app-engagement-create>
+  </div>
+
+ 
+</mat-drawer-container>
+
