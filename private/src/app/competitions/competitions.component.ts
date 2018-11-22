@@ -144,7 +144,6 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
 
   ngOnInit() {
 
-    this.compService.getListAll();
 
     this.searchControl = new FormControl('');
     this.subscr =  this.searchControl.valueChanges
@@ -161,6 +160,7 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
 
 
      this.datas$ = this.compService.getList() ;
+     this.compService.getListAll();
      this.dataSelected = null ;
 /*
     this.datas$ = this.compService.getList().pipe(

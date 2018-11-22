@@ -29,28 +29,46 @@
 
 
   <div class="example-sidenav-content">
-      
-        <mat-list>
+            <div>
+            
+              <mat-form-field style="width:80%;margin-left:10%;margin-top: 10px;"  >
+                <mat-select placeholder="Selection des compétitions" (ngModelChange)="setCompetition($event)"   [formControl]="toppings" >
+                
+                  <mat-option  *ngFor="let item of datas$ | async  ; last as last" [value]="item.id"  >
+                    {{item.label}}
+                  </mat-option>
+    
+                  
+                </mat-select>
+               </mat-form-field>
+
+            </div>  
+
+          <mat-list *ngIf="engage" >
           <h2 mat-subheader>Les Engagements</h2>
-        
-         
-          <mat-form-field style="width:80%;margin-left:10%"  >
-            <mat-select placeholder="Selection des compétitions"  >
-              <mat-option value="1">Option 1</mat-option>
-              <mat-option value="2">Option 2</mat-option>
-              <mat-option value="3">Option 3</mat-option>
-            </mat-select>
-           </mat-form-field>
-         
-          <mat-list-item   (click)="edit(data)"  style='margin-bottom:20px' class="mat-elevation-z8"  matRipple  [matRippleCentered]="centered" [matRippleColor]="warn" >
+            <mat-list-item  *ngFor="let item of engage ; last as last"   style='margin-bottom:20px' class="mat-elevation-z8"  matRipple  [matRippleCentered]="centered" [matRippleColor]="warn" >
+                  <button matBadge='Ko'  matBadgeSize="medium" matBadgeColor="warn"  mat-mini-fab color="warn" >02</button>
+                 &nbsp;&nbsp;<button matBadge='Ok'  matBadgeSize="medium" matBadgeColor="primary"  mat-mini-fab color="primary" >31</button>
+             
+                
+              
+               <p style="font-weight:500" matLine >{{item.prenom}} {{item.nom}}
+                  <mat-icon matBadge="31" color="accent" matBadgeColor="accent" matBadgeSize="medium" style="margin-top:20px; " >error</mat-icon>
+              </p>
+              <p matLine >
+                <span class="demo-secondary-text"  >&nbsp;&nbsp;
+                {{item.categorie}} {{item.rang}} {{item.sexe}}</span>
+              </p>
+             <!--
+              <mat-divider inset *ngIf="!last"></mat-divider> -->
+            </mat-list-item>
+           
+ 
+          </mat-list>
 
-         
-          </mat-list-item>
-          
-
-        </mat-list>
       
-        <app-engagement-create></app-engagement-create>
+      
+        <app-engagement-create *ngIf="idc"  [id]="idc" ></app-engagement-create>
   </div>
 
  

@@ -4,14 +4,21 @@
 
 
     <div fxLayout="row" fxLayoutAlign="center center">
-      <mat-checkbox class="example-margin" >Avenirs</mat-checkbox>&nbsp;
-      <mat-checkbox class="example-margin" >Jeunes</mat-checkbox>&nbsp;
-      <mat-checkbox class="example-margin" >Juniors</mat-checkbox>&nbsp;
-      <mat-checkbox class="example-margin" >Seniors</mat-checkbox>&nbsp;
-      <mat-checkbox class="example-margin" >Masters</mat-checkbox>&nbsp;
+      <mat-checkbox class="example-margin"  formControlName="av" >Avenirs</mat-checkbox>&nbsp;
+      <mat-checkbox class="example-margin"  formControlName="je">Jeunes</mat-checkbox>&nbsp;
+      <mat-checkbox class="example-margin"  formControlName="ju">Juniors</mat-checkbox>&nbsp;
+      <mat-checkbox class="example-margin" formControlName="se" >Seniors</mat-checkbox>&nbsp;
+      <mat-checkbox class="example-margin" formControlName="ma" >Masters</mat-checkbox>&nbsp;
+
     </div>
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <mat-checkbox class="example-margin"  formControlName="dep" >Dep.</mat-checkbox>&nbsp;
+      <mat-checkbox class="example-margin"  formControlName="reg">Reg.</mat-checkbox>&nbsp;
+      <mat-checkbox class="example-margin"  formControlName="nat">Nat.</mat-checkbox>&nbsp;
+    </div>
+
     <div fxLayout="row" fxLayoutAlign="center center" style="margin-top:10px" >
-      <button mat-raised-button color="primary">Primary</button>
+      <button mat-raised-button [disabled]="dataForm.invalid"  (click)="doCreate()" color="primary">Valider</button>
     </div>
     </form>
     </div>

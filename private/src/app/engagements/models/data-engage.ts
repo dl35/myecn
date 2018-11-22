@@ -1,6 +1,7 @@
 export class CompetEngage implements ICompetEngage {
     id = null;
-    nom = '';
+    label = '';
+   
 
     constructor() { }
 
@@ -10,7 +11,8 @@ export class CompetEngage implements ICompetEngage {
 interface ICompetEngage {
 
     id: number;
-    nom: string;
+    label: string;
+    
 }
 
 
