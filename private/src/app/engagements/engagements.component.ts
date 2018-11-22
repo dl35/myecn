@@ -26,8 +26,9 @@ export class EngagementsComponent implements OnInit , OnDestroy {
   exist = false ;
 
   subs$: Subscription;
-  engage:any[] ;
-  
+  engage: any[] ;
+
+
   constructor( changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher, private eService: EngageService  ) {
 this.mobileQuery = media.matchMedia('(max-width: 600px)');
@@ -47,13 +48,12 @@ console.log('init');
   setCompetition( id ) {
    this.subs$ = this.eService.getEngagement( id ).subscribe(
         (res =>   { if (  res.length === 0 )  { this.idc = id;  } else { this.idc = null ; this.engage = res;  }    } ) ,
-        (err =>   { window.alert( err.error.message ) } ) ,
+        (err =>   { window.alert( err.error.message ); } ) ,
 
-    )
-
+    );
   }
   ngOnDestroy(): void {
-    if( this.subs$ ) {
+    if ( this.subs$ ) {
       this.subs$.unsubscribe();
     }
 

@@ -60,8 +60,8 @@ export class EngagementCreateComponent implements OnInit {
 console.log( this.id , datas );
 
       this.eService.createEngagement( this.id  , datas  ).subscribe(
-          res => { console.log(res) ; window.alert(res.message) },
-          err => { console.log(err) ; window.alert( JSON.stringify(err) )  }  
+          res => { console.log(res) ; window.alert(res.message); },
+          err => { console.log(err) ; window.alert( JSON.stringify(err) );  }
 
 
       ) ;
