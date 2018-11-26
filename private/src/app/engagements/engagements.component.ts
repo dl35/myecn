@@ -4,6 +4,7 @@ import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { EngageService } from './services/engage.service';
 import { FormControl } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
 
 
 @Component({
@@ -27,10 +28,11 @@ export class EngagementsComponent implements OnInit , OnDestroy {
 
   subs$: Subscription;
   engage: any[] ;
+  indeterminate = true;
 
 
   constructor( changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher, private eService: EngageService  ) {
+    media: MediaMatcher, private eService: EngageService , private snackBar: MatSnackBar  ) {
 this.mobileQuery = media.matchMedia('(max-width: 600px)');
 this._mobileQueryListener = () => changeDetectorRef.detectChanges();
 this.mobileQuery.addListener(this._mobileQueryListener);
@@ -47,8 +49,9 @@ console.log('init');
 
   setCompetition( id ) {
    this.subs$ = this.eService.getEngagement( id ).subscribe(
-        (res =>   { if (  res.length === 0 )  { this.idc = id;  } else { this.idc = null ; this.engage = res;  }    } ) ,
-        (err =>   { window.alert( err.error.message ); } ) ,
+        // tslint:disable-next-line:max-line-length
+        (res =>   { if (  res.length === 0 )  { this.idc = id;  this.engage  = null ; } else { this.idc = null ; this.engage = res; this.showSnackBar( 'Engagements: ' + res.length , true );  }    } ) ,
+        (err =>   {  this.showSnackBar( err.error.message , false ); } ) ,
 
     );
   }
@@ -59,6 +62,32 @@ console.log('init');
 
    }
 
+   doChange($event, v ) {
 
+    console.log( $event ) ;
+
+      if ( $event.checked === true  && this.indeterminate === false  ) {
+          this.indeterminate = true; 
+          $event.checked = null;
+      }
+   
+
+
+   }
+
+
+
+   private showSnackBar( message , info) {
+    // tslint:disable-next-line:no-shadowed-variable
+    let style = 'snack-success';
+    if ( !info ) {
+      style = 'snack-error';
+    }
+    this.snackBar.open( message  , '', {
+      duration: 1500,
+      announcementMessage : 'denis',
+      panelClass: [ style ]
+    });
+  }
 
 }

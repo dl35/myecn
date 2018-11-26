@@ -2,3 +2,10 @@
  margin: 2%;
 
 }
+
+.small-fab{
+width: 15px;
+height: 15px;
+line-height: 10px;
+font-size: 11px; 
+}
