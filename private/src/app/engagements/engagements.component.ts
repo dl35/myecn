@@ -1,10 +1,11 @@
+import { DialogEngageComponent } from './dialog-engage/dialog-engage.component';
 import { CompetEngage } from './models/data-engage';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { EngageService } from './services/engage.service';
 import { FormControl } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
 
 
 @Component({
@@ -27,30 +28,33 @@ export class EngagementsComponent implements OnInit , OnDestroy {
   exist = false ;
 
   subs$: Subscription;
-  engage: any[] ;
+  engage: any[]  ;
   indeterminate = true;
 
 
-  constructor( changeDetectorRef: ChangeDetectorRef,
+  constructor(public dialog: MatDialog, changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher, private eService: EngageService , private snackBar: MatSnackBar  ) {
-this.mobileQuery = media.matchMedia('(max-width: 600px)');
-this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-this.mobileQuery.addListener(this._mobileQueryListener);
+    this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
 
-this.datas$ = this.eService.getCompet();
-console.log('create');
+    this.datas$ = this.eService.getCompet();
+    this.engage = null ;
+    console.log('create');
 }
 
 
   ngOnInit() {
-console.log('init');
    this.eService.getCompetNext();
   }
 
   setCompetition( id ) {
+    this.idc = id ;
    this.subs$ = this.eService.getEngagement( id ).subscribe(
-        // tslint:disable-next-line:max-line-length
-        (res =>   { if (  res.length === 0 )  { this.idc = id;  this.engage  = null ; } else { this.idc = null ; this.engage = res; this.showSnackBar( 'Engagements: ' + res.length , true );  }    } ) ,
+        (res =>   {   if (  res.length === 0 ) {
+                        this.engage  = null ; } else {
+                        this.engage = res; this.showSnackBar( 'Engagements: ' + res.length , true );
+                     }    } ) ,
         (err =>   {  this.showSnackBar( err.error.message , false ); } ) ,
 
     );
@@ -64,14 +68,12 @@ console.log('init');
 
    doChange($event, v ) {
 
-    console.log( $event ) ;
+      if ( v === 'pr' ) {
+        this.engage = this.engage.filter( item =>  item.notification > 0   ) ;
+      } else {
 
-      if ( $event.checked === true  && this.indeterminate === false  ) {
-          this.indeterminate = true; 
-          $event.checked = null;
+        this.engage = this.engage.filter( item =>  item.notification === 0   ) ;
       }
-   
-
 
    }
 
@@ -89,5 +91,44 @@ console.log('init');
       panelClass: [ style ]
     });
   }
+
+  public sendMails() {
+    const dialogRef = this.dialog.open( DialogEngageComponent , {
+      width: '60%',
+      data: { id: this.idc , sendMails: true , info: 'Envoyer les emails ?'  },
+      disableClose: true
+     });
+
+
+   dialogRef.beforeClosed().subscribe(
+     (result) => {
+               if (result) {
+                this.eService.sendMails( this.idc ).subscribe(
+                    (res) => { this.showSnackBar('send mails ok'  , true );  this.setCompetition( this.idc ); },
+                    (error) =>  { this.showSnackBar( error   , false ); }
+
+                ); } },
+     () => {} ,
+     () => {} ,
+   );
+                }
+
+  public addLic() {
+                  const dialogRef = this.dialog.open( DialogEngageComponent , {
+                    width: '80%',
+                    data: { id: this.idc, addLic : true , info: 'Ajouter des licencies ?'  },
+                    disableClose: true
+                   });
+                 dialogRef.beforeClosed().subscribe(
+                   (result) => {
+                             if (result) {
+                                  this.showSnackBar('ajout valide'  , true ); this.setCompetition( this.idc );
+                                  //(error) =>  { this.showSnackBar( error   , false ); }
+                               } },
+                   () => {} ,
+                   () => {} ,
+                 );
+                              }
+
 
 }

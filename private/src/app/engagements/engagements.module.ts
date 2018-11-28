@@ -5,6 +5,7 @@ import { MaterialModule } from '../material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { EngagementCreateComponent } from './engagement-create/engagement-create.component';
+import { DialogEngageComponent } from './dialog-engage/dialog-engage.component';
 
 
 
@@ -16,7 +17,7 @@ import { EngagementCreateComponent } from './engagement-create/engagement-create
     FlexLayoutModule,
     MaterialModule
   ],
-  declarations: [EngagementsComponent, EngagementCreateComponent]
+  declarations: [EngagementsComponent, EngagementCreateComponent, DialogEngageComponent]
 })
 export class EngagementsModule {}
 

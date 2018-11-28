@@ -1,0 +1,60 @@
+<div  fxLayout="column" *ngIf="data.addLic"  fxLayoutAlign="center center"  >
+    
+        <div mat-dialog-title>
+        <p>{{data.info}}</p>
+        </div>
+    <form fxLayoutAlign="center center" fxLayout="column"  name="form" autocomplete="off" novalidate>
+  
+  
+
+  
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <mat-radio-group   class="mat-body-2" labelPosition='before' >
+            <mat-radio-button  class='mrb'  value="av" (change)="filterLic($event)" >Avenirs</mat-radio-button>
+            <mat-radio-button  class='mrb'  value="je" (change)="filterLic($event)" >Jeunes</mat-radio-button>
+            <mat-radio-button  class='mrb'  value="ju" (change)="filterLic($event)" >Juniors</mat-radio-button>
+            <mat-radio-button  class='mrb'  value="se" (change)="filterLic($event)" >Seniors</mat-radio-button>
+            <mat-radio-button  class='mrb'  value="ma" (change)="filterLic($event)" >Masters</mat-radio-button>
+
+          </mat-radio-group>
+      </div>
+ 
+
+      <mat-form-field fxLayout="column"   >
+          <mat-select-trigger>
+              <span *ngIf="lic.value?.length > 1" class="example-additional-selection">
+                (+{{lic.value.length - 1}} {{lic.value?.length === 2 ? 'autre' : 'autres'}})
+              </span>
+            </mat-select-trigger>
+          <mat-select placeholder="Licenciés" [formControl]="lic"  multiple>
+            <mat-option *ngFor="let item of datasLic$  | async " [value]="item.id">{{item.nom}}-{{item.prenom}} ({{item.categorie}}-{{item.rang}})</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+  
+      <div fxLayout="row" fxLayoutAlign="center center" style="margin-top:10px" >
+       
+        <button mat-raised-button [disabled]="lic.invalid"  (click)="test()" color="primary">Valider</button>
+        &nbsp;
+        <button mat-raised-button  [mat-dialog-close]="false" cdkFocusInitial     >Non</button>
+      </div>
+     
+    
+    </form>
+
+</div>
+      
+
+      <div  fxLayout="column" *ngIf="data.sendMails" >
+      
+              <div mat-dialog-title>
+              <p>{{data.info}}</p>
+              </div>
+<div mat-dialog-actions>
+<button mat-raised-button color="primary" [mat-dialog-close]="true"   >Oui</button>
+<button mat-raised-button  [mat-dialog-close]="false" cdkFocusInitial     >Non</button>
+</div>
+
+  
+    
+    </div>

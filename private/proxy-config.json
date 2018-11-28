@@ -1,9 +1,9 @@
 {
   "/api/private": {
-    "target": "http://127.0.0.1",
+    "target": "http://137.129.109.53",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true,
-    "pathRewrite": {"^/api/private" : "api//private"}
+    "pathRewrite": {"^/api/private" : "/api/private"}
   }
 }
