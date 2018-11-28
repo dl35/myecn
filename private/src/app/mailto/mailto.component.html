@@ -21,14 +21,57 @@
      </mat-drawer>
 
 
-  <div class="example-sidenav-content_"   fxLayout="column"   fxLayoutAlign="center center" style="margin-top: 10px;" >
-            <div   fxLayout="row"   style="margin-top: 10px;" >
-                
-              <quill-editor placeholder="Saisir un contenu !"   [style]="{'height': '150px', 'background-color': 'lightgrey'}"  formControlName="body" [modules]="quilltoobar" ></quill-editor>
-            </div>
+
+
+  <div class="example-sidenav-content_ "   fxLayout="column"  fxLayoutAlign="center  center"  style='max-height: 500px;'    style="margin-top: 10px;" >
+       
+    <div   fxLayout="row" fxLayoutAlign="center  center"    >
+      <mat-form-field fxFlex="45%"  >
+          <mat-select placeholder="From"   formControlName="from" >
+              <mat-option>-</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div   fxLayout="row" fxLayoutAlign="center  center"    >
+      <mat-form-field fxFlex="45%"  >
+          <mat-select placeholder="dest"   formControlName="dest" >
+              <mat-option>-</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div   fxLayout="row" fxLayoutAlign="center  center"    >
+      <mat-form-field fxFlex="45%"  >
+          <mat-select placeholder="Compétitions en cours..."   formControlName="idcompet" >
+              <mat-option>-</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+ 
+
+    <div  formGroupName="type" fxLayoutAlign="center  center"  fxLayout="row"  fxFlex="45%"   >
+    <section> 
+            <mat-checkbox color="primary"  formControlName="ok" ><span style='color:green' >Ok</span></mat-checkbox>
+            <mat-checkbox color="accent"  formControlName="at" ><span style='color:blue' >At</span></mat-checkbox>
+            <mat-checkbox color="warn"  formControlName="ko" ><span style='color:red' >Ko</span></mat-checkbox>
+           
+    </section>
+    
+  </div>
+    
+    
+    
+    
+          <div   fxLayout="row"  fxLayoutAlign="center  center"  style="margin-top: 10px;" >
+          <quill-editor fxFlex="55%" placeholder="Saisir un contenu !" [modules]="quilltoobar"   [style]="{'height': '150px', 'background-color': 'lightgrey'}"  formControlName="body" [modules]="quilltoobar" ></quill-editor>
+          </div>
            
             
-            </div>  
+          <div   fxLayout="row" fxLayoutAlign="center  center"   style="margin-top: 10px;"   >
+            
+              <button mat-raised-button color="primary">Primary</button>
+            
+          </div>
 
           
       

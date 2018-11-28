@@ -2,7 +2,7 @@ import { MatSnackBar, MatDrawer } from '@angular/material';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
-import {QuillModule} from 'ngx-quill';
+
 @Component({
   selector: 'app-mailto',
   templateUrl: './mailto.component.html',
@@ -17,7 +17,7 @@ export class MailtoComponent implements OnInit {
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
-  quilltoobar= {
+  quilltoobar = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'], ['link'], [{ 'align': [] }], [{ 'list': 'ordered'}, { 'list': 'bullet' }]
     ]
