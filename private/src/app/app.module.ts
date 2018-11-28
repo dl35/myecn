@@ -26,6 +26,10 @@ import { DialogConfirmComponent } from './dialog-confirm/dialog-confirm.componen
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 
+
+import { QuillModule } from 'ngx-quill';
+
+
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 registerLocaleData(localeFr, 'fr');
@@ -42,6 +46,7 @@ registerLocaleData(localeFr, 'fr');
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    QuillModule,
     MaterialModule,
     FlexLayoutModule,
     BrowserAnimationsModule,

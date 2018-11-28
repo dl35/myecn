@@ -6,6 +6,8 @@ import { Observable, Subscription } from 'rxjs';
 import { EngageService } from './services/engage.service';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar, MatDialog } from '@angular/material';
+import { ViewChild } from '@angular/core';
+import { MatDrawer } from '@angular/material';
 
 
 @Component({
@@ -15,7 +17,7 @@ import { MatSnackBar, MatDialog } from '@angular/material';
 })
 export class EngagementsComponent implements OnInit , OnDestroy {
 
-
+  @ViewChild('mdrawer') mdrawer: MatDrawer;
   showFiller = false;
   hideSide = true;
   mobileQuery: MediaQueryList;
@@ -43,6 +45,11 @@ export class EngagementsComponent implements OnInit , OnDestroy {
     console.log('create');
 }
 
+switchdrawer() {
+
+  this.mdrawer.opened ? this.mdrawer.close() : this.mdrawer.open() ;
+
+}
 
   ngOnInit() {
    this.eService.getCompetNext();
