@@ -2,12 +2,13 @@ import { DialogEngageComponent } from './dialog-engage/dialog-engage.component';
 import { CompetEngage } from './models/data-engage';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, Subject } from 'rxjs';
 import { EngageService } from './services/engage.service';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -22,7 +23,7 @@ export class EngagementsComponent implements OnInit , OnDestroy {
   hideSide = true;
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
-  datas$: Observable<CompetEngage[]> ;
+  datas: CompetEngage[] ;
 
   toppings = new FormControl();
 
@@ -33,6 +34,7 @@ export class EngagementsComponent implements OnInit , OnDestroy {
   engage: any[]  ;
   indeterminate = true;
 
+  destroyed$: Subject<any> = new Subject();
 
   constructor(public dialog: MatDialog, changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher, private eService: EngageService , private snackBar: MatSnackBar  ) {
@@ -40,7 +42,6 @@ export class EngagementsComponent implements OnInit , OnDestroy {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
 
-    this.datas$ = this.eService.getCompet();
     this.engage = null ;
     console.log('create');
 }
@@ -52,12 +53,15 @@ switchdrawer() {
 }
 
   ngOnInit() {
-   this.eService.getCompetNext();
+   this.eService.getCompet().pipe(takeUntil(this.destroyed$)).subscribe(
+    (datas)  => { this.datas = datas ; }
+
+   );
   }
 
   setCompetition( id ) {
     this.idc = id ;
-   this.subs$ = this.eService.getEngagement( id ).subscribe(
+   this.subs$ = this.eService.getEngagement( id ).pipe(takeUntil(this.destroyed$)).subscribe(
         (res =>   {   if (  res.length === 0 ) {
                         this.engage  = null ; } else {
                         this.engage = res; this.showSnackBar( 'Engagements: ' + res.length , true );
@@ -66,11 +70,10 @@ switchdrawer() {
 
     );
   }
-  ngOnDestroy(): void {
-    if ( this.subs$ ) {
-      this.subs$.unsubscribe();
-    }
 
+  ngOnDestroy(): void {
+     this.destroyed$.next();
+     this.destroyed$.complete();
    }
 
    doChange($event, v ) {
@@ -130,7 +133,7 @@ switchdrawer() {
                    (result) => {
                              if (result) {
                                   this.showSnackBar('ajout valide'  , true ); this.setCompetition( this.idc );
-                                  //(error) =>  { this.showSnackBar( error   , false ); }
+                                  // (error) =>  { this.showSnackBar( error   , false ); }
                                } },
                    () => {} ,
                    () => {} ,

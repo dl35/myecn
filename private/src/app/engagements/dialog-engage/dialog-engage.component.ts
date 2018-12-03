@@ -14,7 +14,7 @@ export class DialogEngageComponent implements OnInit {
 
   public dataForm: FormGroup ;
   public lic: FormControl ;
-  datasLic$: Observable<LicEngage[]> ;
+  datasLic: LicEngage[] ;
 
 
   constructor(private formBuilder: FormBuilder , private eService: EngageService , public dialogRef: MatDialogRef<DialogEngageComponent>,
@@ -29,9 +29,13 @@ export class DialogEngageComponent implements OnInit {
 
     if ( this.data.addLic ) {
         this.lic = new FormControl(null, Validators.required );
-        this.eService.reloadLic();
-        this.datasLic$ = this.eService.getLic( this.data.id ) ;
-       // this.eService.getLicencies( this.data.id );
+ 
+       this.eService.getLicencies( this.data.id ).subscribe(
+          (datas) => this.datasLic = datas;
+
+       )
+
+
   }
   }
 
@@ -41,12 +45,11 @@ export class DialogEngageComponent implements OnInit {
         (v) => this.dialogRef.close(true)
 
       );
-  
   }
 
   private filterLic( $event ) {
       this.lic.setValue([]);
-      this.datasLic$ =  this.eService.licFilter( this.data.id , $event.value );
+   //   this.datasLic$ =  this.eService.licFilter( this.data.id , $event.value );
 
   }
 }

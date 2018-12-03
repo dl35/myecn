@@ -11,7 +11,7 @@ import { ChangeDetectorRef } from '@angular/core';
 export class MailtoComponent implements OnInit {
 
   @ViewChild('mdrawer') mdrawer: MatDrawer;
-
+  typesOfShoes: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
   // showFiller = false;
   // hideSide = true;
   mobileQuery: MediaQueryList;

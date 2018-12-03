@@ -10,15 +10,6 @@ import { shareReplay, filter } from 'rxjs/operators';
 })
 export class EngageService {
 
-  private subject$ = new BehaviorSubject<CompetEngage[]>([]) ;
-  private datas$: Observable<CompetEngage[]> =  this.subject$.asObservable();
-  private cache: CompetEngage[] = null;
-
-/*
-  private subjectLic$ = new BehaviorSubject<LicEngage[]>([]) ;
-  private datasLic$: Observable<LicEngage[]> =  this.subjectLic$.asObservable();
-*/
-private datasLic$: Observable<LicEngage[]> ;
 
   private option = { present: true, absent: true };
 
@@ -27,16 +18,12 @@ private datasLic$: Observable<LicEngage[]> ;
   constructor(private http: HttpClient) { }
 
 
-  public  getCompetNext() {
+  public  getCompet() {
        //  if ( !this.cache  ||  this.cache.length === 0 ) {
-        this.http.get<CompetEngage[]>( this.url ).subscribe(
-             res => { this.cache = res ;   this.subject$.next(res) ; },
-           );
+        return this.http.get<CompetEngage[]>( this.url );
      }
 
-  public getCompet() {
-    return this.datas$ ;
-  }
+
 
   public createEngagement( id , data ) {
     const upost = this.url + '/' + id ;
@@ -64,38 +51,26 @@ private datasLic$: Observable<LicEngage[]> ;
 
   }
 
-  /*
-  public getLicencies( id ) {
-    const uget = this.url + '/' + id + '/lic';
-    this.http.get<LicEngage[]>( uget ).subscribe(
-      res => {  this.subjectLic$.next(res) ; }
-    );
-  }*/
 
-  private getLicencies( id ) {
+  public getLicencies( id ) {
     const uget = this.url + '/' + id + '/lic';
     return this.http.get<LicEngage[]>( uget ) ;
   }
 
 
-
+/*
   public getLic( id ): Observable<LicEngage[]> {
-    if (!this.datasLic$) {
-      this.datasLic$ = this.getLicencies( id ).pipe(
+        this.datasLic$ = this.getLicencies( id ).pipe(
         shareReplay( 1)
       );
       console.log( 'init' , id );
     }
     return this.datasLic$ ;
   }
+*/
 
-  public reloadLic() {
-    this.datasLic$ = null;
-  }
 
-  public licFilter( id , value ): Observable<LicEngage[]> {
-    return this.getLic(id).pipe ( map( v =>  v.filter ( item =>  item.categorie === value  )  ) )   ;
-    }
+
 
 
     public updateLicencies( id , datas ) {

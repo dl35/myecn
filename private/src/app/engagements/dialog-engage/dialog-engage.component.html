@@ -27,7 +27,7 @@
               </span>
             </mat-select-trigger>
           <mat-select placeholder="Licenciés" [formControl]="lic"  multiple>
-            <mat-option *ngFor="let item of datasLic$  | async " [value]="item.id">{{item.nom}}-{{item.prenom}} ({{item.categorie}}-{{item.rang}})</mat-option>
+            <mat-option *ngFor="let item of datasLic" [value]="item.id">{{item.nom}}-{{item.prenom}} ({{item.categorie}}-{{item.rang}})</mat-option>
           </mat-select>
         </mat-form-field>
 

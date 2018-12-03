@@ -23,61 +23,58 @@
 
 
 
-  <div class="example-sidenav-content_ "   fxLayout="column"  fxLayoutAlign="center  center"  style='max-height: 500px;'    style="margin-top: 10px;" >
+  <div class="example-sidenav-content_ "   fxLayout="row"  fxLayoutAlign="space-evenly  center"    style="margin-top: 10px;" >
        
-    <div   fxLayout="row" fxLayoutAlign="center  center"    >
-      <mat-form-field fxFlex="45%"  >
+    <div fxLayout="row" fxLayoutAlign="center  center"  fxFlex="20%" style="background-color: red">
+        <mat-selection-list #shoes>
+            <mat-list-option *ngFor="let shoe of typesOfShoes">
+              {{shoe}}
+            </mat-list-option>
+          </mat-selection-list>
+
+    </div>
+
+    <div fxLayout="column"  fxFlex="50%" fxLayoutGap="40px" fxLayoutAlign="space-evenly  center" >
+
+    <div   fxLayout="row"   >
+      <mat-form-field  fxFlex="100%" >
           <mat-select placeholder="From"   formControlName="from" >
               <mat-option>-</mat-option>
             </mat-select>
         </mat-form-field>
     </div>
-    <div   fxLayout="row" fxLayoutAlign="center  center"    >
-      <mat-form-field fxFlex="45%"  >
-          <mat-select placeholder="dest"   formControlName="dest" >
+    <div   fxLayout="row"     >
+      <mat-form-field fxFlex="100%"  >
+          <mat-select placeholder="Destinataires"   formControlName="dest" >
               <mat-option>-</mat-option>
             </mat-select>
         </mat-form-field>
     </div>
 
-    <div   fxLayout="row" fxLayoutAlign="center  center"    >
-      <mat-form-field fxFlex="45%"  >
+    <div   fxLayout="row"    >
+      <mat-form-field fxFlex="100%"  >
           <mat-select placeholder="Compétitions en cours..."   formControlName="idcompet" >
               <mat-option>-</mat-option>
             </mat-select>
         </mat-form-field>
     </div>
  
-
-    <div  formGroupName="type" fxLayoutAlign="center  center"  fxLayout="row"  fxFlex="45%"   >
+    <div    fxFlex="100%" style="margin-top: 10px ">
+        <quill-editor  placeholder="Saisir un contenu !" [modules]="quilltoobar"   [style]="{'height': '150px', 'background-color': 'lightgrey'}"  formControlName="body" [modules]="quilltoobar" ></quill-editor>
+        </div>
+        <div   fxLayout="row"   >
+            <button mat-raised-button color="primary">Primary</button>
+        </div>
+    <div  formGroupName="type" fxLayoutAlign="center  center" fxLayout="row"  fxFlex="100%"   >
     <section> 
             <mat-checkbox color="primary"  formControlName="ok" ><span style='color:green' >Ok</span></mat-checkbox>
             <mat-checkbox color="accent"  formControlName="at" ><span style='color:blue' >At</span></mat-checkbox>
             <mat-checkbox color="warn"  formControlName="ko" ><span style='color:red' >Ko</span></mat-checkbox>
            
     </section>
-    
   </div>
-    
-    
-    
-    
-          <div   fxLayout="row"  fxLayoutAlign="center  center"  style="margin-top: 10px;" >
-          <quill-editor fxFlex="55%" placeholder="Saisir un contenu !" [modules]="quilltoobar"   [style]="{'height': '150px', 'background-color': 'lightgrey'}"  formControlName="body" [modules]="quilltoobar" ></quill-editor>
-          </div>
-           
-            
-          <div   fxLayout="row" fxLayoutAlign="center  center"   style="margin-top: 10px;"   >
-            
-              <button mat-raised-button color="primary">Primary</button>
-            
-          </div>
-
-          
-      
-      
-          
-        
+       
+         </div>
   </div>
 
  
