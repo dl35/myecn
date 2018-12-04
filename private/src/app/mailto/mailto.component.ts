@@ -1,21 +1,26 @@
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { IMailto } from './models/mailto-models';
+import { EmailtoService } from './services/emailto.service';
 import { MatSnackBar, MatDrawer } from '@angular/material';
-import { MediaMatcher } from '@angular/cdk/layout';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-mailto',
   templateUrl: './mailto.component.html',
   styleUrls: ['./mailto.component.scss']
 })
-export class MailtoComponent implements OnInit {
+export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
+ 
 
-  @ViewChild('mdrawer') mdrawer: MatDrawer;
-  typesOfShoes: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
-  // showFiller = false;
-  // hideSide = true;
-  mobileQuery: MediaQueryList;
-  private _mobileQueryListener: () => void;
+  destroyed$: Subject<any> = new Subject();
+  typeChoix: string[] = ['Ok', 'At', 'Ko'];
+  typeMode: any[] = [{value: 'l' , text: 'Licencies' }, {value: 'c', text: 'Compétitions'} ];
+  typeDatas: IMailto;
+  mode = '';
+
+  public dataForm: FormGroup ;
 
   quilltoobar = {
     toolbar: [
@@ -23,20 +28,71 @@ export class MailtoComponent implements OnInit {
     ]
   };
 
-  constructor( changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher, private snackBar: MatSnackBar  ) {
-    this.mobileQuery = media.matchMedia('(max-width: 600px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
-    console.log('create');
-}
+  constructor(private formBuilder: FormBuilder, private snackBar: MatSnackBar , private eMailto: EmailtoService ) {
+
+  }
 
   ngOnInit() {
-  }
+this.initFormC();
 
-  switchdrawer() {
 
-    this.mdrawer.opened ? this.mdrawer.close() : this.mdrawer.open() ;
 
   }
+  ngAfterViewInit(): void {
+       this.eMailto.getdatas().pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe(
+
+      (datas) =>  this.typeDatas = datas
+
+    );
+  }
+
+
+  private initFormC() {
+    this.dataForm = this.formBuilder.group({
+      from2: new FormControl('' , Validators.required),
+      dests: this.formBuilder.array([] , Validators.required),
+      compet: new FormControl('' , Validators.required),
+      choix: this.formBuilder.array([] , Validators.required),
+    }
+  );
+
+  }
+
+  private initFormL() {
+    this.dataForm = this.formBuilder.group({
+      from: this.formBuilder.array([], Validators.required),
+      dests: this.formBuilder.array([], Validators.required),
+    }
+  );
+
+  }
+public setMode( value ) {
+console.log( value );
+  // ( value === 'c' ) ? this.initFormC() : this.initFormL();
+
+}
+
+  public sendMail() {
+
+     const v = this.dataForm.getRawValue();
+     console.log( v ) ;
+
+
+
+  }
+
+
+
+
+
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
+
+
+
 }

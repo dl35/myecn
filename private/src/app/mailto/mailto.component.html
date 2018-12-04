@@ -1,83 +1,61 @@
-<mat-toolbar color="primary" >  
-  <mat-toolbar-row>
-      
-     <mat-icon (click)="switchdrawer()"  style="cursor: pointer;" >menu</mat-icon>
-    
-   </mat-toolbar-row>
-
- </mat-toolbar>
 
 
-
-
- <mat-drawer-container class="example-container" *ngIf="!dataSelected" autosize>
-  <mat-drawer #mdrawer class="example-sidenav" [mode]="mobileQuery.matches ? 'over' : 'side'"  [opened]="mobileQuery.matches ? 'false' : 'true'"  >
-    <p><span class="mat-body-2" >Mailto</span></p>
-     <div style="padding:5px" >
-     <mat-checkbox class="mat-body-2"  checked='true' >essai</mat-checkbox>
-     &nbsp;
-     </div>
-   
-     </mat-drawer>
-
-
-
-
-  <div class="example-sidenav-content_ "   fxLayout="row"  fxLayoutAlign="space-evenly  center"    style="margin-top: 10px;" >
+ 
        
-    <div fxLayout="row" fxLayoutAlign="center  center"  fxFlex="20%" style="background-color: red">
-        <mat-selection-list #shoes>
-            <mat-list-option *ngFor="let shoe of typesOfShoes">
-              {{shoe}}
-            </mat-list-option>
-          </mat-selection-list>
+    <form  fxLayout="row"  fxLayoutAlign="space-evenly  center"    style="margin-top: 10px;"   autocomplete="off" [formGroup]="dataForm" novalidate>
 
-    </div>
-
-    <div fxLayout="column"  fxFlex="50%" fxLayoutGap="40px" fxLayoutAlign="space-evenly  center" >
+    <div fxLayout="column"  fxFlex="70%"  fxLayoutAlign="space-evenly  center"  >
 
     <div   fxLayout="row"   >
-      <mat-form-field  fxFlex="100%" >
-          <mat-select placeholder="From"   formControlName="from" >
-              <mat-option>-</mat-option>
+      <mat-form-field  fxFlex="50%" >
+          <mat-select placeholder="From"   formControlName="from2"  >
+              <mat-option *ngFor="let from of typeDatas?.from" [value]="from.value" >{{from.text}}</mat-option>
             </mat-select>
         </mat-form-field>
-    </div>
-    <div   fxLayout="row"     >
-      <mat-form-field fxFlex="100%"  >
-          <mat-select placeholder="Destinataires"   formControlName="dest" >
-              <mat-option>-</mat-option>
-            </mat-select>
-        </mat-form-field>
+        <mat-form-field fxFlex="15%" fxFlexOffset="3%" fxFlexAlign="baseline"  >
+                <mat-select placeholder="mode" [(value)]="mode"  (selectionChange)=setMode($event) >
+                        <mat-option>-</mat-option>
+                    <mat-option *ngFor="let m of typeMode" [value]="m.value">{{m.text}}</mat-option>
+                </mat-select>
+              </mat-form-field>
     </div>
 
-    <div   fxLayout="row"    >
-      <mat-form-field fxFlex="100%"  >
-          <mat-select placeholder="Compétitions en cours..."   formControlName="idcompet" >
-              <mat-option>-</mat-option>
+    <div fxLayout="row" *ngIf="mode === 'l' " >
+            <mat-form-field  fxFlex="60%" >
+                    <mat-select placeholder="Destinataires"   formArrayName="dests" multiple>
+                            <mat-option *ngFor="let dest of typeDatas?.dests" [value]="dest.value" >{{dest.text}}</mat-option>
+                            <mat-option *ngFor="let lic of typeDatas?.lic" [value]="lic.id" >{{lic.nom}}</mat-option>
+                      </mat-select>
+                  </mat-form-field>
+    
+        </div>
+
+
+    <div   fxLayout="row" *ngIf="mode === 'c' "  >
+      <mat-form-field fxFlex="50%"  fxFlexAlign="baseline">
+          <mat-select placeholder="Compétitions en cours..."   formControlName="compet" >
+            <mat-option *ngFor="let c of typeDatas?.comp" [value]="c.id" >{{c.nom}} [{{c.lieu}}]</mat-option>
             </mat-select>
+      
         </mat-form-field>
+        <mat-form-field fxFlex="15%" fxFlexOffset="3%" fxFlexAlign="baseline" >
+                <mat-select placeholder="choix"  formArrayName="choix"  multiple>
+                    <mat-option *ngFor="let choix of typeChoix" [value]="choix">{{choix}}</mat-option>
+                </mat-select>
+              </mat-form-field>
     </div>
- 
-    <div    fxFlex="100%" style="margin-top: 10px ">
-        <quill-editor  placeholder="Saisir un contenu !" [modules]="quilltoobar"   [style]="{'height': '150px', 'background-color': 'lightgrey'}"  formControlName="body" [modules]="quilltoobar" ></quill-editor>
-        </div>
-        <div   fxLayout="row"   >
-            <button mat-raised-button color="primary">Primary</button>
-        </div>
-    <div  formGroupName="type" fxLayoutAlign="center  center" fxLayout="row"  fxFlex="100%"   >
-    <section> 
-            <mat-checkbox color="primary"  formControlName="ok" ><span style='color:green' >Ok</span></mat-checkbox>
-            <mat-checkbox color="accent"  formControlName="at" ><span style='color:blue' >At</span></mat-checkbox>
-            <mat-checkbox color="warn"  formControlName="ko" ><span style='color:red' >Ko</span></mat-checkbox>
-           
-    </section>
-  </div>
-       
-         </div>
-  </div>
+    <div >
+        <quill-editor fxFlex="70%" placeholder="Saisir un contenu !" [modules]="quilltoobar"   [style]="{ 'height':'200px','background-color': 'lightgrey'}"  formControlName="body" [modules]="quilltoobar" ></quill-editor>
+    </div>
+    <div style="margin-top:10px;" >
+        <button mat-raised-button color="primary" (click)="sendMail()" >Envoyer</button>
+    </div> 
+    </div>
+  
+    </form>
+
 
  
-</mat-drawer-container>
+
 
 

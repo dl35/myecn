@@ -29,12 +29,9 @@ export class DialogEngageComponent implements OnInit {
 
     if ( this.data.addLic ) {
         this.lic = new FormControl(null, Validators.required );
- 
        this.eService.getLicencies( this.data.id ).subscribe(
-          (datas) => this.datasLic = datas;
-
-       )
-
+          (datas) => this.datasLic = datas
+       );
 
   }
   }
