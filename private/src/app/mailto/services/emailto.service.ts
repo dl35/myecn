@@ -16,7 +16,10 @@ export class EmailtoService {
      return this.http.get<IMailto>( this.url );
   }
 
-
+  public  sendMail( datas ) {
+    //  from , dests, compet
+     return this.http.post<any>( this.url , datas );
+  }
 
 
 }

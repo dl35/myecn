@@ -2,36 +2,37 @@
 
  
        
-    <form  fxLayout="row"  fxLayoutAlign="space-evenly  center"    style="margin-top: 10px;"   autocomplete="off" [formGroup]="dataForm" novalidate>
+    <form  fxLayoutAlign="center center"   style="margin-top:20px;"   autocomplete="off" [formGroup]="dataForm" novalidate>
 
-    <div fxLayout="column"  fxFlex="70%"  fxLayoutAlign="space-evenly  center"  >
+    <div fxLayout="column"  fxFlex="65%"   >
 
-    <div   fxLayout="row"   >
+    <div   fxLayout="row"  fxLayoutAlign="center center" >
       <mat-form-field  fxFlex="50%" >
-          <mat-select placeholder="From"   formControlName="from2"  >
+          <mat-select placeholder="From"   formControlName="from"  >
               <mat-option *ngFor="let from of typeDatas?.from" [value]="from.value" >{{from.text}}</mat-option>
             </mat-select>
         </mat-form-field>
         <mat-form-field fxFlex="15%" fxFlexOffset="3%" fxFlexAlign="baseline"  >
-                <mat-select placeholder="mode" [(value)]="mode"  (selectionChange)=setMode($event) >
+                <mat-select placeholder="mode"   formControlName="mode"  >
                         <mat-option>-</mat-option>
                     <mat-option *ngFor="let m of typeMode" [value]="m.value">{{m.text}}</mat-option>
                 </mat-select>
               </mat-form-field>
     </div>
 
-    <div fxLayout="row" *ngIf="mode === 'l' " >
-            <mat-form-field  fxFlex="60%" >
-                    <mat-select placeholder="Destinataires"   formArrayName="dests" multiple>
+   
+    <div fxLayoutAlign="center center" fxLayout="row" *ngIf="dataForm.get('mode').value === 'l' " >
+            <mat-form-field  fxFlex="50%"  style="margin-right:17%" >
+                    <mat-select placeholder="Destinataires"  formControlName="dests" multiple>
                             <mat-option *ngFor="let dest of typeDatas?.dests" [value]="dest.value" >{{dest.text}}</mat-option>
                             <mat-option *ngFor="let lic of typeDatas?.lic" [value]="lic.id" >{{lic.nom}}</mat-option>
                       </mat-select>
                   </mat-form-field>
     
-        </div>
+    </div>
+ 
 
-
-    <div   fxLayout="row" *ngIf="mode === 'c' "  >
+    <div  fxLayoutAlign="center center"  fxLayout="row" *ngIf="dataForm.get('mode').value === 'c' "  >
       <mat-form-field fxFlex="50%"  fxFlexAlign="baseline">
           <mat-select placeholder="Compétitions en cours..."   formControlName="compet" >
             <mat-option *ngFor="let c of typeDatas?.comp" [value]="c.id" >{{c.nom}} [{{c.lieu}}]</mat-option>
@@ -39,17 +40,24 @@
       
         </mat-form-field>
         <mat-form-field fxFlex="15%" fxFlexOffset="3%" fxFlexAlign="baseline" >
-                <mat-select placeholder="choix"  formArrayName="choix"  multiple>
+                <mat-select placeholder="choix"  formControlName="choix"  multiple>
                     <mat-option *ngFor="let choix of typeChoix" [value]="choix">{{choix}}</mat-option>
                 </mat-select>
               </mat-form-field>
     </div>
-    <div >
-        <quill-editor fxFlex="70%" placeholder="Saisir un contenu !" [modules]="quilltoobar"   [style]="{ 'height':'200px','background-color': 'lightgrey'}"  formControlName="body" [modules]="quilltoobar" ></quill-editor>
+    <div fxLayoutAlign="center center" fxLayout="row"  >
+            <mat-form-field  fxFlex="50%" style="margin-right:17%" >
+                    <input matInput placeholder="Sujet" formControlName="subject" fxFlex="70%" >
+            </mat-form-field>
+    </div>  
+    <div fxLayoutAlign="center center" >
+        <quill-editor fxFlex="70%" placeholder="Saisir un contenu !" [modules]="quilltoobar"   [style]="{ 'max-width':'630px', 'height':'200px','background-color': 'lightgrey'}"  formControlName="body" [modules]="quilltoobar" ></quill-editor>
     </div>
-    <div style="margin-top:10px;" >
-        <button mat-raised-button color="primary" (click)="sendMail()" >Envoyer</button>
+  
+    <div style="margin-top:10px;" fxLayoutAlign="center center"  >
+        <button mat-raised-button color="primary" [disabled]="dataForm.invalid"  (click)="sendMail()" >Envoyer</button>
     </div> 
+    
     </div>
   
     </form>
