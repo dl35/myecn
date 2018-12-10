@@ -19,6 +19,11 @@ import { takeUntil } from 'rxjs/operators';
 export class EngagementsComponent implements OnInit , OnDestroy {
 
   @ViewChild('mdrawer') mdrawer: MatDrawer;
+
+
+  loading = false;
+
+
   showFiller = false;
   hideSide = true;
   mobileQuery: MediaQueryList;
@@ -61,13 +66,14 @@ switchdrawer() {
 
   setCompetition( id ) {
     this.idc = id ;
-   this.subs$ = this.eService.getEngagement( id ).pipe(takeUntil(this.destroyed$)).subscribe(
-        (res =>   {   if (  res.length === 0 ) {
+    this.loading = true;
+    this.subs$ = this.eService.getEngagement( id ).pipe(takeUntil(this.destroyed$)).subscribe(
+        (res ) =>   {   if (  res.length === 0 ) {
                         this.engage  = null ; } else {
                         this.engage = res; this.showSnackBar( 'Engagements: ' + res.length , true );
-                     }    } ) ,
-        (err =>   {  this.showSnackBar( err.error.message , false ); } ) ,
-
+                     }    }  ,
+        (err ) =>   {  this.showSnackBar( err.error.message , false ); }  ,
+        ( )   =>  this.loading = false
     );
   }
 
@@ -113,9 +119,11 @@ switchdrawer() {
    dialogRef.beforeClosed().subscribe(
      (result) => {
                if (result) {
+                this.loading = true;
                 this.eService.sendMails( this.idc ).subscribe(
                     (res) => { this.showSnackBar('send mails ok'  , true );  this.setCompetition( this.idc ); },
-                    (error) =>  { this.showSnackBar( error   , false ); }
+                    (error) =>  { this.showSnackBar( error   , false ); },
+                    () => this.loading = false
 
                 ); } },
      () => {} ,
@@ -132,11 +140,12 @@ switchdrawer() {
                  dialogRef.beforeClosed().subscribe(
                    (result) => {
                              if (result) {
+                                  this.loading = true;
                                   this.showSnackBar('ajout valide'  , true ); this.setCompetition( this.idc );
                                   // (error) =>  { this.showSnackBar( error   , false ); }
                                } },
                    () => {} ,
-                   () => {} ,
+                   () => this.loading = false
                  );
                               }
 

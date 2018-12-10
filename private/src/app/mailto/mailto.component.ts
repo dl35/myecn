@@ -13,10 +13,10 @@ import { Subject } from 'rxjs';
 })
 export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
 
-
+  loading = true;
   destroyed$: Subject<any> = new Subject();
   typeChoix: string[] = ['Ok', 'At', 'Ko'];
-  typeMode: any[] = [{value: 'l' , text: 'Licencies' }, {value: 'c', text: 'Compétitions'} ];
+  typeMode: any[] = [ {value: 'c', text: 'Compétitions'},  {value: 'l' , text: 'Licencies' } ];
   typeDatas: IMailto;
  // mode = '';
 
@@ -51,6 +51,7 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
           this.dataForm.get('compet').clearValidators();
           this.dataForm.get('choix').clearValidators();
         }
+
         this.dataForm.get('dests').updateValueAndValidity();
         this.dataForm.get('compet').updateValueAndValidity();
         this.dataForm.get('choix').updateValueAndValidity();
@@ -68,9 +69,9 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
        this.eMailto.getdatas().pipe(
       takeUntil(this.destroyed$)
     ).subscribe(
-
-      (datas) =>  this.typeDatas = datas
-
+      (datas) =>  this.typeDatas = datas ,
+      (error) => {},
+      () =>  { setTimeout( () => { this.loading = false; }, 1000); }
     );
   }
 
@@ -78,11 +79,11 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
   private initForm() {
     this.dataForm = this.formBuilder.group({
       from: new FormControl( null , Validators.required),
-      compet: new FormControl( null ),
-      body: new FormControl( null , [ Validators.required ]) ,
-      subject: new FormControl( null , [ Validators.required, Validators.maxLength(5) ]),
+      body: new FormControl( null , [ Validators.required, Validators.minLength(5) ]) ,
+      subject: new FormControl( null , [ Validators.required, Validators.minLength(5) ]),
       choix: new FormControl( null ),
       dests: new FormControl( null),
+      compet: new FormControl( null ),
       mode: new FormControl( null, Validators.required)
     }
   );
@@ -91,7 +92,7 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
 
 
   public sendMail() {
-
+     this.loading = true ;
      const v = this.dataForm.getRawValue();
       if ( v.mode === 'c' ) {
         delete v.dests;
@@ -109,7 +110,7 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
           console.log(err.name);
           console.log(err.message);
           console.log(err.status); },
-          ( ) => console.log( 'complete' ) ,
+          ( ) => this.loading = false ,
        );
   }
 

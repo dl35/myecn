@@ -34,7 +34,8 @@
      </mat-drawer>
 
 
-  <div class="example-sidenav-content_"   fxLayout="column"   fxLayoutAlign="center center" style="margin-top: 10px;" >
+  <div    fxLayout="column"   fxLayoutAlign="center center" style="margin-top: 10px;" >
+    <mat-progress-bar *ngIf="loading" mode="query"></mat-progress-bar>
             <div   fxLayout="row"   style="margin-top: 10px;" >
                 
                 <button mat-mini-fab color="primary" *ngIf="engage" (click)="sendMails()"   >

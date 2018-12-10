@@ -10,11 +10,11 @@
   
       <div fxLayout="row" fxLayoutAlign="center center">
         <mat-radio-group   class="mat-body-2" labelPosition='before' >
-            <mat-radio-button  class='mrb'  value="av" (change)="filterLic($event)" >Avenirs</mat-radio-button>
-            <mat-radio-button  class='mrb'  value="je" (change)="filterLic($event)" >Jeunes</mat-radio-button>
-            <mat-radio-button  class='mrb'  value="ju" (change)="filterLic($event)" >Juniors</mat-radio-button>
-            <mat-radio-button  class='mrb'  value="se" (change)="filterLic($event)" >Seniors</mat-radio-button>
-            <mat-radio-button  class='mrb'  value="ma" (change)="filterLic($event)" >Masters</mat-radio-button>
+            <mat-radio-button  class='mrb'  value="av" (change)="filterLic($event.value)" >Avenirs</mat-radio-button>
+            <mat-radio-button  class='mrb'  value="je" (change)="filterLic($event.value)" >Jeunes</mat-radio-button>
+            <mat-radio-button  class='mrb'  value="ju" (change)="filterLic($event.value)" >Juniors</mat-radio-button>
+            <mat-radio-button  class='mrb'  value="se" (change)="filterLic($event.value)" >Seniors</mat-radio-button>
+            <mat-radio-button  class='mrb'  value="ma" (change)="filterLic($event.value)" >Masters</mat-radio-button>
 
           </mat-radio-group>
       </div>

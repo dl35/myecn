@@ -1,11 +1,11 @@
 
 
  
-       
+      
     <form  fxLayoutAlign="center center"   style="margin-top:20px;"   autocomplete="off" [formGroup]="dataForm" novalidate>
-
+      
     <div fxLayout="column"  fxFlex="65%"   >
-
+        <mat-progress-bar *ngIf="loading"  mode="query"></mat-progress-bar>
     <div   fxLayout="row"  fxLayoutAlign="center center" >
       <mat-form-field  fxFlex="50%" >
           <mat-select placeholder="From"   formControlName="from"  >
@@ -47,11 +47,11 @@
     </div>
     <div fxLayoutAlign="center center" fxLayout="row"  >
             <mat-form-field  fxFlex="50%" style="margin-right:17%" >
-                    <input matInput placeholder="Sujet" formControlName="subject" fxFlex="70%" >
+                    <input matInput placeholder="Sujet (5 car. minimum)" formControlName="subject" fxFlex="70%" >
             </mat-form-field>
     </div>  
     <div fxLayoutAlign="center center" >
-        <quill-editor fxFlex="70%" placeholder="Saisir un contenu !" [modules]="quilltoobar"   [style]="{ 'max-width':'630px', 'height':'200px','background-color': 'lightgrey'}"  formControlName="body" [modules]="quilltoobar" ></quill-editor>
+        <quill-editor fxFlex="70%" placeholder="Saisir un contenu (5 car. minimum)" [modules]="quilltoobar"   [style]="{ 'max-width':'630px', 'height':'200px','background-color': 'lightgrey'}"  formControlName="body" [modules]="quilltoobar" ></quill-editor>
     </div>
   
     <div style="margin-top:10px;" fxLayoutAlign="center center"  >

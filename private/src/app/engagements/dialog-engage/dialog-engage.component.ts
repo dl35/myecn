@@ -4,6 +4,8 @@ import { FormGroup, FormBuilder, FormControl, FormArray, Validators } from '@ang
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { map } from 'leaflet';
 
 @Component({
   selector: 'app-dialog-engage',
@@ -29,9 +31,9 @@ export class DialogEngageComponent implements OnInit {
 
     if ( this.data.addLic ) {
         this.lic = new FormControl(null, Validators.required );
-       this.eService.getLicencies( this.data.id ).subscribe(
+      /*  this.eService.getLicencies( this.data.id ).subscribe(
           (datas) => this.datasLic = datas
-       );
+       ); */
 
   }
   }
@@ -44,9 +46,11 @@ export class DialogEngageComponent implements OnInit {
       );
   }
 
-  private filterLic( $event ) {
-      this.lic.setValue([]);
-   //   this.datasLic$ =  this.eService.licFilter( this.data.id , $event.value );
-
+  private filterLic( value ) {
+    this.lic.reset();
+    this.eService.getLicencies( this.data.id )
+           .subscribe(
+          (datas) => {  this.datasLic = datas.filter ( v => v.categorie === value )  ; }
+       );
   }
 }
