@@ -1,4 +1,5 @@
-
+<mat-tab-group fxLayout="column"  fxLayoutAlign="space-evenly center"   fxFlex="100%" >
+<mat-tab label="First">
 <div fxLayout="column"  fxLayoutAlign="space-evenly center"   fxFlex="100%" style="margin-top:20px" >
       <div *ngIf="!loading" fxLayout="row" fxLayoutAlign="space-evenly center"  fxFlex="75%"   >
           <mat-progress-bar   mode="query"></mat-progress-bar>
@@ -39,15 +40,23 @@
       </div>
 
 
-      <mat-list>
-          <h3 mat-subheader>Folders</h3>
-          <mat-list-item *ngFor="let item of datas">
-            
+      <mat-list dense>
+          <mat-list-item  style='margin-bottom:20px' class="mat-elevation-z8"  matRipple  [matRippleCentered]="centered" [matRippleColor]="warn" *ngFor="let item of datas">
+                <mat-icon color="primary" matBadge="{{item.age}}" matListIcon>access_time</mat-icon>
             <h4 mat-line> {{item.nom}}-{{item.prenom}}: {{item.temps}} ({{item.points}} pts) </h4>
             <p mat-line> {{item.lieu}} {{item.date}}</p>
           </mat-list-item>
           </mat-list>
 
+ 
+
+
 
 </div>
+</mat-tab>
+<mat-tab label="Second">
+    <div fxLayout="column"  fxLayoutAlign="space-evenly center"   fxFlex="100%" style="margin-top:20px" >
+     Content 2 </div>
+    </mat-tab>
+</mat-tab-group>
 
