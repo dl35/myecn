@@ -1,7 +1,8 @@
 import { RecordsService } from './services/records.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
-import { shareReplay } from 'rxjs/operators';
+import { shareReplay, filter, map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-records',
@@ -12,11 +13,11 @@ export class RecordsComponent implements OnInit {
 
   dataForm: FormGroup;
   loading = true ;
-  datas: any[] ;
+  datas$: Observable<Array<any>> ;
 
   // tslint:disable-next-line:max-line-length
-  nages =  [ {value: 'NL' , label: 'Nage libre' }, {value: 'BR' , label: 'Brasse' }, {value: 'Dos' , label: 'Dos' }, {value: 'Pap' , label: 'Papillon' }]  ;
-  dists =  [ '50' , '100' , '200', '400', '800', '1500' ] ;
+  nages =  [ {value: 'NL' , label: 'Nage libre' }, {value: 'BRA' , label: 'Brasse' }, {value: 'DOS' , label: 'Dos' }, {value: 'PAP' , label: 'Papillon' }]  ;
+  dists =  [ '50' , '100' , '200', '400', '800', '1500' , '4x50', '4x100' , '4x200' , '10x100' ];
   bassin =  [ '25' , '50' ] ;
   sexe =  [ {value: 'F' , label: 'Dames' }, {value: 'H' , label: 'Homme' }];
 
@@ -27,13 +28,7 @@ export class RecordsComponent implements OnInit {
   ngOnInit() {
     this.createForm();
 
-    this.rService.getDatas().pipe(
-        shareReplay(1)
-    ).subscribe(
-        (values ) => {  this.datas = values ; },
-        ( error )  => { console.log( error ); },
-        () => this.loading = false
-    )
+
 
   }
 
@@ -51,15 +46,28 @@ export class RecordsComponent implements OnInit {
 
   showRecord() {
 
-      
-      const test = this.dataForm.getRawValue() ;
+     const test = this.dataForm.getRawValue() ;
       if ( test.fdists !== null ) {
-      this.datas.filter( v =>  v.bassin ===  test.fbassins )
-      .filter( v =>  v.sexe ===  test.fsexe )
-      .filter( v =>  v.nage ===  test.fnages )
-      .filter( v =>  v.distance ===  test.fdists );
-      }
-      console.log(  this.dataForm.getRawValue()  ) ;
+
+        if ( test.fmasters ) {
+
+          this.datas$ = this.rService.getDatas().pipe(
+            map( v =>  v.filter( t =>   t.bassin ===  test.fbassin
+                  &&  t.sexe ===  test.fsexe
+                  &&  t.nage ===  test.fnages
+                  &&  t.distance ===  test.fdists   &&  (t.age.startsWith('C') || t.age.startsWith('R') )
+              ) ));
+        } else {
+
+          this.datas$ = this.rService.getDatas().pipe(
+            map( v =>  v.filter( t =>   t.bassin ===  test.fbassin
+                  &&  t.sexe ===  test.fsexe
+                  &&  t.nage ===  test.fnages
+                  &&  t.distance ===  test.fdists   &&  ( t.age.startsWith('C') === false &&  t.age.startsWith('R') === false )
+              ) ));
+
+        }
+        }
   }
 
 

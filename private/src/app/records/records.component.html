@@ -1,9 +1,9 @@
 <mat-tab-group fxLayout="column"  fxLayoutAlign="space-evenly center"   fxFlex="100%" >
-<mat-tab label="First">
+<mat-tab label="Liste">
 <div fxLayout="column"  fxLayoutAlign="space-evenly center"   fxFlex="100%" style="margin-top:20px" >
-      <div *ngIf="!loading" fxLayout="row" fxLayoutAlign="space-evenly center"  fxFlex="75%"   >
-          <mat-progress-bar   mode="query"></mat-progress-bar>
-       </div> 
+     
+          <mat-progress-bar  *ngIf="loading" mode="query"></mat-progress-bar>
+     
     
     <div fxLayout="row" fxLayoutAlign="space-evenly center"  fxFlex="75%"  [formGroup]="dataForm">
        
@@ -41,9 +41,9 @@
 
 
       <mat-list dense>
-          <mat-list-item  style='margin-bottom:20px' class="mat-elevation-z8"  matRipple  [matRippleCentered]="centered" [matRippleColor]="warn" *ngFor="let item of datas">
-                <mat-icon color="primary" matBadge="{{item.age}}" matListIcon>access_time</mat-icon>
-            <h4 mat-line> {{item.nom}}-{{item.prenom}}: {{item.temps}} ({{item.points}} pts) </h4>
+          <mat-list-item style='margin-bottom:20px' class="mat-elevation-z8"  matRipple  [matRippleCentered]="centered" [matRippleColor]="warn" *ngFor="let item of datas$ | async">
+             <button mat-mini-fab color="primary">{{item.age}}</button>
+            <h4 mat-line> {{item.nom}}-{{item.prenom}}: {{item.temps}} ({{item.points}} pts) <mat-chip color="primary" selected>{{item.type}}</mat-chip> </h4>
             <p mat-line> {{item.lieu}} {{item.date}}</p>
           </mat-list-item>
           </mat-list>
@@ -54,9 +54,9 @@
 
 </div>
 </mat-tab>
-<mat-tab label="Second">
+<mat-tab label="Traitement">
     <div fxLayout="column"  fxLayoutAlign="space-evenly center"   fxFlex="100%" style="margin-top:20px" >
-     Content 2 </div>
+     traitement...</div>
     </mat-tab>
 </mat-tab-group>
 
