@@ -43,7 +43,7 @@
                   </button>
                  
               <mat-form-field  [ngStyle]="{'width': '600px','margin-left': '10px', 'margin-right':'10px' }" [ngStyle.lt-md]="{'width': '320px','margin-left' :'5px', 'margin-right' :'5px'}"   >
-                <mat-select    placeholder="Selection des compétitions" (ngModelChange)="setCompetition($event)"   [formControl]="toppings" >
+                <mat-select    placeholder="Selection des compétitions" (ngModelChange)="setCompetition($event)"   [formControl]="dataForm" >
                 
                   <mat-option  *ngFor="let item of datas  ; last as last" [value]="item.id"  >
                       {{item.id}} - {{item.label}}

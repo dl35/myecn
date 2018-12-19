@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { tileLayer, latLng } from 'leaflet';
+import { PiscinesService } from './services/piscines.service';
+import * as L from 'leaflet';
+// import 'leaflet.markercluster';
 
 @Component({
   selector: 'app-piscines',
@@ -8,6 +11,8 @@ import { tileLayer, latLng } from 'leaflet';
 })
 export class PiscinesComponent implements OnInit {
 
+  public mymap: any;
+  public geojson: any[] = [];
 
   options = {
     layers: [
@@ -17,11 +22,71 @@ export class PiscinesComponent implements OnInit {
     center: latLng( 48.117266, -1.6777926)
 };
 
-
-
-  constructor() { }
+  constructor(private pservices: PiscinesService) { }
 
   ngOnInit() {
+
+
+this.mymap =  L.map('mapid').setView([48.117266, -1.6777926], 8);
+
+ L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' }
+   ).addTo( this.mymap);
+
+
+
+    this.pservices.getdatas().subscribe(
+
+      (datas) => { this.generateDatas( datas ) ; console.log( datas ) } ,
+      (error) =>  console.log( error )
+
+    );
+
   }
+
+
+
+
+generateDatas( datas ) {
+  const  geojsonMarkerOptions = {
+    radius: 8,
+    fillColor: '#ff7800',
+    color: '#000',
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+};
+
+
+
+
+  L.geoJSON( datas, {
+   
+    pointToLayer: function (feature, latlng) {
+
+      geojsonMarkerOptions.fillColor =  feature.properties.color ;
+
+        return L.circleMarker(latlng, geojsonMarkerOptions);
+    },
+    onEachFeature: function EachFeature(feature, layer) {
+      // does this feature have a property named popupContent?
+      if (feature.properties && feature.properties.name) {
+          layer.bindPopup(feature.properties.name + '<br>' + feature.properties.description + '<br>bassin: ' + feature.properties.bassin
+          + '&nbsp;couloirs: ' + feature.properties.couloir  );
+      }
+    },
+
+}).addTo(this.mymap);
+
+
+}
+
+
+
+
+
+
+
+
+
 
 }

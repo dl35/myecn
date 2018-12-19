@@ -1,3 +1,4 @@
+import { BehaviorSubject, Observable } from 'rxjs';
 import { CompetEngage, LicEngage } from './../models/data-engage';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -10,6 +11,9 @@ import { Injectable } from '@angular/core';
 export class EngageService {
 
 
+
+
+
   private option = { present: true, absent: true };
 
   private url = '/api/private/engagements' ;
@@ -18,7 +22,6 @@ export class EngageService {
 
 
   public  getCompet() {
-       //  if ( !this.cache  ||  this.cache.length === 0 ) {
         return this.http.get<CompetEngage[]>( this.url );
      }
 

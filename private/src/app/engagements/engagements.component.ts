@@ -24,20 +24,20 @@ export class EngagementsComponent implements OnInit , OnDestroy {
   loading = false;
 
 
-  showFiller = false;
+//  showFiller = false;
   hideSide = true;
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
   datas: CompetEngage[] ;
 
-  toppings = new FormControl();
+  dataForm = new FormControl();
 
   idc: number ;
-  exist = false ;
+//  exist = false ;
 
-  subs$: Subscription;
+ 
   engage: any[]  ;
-  indeterminate = true;
+//  indeterminate = true;
 
   destroyed$: Subject<any> = new Subject();
 
@@ -67,7 +67,7 @@ switchdrawer() {
   setCompetition( id ) {
     this.idc = id ;
     this.loading = true;
-    this.subs$ = this.eService.getEngagement( id ).pipe(takeUntil(this.destroyed$)).subscribe(
+    this.eService.getEngagement( id ).pipe(takeUntil(this.destroyed$)).subscribe(
         (res ) =>   {   if (  res.length === 0 ) {
                         this.engage  = null ; } else {
                         this.engage = res; this.showSnackBar( 'Engagements: ' + res.length , true );
