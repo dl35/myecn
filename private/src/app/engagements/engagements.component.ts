@@ -1,5 +1,5 @@
 import { DialogEngageComponent } from './dialog-engage/dialog-engage.component';
-import { CompetEngage } from './models/data-engage';
+import { CompetEngage, LicEngage } from './models/data-engage';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Observable, Subscription, Subject } from 'rxjs';
@@ -24,6 +24,8 @@ export class EngagementsComponent implements OnInit , OnDestroy {
   loading = false;
 
 
+  filter = {p0: true, p1: true, ex0: true, ex1: true, no0: true, no1: false };
+
 //  showFiller = false;
   hideSide = true;
   mobileQuery: MediaQueryList;
@@ -35,8 +37,8 @@ export class EngagementsComponent implements OnInit , OnDestroy {
   idc: number ;
 //  exist = false ;
 
- 
-  engage: any[]  ;
+  engage: LicEngage[];
+  cachedDatas: LicEngage[] ;
 //  indeterminate = true;
 
   destroyed$: Subject<any> = new Subject();
@@ -69,8 +71,8 @@ switchdrawer() {
     this.loading = true;
     this.eService.getEngagement( id ).pipe(takeUntil(this.destroyed$)).subscribe(
         (res ) =>   {   if (  res.length === 0 ) {
-                        this.engage  = null ; } else {
-                        this.engage = res; this.showSnackBar( 'Engagements: ' + res.length , true );
+                        this.engage  = null ; } else { 
+                        this.engage = this.cachedDatas = res; this.showSnackBar( 'Engagements: ' + res.length , true );
                      }    }  ,
         (err ) =>   {  this.showSnackBar( err.error.message , false ); }  ,
         ( )   =>  this.loading = false
@@ -82,17 +84,30 @@ switchdrawer() {
      this.destroyed$.complete();
    }
 
-   doChange($event, v ) {
-
-      if ( v === 'pr' ) {
-        this.engage = this.engage.filter( item =>  item.notification > 0   ) ;
-      } else {
-
-        this.engage = this.engage.filter( item =>  item.notification === 0   ) ;
+   doChange($event) {
+    const v = $event.source.name  ;
+    this.filter[v] = $event.checked ;
+    let tmp = [];
+    if ( this.filter.p0 && this.filter.p1  ) {
+        tmp = this.cachedDatas;
+      } else if ( this.filter.p0   )  {
+        tmp = tmp.filter( item =>  item.eng.filter( e =>  e.presence === 'ko' ) ) ;
+      } else if ( this.filter.p1  )  {
+        tmp = tmp.filter( item =>  item.eng.filter( e =>  e.presence === 'ok' ) ) ;
+      } else if ( this.filter.ex0 &&  !this.filter.ex1 )  {
+        tmp = tmp.filter( item =>  item.extranat === '0'   ) ;
+      } else if ( this.filter.ex1  &&  !this.filter.ex0 )  {
+        tmp = tmp.filter( item =>  item.extranat === '1'   ) ;
+      } else if ( this.filter.no0 &&  !this.filter.no1 )  {
+        tmp = tmp.filter( item => item.notification === '0'   ) ;
+      } else if ( this.filter.no1  &&  !this.filter.no0 )  {
+        tmp = tmp.filter( item =>  item.notification !== '0' ) ;
       }
 
-   }
+        this.engage = tmp ;
+      }
 
+ 
 
 
    private showSnackBar( message , info) {

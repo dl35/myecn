@@ -15,21 +15,21 @@
     <p><span class="mat-body-2" >Les Engagements</span></p>
     
      <div style="padding:5px" >
-     <mat-checkbox class="mat-body-2" (change)="doChange($event,'pr')" checked='true' >Présents</mat-checkbox>
+     <mat-checkbox class="mat-body-2" name="p1" (change)="doChange($event)" checked='true' >Présents</mat-checkbox>
      &nbsp;
-     <mat-checkbox class="mat-body-2" (change)="doChange($event,'ab')" checked='true' >Absents</mat-checkbox>
+     <mat-checkbox class="mat-body-2" name="p0" (change)="doChange($event)" checked='true' >Absents</mat-checkbox>
      </div>
      <mat-divider></mat-divider>
      <div style="padding:5px" >
-     <mat-checkbox class="mat-body-2" (change)="doChange($event,'ex-oui')" checked='true' >Extranat-Oui</mat-checkbox>
+     <mat-checkbox class="mat-body-2" name="ex1" (change)="doChange($event)" checked='true' >Extranat-Oui</mat-checkbox>
      &nbsp;
-     <mat-checkbox class="mat-body-2" (change)="doChange($event,'ex-non')" checked='true' >Extranat-Non</mat-checkbox>
+     <mat-checkbox class="mat-body-2" name="ex0" (change)="doChange($event)" checked='true' >Extranat-Non</mat-checkbox>
      </div>
      <mat-divider></mat-divider>
      <div style="padding:5px" >
-        <mat-checkbox class="mat-body-2" (change)="doChange($event,'notif-oui')" checked='true' >Notification-Oui</mat-checkbox>
+        <mat-checkbox class="mat-body-2" name="no1" (change)="doChange($event)" checked='true' >Notification-Oui</mat-checkbox>
         &nbsp;
-        <mat-checkbox class="mat-body-2" (change)="doChange($event,'notif-non')" checked='true' >Notification-Non</mat-checkbox>
+        <mat-checkbox class="mat-body-2" name="no0" (change)="doChange($event)" checked='true' >Notification-Non</mat-checkbox>
         </div>
      </mat-drawer>
 
