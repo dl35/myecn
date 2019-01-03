@@ -13,6 +13,15 @@ interface ICompetEngage {
 }
 
 
+interface IEngage {
+
+    day: string;
+    presence: string;
+    edid: string;
+}
+
+
+
 export class LicEngage {
 
     id: number;
@@ -20,6 +29,9 @@ export class LicEngage {
     prenom: string;
     categorie: string;
     rang: string;
+    presence: string;
+    notification: string;
+    eng: Array<IEngage>;
 }
 
 
