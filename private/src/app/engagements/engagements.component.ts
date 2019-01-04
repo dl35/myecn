@@ -23,6 +23,9 @@ export class EngagementsComponent implements OnInit , OnDestroy {
 
   loading = false;
 
+  filtreEtat = [null, true, false];
+  filtre = { notif: null , ext: null , pre: null  } ;
+
 
   filter = {p0: true, p1: true, ex0: true, ex1: true, no0: true, no1: false };
 
@@ -71,7 +74,7 @@ switchdrawer() {
     this.loading = true;
     this.eService.getEngagement( id ).pipe(takeUntil(this.destroyed$)).subscribe(
         (res ) =>   {   if (  res.length === 0 ) {
-                        this.engage  = null ; } else { 
+                        this.engage  = null ; } else {
                         this.engage = this.cachedDatas = res; this.showSnackBar( 'Engagements: ' + res.length , true );
                      }    }  ,
         (err ) =>   {  this.showSnackBar( err.error.message , false ); }  ,
@@ -84,30 +87,40 @@ switchdrawer() {
      this.destroyed$.complete();
    }
 
-   doChange($event) {
-    const v = $event.source.name  ;
-    this.filter[v] = $event.checked ;
-    let tmp = [];
-    if ( this.filter.p0 && this.filter.p1  ) {
-        tmp = this.cachedDatas;
-      } else if ( this.filter.p0   )  {
-        tmp = tmp.filter( item =>  item.eng.filter( e =>  e.presence === 'ko' ) ) ;
-      } else if ( this.filter.p1  )  {
-        tmp = tmp.filter( item =>  item.eng.filter( e =>  e.presence === 'ok' ) ) ;
-      } else if ( this.filter.ex0 &&  !this.filter.ex1 )  {
-        tmp = tmp.filter( item =>  item.extranat === '0'   ) ;
-      } else if ( this.filter.ex1  &&  !this.filter.ex0 )  {
-        tmp = tmp.filter( item =>  item.extranat === '1'   ) ;
-      } else if ( this.filter.no0 &&  !this.filter.no1 )  {
-        tmp = tmp.filter( item => item.notification === '0'   ) ;
-      } else if ( this.filter.no1  &&  !this.filter.no0 )  {
-        tmp = tmp.filter( item =>  item.notification !== '0' ) ;
-      }
+   doFilter( value ) {
+    let tmp = this.cachedDatas;
 
-        this.engage = tmp ;
-      }
+    if ( value === 'notif' ) {
+      this.filtre.notif = this.filtreEtat[(this.filtreEtat.indexOf(this.filtre.notif) + 1) % this.filtreEtat.length];
+    } else if ( value === 'ext' )  {
+      this.filtre.ext = this.filtreEtat[(this.filtreEtat.indexOf(this.filtre.ext) + 1) % this.filtreEtat.length];
+    } else {
+      this.filtre.pre = this.filtreEtat[(this.filtreEtat.indexOf(this.filtre.pre) + 1) % this.filtreEtat.length];
+    }
 
- 
+    if ( this.filtre.notif === true  )  {
+        tmp = tmp.filter( item => item.notification !== '0'  ) ;
+    } else if ( this.filtre.notif === false  )  {
+        tmp = tmp.filter( item =>  item.notification === '0' ) ;
+    }
+
+
+    if ( this.filtre.pre === false )  {
+      tmp = tmp.filter( item =>  item.eng.filter( e =>  e.presence === 'at'  ) )  ;
+    } else if ( this.filtre.pre === true )  {
+      tmp = tmp.filter( item =>  item.eng.filter( e =>  e.presence === 'ok'  ) ) ;
+    }
+
+    if ( this.filtre.ext === true )  {
+      tmp = tmp.filter( item =>  item.extranat === '1'   ) ;
+    } else if ( this.filtre.ext === false )  {
+      tmp = tmp.filter( item =>  item.extranat === '0'   ) ;
+    }
+
+
+    this.engage = tmp ;
+
+  }
 
 
    private showSnackBar( message , info) {

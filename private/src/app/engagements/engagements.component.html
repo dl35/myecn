@@ -15,22 +15,41 @@
     <p><span class="mat-body-2" >Les Engagements</span></p>
     
      <div style="padding:5px" >
-     <mat-checkbox class="mat-body-2" name="p1" (change)="doChange($event)" checked='true' >Présents</mat-checkbox>
-     &nbsp;
-     <mat-checkbox class="mat-body-2" name="p0" (change)="doChange($event)" checked='true' >Absents</mat-checkbox>
+        <mat-checkbox [ngModel]="filtre.pre" 
+              [indeterminate]="filtre.pre === null" 
+              (ngModelChange)="doFilter('pre')"
+              [color]="filtre.pre === null ? 'primary' : 'accent'" >
+              <div class="mat-body-2" *ngIf="filtre.pre === false" >Absents</div>
+              <div class="mat-body-2" *ngIf="filtre.pre === true"  >Présents</div>
+              <div class="mat-body-2" *ngIf="filtre.pre === null"  >Tout</div>
+	
+        </mat-checkbox>
+   
      </div>
      <mat-divider></mat-divider>
      <div style="padding:5px" >
-     <mat-checkbox class="mat-body-2" name="ex1" (change)="doChange($event)" checked='true' >Extranat-Oui</mat-checkbox>
-     &nbsp;
-     <mat-checkbox class="mat-body-2" name="ex0" (change)="doChange($event)" checked='true' >Extranat-Non</mat-checkbox>
+        <mat-checkbox [ngModel]="filtre.ext" 
+              [indeterminate]="filtre.ext === null" 
+              (ngModelChange)="doFilter('ext')"
+              [color]="filtre.ext === null ? 'primary' : 'accent'" >
+              <div class="mat-body-2" *ngIf="filtre.ext === false" >Extranat-Non</div>
+              <div class="mat-body-2" *ngIf="filtre.ext === true"  >Extranat-Oui</div>
+              <div class="mat-body-2" *ngIf="filtre.ext === null"  >Extranat</div>
+	
+        </mat-checkbox>
      </div>
      <mat-divider></mat-divider>
      <div style="padding:5px" >
-        <mat-checkbox class="mat-body-2" name="no1" (change)="doChange($event)" checked='true' >Notification-Oui</mat-checkbox>
-        &nbsp;
-        <mat-checkbox class="mat-body-2" name="no0" (change)="doChange($event)" checked='true' >Notification-Non</mat-checkbox>
-        </div>
+        <mat-checkbox [ngModel]="filtre.notif" 
+              [indeterminate]="filtre.notif === null" 
+              (ngModelChange)="doFilter('notif')"
+              [color]="filtre.notif === null ? 'primary' : 'accent'" >
+              <div class="mat-body-2" *ngIf="filtre.notif === false" >Notification-Non</div>
+              <div class="mat-body-2" *ngIf="filtre.notif === true"  >Notification-Oui</div>
+              <div class="mat-body-2" *ngIf="filtre.notif === null"  >Notification</div>
+	
+        </mat-checkbox>
+      </div>
      </mat-drawer>
 
 
