@@ -1,5 +1,5 @@
 import { DialogEngageComponent } from './dialog-engage/dialog-engage.component';
-import { CompetEngage, LicEngage } from './models/data-engage';
+import { CompetEngage, LicEngage, MessageResponse } from './models/data-engage';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Observable, Subscription, Subject } from 'rxjs';
@@ -16,7 +16,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './engagements.component.html',
   styleUrls: ['./engagements.component.scss']
 })
-export class EngagementsComponent implements OnInit , OnDestroy {
+export class EngagementsComponent implements OnInit, OnDestroy {
 
   @ViewChild('mdrawer') mdrawer: MatDrawer;
 
@@ -24,158 +24,280 @@ export class EngagementsComponent implements OnInit , OnDestroy {
   loading = false;
 
   filtreEtat = [null, true, false];
-  filtre = { notif: null , ext: null , pre: null  } ;
+  filtre = { notif: null, ext: null, pre: null };
 
 
-  filter = {p0: true, p1: true, ex0: true, ex1: true, no0: true, no1: false };
+  filter = { p0: true, p1: true, ex0: true, ex1: true, no0: true, no1: false };
 
-//  showFiller = false;
+
   hideSide = true;
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
-  datas: CompetEngage[] ;
+  datas: CompetEngage[];
 
   dataForm = new FormControl();
 
-  idc: number ;
-//  exist = false ;
+  idc: number;
 
   engage: LicEngage[];
-  cachedDatas: LicEngage[] ;
-//  indeterminate = true;
+  cachedDatas: LicEngage[];
 
   destroyed$: Subject<any> = new Subject();
 
   constructor(public dialog: MatDialog, changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher, private eService: EngageService , private snackBar: MatSnackBar  ) {
+    media: MediaMatcher, private eService: EngageService, private snackBar: MatSnackBar) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
 
-    this.engage = null ;
+    this.engage = null;
+    this.idc = -1;
     console.log('create');
-}
-
-switchdrawer() {
-
-  this.mdrawer.opened ? this.mdrawer.close() : this.mdrawer.open() ;
-
-}
-
-  ngOnInit() {
-   this.eService.getCompet().pipe(takeUntil(this.destroyed$)).subscribe(
-    (datas)  => { this.datas = datas ; }
-
-   );
   }
 
-  setCompetition( id ) {
-    this.idc = id ;
+  switchdrawer() {
+
+    this.mdrawer.opened ? this.mdrawer.close() : this.mdrawer.open();
+
+  }
+
+  ngOnInit() {
+    this.eService.getCompet().pipe(takeUntil(this.destroyed$)).subscribe(
+      (datas) => { this.datas = datas; }
+
+    );
+  }
+
+  public setCreated(response) {
+    if (response.success) {
+      this.setCompetition(this.idc);
+
+    } else { this.showSnackBar(response.message, false); }
+
+  }
+
+
+  public setDelete(id) {
+    const dialogRef = this.dialog.open(DialogEngageComponent, {
+      width: '60%',
+      data: { id: this.idc, addLic: false, info: 'Supprimer ?' },
+      disableClose: true
+    });
+
+
+    dialogRef.beforeClosed().subscribe(
+      (result) => {
+        if (result) {
+          this.loading = true;
+          this.eService.setDelete(id).subscribe(
+            (res) => {
+              this.cachedDatas = this.cachedDatas.filter(obj => obj.id !== id);
+              if ( this.cachedDatas.length === 0  ) {
+                this.engage = null;
+              } else {
+                this.engage = this.cachedDatas;
+              }
+              this.showSnackBar('Suppression valide', true);
+            }
+            ,
+            (err) => { this.showSnackBar(err.error.message, false); },
+            () => this.loading = false
+          );
+        }
+      },
+      () => { },
+      () => { } ,
+    );
+  }
+  public setExtranat(id) {
+    const dialogRef = this.dialog.open(DialogEngageComponent, {
+      width: '60%',
+      data: { id: this.idc, addLic: false, info: 'Valider Extranat ?' },
+      disableClose: true
+    });
+
+
+    dialogRef.beforeClosed().subscribe(
+      (result) => {
+        if (result) {
+          this.loading = true;
+          this.eService.setExtranat(this.idc, id).subscribe(
+            (res) => {
+              const index = this.cachedDatas.findIndex(item => item.id === id);
+              const data = this.cachedDatas[index];
+              data.extranat = 1 - data.extranat;
+              this.showSnackBar('Extranat valide', true);
+            }
+            ,
+            (err) => { this.showSnackBar(err.error.message, false); },
+            () => this.loading = false
+          );
+        }
+      },
+      () => { },
+      () => { } ,
+    );
+  }
+
+  public setNotification(id) {
+    const dialogRef = this.dialog.open(DialogEngageComponent, {
+      width: '60%',
+      data: { id: this.idc, addLic: false, info: 'Envoyer un Email ?' },
+      disableClose: true
+    });
+    dialogRef.beforeClosed().subscribe(
+      (result) => {
+        if (result) {
+          this.loading = true;
+          this.eService.setNotification(this.idc, id).subscribe(
+            (res) => {
+              const index = this.cachedDatas.findIndex(item => item.id === id);
+              const data = this.cachedDatas[index];
+              data.notification = data.notification + 1;
+              this.showSnackBar('Email valide', true);
+            }
+            ,
+            (err) => { this.showSnackBar(err.error.message, false); },
+            () => this.loading = false
+          );
+        }
+      },
+      () => { },
+      () => { } ,
+    );
+  }
+
+
+  public setCompetition(id) {
+    this.idc = id;
     this.loading = true;
-    this.eService.getEngagement( id ).pipe(takeUntil(this.destroyed$)).subscribe(
-        (res ) =>   {   if (  res.length === 0 ) {
-                        this.engage  = null ; } else {
-                        this.engage = this.cachedDatas = res; this.showSnackBar( 'Engagements: ' + res.length , true );
-                     }    }  ,
-        (err ) =>   {  this.showSnackBar( err.error.message , false ); }  ,
-        ( )   =>  this.loading = false
+    this.eService.getEngagement(id).pipe(takeUntil(this.destroyed$)).subscribe(
+      (res) => {
+        if (res.length === 0) {
+          this.engage = null;
+        } else {
+          this.engage = this.cachedDatas = res; this.showSnackBar('Engagements: ' + res.length, true);
+          console.log(this.engage);
+        }
+      },
+      (err) => { this.showSnackBar(err.error.message, false); },
+      () => this.loading = false
     );
   }
 
   ngOnDestroy(): void {
-     this.destroyed$.next();
-     this.destroyed$.complete();
-   }
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
 
-   doFilter( value ) {
+  doFilter(value) {
     let tmp = this.cachedDatas;
 
-    if ( value === 'notif' ) {
+    if (value === 'notif') {
       this.filtre.notif = this.filtreEtat[(this.filtreEtat.indexOf(this.filtre.notif) + 1) % this.filtreEtat.length];
-    } else if ( value === 'ext' )  {
+    } else if (value === 'ext') {
       this.filtre.ext = this.filtreEtat[(this.filtreEtat.indexOf(this.filtre.ext) + 1) % this.filtreEtat.length];
     } else {
       this.filtre.pre = this.filtreEtat[(this.filtreEtat.indexOf(this.filtre.pre) + 1) % this.filtreEtat.length];
     }
 
-    if ( this.filtre.notif === true  )  {
-        tmp = tmp.filter( item => item.notification !== '0'  ) ;
-    } else if ( this.filtre.notif === false  )  {
-        tmp = tmp.filter( item =>  item.notification === '0' ) ;
+    if (this.filtre.notif === true) {
+      tmp = tmp.filter(item => item.notification !== 0);
+    } else if (this.filtre.notif === false) {
+      tmp = tmp.filter(item => item.notification === 0);
     }
 
 
-    if ( this.filtre.pre === false )  {
-      tmp = tmp.filter( item =>  item.eng.filter( e =>  e.presence === 'at'  ) )  ;
-    } else if ( this.filtre.pre === true )  {
-      tmp = tmp.filter( item =>  item.eng.filter( e =>  e.presence === 'ok'  ) ) ;
+    const mtmp = Array();
+    if (this.filtre.pre === false) {
+      tmp.forEach(item => {
+
+        item.eng.forEach(e => {
+          if (e.presence === 'non') { mtmp.push(item); return; }
+        });
+
+      });
+      tmp = mtmp.slice();
+    } else if (this.filtre.pre === true) {
+      tmp.forEach(item => {
+
+        item.eng.forEach(e => {
+          if (e.presence === 'oui') { mtmp.push(item); return; }
+        });
+
+      });
+      tmp = mtmp.slice();
     }
 
-    if ( this.filtre.ext === true )  {
-      tmp = tmp.filter( item =>  item.extranat === '1'   ) ;
-    } else if ( this.filtre.ext === false )  {
-      tmp = tmp.filter( item =>  item.extranat === '0'   ) ;
+
+    if (this.filtre.ext === true) {
+      tmp = tmp.filter(item => item.extranat === 1);
+    } else if (this.filtre.ext === false) {
+      tmp = tmp.filter(item => item.extranat === 0);
     }
 
 
-    this.engage = tmp ;
+    this.engage = tmp;
 
   }
 
 
-   private showSnackBar( message , info) {
+  private showSnackBar(message, info) {
     // tslint:disable-next-line:no-shadowed-variable
     let style = 'snack-success';
-    if ( !info ) {
+    if (!info) {
       style = 'snack-error';
     }
-    this.snackBar.open( message  , '', {
+    this.snackBar.open(message, '', {
       duration: 1500,
-      announcementMessage : 'denis',
-      panelClass: [ style ]
+      announcementMessage: 'denis',
+      panelClass: [style]
     });
   }
 
   public sendMails() {
-    const dialogRef = this.dialog.open( DialogEngageComponent , {
+    const dialogRef = this.dialog.open(DialogEngageComponent, {
       width: '60%',
-      data: { id: this.idc , sendMails: true , info: 'Envoyer les emails ?'  },
+      data: { id: this.idc, addLic: false, info: 'Envoyer les emails ?' },
       disableClose: true
-     });
+    });
 
 
-   dialogRef.beforeClosed().subscribe(
-     (result) => {
-               if (result) {
-                this.loading = true;
-                this.eService.sendMails( this.idc ).subscribe(
-                    (res) => { this.showSnackBar('send mails ok'  , true );  this.setCompetition( this.idc ); },
-                    (error) =>  { this.showSnackBar( error   , false ); },
-                    () => this.loading = false
+    dialogRef.beforeClosed().subscribe(
+      (result) => {
+        if (result) {
+          this.loading = true;
+          this.eService.sendMails(this.idc).subscribe(
+            (res) => { this.showSnackBar('send mails ok', true); this.setCompetition(this.idc); },
+            (error) => { this.showSnackBar(error, false); },
+            () => this.loading = false
 
-                ); } },
-     () => {} ,
-     () => {} ,
-   );
-                }
+          );
+        }
+      },
+      () => { },
+      () => { } ,
+    );
+  }
 
   public addLic() {
-                  const dialogRef = this.dialog.open( DialogEngageComponent , {
-                    width: '80%',
-                    data: { id: this.idc, addLic : true , info: 'Ajouter des licencies ?'  },
-                    disableClose: true
-                   });
-                 dialogRef.beforeClosed().subscribe(
-                   (result) => {
-                             if (result) {
-                                  this.loading = true;
-                                  this.showSnackBar('ajout valide'  , true ); this.setCompetition( this.idc );
-                                  // (error) =>  { this.showSnackBar( error   , false ); }
-                               } },
-                   () => {} ,
-                   () => this.loading = false
-                 );
-                              }
+    const dialogRef = this.dialog.open(DialogEngageComponent, {
+      width: '80%',
+      data: { id: this.idc, addLic: true, info: 'Ajouter des licencies ?' },
+      disableClose: true
+    });
+    dialogRef.beforeClosed().subscribe(
+      (result) => {
+        if (result) {
+          this.loading = true;
+          this.showSnackBar('ajout valide', true); this.setCompetition(this.idc);
+          // (error) =>  { this.showSnackBar( error   , false ); }
+        }
+      },
+      () => { },
+      () => this.loading = false
+    );
+  }
 
 
 }

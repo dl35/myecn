@@ -45,6 +45,21 @@ export class EngageService {
     return this.http.put<any>( uput , datas ) ;
 
   }
+  public setExtranat( id, idext ) {
+    const uput = this.url + '/' + id ;
+    const data = { extranat : idext } ;
+    return this.http.put<any>( uput , data  ) ;
+  }
+  public setNotification( id, idext ) {
+    const uput = this.url + '/' + id ;
+    const data = { notify : idext } ;
+    return this.http.put<any>( uput , data  ) ;
+  }
+  public setDelete( iddel ) {
+    const uput = this.url + '/' + iddel ;
+    return this.http.delete<any>( uput) ;
+  }
+
 
   public addLic( id ) {
     const uput = this.url + '/' + id ;
@@ -58,20 +73,6 @@ export class EngageService {
     const uget = this.url + '/' + id + '/lic';
     return this.http.get<LicEngage[]>( uget ) ;
   }
-
-
-/*
-  public getLic( id ): Observable<LicEngage[]> {
-        this.datasLic$ = this.getLicencies( id ).pipe(
-        shareReplay( 1)
-      );
-      console.log( 'init' , id );
-    }
-    return this.datasLic$ ;
-  }
-*/
-
-
 
 
 

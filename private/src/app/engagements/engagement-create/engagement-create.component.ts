@@ -1,7 +1,8 @@
 import { EngageService } from './../services/engage.service';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { Component, OnInit, Input } from '@angular/core';
-import { stringify } from '@angular/core/src/render3/util';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+
+import { MessageResponse } from 'src/app/competitions/models/message-response';
 
 @Component({
   selector: 'app-engagement-create',
@@ -14,15 +15,17 @@ export class EngagementCreateComponent implements OnInit {
   @Input()
   id: number ;
 
+  @Output()
+  created: EventEmitter<MessageResponse> = new EventEmitter();
+
   constructor(private formBuilder: FormBuilder ,
               private eService: EngageService ) { }
-
-
 
 
   ngOnInit() {
     this.createForm();
   }
+
 
   private createForm() {
     // Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') ,
@@ -41,7 +44,6 @@ export class EngagementCreateComponent implements OnInit {
 
   }
 
-
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  private  catValidator(input: FormControl ): any {
   if ( input.get('av').value  || input.get('je').value   ||
@@ -55,13 +57,13 @@ export class EngagementCreateComponent implements OnInit {
   }
 }
 
-  doCreate() {
+private  doCreate() {
       const datas = this.dataForm.getRawValue() ;
-console.log( this.id , datas );
+
 
       this.eService.createEngagement( this.id  , datas  ).subscribe(
-          res => { console.log(res) ; window.alert(res.message); },
-          err => { console.log(err) ; window.alert( JSON.stringify(err) );  }
+          res => { this.created.emit( res );  },
+          err => { this.created.emit( err.error) ; }
 
 
       ) ;

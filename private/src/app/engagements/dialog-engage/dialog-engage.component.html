@@ -1,4 +1,4 @@
-<div  fxLayout="column" *ngIf="data.addLic"  fxLayoutAlign="center center"  >
+<div  fxLayout="column" *ngIf="data.addLic === true"  fxLayoutAlign="center center"  >
     
         <div mat-dialog-title>
         <p>{{data.info}}</p>
@@ -45,7 +45,7 @@
 </div>
       
 
-      <div  fxLayout="column" *ngIf="data.sendMails" >
+      <div  fxLayout="column" *ngIf="data.addLic === false" >
       
               <div mat-dialog-title>
               <p>{{data.info}}</p>

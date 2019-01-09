@@ -78,7 +78,9 @@ export class CompetitionsService {
       } else {
         this.cache = this.cache.filter(obj => obj.id !== compet.id );
       }
-      this.subject$.next( this.cache );
+
+      const res = this.cache.filter( item => item.next === true );
+      this.subject$.next( res );
 
     }
     public delete(id) {

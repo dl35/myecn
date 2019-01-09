@@ -1,138 +1,134 @@
-<mat-toolbar color="primary" >  
+<mat-toolbar color="primary">
   <mat-toolbar-row>
-      
-     <mat-icon (click)="switchdrawer()"  style="cursor: pointer;" >menu</mat-icon>
-    
-   </mat-toolbar-row>
 
- </mat-toolbar>
+    <mat-icon (click)="switchdrawer()" style="cursor: pointer;">menu</mat-icon>
 
+  </mat-toolbar-row>
 
+</mat-toolbar>
 
 
- <mat-drawer-container class="example-container" *ngIf="!dataSelected" autosize>
-  <mat-drawer #mdrawer class="example-sidenav" [mode]="mobileQuery.matches ? 'over' : 'side'"  [opened]="mobileQuery.matches ? 'false' : 'true'"  >
-    <p><span class="mat-body-2" >Les Engagements</span></p>
-    
-     <div style="padding:5px" >
-        <mat-checkbox [ngModel]="filtre.pre" 
-              [indeterminate]="filtre.pre === null" 
-              (ngModelChange)="doFilter('pre')"
-              [color]="filtre.pre === null ? 'primary' : 'accent'" >
-              <div class="mat-body-2" *ngIf="filtre.pre === false" >Absents</div>
-              <div class="mat-body-2" *ngIf="filtre.pre === true"  >Présents</div>
-              <div class="mat-body-2" *ngIf="filtre.pre === null"  >Tout</div>
-	
-        </mat-checkbox>
-   
-     </div>
-     <mat-divider></mat-divider>
-     <div style="padding:5px" >
-        <mat-checkbox [ngModel]="filtre.ext" 
-              [indeterminate]="filtre.ext === null" 
-              (ngModelChange)="doFilter('ext')"
-              [color]="filtre.ext === null ? 'primary' : 'accent'" >
-              <div class="mat-body-2" *ngIf="filtre.ext === false" >Extranat-Non</div>
-              <div class="mat-body-2" *ngIf="filtre.ext === true"  >Extranat-Oui</div>
-              <div class="mat-body-2" *ngIf="filtre.ext === null"  >Extranat</div>
-	
-        </mat-checkbox>
-     </div>
-     <mat-divider></mat-divider>
-     <div style="padding:5px" >
-        <mat-checkbox [ngModel]="filtre.notif" 
-              [indeterminate]="filtre.notif === null" 
-              (ngModelChange)="doFilter('notif')"
-              [color]="filtre.notif === null ? 'primary' : 'accent'" >
-              <div class="mat-body-2" *ngIf="filtre.notif === false" >Notification-Non</div>
-              <div class="mat-body-2" *ngIf="filtre.notif === true"  >Notification-Oui</div>
-              <div class="mat-body-2" *ngIf="filtre.notif === null"  >Notification</div>
-	
-        </mat-checkbox>
-      </div>
-     </mat-drawer>
 
 
-  <div    fxLayout="column"   fxLayoutAlign="center center" style="margin-top: 10px;" >
+<mat-drawer-container class="example-container" *ngIf="!dataSelected" autosize>
+  <mat-drawer #mdrawer class="example-sidenav" *ngIf="idc !== -1 && engage !== null"  [mode]="mobileQuery.matches ? 'over' : 'side'" [opened]="mobileQuery.matches ? 'false' : 'true'">
+    <p><span class="mat-body-2">Les Engagements</span></p>
+
+    <div style="padding:5px">
+      <mat-checkbox [ngModel]="filtre.pre" [indeterminate]="filtre.pre === null" (ngModelChange)="doFilter('pre')"
+        [color]="filtre.pre === null ? 'primary' : 'accent'">
+        <div class="mat-body-2" *ngIf="filtre.pre === false">Absents</div>
+        <div class="mat-body-2" *ngIf="filtre.pre === true">Présents</div>
+        <div class="mat-body-2" *ngIf="filtre.pre === null">Tout</div>
+
+      </mat-checkbox>
+
+    </div>
+    <mat-divider></mat-divider>
+    <div style="padding:5px">
+      <mat-checkbox [ngModel]="filtre.ext" [indeterminate]="filtre.ext === null" (ngModelChange)="doFilter('ext')"
+        [color]="filtre.ext === null ? 'primary' : 'accent'">
+        <div class="mat-body-2" *ngIf="filtre.ext === false">Extranat-Non</div>
+        <div class="mat-body-2" *ngIf="filtre.ext === true">Extranat-Oui</div>
+        <div class="mat-body-2" *ngIf="filtre.ext === null">Extranat</div>
+
+      </mat-checkbox>
+    </div>
+    <mat-divider></mat-divider>
+    <div style="padding:5px">
+      <mat-checkbox [ngModel]="filtre.notif" [indeterminate]="filtre.notif === null" (ngModelChange)="doFilter('notif')"
+        [color]="filtre.notif === null ? 'primary' : 'accent'">
+        <div class="mat-body-2" *ngIf="filtre.notif === false">Notification-Non</div>
+        <div class="mat-body-2" *ngIf="filtre.notif === true">Notification-Oui</div>
+        <div class="mat-body-2" *ngIf="filtre.notif === null">Notification</div>
+
+      </mat-checkbox>
+    </div>
+  </mat-drawer>
+
+
+  <div fxLayout="column" fxLayoutAlign="center center" style="margin-top: 10px;">
     <mat-progress-bar *ngIf="loading" mode="query"></mat-progress-bar>
-            <div   fxLayout="row"   style="margin-top: 10px;" >
-                
-                <button mat-mini-fab color="primary" *ngIf="engage" (click)="sendMails()"   >
-                    <mat-icon aria-label="email">email</mat-icon>
-                  </button>
-                 
-              <mat-form-field  [ngStyle]="{'width': '600px','margin-left': '10px', 'margin-right':'10px' }" [ngStyle.lt-md]="{'width': '320px','margin-left' :'5px', 'margin-right' :'5px'}"   >
-                <mat-select    placeholder="Selection des compétitions" (ngModelChange)="setCompetition($event)"   [formControl]="dataForm" >
-                
-                  <mat-option  *ngFor="let item of datas  ; last as last" [value]="item.id"  >
-                      {{item.id}} - {{item.label}}
-                  </mat-option>
-    
-                  
-                </mat-select>
-               </mat-form-field>
-              
-               <button mat-mini-fab mat-icon-button *ngIf="engage" (click)="addLic()"  >
-                  <mat-icon aria-label="add">add</mat-icon>
-                </button>
-              
-           
-            
-            </div>  
+    <div fxLayout="row" style="margin-top: 10px;">
 
-          
-            <app-engagement-create  *ngIf="engage === null "  [id]="idc" ></app-engagement-create>
-              
-     
-          
-             <div fxFlex="800px" >
-          <mat-list  *ngIf="engage !== null "  [ngStyle]="{'width': '800px'}" [ngStyle.lt-md]="{'width': '400px'}" >
-          <h2 mat-subheader>Les Engagements ({{engage.length}})</h2>
-            <mat-list-item    *ngFor="let item of engage ; last as last1"   style='margin-bottom:10px' class="mat-elevation-z4"  matRipple  [matRippleCentered]="centered" [matRippleColor]="warn" >
-                
-                <p matLine style="margin-top:4em">
-                    <span class="mat-body-2" >{{item.prenom}} {{item.nom}} ({{item.categorie}}{{item.rang}}-{{item.sexe}})</span>
-                </p>
-     
-              <div *ngFor="let node of item.eng;" [ngSwitch]="node.presence" >
-                  <button  mat-mini-fab  *ngSwitchCase="'ko'"  color="warn"  >{{node.day}}</button>
-                  <button  mat-mini-fab  *ngSwitchCase="'ok'" style='background-color: green'  >{{node.day}}</button>
-                  <button  mat-mini-fab  *ngSwitchDefault  color="primary"   >{{node.day}}?</button>
-                  &nbsp;&nbsp;
-               </div> 
-                
-          
-   
-          
-              
-             <div matLine style='margin-bottom:2em;' >
-              &nbsp;
-                <button mat-icon-button  color="primary" >
-                  <mat-icon aria-label="Extranat" matBadge="{{item.extranat}}" matBadgeSize="medium"  matBadgePosition="before" >save</mat-icon>
-                </button>
-                &nbsp;&nbsp;
-              <button mat-icon-button  style='margin-bottom:2em;' >
-                  <mat-icon aria-label="Email" matBadge="{{item.notification}}" matBadgeSize="medium" matBadgePosition="before" style="color: green" >contact_mail</mat-icon>
-                </button>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-              
-                <mat-form-field style="min-width:10px;max-width:400px;width:100%">
-                    <input matInput placeholder="commentaires" readonly  value="{{item.comment}}">
-                  </mat-form-field>
-       
-              </div>
+      <button mat-mini-fab color="primary" *ngIf="engage" (click)="sendMails()">
+        <mat-icon aria-label="email">email</mat-icon>
+      </button>
+
+      <mat-form-field [ngStyle]="{'width': '600px','margin-left': '10px', 'margin-right':'10px' }" [ngStyle.lt-md]="{'width': '320px','margin-left' :'5px', 'margin-right' :'5px'}">
+        <mat-select placeholder="Selection des compétitions" (ngModelChange)="setCompetition($event)" [formControl]="dataForm">
+
+          <mat-option *ngFor="let item of datas  ; last as last" [value]="item.id">
+            {{item.id}} - {{item.label}}
+          </mat-option>
+
+
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-mini-fab mat-icon-button *ngIf="engage" (click)="addLic()">
+        <mat-icon aria-label="add">add</mat-icon>
+      </button>
+
+
+
+    </div>
+
+
+    <app-engagement-create *ngIf="idc !== -1 && engage === null" [id]="idc"  (created)="setCreated($event)"   ></app-engagement-create>
+
+
+
+    <div fxFlex="800px">
+      <mat-list *ngIf="engage !== null " [ngStyle]="{'width': '800px'}" [ngStyle.lt-md]="{'width': '400px'}">
+        <h2 mat-subheader>Les Engagements ({{engage.length}})</h2>
+        <mat-list-item *ngFor="let item of engage ; last as last1" 
+        style='margin-bottom:10px' class="mat-elevation-z4"     matRipple [matRippleCentered]="centered" [matRippleColor]="warn" >
+    
+          <p matLine style="margin-top:4em">
+            <span class="mat-body-2">{{item.prenom}} {{item.nom}} ({{item.categorie}}{{item.rang}}-{{item.sexe}})</span>
+          </p>
+    
+          <div *ngFor="let node of item.eng;" [ngSwitch]="node.presence">
+            <button mat-mini-fab *ngSwitchCase="'non'" color="warn"  ><s>{{node.day}}</s></button>
+            <button mat-mini-fab *ngSwitchCase="'oui'" style='background-color: green'>{{node.day}}</button>
+            <button mat-mini-fab *ngSwitchDefault color="primary" >{{node.day}}?</button>
+            &nbsp;&nbsp;
+          </div>
+    
+          <div matLine style='margin-bottom:2em;' >
+            &nbsp;
+            <button mat-icon-button style='margin-bottom:2em;' (click)="setNotification(item.id)" >
+              <mat-icon aria-label="Email"   matBadge="{{item.notification}}" matBadgeSize="medium" matBadgePosition="before"
+              [ngStyle]="{color: item.notification > 0 ? 'green' : 'red' }"  >contact_mail</mat-icon>
+            </button>
+            &nbsp;&nbsp;
+            <button mat-icon-button color="primary"  (click)="setExtranat(item.id)" *ngIf="item.notification > 0" >
+              <mat-icon aria-label="Extranat" [ngStyle]="{color: item.extranat === 1 ? 'green' : 'red' }" matBadge="{{item.extranat}}" matBadgeSize="medium" matBadgePosition="before">save</mat-icon>
+            </button>
+            <button mat-icon-button color="primary"  (click)="setDelete(item.id)"  *ngIf="item.notification === 0" >
+              <mat-icon aria-label="Extranat" style='color:red' >delete</mat-icon>
+            </button>
             
-              <mat-divider inset *ngIf="!last"></mat-divider>
-            </mat-list-item>
            
- 
-          </mat-list>
-        </div>
-      
-          
-        
+            &nbsp;&nbsp;&nbsp;&nbsp;
+    
+            <mat-form-field style="min-width:10px;max-width:400px;width:100%"    > 
+              <input   matInput placeholder="commentaires" readonly value="{{item.comment}}" >
+            </mat-form-field>
+    
+          </div>
+    
+          <mat-divider inset *ngIf="!last"></mat-divider>
+        </mat-list-item>
+    
+    
+      </mat-list>
+    </div>
+
+
+
   </div>
 
- 
-</mat-drawer-container>
 
+</mat-drawer-container>

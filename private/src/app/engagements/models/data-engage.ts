@@ -5,6 +5,14 @@ export class CompetEngage implements ICompetEngage {
 
 }
 
+export class MessageResponse {
+
+    success: boolean;
+    message: string;
+
+}
+
+
 
 interface ICompetEngage {
 
@@ -30,8 +38,8 @@ export class LicEngage {
     categorie: string;
     rang: string;
     presence: string;
-    notification: string;
-    extranat: string;
+    notification: number;
+    extranat: number;
     eng: Array<IEngage>;
 }
 
