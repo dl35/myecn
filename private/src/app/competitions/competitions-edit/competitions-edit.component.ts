@@ -19,8 +19,11 @@ export class CompetitionsEditComponent implements OnInit {
   public dataForm: FormGroup ;
   public response = new MessageResponse() ;
 
+ 
+
   @Input()
   set data(data: DataCompet) {
+    
        this.dataForm.setValue( data , { onlySelf: true } );
       if ( this.dataForm.get('verif').value  ===  true  ||  this.dataForm.get('id').value === null )   {
           this.dataForm.controls['verif'].disable();
@@ -71,7 +74,6 @@ export class CompetitionsEditComponent implements OnInit {
 
   saveForm() {
     const data = this.dataForm.getRawValue() ;
-
     if ( data.id === null ) {
       delete data.id;
       return this.compService.post( data ).subscribe(
@@ -81,7 +83,7 @@ export class CompetitionsEditComponent implements OnInit {
    } else {
     return this.compService.put( data ).subscribe(
       (value) =>  { this.compService.updateCache('put', value); this.doexit(true, MessageType.PUT , 'Modification valide' ); },
-      (error) =>  {  this.doexit(false, MessageType.PUT , error ); }
+      (error) =>  { console.log( JSON.stringify( error ) )  ; this.doexit(false, MessageType.PUT , error.error.message ); }
     );
   }
 
@@ -164,9 +166,13 @@ private catValidator(gcat: FormGroup ) {
  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  private onDateStart(event: MatDatepickerInputEvent<Date> ) {
    const start = new Date(event.value);
+   start.setHours(12);
+
+  this.dataForm.get('debut').setValue( start ) ;
+
    if ( this.dataForm.get('fin').value === null  ) {
      this.dataForm.get('fin').setValue( start ) ;
-   }
+  }
    if ( this.dataForm.get('limite').value === null ) {
      const limite = new Date(start);
      limite.setDate( limite.getDate() - 10 );

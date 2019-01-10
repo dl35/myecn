@@ -61,9 +61,10 @@ private  doCreate() {
       const datas = this.dataForm.getRawValue() ;
 
 
+
       this.eService.createEngagement( this.id  , datas  ).subscribe(
           res => { this.created.emit( res );  },
-          err => { this.created.emit( err.error) ; }
+          err => { console.log( err ) ; this.created.emit( err.error) ; }
 
 
       ) ;

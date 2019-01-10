@@ -70,8 +70,9 @@ generateDatas( datas ) {
     onEachFeature: function EachFeature(feature, layer) {
       // does this feature have a property named popupContent?
       if (feature.properties && feature.properties.name) {
-          layer.bindPopup(feature.properties.name + '<br>' + feature.properties.description + '<br>bassin: ' + feature.properties.bassin
-          + '&nbsp;couloirs: ' + feature.properties.couloir  );
+          layer.bindPopup('<strong>' + feature.properties.name + '</strong><br>' + feature.properties.ville +
+          '<br>' + feature.properties.description + '<br>Bassin: ' + feature.properties.bassin
+          + '&nbsp;Couloirs: ' + feature.properties.couloir  );
       }
     },
 

@@ -45,6 +45,8 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
           this.dataForm.get('compet').setValidators(Validators.required) ;
           this.dataForm.get('choix').setValidators(Validators.required) ;
           this.dataForm.get('dests').clearValidators();
+          this.dataForm.get('choix').setValue(this.typeChoix);
+
           console.log( 'ok' );
         } else if (mode === 'l') {
           this.dataForm.get('dests').setValidators(Validators.required) ;
