@@ -13,6 +13,9 @@ export class CompetitionsService {
   private subject$ = new BehaviorSubject<DataCompet[]>([]) ;
   public datas$: Observable<DataCompet[]> =  this.subject$.asObservable();
   private cache: DataCompet[] = null;
+
+  filtre = { next: true, type: null, verif: null, txt: '' };
+
   constructor(private http: HttpClient) {
      // this.getListAll() ;
 
@@ -24,7 +27,7 @@ export class CompetitionsService {
         //  if ( !this.cache  ||  this.cache.length === 0 ) {
             this.http.get<DataCompet[]>( this.url )
             .subscribe(
-              res => { this.cache = res ;  res = res.filter( item => item.next === true );  this.subject$.next(res) ; },
+              res => { this.cache = res ;  this.update(); },
             );
    //  }
       }
@@ -34,32 +37,44 @@ export class CompetitionsService {
     }
 
 
-    public search(myfilter) {
+    public setFiltre( filtre ) {
+        this.filtre = filtre ;
+    }
+
+
+    public update() {
 
       let liste: DataCompet[];
-    if (  myfilter.verif === true ) {
-       liste = this.cache.filter( item => item.verif === true );
-    } else {
-      liste = this.cache ;
-    }
-    if (  myfilter.compet === false  &&  myfilter.stage === false ) {
-      liste = liste.filter( item => item.type === ''  );
-    } else if (  myfilter.compet === true  &&  myfilter.stage === false ) {
-      liste = liste.filter( item => item.type === 'compet'  );
-   } else if (  myfilter.stage === true  &&  myfilter.compet === false ) {
-      liste = liste.filter( item => item.type === 'stage'  );
-    }
-    if (  myfilter.next === true ) {
-      liste = liste.filter( item => item.next === true );
-   }
+      if (this.filtre.verif === true) {
+        liste = this.cache.filter(item => item.verif === true);
+      } else if (this.filtre.verif === false ) {
+        liste = this.cache.filter(item => item.verif === false);
+      } else {
+        liste = this.cache;
 
-    if ( myfilter.txt && myfilter.txt.length > 0 ) {
-      // tslint:disable-next-line:max-line-length
-      liste = liste.filter( item =>   (item.nom.toLowerCase() + ' ' + item.lieu.toLowerCase() ) .indexOf( myfilter.txt.toLowerCase() ) !== -1   );
-   }
+      }
+
+      if (this.filtre.type === true) {
+        liste = liste.filter(item => item.type === 'compet');
+      } else if (this.filtre.type === false) {
+        liste = liste.filter(item => item.type === 'stage');
+      }
+
+      if (this.filtre.next === true) {
+        liste = liste.filter(item => item.next === true);
+      } else if (this.filtre.next === false) {
+        liste = liste.filter(item => item.next === false);
+      }
+
+      if ( this.filtre.txt && this.filtre.txt.length > 0 ) {
+        // tslint:disable-next-line:max-line-length
+        liste = liste.filter( item =>   (item.nom.toLowerCase() + ' ' + item.lieu.toLowerCase() ) .indexOf( this.filtre.txt.toLowerCase() ) !== -1   );
+     }
 
       this.subject$.next( liste ) ;
-      }
+
+     }
+
 
 
     public post(json) {
@@ -71,7 +86,7 @@ export class CompetitionsService {
     }
     public updateCache( method: string ,  compet: DataCompet ) {
       if ( method === 'post' ) {
-        this.cache.push ( compet );
+        this.cache.unshift ( compet );
       } else  if ( method === 'put' )  {
         const index = this.cache.findIndex(item => item.id === compet.id);
         this.cache[index] = compet;
@@ -79,8 +94,7 @@ export class CompetitionsService {
         this.cache = this.cache.filter(obj => obj.id !== compet.id );
       }
 
-      const res = this.cache.filter( item => item.next === true );
-      this.subject$.next( res );
+      this.update();
 
     }
     public delete(id) {

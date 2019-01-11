@@ -39,7 +39,7 @@
       <mat-checkbox (change)="showRecord()" formControlName="fmasters" >Masters</mat-checkbox>
       </div>
 
-
+<!--
       <mat-list *ngIf="!(loading$ | async )"  dense>
           <mat-list-item style='margin-bottom:20px' class="mat-elevation-z8"  matRipple  [matRippleCentered]="centered" [matRippleColor]="warn" *ngFor="let item of datas">
              <button mat-mini-fab style='background-color:green;color:white' >{{item.age}}</button>
@@ -48,12 +48,30 @@
             <p mat-line><mat-chip  style='background-color:green;color:white' selected>{{item.type}}</mat-chip></p>
           </mat-list-item>
           </mat-list>
+-->
 
- 
+
+
 
 
 
 </div>
+<mat-grid-list cols="2" gutterSize="1px" rowHeight="3:1" *ngIf="!(loading$ | async )"  >
+    <mat-grid-tile  *ngFor="let item of datas" colspan="1" rowspan="1"   >
+        <mat-card style="width:85%" >
+            <mat-card-header>
+             
+              <mat-card-title style="font-size: 13px"><button matTooltip="{{item.type}}" mat-mini-fab style='background-color:green;color:white' >{{item.age}}</button>&nbsp;{{item.prenom}} {{item.nom}}: {{item.temps}} ({{item.points}} pts)</mat-card-title>
+              <mat-card-subtitle style="font-size: 13px">{{item.lieu}} {{item.date}}&nbsp;<mat-chip   style='background-color:green;color:white' selected>{{item.type}}</mat-chip></mat-card-subtitle>
+            </mat-card-header>
+          
+ 
+           
+          </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+
 </mat-tab>
 <mat-tab label="Traitement">
     <div fxLayout="column"  fxLayoutAlign="space-evenly center"   fxFlex="100%" style="margin-top:20px" >

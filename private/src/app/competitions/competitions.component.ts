@@ -38,11 +38,15 @@ export class SearchFilterPipe implements PipeTransform {
 })
 export class CompetitionsComponent implements OnInit , OnDestroy  {
 
+  filtreEtat = [null, true, false];
+  filtre = { next: true, type: null, verif: null , txt: '' };
+
+
   // searchfilter:searchText
    @ViewChild('mdrawer') mdrawer: MatDrawer;
   private searchControl: FormControl;
   private subscr: Subscription;
-  private myfilter = {verif: false , compet: true , stage: true , next: true , last: true , txt: '' } ;
+
 
   showFiller = false;
   hideSide = true;
@@ -124,21 +128,19 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
 
   }
 
-  doChange($event, type ) {
+ 
+  doFilter(value) {
 
-  if ( type === 'v' ) {
-    this.myfilter.verif = $event.checked ;
-    console.log(  this.myfilter );
-  } else if ( type === 'c'  ) {
-     this.myfilter.compet = $event.checked ;
-  } else if ( type === 's' ) {
-    this.myfilter.stage = $event.checked ;
-  } else if (type === 'n') {
-    this.myfilter.next = $event.checked ;
-  }
+    if (value === 'verif') {
+      this.filtre.verif = this.filtreEtat[(this.filtreEtat.indexOf(this.filtre.verif) + 1) % this.filtreEtat.length];
+    } else if (value === 'type') {
+      this.filtre.type = this.filtreEtat[(this.filtreEtat.indexOf(this.filtre.type) + 1) % this.filtreEtat.length];
+    } else {
+      this.filtre.next = this.filtreEtat[(this.filtreEtat.indexOf(this.filtre.next) + 1) % this.filtreEtat.length];
+    }
 
-  this.compService.search( this.myfilter );
-
+   this.compService.setFiltre( this.filtre );
+   this.compService.update();
 
   }
 
@@ -149,12 +151,13 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
     this.subscr =  this.searchControl.valueChanges
         .pipe(
           // tap ( () =>  console.log( this.searchText.length ) ),
-          filter(   (v: string) => ( v.length < this.myfilter.txt.length ) || v.length >= 3   ),
+          filter(   (v: string) => ( v.length < this.filtre.txt.length ) || v.length >= 3   ),
           debounceTime( 200 ),
           distinctUntilChanged()
           ).subscribe(query => {
-          this.myfilter.txt = query ;
-          this.compService.search(this.myfilter );
+          this.filtre.txt = query ;
+          this.compService.setFiltre(this.filtre);
+          this.compService.update();
 
         });
 
@@ -178,7 +181,7 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
-    this.subscr.unsubscribe();
+ //   this.subscr.unsubscribe();
   }
 
 }

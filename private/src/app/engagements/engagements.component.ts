@@ -27,7 +27,7 @@ export class EngagementsComponent implements OnInit, OnDestroy {
   filtre = { notif: null, ext: null, pre: null };
 
 
-  filter = { p0: true, p1: true, ex0: true, ex1: true, no0: true, no1: false };
+ // filter = { p0: true, p1: true, ex0: true, ex1: true, no0: true, no1: false };
 
 
   hideSide = true;

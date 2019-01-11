@@ -23,16 +23,35 @@
        <mat-drawer #mdrawer class="example-sidenav" [mode]="mobileQuery.matches ? 'over' : 'side'"  [opened]="mobileQuery.matches ? 'false' : 'true'"  >
          <p><span class="mat-body-2" >Les Compétitions</span></p>
          
-          <div style="padding:5px" >
-          <mat-checkbox class="mat-body-2" (change)="doChange($event,'v')" >Vérifiées</mat-checkbox>
-          &nbsp;
-          <mat-checkbox class="mat-body-2" (change)="doChange($event,'n')" checked='true' >Futures</mat-checkbox>
+         <div style="padding:5px">
+            <mat-checkbox [ngModel]="filtre.next" [indeterminate]="filtre.next === null" (ngModelChange)="doFilter('next')"
+              [color]="filtre.next === null ? 'primary' : 'accent'">
+              <div class="mat-body-2" *ngIf="filtre.next === false">Passées</div>
+              <div class="mat-body-2" *ngIf="filtre.next === true">Futures</div>
+              <div class="mat-body-2" *ngIf="filtre.next === null">Dates</div>
+      
+            </mat-checkbox>
+      
           </div>
           <mat-divider></mat-divider>
-          <div style="padding:5px" >
-          <mat-checkbox class="mat-body-2" (change)="doChange($event,'s')" checked='true'  >Stages</mat-checkbox>
-          &nbsp;
-          <mat-checkbox class="mat-body-2" (change)="doChange($event,'c')" checked='true'  >Competitions</mat-checkbox>
+          <div style="padding:5px">
+            <mat-checkbox [ngModel]="filtre.verif" [indeterminate]="filtre.verif === null" (ngModelChange)="doFilter('verif')"
+              [color]="filtre.verif === null ? 'primary' : 'accent'">
+              <div class="mat-body-2" *ngIf="filtre.verif === false">à Verifiées</div>
+              <div class="mat-body-2" *ngIf="filtre.verif === true">Verifiées</div>
+              <div class="mat-body-2" *ngIf="filtre.verif === null">Etat</div>
+      
+            </mat-checkbox>
+          </div>
+          <mat-divider></mat-divider>
+          <div style="padding:5px">
+            <mat-checkbox [ngModel]="filtre.type" [indeterminate]="filtre.type === null" (ngModelChange)="doFilter('type')"
+              [color]="filtre.type === null ? 'primary' : 'accent'">
+              <div class="mat-body-2" *ngIf="filtre.type === false">Stages</div>
+              <div class="mat-body-2" *ngIf="filtre.type === true">Compétitions</div>
+              <div class="mat-body-2" *ngIf="filtre.type === null">Type</div>
+      
+            </mat-checkbox>
           </div>
           </mat-drawer>
      
@@ -49,14 +68,14 @@
                   <mat-icon  *ngIf="data.nb > 0" matListIcon color='primary' [matBadge]="data.nb" [svgIcon]="data.verif  ? 'swimvalid' : 'swiminvalid' "></mat-icon>
                   <mat-icon  *ngIf="data.nb === 0" matListIcon color='primary'  [svgIcon]="data.verif  ? 'swimvalid' : 'swiminvalid' "></mat-icon>
      
-                  <p style="font-weight:500"   matLine>{{data.nom}} -- {{data.nb}}
+                  <p style="font-weight:500"   matLine>{{data.nom}}
                   </p>
                  
                
                
                  <p matLine [ngSwitch]=" data.debut !== data.fin ">
-                 <span *ngSwitchCase="true" >{{data.debut | date:'dd MMM' }} au {{data.fin | date:'dd MMM' }}</span>
-                 <span *ngSwitchCase="false" >{{data.debut | date:'dd MMM' }} -- </span>
+                 <span *ngSwitchCase="true" >{{data.debut | date:'dd' }} au {{data.fin | date:'dd MMM' }}</span>
+                 <span *ngSwitchCase="false" >{{data.debut | date:'dd MMM' }}</span>
                 
                    <span class="demo-secondary-text">&nbsp;&nbsp;{{data.lieu}}</span>
                  </p>
