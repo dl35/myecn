@@ -1,5 +1,6 @@
 import { DialogEngageComponent } from './engagements/dialog-engage/dialog-engage.component';
-import { MomentDateAdapter, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
+import { MomentDateAdapter, MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MAT_MOMENT_DATE_FORMATS, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { EngagementsModule } from './engagements/engagements.module';
 import { PiscinesModule } from './piscines/piscines.module';
 import { RecordsModule } from './records/records.module';
@@ -55,7 +56,8 @@ registerLocaleData(localeFr, 'fr');
     MailtoModule,
     RecordsModule,
     PiscinesModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatMomentDateModule
   ],
   entryComponents: [DialogConfirmComponent, DialogEngageComponent],
   providers: [AuthGuard ,

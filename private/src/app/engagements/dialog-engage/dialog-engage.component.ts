@@ -48,9 +48,11 @@ export class DialogEngageComponent implements OnInit {
 
   private filterLic( value ) {
     this.lic.reset();
+   
     this.eService.getLicencies( this.data.id )
            .subscribe(
-          (datas) => {  this.datasLic = datas.filter ( v => v.categorie === value )  ; }
+          (datas) => { console.log( datas  );  this.datasLic = datas.filter ( v => v.categorie === value )  ; },
+          (err) => {  console.log(err) ; }
        );
   }
 }

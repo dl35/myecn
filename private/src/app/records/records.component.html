@@ -42,9 +42,10 @@
 
       <mat-list *ngIf="!(loading$ | async )"  dense>
           <mat-list-item style='margin-bottom:20px' class="mat-elevation-z8"  matRipple  [matRippleCentered]="centered" [matRippleColor]="warn" *ngFor="let item of datas">
-             <button mat-mini-fab color="primary">{{item.age}}</button>
+             <button mat-mini-fab style='background-color:green;color:white' >{{item.age}}</button>
             <h4 mat-line> {{item.nom}}-{{item.prenom}}: {{item.temps}} ({{item.points}} pts)  </h4>
-            <p mat-line> {{item.lieu}} {{item.date}} <mat-chip color="primary" selected>{{item.type}}</mat-chip></p>
+            <p mat-line> {{item.lieu}} {{item.date}}</p>
+            <p mat-line><mat-chip  style='background-color:green;color:white' selected>{{item.type}}</mat-chip></p>
           </mat-list-item>
           </mat-list>
 

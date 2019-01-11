@@ -16,7 +16,11 @@
     "@angular/common": "^7.2.0",
     "@angular/compiler": "^7.2.0",
     "@angular/core": "^7.2.0",
+<<<<<<< HEAD
     "@angular/flex-layout": "^7.0.0-beta.23",
+=======
+    "@angular/flex-layout": "^7.0.0-beta.22",
+>>>>>>> bd2c0d7b97fab10e95829d584b6e7489e9345b44
     "@angular/forms": "^7.2.0",
     "@angular/http": "^7.2.0",
     "@angular/material": "^7.2.1",
