@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit, Pipe, Injectable, Pipe
 import { MediaMatcher } from '@angular/cdk/layout';
 import { CompetitionsService } from './services/competitions.service';
 import { Observable , Subscription } from 'rxjs';
-import { filter , distinctUntilChanged , debounceTime, map} from 'rxjs/operators';
+import { filter , distinctUntilChanged , debounceTime, map, shareReplay} from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 
 import 'hammerjs';
@@ -162,9 +162,11 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
         });
 
 
-     this.datas$ = this.compService.getList() ;
+     this.datas$ = this.compService.getList().pipe( shareReplay(1) ) ;
      this.compService.getListAll();
      this.dataSelected = null ;
+
+
 /*
     this.datas$ = this.compService.getList().pipe(
       catchError(error => {

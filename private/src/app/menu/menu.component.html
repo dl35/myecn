@@ -15,17 +15,9 @@
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item [routerLink]="['/admin']"  >
+            <button mat-menu-item routerLink="/admin"  >
               <mat-icon>settings</mat-icon>
               <span>Administration</span>
-            </button>
-            <button mat-menu-item disabled>
-              <mat-icon>voicemail</mat-icon>
-              <span>Check voicemail</span>
-            </button>
-            <button mat-menu-item>
-              <mat-icon>build</mat-icon>
-              <span>Outils</span>
             </button>
           </mat-menu>
         

@@ -2,6 +2,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { CompetEngage, LicEngage } from './../models/data-engage';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { shareReplay, publishReplay, refCount } from 'rxjs/operators';
 
 
 
@@ -11,20 +12,16 @@ import { Injectable } from '@angular/core';
 export class EngageService {
 
 
-
-
-
-  private option = { present: true, absent: true };
-
   private url = '/api/private/engagements' ;
 
   constructor(private http: HttpClient) { }
 
 
+
+
   public  getCompet() {
         return this.http.get<CompetEngage[]>( this.url );
      }
-
 
 
   public createEngagement( id , data ) {
@@ -38,6 +35,7 @@ export class EngageService {
     return this.http.get<any[]>( uget  ) ;
 
   }
+
 
   public sendMails( id ) {
     const uput = this.url + '/' + id ;

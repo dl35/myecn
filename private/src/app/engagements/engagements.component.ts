@@ -2,13 +2,13 @@ import { DialogEngageComponent } from './dialog-engage/dialog-engage.component';
 import { CompetEngage, LicEngage, MessageResponse } from './models/data-engage';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { Observable, Subscription, Subject } from 'rxjs';
+import { Observable, Subscription, Subject, EMPTY, interval } from 'rxjs';
 import { EngageService } from './services/engage.service';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, shareReplay, catchError, finalize, map, tap, take, filter } from 'rxjs/operators';
 
 
 @Component({
@@ -26,10 +26,6 @@ export class EngagementsComponent implements OnInit, OnDestroy {
   filtreEtat = [null, true, false];
   filtre = { notif: null, ext: null, pre: null };
 
-
- // filter = { p0: true, p1: true, ex0: true, ex1: true, no0: true, no1: false };
-
-
   hideSide = true;
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
@@ -44,6 +40,10 @@ export class EngagementsComponent implements OnInit, OnDestroy {
 
   destroyed$: Subject<any> = new Subject();
 
+
+  engageList$: Observable<LicEngage[]>;
+​
+
   constructor(public dialog: MatDialog, changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher, private eService: EngageService, private snackBar: MatSnackBar) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
@@ -53,7 +53,7 @@ export class EngagementsComponent implements OnInit, OnDestroy {
     this.engage = null;
     this.idc = -1;
     console.log('create');
-  }
+}
 
   switchdrawer() {
 
@@ -76,6 +76,12 @@ export class EngagementsComponent implements OnInit, OnDestroy {
 
   }
 
+  public initFiltre() {
+    if ( this.filtre.ext !== null ) { this.filtre.ext = null; }
+    if ( this.filtre.notif !== null ) { this.filtre.notif = null; }
+    if ( this.filtre.pre !== null ) { this.filtre.pre = null; }
+  }
+
 
   public setDelete(id) {
     const dialogRef = this.dialog.open(DialogEngageComponent, {
@@ -92,6 +98,7 @@ export class EngagementsComponent implements OnInit, OnDestroy {
           this.eService.setDelete(id).subscribe(
             (res) => {
               this.cachedDatas = this.cachedDatas.filter(obj => obj.id !== id);
+              this.initFiltre();
               if ( this.cachedDatas.length === 0  ) {
                 this.engage = null;
               } else {
@@ -127,6 +134,7 @@ export class EngagementsComponent implements OnInit, OnDestroy {
               const data = this.cachedDatas[index];
               data.extranat = 1 - data.extranat;
               this.showSnackBar('Extranat valide', true);
+              this.doUpdate();
             }
             ,
             (err) => { this.showSnackBar(err.error.message, false); },
@@ -171,13 +179,14 @@ export class EngagementsComponent implements OnInit, OnDestroy {
   public setCompetition(id) {
     this.idc = id;
     this.loading = true;
-    this.eService.getEngagement(id).pipe(takeUntil(this.destroyed$)).subscribe(
+    this.eService.getEngagement(id).pipe( takeUntil(this.destroyed$)).subscribe(
       (res) => {
         if (res.length === 0) {
-          this.engage = null;
+          this.engage = this.cachedDatas = null;
         } else {
+     
+          this.initFiltre();
           this.engage = this.cachedDatas = res; this.showSnackBar('Engagements: ' + res.length, true);
-          console.log(this.engage);
         }
       },
       (err) => { this.showSnackBar(err.error.message, false); },
@@ -185,21 +194,17 @@ export class EngagementsComponent implements OnInit, OnDestroy {
     );
   }
 
+
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
   }
 
-  doFilter(value) {
+
+  public doUpdate() {
+
     let tmp = this.cachedDatas;
 
-    if (value === 'notif') {
-      this.filtre.notif = this.filtreEtat[(this.filtreEtat.indexOf(this.filtre.notif) + 1) % this.filtreEtat.length];
-    } else if (value === 'ext') {
-      this.filtre.ext = this.filtreEtat[(this.filtreEtat.indexOf(this.filtre.ext) + 1) % this.filtreEtat.length];
-    } else {
-      this.filtre.pre = this.filtreEtat[(this.filtreEtat.indexOf(this.filtre.pre) + 1) % this.filtreEtat.length];
-    }
 
     if (this.filtre.notif === true) {
       tmp = tmp.filter(item => item.notification !== 0);
@@ -242,6 +247,22 @@ export class EngagementsComponent implements OnInit, OnDestroy {
   }
 
 
+
+  public doFilter(value) {
+
+    if (value === 'notif') {
+      this.filtre.notif = this.filtreEtat[(this.filtreEtat.indexOf(this.filtre.notif) + 1) % this.filtreEtat.length];
+    } else if (value === 'ext') {
+      this.filtre.ext = this.filtreEtat[(this.filtreEtat.indexOf(this.filtre.ext) + 1) % this.filtreEtat.length];
+    } else {
+      this.filtre.pre = this.filtreEtat[(this.filtreEtat.indexOf(this.filtre.pre) + 1) % this.filtreEtat.length];
+    }
+
+    this.doUpdate();
+
+  }
+
+
   private showSnackBar(message, info) {
     // tslint:disable-next-line:no-shadowed-variable
     let style = 'snack-success';
@@ -269,13 +290,13 @@ export class EngagementsComponent implements OnInit, OnDestroy {
           this.loading = true;
           this.eService.sendMails(this.idc).subscribe(
             (res) => { this.showSnackBar('send mails ok', true); this.setCompetition(this.idc); },
-            (error) => { this.showSnackBar(error, false); },
+            (err) => { this.showSnackBar(err.error.message, false); },
             () => this.loading = false
 
           );
         }
       },
-      () => { },
+      () => { } ,
       () => { } ,
     );
   }
@@ -294,7 +315,7 @@ export class EngagementsComponent implements OnInit, OnDestroy {
           // (error) =>  { this.showSnackBar( error   , false ); }
         }
       },
-      () => { },
+      (err) => { this.showSnackBar(err.error.message, false); },
       () => this.loading = false
     );
   }
