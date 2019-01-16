@@ -184,7 +184,6 @@ export class EngagementsComponent implements OnInit, OnDestroy {
         if (res.length === 0) {
           this.engage = this.cachedDatas = null;
         } else {
-     
           this.initFiltre();
           this.engage = this.cachedDatas = res; this.showSnackBar('Engagements: ' + res.length, true);
         }
