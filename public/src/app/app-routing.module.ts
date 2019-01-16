@@ -1,7 +1,31 @@
+
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { StatsComponent } from './stats/stats.component';
+import { EngagementsComponent } from './engagements/engagements.component';
+import { PiscinesComponent } from './piscines/piscines.component';
+import { MenuComponent } from './menu/menu.component';
+import { AdhesionComponent } from './adhesion/adhesion.component';
+import { RecordsComponent } from './records/records.component';
+import { CompetitionsComponent } from './competitions/competitions.component';
 
-const routes: Routes = [];
+export const routes: Routes = [
+
+  {
+    path: '', component: MenuComponent,  children:
+      [
+        { path: 'stats', component: StatsComponent },
+        { path: 'piscines', component: PiscinesComponent },
+        { path: 'competitions', component: CompetitionsComponent },
+        { path: 'records', component: RecordsComponent }
+      ]
+  },
+  { path: 'engagements/:ide/:id', component: EngagementsComponent },
+  { path: 'adhesion', component: AdhesionComponent },
+  { path: 'adhesion/:id', component: AdhesionComponent },
+  { path: '**', component: MenuComponent }
+
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

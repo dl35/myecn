@@ -1,0 +1,108 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Formulaires d'Adhésion</span>
+  </mat-toolbar-row>
+
+</mat-toolbar>
+
+<form fxLayoutAlign="center center" style="margin-top:20px;" autocomplete="off" [formGroup]="dataForm" novalidate>
+
+  <div fxLayout="column" fxFlex="75%">
+
+    <div fxLayoutAlign="center center" fxLayout="row">
+      <mat-icon color="primary">account_box</mat-icon>
+      <mat-form-field fxFlex="50%" style="margin-right:5%">
+        <input matInput placeholder="Nom" formControlName="nom" fxFlex="70%">
+        <mat-error>Le nom est requis</mat-error>
+      </mat-form-field>
+      <mat-icon color="primary">account_circle</mat-icon>
+      <mat-form-field fxFlex="50%">
+        <input matInput placeholder="Prénom" formControlName="prenom" fxFlex="70%">
+        <mat-error>Le prénom est requis</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxLayoutAlign="start center" fxLayout="row">
+      <mat-icon color="primary">calendar_today</mat-icon>
+      <mat-form-field fxFlex="30%" style="margin-left:1%;margin-right:5%">
+        <input required matInput [matDatepicker]="date" placeholder="Date Naissance" (click)="date.open()" (dateChange)="onDateStart($event)"
+          formControlName="date">
+        <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+        <mat-datepicker #date></mat-datepicker>
+        <mat-error>La date de naissance est requise</mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="20%" fxFlexAlign="baseline">
+        <mat-select placeholder="Sexe" formControlName="sexe">
+          <mat-option value="F">Femme</mat-option>
+          <mat-option value="H">Homme</mat-option>
+        </mat-select>
+        <mat-error>Le sexe est requis</mat-error>
+      </mat-form-field>
+    </div>
+
+
+    <div fxLayoutAlign="center center" fxLayout="row">
+      <mat-icon color="primary">place</mat-icon>
+      <mat-form-field fxFlex="70%" style="margin-right:5%">
+        <input matInput placeholder="Adresse" formControlName="adresse">
+        <mat-error>Une adresse est requise</mat-error>
+      </mat-form-field>
+      <mat-icon color="primary">home</mat-icon>
+      <mat-form-field fxFlex="25%" style="margin-right:5%">
+        <input matInput placeholder="Ville" formControlName="ville">
+        <mat-error>La ville est requise</mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="12%">
+        <input #cp maxlength="5" matInput placeholder="Code postal" formControlName="cp">
+        <mat-hint align="end">{{cp.value.length}} / 5</mat-hint>
+        <mat-error>Le cp est requis</mat-error>
+      </mat-form-field>
+    </div>
+
+
+
+
+    <div fxLayoutAlign="center center" fxLayout="row">
+      <mat-icon color="primary">email</mat-icon>
+      <mat-form-field fxFlex="33%" style="margin-left:1%;margin-right:5%">
+        <input matInput placeholder="Adresse email" formControlName="email1" f>
+        <mat-error>une adresse email valide est requise</mat-error>
+        <mat-hint><strong>au moins 1 adresse email obligatoire*</strong></mat-hint>
+      </mat-form-field>
+      <mat-icon color="primary">email</mat-icon>
+      <mat-form-field fxFlex="33%" style="margin-left:1%;margin-right:5%">
+        <input matInput placeholder="Adresse email" formControlName="email2" >
+        <mat-error>une adresse email valide est requise</mat-error>
+      </mat-form-field>
+      <mat-icon color="primary">email</mat-icon>
+      <mat-form-field fxFlex="33%" style="margin-left:1%">
+        <input matInput placeholder="Adresse email" formControlName="email3">
+        <mat-error>une adresse email valide est requise</mat-error>
+      </mat-form-field>
+    </div>
+
+
+    <div fxLayoutAlign="center center" fxLayout="row">
+      <mat-icon color="primary">phone</mat-icon>
+      <mat-form-field fxFlex="40%" style="margin-left:1%;margin-right:5%">
+        <input maxlength="10" matInput placeholder="Téléphone" formControlName="tel1" >
+        <mat-hint align="start"><strong>au moins 1 numéro de tel. obligatoire*</strong> </mat-hint>
+        <mat-error>un numéro de tel. valide est requis</mat-error>
+      </mat-form-field>
+      <mat-icon color="primary">phone</mat-icon>
+      <mat-form-field fxFlex="40%" style="margin-left:1%;margin-right:5%">
+        <input maxlength="10" matInput placeholder="Téléphone" formControlName="tel2" >
+        <mat-error>un numéro de tel. valide est requis</mat-error>
+      </mat-form-field>
+      <mat-icon color="primary">phone</mat-icon>
+      <mat-form-field fxFlex="40%" style="margin-left:1%">
+        <input maxlength="10" matInput placeholder="Téléphone" formControlName="tel3" >
+        <mat-error>un numéro de tel. valide est requis</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div style="margin-top:10px;" fxLayoutAlign="center center">
+      <button mat-raised-button color="primary" [disabled]="dataForm.invalid" (click)="sendAdhesion()">Valider</button>
+    </div>
+  </div>
+</form>
