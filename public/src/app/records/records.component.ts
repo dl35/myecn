@@ -6,7 +6,12 @@ import { RecordsService } from './services/records.service';
 
 
 
-
+export interface Tile {
+  color: string;
+  cols: number;
+  rows: number;
+  text: string;
+}
 
 @Component({
   selector: 'app-records',
@@ -17,7 +22,12 @@ export class RecordsComponent implements OnInit {
 
   dataForm: FormGroup;
   datas: Array<any> ;
-
+  tiles: Tile[] = [
+    {text: 'One', cols: 3, rows: 1, color: 'lightblue'},
+    {text: 'Two', cols: 1, rows: 2, color: 'lightgreen'},
+    {text: 'Three', cols: 1, rows: 1, color: 'lightpink'},
+    {text: 'Four', cols: 2, rows: 1, color: '#DDBDF1'},
+  ];
   loading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   // tslint:disable-next-line:max-line-length
@@ -28,7 +38,7 @@ export class RecordsComponent implements OnInit {
 
 
 
-  constructor(private fb: FormBuilder, private rService: RecordsService ) { }
+  constructor(private fb: FormBuilder, private recService: RecordsService ) { }
 
   ngOnInit() {
     this.createForm();
@@ -51,36 +61,35 @@ export class RecordsComponent implements OnInit {
 
      const test = this.dataForm.getRawValue() ;
 
-console.log(  test );
 
       if ( test.fdists !== null ) {
         this.loading$.next(true);
         setTimeout(function() {  }, 2000 );
-       
+
         if ( test.fmasters ) {
 
-          this.rService.getDatas().pipe(
+          this.recService.getDatas().pipe(
             map( v =>  v.filter( t =>   t.bassin ===  test.fbassin
                   &&  t.sexe ===  test.fsexe
                   &&  t.nage ===  test.fnages
                   &&  t.distance ===  test.fdists   &&  (t.age.startsWith('C') || t.age.startsWith('R') )
               ) )).subscribe(
 
-                (datas) =>  this.datas = datas ,
+                (datas) => { this.datas = datas ; console.log(datas) },
                 (error) =>  {},
                 () =>  { setTimeout( () => { this.loading$.next(false) ; }, 500); }
 
               );
         } else {
 
-          this.rService.getDatas().pipe(
+          this.recService.getDatas().pipe(
             map( v =>  v.filter( t =>   t.bassin ===  test.fbassin
                   &&  t.sexe ===  test.fsexe
                   &&  t.nage ===  test.fnages
                   &&  t.distance ===  test.fdists   &&  ( t.age.startsWith('C') === false &&  t.age.startsWith('R') === false )
               ) )).subscribe(
 
-                (datas) =>  this.datas = datas ,
+                (datas) => { this.datas = datas ; console.log(datas) } ,
                 (error) => {} ,
                 () =>  { setTimeout( () => { this.loading$.next(false) ; }, 500); }
 
