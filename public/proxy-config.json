@@ -1,11 +1,9 @@
 {
   "/api/public": {
-    "target": "http://192.168.1.7",
+    "target": "http://137.129.109.53",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true,
-    "pathRewrite": {
-      "^/api/public": "/public"
-    }
+    "pathRewrite": {"^/api/public" : "/api/public"}
   }
 }
