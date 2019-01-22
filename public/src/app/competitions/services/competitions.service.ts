@@ -11,13 +11,12 @@ export interface ICompetitions {
 
 export interface IEngagements {
 
-  id_licencies?: string;
   nom: string;
   prenom: string;
   categorie: string;
   sexe: string;
   rang: string;
-  eng: IEng;
+  eng: Array<IEng>;
 }
 
 

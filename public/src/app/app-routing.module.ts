@@ -18,6 +18,7 @@ export const routes: Routes = [
         { path: 'piscines', component: PiscinesComponent },
         { path: 'competitions', component: CompetitionsComponent },
         { path: 'records', component: RecordsComponent }
+
       ]
   },
   { path: 'engagements/:ide/:id', component: EngagementsComponent },

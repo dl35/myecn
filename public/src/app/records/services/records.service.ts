@@ -1,6 +1,26 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { shareReplay } from 'rxjs/operators';
+import { shareReplay, tap } from 'rxjs/operators';
+
+
+
+export interface IRecords {
+age: string;
+bassin: '25' | '50' ;
+date: string ;
+distance: string;
+lieu: string;
+modif: string;
+nage: string;
+nom: string;
+points: number;
+prenom: string;
+sexe: 'F' | 'H' ;
+temps: number;
+type: 'CLUB' | 'DEP' | 'REG' | 'NAT';
+}
+
+
 
 
 @Injectable({
@@ -13,8 +33,7 @@ export class RecordsService {
   private url = '/api/public/records';
 
   public  getDatas() {
-    console.log( this.url );
-     return this.http.get<Array<any>>( this.url ).pipe(shareReplay(1));
+     return this.http.get<Array<IRecords>>( this.url ).pipe( shareReplay(1) );
   }
 
 

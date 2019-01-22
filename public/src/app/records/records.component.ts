@@ -1,34 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { RecordsService } from './services/records.service';
+
+import { RecordsService, IRecords } from './services/records.service';
+import { MediaObserver, MediaChange } from '@angular/flex-layout';
+import { Subject, BehaviorSubject, Observable } from 'rxjs';
+import { takeUntil, map, filter, shareReplay } from 'rxjs/operators';
 
 
 
-export interface Tile {
-  color: string;
-  cols: number;
-  rows: number;
-  text: string;
-}
+
 
 @Component({
   selector: 'app-records',
   templateUrl: './records.component.html',
   styleUrls: ['./records.component.scss']
 })
-export class RecordsComponent implements OnInit {
+export class RecordsComponent implements OnInit, OnDestroy  {
 
-  dataForm: FormGroup;
-  datas: Array<any> ;
-  tiles: Tile[] = [
-    {text: 'One', cols: 3, rows: 1, color: 'lightblue'},
-    {text: 'Two', cols: 1, rows: 2, color: 'lightgreen'},
-    {text: 'Three', cols: 1, rows: 1, color: 'lightpink'},
-    {text: 'Four', cols: 2, rows: 1, color: '#DDBDF1'},
-  ];
-  loading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
+
+  private dataForm: FormGroup;
+  private cachedDatas: IRecords[] ;
+  private datas: IRecords[] ;
+  
+
+  private gridByBreakpoint = {
+    xl: { col: 3 , row: '5:1' },
+    lg: { col: 3 , row: '5:2' },
+    md: { col: 2 , row: '5:2' },
+    sm: { col: 1 , row: '5:1' },
+    xs: { col: 1 , row: '3:1' },
+  };
+  private gridCol = this.gridByBreakpoint['lg'].col;
+  private gridRow = this.gridByBreakpoint['lg'].row;
+
+  destroyed$: Subject<any> = new Subject();
 
   // tslint:disable-next-line:max-line-length
   nages =  [ {value: 'NL' , label: 'Nage libre' }, {value: 'BRA' , label: 'Brasse' }, {value: 'DOS' , label: 'Dos' }, {value: 'PAP' , label: 'Papillon' }]  ;
@@ -38,15 +44,29 @@ export class RecordsComponent implements OnInit {
 
 
 
-  constructor(private fb: FormBuilder, private recService: RecordsService ) { }
+  constructor(private mediaObserver: MediaObserver, private fb: FormBuilder, private recService: RecordsService ) { }
 
   ngOnInit() {
     this.createForm();
-
+    this.initResponsive();
+    this.getRecords();
   }
 
 
-  createForm() {
+
+  private initResponsive() {
+    this.mediaObserver.media$.pipe(takeUntil(this.destroyed$)).subscribe((change: MediaChange) => {
+      this.gridCol = this.gridByBreakpoint[change.mqAlias].col;
+      this.gridRow = this.gridByBreakpoint[change.mqAlias].row;
+    },
+      (error) => { },
+      () => { },
+
+    );
+
+  }
+
+  private createForm() {
     this.dataForm = this.fb.group({
           fnages : ['NL'],
           fbassin : ['25'],
@@ -57,48 +77,59 @@ export class RecordsComponent implements OnInit {
 
   }
 
-  showRecord() {
+
+  private getRecords() {
+    this.recService.getDatas().pipe( takeUntil(this.destroyed$) ).subscribe(
+        (datas) => { this.cachedDatas = datas ; } ,
+        (error) => { } ,
+        () => {   } ,
+    );
+   }
+
+   private getStyle(type) {
+
+     if ( type === 'DEP') {
+        return {  'background-color': 'blue' , 'color': 'white' } ;
+       } else if ( type === 'REG') {
+        return {  'background-color': 'rgb(113, 0, 128)' , 'color': 'white' } ;
+       } else if ( type === 'FRA') {
+        return {  'background-color': 'rgb(173, 214, 173)' , 'color': 'white' } ;
+      } else {
+        return {  'background-color': 'green' , 'color': 'white' } ;
+      }
+
+   }
+
+   private showRecord() {
 
      const test = this.dataForm.getRawValue() ;
 
-
       if ( test.fdists !== null ) {
-        this.loading$.next(true);
-        setTimeout(function() {  }, 2000 );
 
         if ( test.fmasters ) {
 
-          this.recService.getDatas().pipe(
-            map( v =>  v.filter( t =>   t.bassin ===  test.fbassin
+         this.datas =  this.cachedDatas.filter( t =>   t.bassin ===  test.fbassin
                   &&  t.sexe ===  test.fsexe
                   &&  t.nage ===  test.fnages
                   &&  t.distance ===  test.fdists   &&  (t.age.startsWith('C') || t.age.startsWith('R') )
-              ) )).subscribe(
-
-                (datas) => { this.datas = datas ; console.log(datas) },
-                (error) =>  {},
-                () =>  { setTimeout( () => { this.loading$.next(false) ; }, 500); }
-
-              );
+              )  ;
         } else {
 
-          this.recService.getDatas().pipe(
-            map( v =>  v.filter( t =>   t.bassin ===  test.fbassin
+          this.datas =  this.cachedDatas.filter( t =>   t.bassin ===  test.fbassin
                   &&  t.sexe ===  test.fsexe
                   &&  t.nage ===  test.fnages
                   &&  t.distance ===  test.fdists   &&  ( t.age.startsWith('C') === false &&  t.age.startsWith('R') === false )
-              ) )).subscribe(
-
-                (datas) => { this.datas = datas ; console.log(datas) } ,
-                (error) => {} ,
-                () =>  { setTimeout( () => { this.loading$.next(false) ; }, 500); }
-
-              );
+              )  ;
 
         }
         }
   }
 
 
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
 }
 
