@@ -1,5 +1,3 @@
-import { StatsComponent } from './stats/stats.component';
-
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserModule } from '@angular/platform-browser';
@@ -19,6 +17,9 @@ import { PiscinesModule } from './piscines/piscines.module';
 import { CompetitionsModule } from './competitions/competitions.module';
 import { StatsModule } from './stats/stats.module';
 import { AdhesionModule } from './adhesion/adhesion.module';
+
+
+
 
 @NgModule({
   declarations: [
@@ -43,7 +44,6 @@ import { AdhesionModule } from './adhesion/adhesion.module';
     StatsModule,
     AdhesionModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: []
 })
 export class AppModule { }

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '../material/material.module';
+import { ChartModule } from 'angular-highcharts';
 
 @NgModule({
   imports: [
@@ -11,7 +12,8 @@ import { MaterialModule } from '../material/material.module';
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    MaterialModule
+    MaterialModule,
+    ChartModule
   ],
   declarations: [StatsComponent]
 })

@@ -47,7 +47,7 @@ export class AdhesionComponent implements OnInit , OnDestroy {
     } else {
 
       this.adhesion.addLicencies(data).pipe( takeUntil(this.destroyed$) ).subscribe(
-        res => { this.showSnackBar(res.message, true);  } ,
+        res => { this.showSnackBar(res.message, true);  this.router.navigate(['/']); } ,
         error => { this.showSnackBar(error.error.message, false);  }
        ) ;
     }

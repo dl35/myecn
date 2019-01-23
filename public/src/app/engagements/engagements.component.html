@@ -1,8 +1,33 @@
 <mat-toolbar color="primary">
-  <mat-toolbar-row>
-
-    <mat-icon (click)="switchdrawer()" style="cursor: pointer;">menu</mat-icon>
-
-  </mat-toolbar-row>
-
+    <mat-toolbar-row>
+        <span>Formulaire Engagement</span>
+      </mat-toolbar-row>
 </mat-toolbar>
+
+
+<form fxLayoutAlign="center center" style="margin-top:20px;" autocomplete="off" [formGroup]="dataForm" novalidate>
+
+    <div fxLayout="column" fxLayoutAlign="center center" fxFlex="75%">
+        <h3 matLine>{{data?.message}}</h3> 
+      <div fxLayoutAlign="center center" fxLayout="column"  >
+          <mat-list *ngFor="let item of data?.engage" >
+              <mat-list-item  >   
+                  <button mat-button color="primary">{{item.date | date: 'dd MMMM'}}</button>
+                <mat-radio-group formControlName="{{item.id}}" fxLayout="row"  >
+                  <mat-radio-button value="oui" color="primary" style="margin: 5px;" >Oui</mat-radio-button>
+                  <mat-radio-button value="non" color="primary" style="margin: 5px;" >Non</mat-radio-button>
+                </mat-radio-group>
+              </mat-list-item>
+              <mat-divider></mat-divider>
+             </mat-list>
+
+        
+      </div>
+      <div style="margin-top:10px;" fxLayoutAlign="center center">
+          <button mat-raised-button color="primary" [disabled]="dataForm.invalid" (click)="validate()">Valider</button>
+        </div>
+</div>
+</form>
+
+
+

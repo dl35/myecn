@@ -21,7 +21,7 @@ export const routes: Routes = [
 
       ]
   },
-  { path: 'engagements/:ide/:id', component: EngagementsComponent },
+  { path: 'engagements/:ide/:idl', component: EngagementsComponent },
   { path: 'adhesion', component: AdhesionComponent },
   { path: 'adhesion/:id', component: AdhesionComponent },
   { path: '**', component: MenuComponent }
