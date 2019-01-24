@@ -11,9 +11,15 @@ export class EngagementsService {
   constructor(private http: HttpClient) { }
 
 
-public getEngagements(id , idlic ) {
-    const url = this.url + '/' + id + '/' + idlic ;
+public getEngagements(ide , idl ) {
+    const url = this.url + '/' + ide + '/' + idl ;
     return this.http.get( url ) ;
 }
+
+public updateEngagements(ide , idl, datas ) {
+  const url = this.url + '/' + ide + '/' + idl ;
+  return this.http.put( url , datas ) ;
+}
+
 
 }

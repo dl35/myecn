@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
-import { AdhesionService } from '../adhesion/services/adhesion.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -16,7 +15,12 @@ export class EngagementsComponent implements OnInit {
 
 
 
+
   public dataForm: FormGroup ;
+  public ide: string;
+  public idl: string;
+
+
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute , private router: Router ,
                 private snackBar: MatSnackBar , private engService: EngagementsService ) {
 
@@ -26,28 +30,52 @@ export class EngagementsComponent implements OnInit {
   ngOnInit() {
     this.dataForm = this.formBuilder.group({});
     this.route.params.pipe( takeUntil(this.destroyed$) ).subscribe(params => {
-     if ( params.ide && params.idl )  { this.initEngagements( params.ide , params.idl ) ; }
+     if ( params.ide && params.idl )  {
+      this.ide = params.ide ; this.idl = params.idl ;
+      this.initEngagements() ; }
        }
      );
   }
 
-  private initEngagements( id , idlic ) {
+  private initEngagements() {
 
-    this.engService.getEngagements(id, idlic).pipe( takeUntil(this.destroyed$) ).subscribe(
+    this.engService.getEngagements(this.ide, this.idl).pipe( takeUntil(this.destroyed$) ).subscribe(
       data => {   this.initForm(data)  ;   },
       error => {  this.showSnackBar(error.error.message, false); this.router.navigate(['/']); }
      ) ;
   }
 
   private initForm( data ) {
-  //  this.dataForm = this.formBuilder.group({});
+
+    if ( data.valide === false ) {
+      this.data = data ;
+      return;
+    }
+
+
   for (const item of data.engage ) {
-    console.log( item.id );
-    this.dataForm.addControl( item.id , new FormControl('', Validators.required) );
+    let v = null ;
+    ( item.presence === 'at' ) ? v = ''  : v = item.presence ;
+
+     this.dataForm.addControl( item.id , new FormControl( v , Validators.required) );
   }
 
     this.data = data ;
   }
+
+  public quitte() {
+    this.router.navigate(['/competitions']);
+  }
+
+  public validate() {
+      const datas = this.dataForm.getRawValue();
+      console.log( datas  , this.ide , this.idl );
+     this.engService.updateEngagements(this.ide, this.idl , datas ).pipe( takeUntil(this.destroyed$) ).subscribe(
+      data => {   this.showSnackBar('ok' , true);   },
+      error => {  this.showSnackBar(error.error.message, false);  }
+     ) ;
+  }
+
 
 
     private showSnackBar(message, info) {

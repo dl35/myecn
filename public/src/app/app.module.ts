@@ -44,6 +44,7 @@ import { AdhesionModule } from './adhesion/adhesion.module';
     StatsModule,
     AdhesionModule
   ],
-  providers: []
+  providers: [],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
