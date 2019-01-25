@@ -1,14 +1,41 @@
+<div style="height: 100vh;"> 
 <mat-toolbar color="primary"  >
     <div fxFlex="100"  fxLayout="row"  fxLayoutAlign="start center" >
-        <div fxFlex="60"     fxLayoutAlign="start center" fxLayoutGap="5px"  >
+
+        <div fxShow="true" fxHide.gt-md="true">
+            <button mat-icon-button (click)="sidenav.toggle()">
+              <mat-icon>menu</mat-icon>
+            </button>
+          </div>
+
+
+        <div fxFlex="60"   fxShow="true" fxHide.lt-md="true"  fxLayoutAlign="start center" fxLayoutGap="5px"  >
         
         <button mat-raised-button color="primary"  routerLink="/competitions" ><mat-icon>pool</mat-icon>&nbsp;Competitions</button>
         <button mat-raised-button color="primary"  routerLink="/records" ><mat-icon>timer</mat-icon>&nbsp;Records</button>
         <button mat-raised-button color="primary"  routerLink="/piscines" ><mat-icon>gps_fixed</mat-icon>&nbsp;Piscines</button>
         <button mat-raised-button color="primary"  routerLink="/stats" ><mat-icon>pie_chart</mat-icon>&nbsp;Stats</button>
+
+      
+    
+      
       </div>
-        </div>
+
+      </div>
+  
   </mat-toolbar>
-  <div>
-    <router-outlet></router-outlet>
- </div>
+  <mat-sidenav-container fxFlexFill  fxLayoutAlign="start center">
+      <mat-sidenav color="primary" fxLayoutAlign="start center" #sidenav fxLayout="column" mode="over" opened="false" fxHide.gt-sm="true">
+        <div fxLayout="column" fxLayoutAlign="start center">
+            
+            <button mat-button color="primary"  routerLink="/competitions" (click)="sidenav.toggle()" ><mat-icon>pool</mat-icon>&nbsp;Competitions</button>
+            <button mat-button color="primary"  routerLink="/records" (click)="sidenav.toggle()" ><mat-icon>timer</mat-icon>&nbsp;Records</button>
+            <button mat-button color="primary"  routerLink="/piscines" (click)="sidenav.toggle()" ><mat-icon>gps_fixed</mat-icon>&nbsp;Piscines</button>
+            <button mat-button color="primary"  routerLink="/stats" (click)="sidenav.toggle()" ><mat-icon>pie_chart</mat-icon>&nbsp;Stats</button>
+        </div>
+      </mat-sidenav>
+      <mat-sidenav-content fxFlexFill>
+          <router-outlet></router-outlet>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>

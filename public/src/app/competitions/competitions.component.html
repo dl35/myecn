@@ -2,6 +2,7 @@
   <mat-progress-bar *ngIf="loading$ | async" mode="query"></mat-progress-bar>
   <div fxLayout="row" style="margin-top: 10px;">
 
+    <!--
     <mat-form-field [ngStyle]="{'width': '600px','margin-left': '10px', 'margin-right':'10px' }" [ngStyle.lt-md]="{'width': '320px','margin-left' :'5px', 'margin-right' :'5px'}">
       <mat-select placeholder="Selection des compétitions" (ngModelChange)="getEngagements($event)" [formControl]="dataForm">
         <mat-option *ngFor="let item of datas  ; last as last" [value]="item.id">
@@ -9,8 +10,14 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
- 
-
+ -->
+ <mat-form-field  [ngStyle.lt-sm]="{'width': '200px','background-color':'red'}"  [ngStyle.gt-sm]="{'width': '320px','background-color':'green'}"  [ngStyle.gt-lg]="{'width': '600px'}"  >
+    <mat-select   placeholder="Selection des compétitions" (ngModelChange)="getEngagements($event)" [formControl]="dataForm">
+      <mat-option *ngFor="let item of datas  ; last as last" [value]="item.id">
+        {{item.id}} - {{item.label}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
   </div>
 </div>
 <div fxLayout="column" fxLayoutAlign="center center" style="margin-top: 10px;" *ngIf="cachedEngs?.length > 0" >
