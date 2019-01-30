@@ -2,14 +2,14 @@
 <mat-toolbar color="primary"  >
     <div fxFlex="100"  fxLayout="row"  fxLayoutAlign="start center" >
 
-        <div fxShow="true" fxHide.gt-md="true">
+        <div fxHide.gt-sm  >
             <button mat-icon-button (click)="sidenav.toggle()">
               <mat-icon>menu</mat-icon>
             </button>
           </div>
 
 
-        <div fxFlex="60"   fxShow="true" fxHide.lt-md="true"  fxLayoutAlign="start center" fxLayoutGap="5px"  >
+        <div fxFlex="60" fxHide.sm fxHide.lt-sm  fxLayoutAlign="start center" fxLayoutGap="5px"  >
         
         <button mat-raised-button color="primary"  routerLink="/competitions" ><mat-icon>pool</mat-icon>&nbsp;Competitions</button>
         <button mat-raised-button color="primary"  routerLink="/records" ><mat-icon>timer</mat-icon>&nbsp;Records</button>
@@ -24,9 +24,9 @@
       </div>
   
   </mat-toolbar>
-  <mat-sidenav-container fxFlexFill  fxLayoutAlign="start center">
-      <mat-sidenav color="primary" fxLayoutAlign="start center" #sidenav fxLayout="column" mode="over" opened="false" fxHide.gt-sm="true">
-        <div fxLayout="column" fxLayoutAlign="start center">
+  <mat-sidenav-container  fxFlexFill  >
+      <mat-sidenav color="primary"  #sidenav  mode="over" opened="false"    >
+        <div fxLayout="column" fxFlex fxLayoutAlign="start start" >
             
             <button mat-button color="primary"  routerLink="/competitions" (click)="sidenav.toggle()" ><mat-icon>pool</mat-icon>&nbsp;Competitions</button>
             <button mat-button color="primary"  routerLink="/records" (click)="sidenav.toggle()" ><mat-icon>timer</mat-icon>&nbsp;Records</button>

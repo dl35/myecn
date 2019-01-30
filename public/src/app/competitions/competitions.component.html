@@ -1,6 +1,6 @@
-<div fxLayout="column" fxLayoutAlign="center center" style="margin-top: 10px;">
+<div fxLayout="column" fxLayoutAlign="space-evenly center" style="margin-top: 10px;" >
   <mat-progress-bar *ngIf="loading$ | async" mode="query"></mat-progress-bar>
-  <div fxLayout="row" style="margin-top: 10px;">
+  <div fxLayout="row" style="margin-top: 10px;"  fxLayoutAlign="space-evenly  center"    >
 
     <!--
     <mat-form-field [ngStyle]="{'width': '600px','margin-left': '10px', 'margin-right':'10px' }" [ngStyle.lt-md]="{'width': '320px','margin-left' :'5px', 'margin-right' :'5px'}">
@@ -11,18 +11,19 @@
       </mat-select>
     </mat-form-field>
  -->
- <mat-form-field  [ngStyle.lt-sm]="{'width': '200px','background-color':'red'}"  [ngStyle.gt-sm]="{'width': '320px','background-color':'green'}"  [ngStyle.gt-lg]="{'width': '600px'}"  >
+ <mat-form-field   [ngClass]="myclass"  >
     <mat-select   placeholder="Selection des compétitions" (ngModelChange)="getEngagements($event)" [formControl]="dataForm">
       <mat-option *ngFor="let item of datas  ; last as last" [value]="item.id">
         {{item.id}} - {{item.label}}
       </mat-option>
     </mat-select>
   </mat-form-field>
+  <button mat-mini-fab (click)="doFilter()" *ngIf="cachedEngs?.length > 0" >Filtre</button>
   </div>
 </div>
-<div fxLayout="column" fxLayoutAlign="center center" style="margin-top: 10px;" *ngIf="cachedEngs?.length > 0" >
+<div fxLayout="column" fxLayoutAlign="center center" style="margin-top: 10px;" *ngIf="cachedEngs?.length > 0 && filtreLabel.length > 0 " >
     <mat-chip-list>
-        <mat-chip (click)="doFilter()" >{{filtreLabel}}</mat-chip>
+        <mat-chip>{{filtreLabel}}</mat-chip>
       </mat-chip-list>
 </div>
 

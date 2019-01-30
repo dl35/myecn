@@ -14,6 +14,9 @@ import { Subject } from 'rxjs';
 export class AdhesionComponent implements OnInit , OnDestroy {
 
 
+  public maxDate: Date;
+  
+
   public dataForm: FormGroup ;
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute , private router: Router ,
                 private snackBar: MatSnackBar , private adhesion: AdhesionService ) {
@@ -22,6 +25,10 @@ export class AdhesionComponent implements OnInit , OnDestroy {
   destroyed$: Subject<any> = new Subject();
   private id =  null;
   ngOnInit() {
+
+        this.maxDate = new Date();
+        this.maxDate.setFullYear( this.maxDate.getFullYear() - 4  ) ;
+
     this.initForm();
     this.route.params.pipe( takeUntil(this.destroyed$) ).subscribe(params => {
      if ( params.id )  { this.initLicencies(params.id ) ; }
@@ -32,7 +39,7 @@ export class AdhesionComponent implements OnInit , OnDestroy {
   private initLicencies( id ) {
 
     this.adhesion.getLicencies(id).pipe( takeUntil(this.destroyed$) ).subscribe(
-      data => { this.id = id ; this.dataForm.setValue( data ) ; },
+      data => { this.id = id ; this.dataForm.setValue( data ) ;    },
       error => {  this.showSnackBar(error.error.message, false); this.router.navigate(['/']); }
      ) ;
   }
@@ -59,25 +66,41 @@ export class AdhesionComponent implements OnInit , OnDestroy {
       prenom: new FormControl( null , [ Validators.required]),
       sexe: new FormControl( null , [ Validators.required]),
       date: new FormControl( null , [ Validators.required]),
-      cp: new FormControl( null , [ Validators.required, Validators.pattern(/^[0-9]{1,5}$/)] ),
+      cp: new FormControl( null , [ Validators.required, Validators.pattern(/^[0-9]{5}$/)] ),
       adresse: new FormControl( null , [ Validators.required]),
       ville: new FormControl( null , [ Validators.required]),
       email1: new FormControl( null , [ Validators.email]),
       email2: new FormControl( null,  [Validators.email]),
       email3: new FormControl( null , [Validators.email]),
-      tel1: new FormControl( null, [ Validators.required, Validators.pattern(/^[0-9]{1,10}$/)]),
-      tel2: new FormControl( null, [ Validators.pattern(/^[0-9]{1,10}$/)]),
-      tel3: new FormControl( null, [ Validators.pattern(/^[0-9]{1,10}$/)])
+      tel1: new FormControl( null, [ Validators.pattern(/^[0-9]{10}$/)]),
+      tel2: new FormControl( null, [ Validators.pattern(/^[0-9]{10}$/)]),
+      tel3: new FormControl( null, [ Validators.pattern(/^[0-9]{10}$/)])
     }
-  //  {validator: this.emailsValidator  }
+    // {validator: this.emailsValidator  }
   );
 
-      this.dataForm.setValidators( this.emailsValidator ) ;
+      this.dataForm.setValidators( [this.emailsValidator , this.telsValidator ] ) ;
 
   }
 
+  private  telsValidator( formGroup ): any {
+    const tel1 = formGroup.get('tel1');
+    const tel2 = formGroup.get('tel2');
+    const tel3 = formGroup.get('tel3');
+    if ( tel1.value && tel1.value.match(/^[0-9]{10}$/) ) {
+      return null;
+    }
+    if ( tel2.value && tel2.value.match(/^[0-9]{10}$/) ) {
+      return null;
+    }
+    if ( tel3.value && tel3.value.match(/^[0-9]{10}$/) ) {
+      return null;
+    }
+     return { required: true };
+
+}
+
   private  emailsValidator( formGroup ): any {
-    console.log('ok');
     const email1 = formGroup.get('email1');
     const email2 = formGroup.get('email2');
     const email3 = formGroup.get('email3');

@@ -22,10 +22,19 @@ export class CompetitionsComponent implements OnInit, OnDestroy {
     xs: 1
   };
 
+  classByBreakpoint = {
+    xl: 'matselect-xl',
+    lg: 'matselect-lg',
+    md: 'matselect-md',
+    sm: 'matselect-sm',
+    xs: 'matselect-xs',
+  };
+
 
   mycol = this.gridByBreakpoint['lg'];
+  myclass = this.classByBreakpoint['lg'];
 
-  filtre = [ {  label: 'Filtrer' }, {  label: 'Les présents' } ,
+  filtre = [ {  label: '' }, {  label: 'Les présents' } ,
   { label: 'Les Absents' } , { label: 'En Attente' } ];
   filtreLabel = this.filtre[0].label ;
   filtreValue = 0 ;
@@ -92,6 +101,7 @@ private doFilter() {
   initResponsive() {
     this.mediaObserver.media$.pipe(takeUntil(this.destroyed$)).subscribe((change: MediaChange) => {
       this.mycol = this.gridByBreakpoint[change.mqAlias];
+      this.myclass = this.classByBreakpoint[change.mqAlias];
     },
       () => { },
       () => { },
