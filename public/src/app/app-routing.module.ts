@@ -8,7 +8,6 @@ import { MenuComponent } from './menu/menu.component';
 import { AdhesionComponent } from './adhesion/adhesion.component';
 import { RecordsComponent } from './records/records.component';
 import { CompetitionsComponent } from './competitions/competitions.component';
-import { AppComponent } from './app.component';
 
 export const routes: Routes = [
   { path: 'adhesion',   pathMatch: 'full' , component: AdhesionComponent },
