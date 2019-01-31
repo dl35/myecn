@@ -118,7 +118,7 @@ private doFilter() {
     );
   }
 
-  private getEngagements( id ) {
+  public getEngagements( id ) {
     this.loading$.next(true);
     this.cService.getEngagements(id).pipe(takeUntil(this.destroyed$)).subscribe(
       (engs) => { this.engs = engs; this.cachedEngs = engs ;  this.filtreLabel = this.filtre[0].label ;

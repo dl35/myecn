@@ -5,6 +5,7 @@
 
 </mat-toolbar>
 
+
 <form fxLayoutAlign="center center" style="margin-top:20px;" autocomplete="off" [formGroup]="dataForm" novalidate>
 
   <div fxLayout="column" fxFlex="75%">
@@ -30,7 +31,7 @@
         <div fxLayoutAlign="start center" fxFlex="50%" >
       <mat-icon color="primary">calendar_today</mat-icon>
       <mat-form-field fxFlex="90%" style="margin-left:1%"  >
-        <input required matInput [matDatepicker]="date" [max]="maxDate"   placeholder="Date Naissance" (click)="date.open()" (dateChange)="onDateStart($event)"
+        <input required matInput [matDatepicker]="date" [max]="maxDate"   placeholder="Date Naissance" (click)="date.open()" 
           formControlName="date">
         <mat-datepicker-toggle matSuffix [for]="date"  fxHide.lt-md ></mat-datepicker-toggle>
         <mat-datepicker #date startView="multi-year"  ></mat-datepicker>
@@ -80,7 +81,7 @@
       <mat-form-field fxFlex="100%"  style="margin-left:1%"  >
         <input matInput placeholder="Adresse email" formControlName="email1" f>
         <mat-error>une adresse email valide est requise</mat-error>
-        <mat-hint><strong>au moins 1 adresse email obligatoire*</strong></mat-hint>
+        <mat-hint><strong>1/3 adresse email obligatoire*</strong></mat-hint>
       </mat-form-field>
         </div>
       <div fxLayoutAlign="start center" fxFlex="33%"  >
@@ -105,7 +106,7 @@
       <mat-icon color="primary">phone</mat-icon>
       <mat-form-field fxFlex="100%"  style="margin-left:1%">
         <input maxlength="10" matInput placeholder="Téléphone" formControlName="tel1" >
-        <mat-hint align="start"><strong>au moins 1 numéro de tel. obligatoire*</strong> </mat-hint>
+        <mat-hint align="start"><strong>1/3 numéro de tel. obligatoire*</strong> </mat-hint>
         <mat-error>un numéro de tel. valide est requis</mat-error>
       </mat-form-field>
     </div>

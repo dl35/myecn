@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 export class StatsService {
 
 
-  private  url = '/api/public/stats'   ;
+  private  url = '/api/public/tostats'   ;
   constructor(private http: HttpClient) { }
 
 

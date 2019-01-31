@@ -14,7 +14,7 @@ export class AdhesionService {
 
   constructor(private http: HttpClient) { }
 
-  private url = '/api/public/adhesion';
+  private url = '/api/public/toadhesion';
 
   public getLicencies(id) {
     const url = this.url + '/' + id;

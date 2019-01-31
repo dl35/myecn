@@ -8,23 +8,22 @@ import { MenuComponent } from './menu/menu.component';
 import { AdhesionComponent } from './adhesion/adhesion.component';
 import { RecordsComponent } from './records/records.component';
 import { CompetitionsComponent } from './competitions/competitions.component';
+import { AppComponent } from './app.component';
 
 export const routes: Routes = [
-
+  { path: 'adhesion',   pathMatch: 'full' , component: AdhesionComponent },
+  { path: 'adhesion/:id', component: AdhesionComponent },
+  { path: 'engagements/:ide/:idl', component: EngagementsComponent },
   {
     path: '', component: MenuComponent,  children:
       [
-        { path: 'stats', component: StatsComponent },
-        { path: 'piscines', component: PiscinesComponent },
-        { path: 'competitions', component: CompetitionsComponent },
-        { path: 'records', component: RecordsComponent }
-
-      ]
+        { path: 'stats',  component: StatsComponent },
+        { path: 'piscines',  component: PiscinesComponent },
+        { path: 'competitions',  component: CompetitionsComponent },
+        { path: 'records',  component: RecordsComponent }
+      ] ,
   },
-  { path: 'engagements/:ide/:idl', component: EngagementsComponent },
-  { path: 'adhesion', component: AdhesionComponent },
-  { path: 'adhesion/:id', component: AdhesionComponent },
-  { path: '**', component: MenuComponent }
+  { path: '**', redirectTo: '/', pathMatch: 'full' } ,
 
 ];
 

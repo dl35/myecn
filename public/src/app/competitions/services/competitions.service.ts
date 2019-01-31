@@ -32,7 +32,7 @@ export class CompetitionsService {
 
   constructor(private http: HttpClient) { }
 
-  private url = '/api/public/competitions';
+  private url = '/api/public/tocompetitions';
 
   public  getCompetitions() {
      return this.http.get<Array<ICompetitions>>( this.url ).pipe(shareReplay(1));

@@ -30,7 +30,7 @@ export class RecordsService {
 
   constructor(private http: HttpClient) { }
 
-  private url = '/api/public/records';
+  private url = '/api/public/torecords';
 
   public  getDatas() {
      return this.http.get<Array<IRecords>>( this.url ).pipe( shareReplay(1) );

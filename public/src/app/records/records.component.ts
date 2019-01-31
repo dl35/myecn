@@ -19,9 +19,9 @@ export class RecordsComponent implements OnInit, OnDestroy  {
 
 
 
-  private dataForm: FormGroup;
+  public dataForm: FormGroup;
   private cachedDatas: IRecords[] ;
-  private datas: IRecords[] ;
+  public datas: IRecords[] ;
   
 
   private gridByBreakpoint = {
@@ -100,7 +100,7 @@ export class RecordsComponent implements OnInit, OnDestroy  {
 
    }
 
-   private showRecord() {
+   public showRecord() {
 
      const test = this.dataForm.getRawValue() ;
 

@@ -30,10 +30,10 @@ export class AdhesionComponent implements OnInit , OnDestroy {
         this.maxDate.setFullYear( this.maxDate.getFullYear() - 4  ) ;
 
     this.initForm();
-    this.route.params.pipe( takeUntil(this.destroyed$) ).subscribe(params => {
+  /*  this.route.params.pipe( takeUntil(this.destroyed$) ).subscribe(params => {
      if ( params.id )  { this.initLicencies(params.id ) ; }
        }
-     );
+     );*/
   }
 
   private initLicencies( id ) {
@@ -44,7 +44,7 @@ export class AdhesionComponent implements OnInit , OnDestroy {
      ) ;
   }
 
-  private sendAdhesion() {
+  public sendAdhesion() {
     const data = this.dataForm.getRawValue();
     if ( this.id ) {
       this.adhesion.updateLicencies(this.id, data).pipe( takeUntil(this.destroyed$) ).subscribe(
@@ -79,7 +79,7 @@ export class AdhesionComponent implements OnInit , OnDestroy {
     // {validator: this.emailsValidator  }
   );
 
-      this.dataForm.setValidators( [this.emailsValidator , this.telsValidator ] ) ;
+   //   this.dataForm.setValidators( [this.emailsValidator , this.telsValidator ] ) ;
 
   }
 
