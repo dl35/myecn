@@ -22,7 +22,6 @@ export class RecordsComponent implements OnInit, OnDestroy  {
   public dataForm: FormGroup;
   private cachedDatas: IRecords[] ;
   public datas: IRecords[] ;
-  
 
   private gridByBreakpoint = {
     xl: { col: 3 , row: '5:1' },
