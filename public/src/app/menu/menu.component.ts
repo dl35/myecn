@@ -1,3 +1,4 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -5,11 +6,31 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss']
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent {
 
-  constructor() { }
+  constructor(private router: Router , private route: ActivatedRoute ) {
 
-  ngOnInit() {
-  }
+
+
+   const keys = this.route.snapshot.queryParamMap.keys ;
+    if (  keys.length !== 1 ) {
+     return ;
+    }
+
+    const key = keys[0];
+
+   if ( key === 'adhesion' )  {
+      this.router.navigate([key]);
+   } else  if ( key.startsWith('adhesion/')  ) {
+      this.router.navigate([key]);
+   } else if ( key.startsWith('engagements/')  ) {
+    this.router.navigate([key]);
+   } else {
+    this.router.navigate(['']);
+   }
+
+   }
+
+ 
 
 }

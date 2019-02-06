@@ -10,9 +10,7 @@ import { RecordsComponent } from './records/records.component';
 import { CompetitionsComponent } from './competitions/competitions.component';
 
 export const routes: Routes = [
-  { path: 'adhesion',   pathMatch: 'full' , component: AdhesionComponent },
-  { path: 'adhesion/:id', component: AdhesionComponent },
-  { path: 'engagements/:ide/:idl', component: EngagementsComponent },
+
   {
     path: '', component: MenuComponent,  children:
       [
@@ -22,6 +20,9 @@ export const routes: Routes = [
         { path: 'records',  component: RecordsComponent }
       ] ,
   },
+  { path: 'adhesion',  component: AdhesionComponent },
+  { path: 'adhesion/:id', component: AdhesionComponent },
+  { path: 'engagements/:ide/:idl', component: EngagementsComponent },
   { path: '**', redirectTo: '/', pathMatch: 'full' } ,
 
 ];

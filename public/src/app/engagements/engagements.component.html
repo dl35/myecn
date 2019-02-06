@@ -16,7 +16,7 @@
 
 
     <div fxLayout="column" *ngIf="data?.valide === true" fxLayoutAlign="center center" fxFlex="75%">
-        <h3 matLine>{{data?.message}}</h3> 
+        <h2 class="mat-h2" matLine>{{data?.message}}</h2> 
       <div fxLayoutAlign="center center" fxLayout="column"  >
           <mat-list *ngFor="let item of data?.engage" >
               <mat-list-item  >   

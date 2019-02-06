@@ -30,17 +30,17 @@ export class AdhesionComponent implements OnInit , OnDestroy {
         this.maxDate.setFullYear( this.maxDate.getFullYear() - 4  ) ;
 
     this.initForm();
-  /*  this.route.params.pipe( takeUntil(this.destroyed$) ).subscribe(params => {
+    this.route.params.pipe( takeUntil(this.destroyed$) ).subscribe(params => {
      if ( params.id )  { this.initLicencies(params.id ) ; }
        }
-     );*/
+     );
   }
 
   private initLicencies( id ) {
 
     this.adhesion.getLicencies(id).pipe( takeUntil(this.destroyed$) ).subscribe(
       data => { this.id = id ; this.dataForm.setValue( data ) ;    },
-      error => {  this.showSnackBar(error.error.message, false); this.router.navigate(['/']); }
+      error => {  this.showSnackBar(error.error.message, false); this.router.navigate(['']); }
      ) ;
   }
 
@@ -79,7 +79,7 @@ export class AdhesionComponent implements OnInit , OnDestroy {
     // {validator: this.emailsValidator  }
   );
 
-   //   this.dataForm.setValidators( [this.emailsValidator , this.telsValidator ] ) ;
+     this.dataForm.setValidators( [this.emailsValidator , this.telsValidator ] ) ;
 
   }
 

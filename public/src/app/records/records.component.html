@@ -1,102 +1,66 @@
-         <div [formGroup]="dataForm"  fxLayout="row" fxLayout.lt-md="column" style="margin-top:15px"  >
+
+     <div  [formGroup]="dataForm"   fxLayout="row" fxLayoutAlign="space-around center" fxLayoutAlign.lt-md="space-evenly none" fxLayout.lt-md="column" style="margin:15px 15px auto 15px"  >
           
-          <div    fxLayoutAlign.gt-md="end center"  fxLayout.gt-md="row" fxLayout.lt-sm="column"   fxFlex="100"  fxFlex.gt-md="50"  >
-          <div fxLayoutAlign="space-evenly center" fxLayoutGap="15px" >
-                    <mat-form-field  fxFlex="15%"  >
-               <mat-select placeholder="Bassin" (ngModelChange)="showRecord()" formControlName="fbassin"  >
-                  <mat-option  *ngFor="let item of bassin" [value]="item"  >
-                      {{item}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-          <mat-form-field fxFlex.gt-md="65%" fxFlex="45%"  >
-              <mat-select  placeholder="Nages" (ngModelChange)="showRecord()"  formControlName="fnages"  >
-                <mat-option  *ngFor="let item of nages" [value]="item.value"  >
-                    {{item.label}}
-                </mat-option>
-              </mat-select>
-          </mat-form-field> 
        
-          </div>
-        </div>
-          
-            <div   fxLayoutAlign="space-evenly center"   fxLayout.gt-md="row" fxLayout.lt-sm="column"  fxFlex="100"   fxFlex.gt-md="50"   >
-                <div   fxLayoutAlign="space-evenly center" fxLayoutGap="15px" >
-     
-          <mat-form-field fxFlex="15%"  >
-                  <mat-select  placeholder="Sexe" (ngModelChange)="showRecord()" formControlName="fsexe"  >
-                     <mat-option  *ngFor="let item of sexe" [value]="item.value" >
-                         {{item.value}}
-                     </mat-option>
-                   </mat-select>
-          </mat-form-field>
-          <mat-form-field fxFlex.gt-md="80%" fxFlex="35%"  >
-                <mat-select  placeholder="Distances" (ngModelChange)="showRecord()"  formControlName="fdists"  >
-                  <mat-option  *ngFor="let item of dists" [value]="item"  >
-                      {{item}}
-                  </mat-option>
-                </mat-select>
-          </mat-form-field>
-       
-          <mat-checkbox  (change)="showRecord()" formControlName="fmasters" fxFlex="28%">
-              Ma.
-            </mat-checkbox>
-            </div>
-          </div>
- 
-        </div>
-    <!--
-    <div fxLayout="column" fxHide.md fxHide.gt-md="true"   style="margin-top:20px" >
-           
+            <div fxLayoutGap='15px'  fxLayoutAlign="space-evenly center"  fxFlex="0 0 calc(48% - 15px)" >
+                   
+                            <mat-form-field  fxFlex="15%"  >
+                       <mat-select placeholder="Bassin" (ngModelChange)="showRecord()" formControlName="fbassin"  >
+                          <mat-option  *ngFor="let item of bassin" [value]="item"  >
+                              {{item}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+              
+               
+                  <mat-form-field  fxFlex="25%"  >
+                        <mat-select  placeholder="Distances" (ngModelChange)="showRecord()"  formControlName="fdists"  >
+                          <mat-option  *ngFor="let item of dists" [value]="item"  >
+                              {{item}}
+                          </mat-option>
+                        </mat-select>
+                  </mat-form-field>
                 
-        <div fxLayout="column"   fxFlex="100%"  >
-           <div    fxLayout="row wrap" fxLayoutAlign="space-evenly center"  >
-          <mat-form-field  fxFlex="20%"  >
-               <mat-select placeholder="Bassin" (ngModelChange)="showRecord()" formControlName="fbassin"  >
-                  <mat-option  *ngFor="let item of bassin" [value]="item"  >
-                      {{item}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field fxFlex="30%" >
-                <mat-select  placeholder="Distances" (ngModelChange)="showRecord()"  formControlName="fdists"  >
-                  <mat-option  *ngFor="let item of dists" [value]="item"  >
-                      {{item}}
-                  </mat-option>
-                </mat-select>
-          </mat-form-field>
-        
-           </div>
-          <div    fxLayout="row wrap"  fxLayoutAlign="space-evenly center" >
-            <mat-form-field fxFlex="30%" >
-                <mat-select  placeholder="Nages" (ngModelChange)="showRecord()"  formControlName="fnages"  >
-                  <mat-option  *ngFor="let item of nages" [value]="item.value"  >
-                      {{item.value}}
-                  </mat-option>
-                </mat-select>
-            </mat-form-field> 
-          <mat-form-field  fxFlex="10%"  >
-                  <mat-select  placeholder="Sexe" (ngModelChange)="showRecord()" formControlName="fsexe"  >
-                     <mat-option  *ngFor="let item of sexe" [value]="item.value" >
-                         {{item.value}}
-                     </mat-option>
-                   </mat-select>
-          </mat-form-field>
-          <mat-checkbox fxFlex="25%"  (change)="showRecord()" formControlName="fmasters" >Masters</mat-checkbox>
-          </div>
-          </div>
-    
-    </div>
+                
+                
+                
+              </div>
 
--->
+
+            <div fxLayoutGap='15px'  fxFlex="0 0 calc(48% - 15px)"   fxLayoutAlign="space-around center" >
+                    <mat-form-field fxFlex="15%"  >
+                            <mat-select  placeholder="Sexe" (ngModelChange)="showRecord()" formControlName="fsexe"  >
+                               <mat-option  *ngFor="let item of sexe" [value]="item.value" >
+                                   {{item.value}}
+                               </mat-option>
+                             </mat-select>
+                    </mat-form-field>
+                    <mat-form-field fxFlex="25%"  >
+                            <mat-select  placeholder="Nages" (ngModelChange)="showRecord()"  formControlName="fnages"  >
+                              <mat-option  *ngFor="let item of nages" [value]="item.value"  >
+                                  {{item.label}}
+                              </mat-option>
+                            </mat-select>
+                        </mat-form-field> 
+                 
+                    <mat-checkbox  (change)="showRecord()" formControlName="fmasters" fxFlex="18%">
+                        Ma.
+                      </mat-checkbox>
+                </div>
+            
+     </div>
+
+  
+  
+     
+     
+     
+     
+  
 
 
 
-
-
-
-
-    <mat-grid-list cols="{{gridCol}}" gutterSize="5px" rowHeight="{{gridRow}}"  *ngIf="datas?.length > 0" >
+    <mat-grid-list cols="{{gridCol}}" gutterSize="1px" rowHeight="10em"  *ngIf="datas?.length > 0" >
         <mat-grid-tile  *ngFor="let item of datas " colspan="1" rowspan="1"  style="width:50%;margin-top:5px;" >
             <mat-card style="width:75%" >
                 <mat-card-header>

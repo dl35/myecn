@@ -24,14 +24,15 @@ export class RecordsComponent implements OnInit, OnDestroy  {
   public datas: IRecords[] ;
 
   private gridByBreakpoint = {
-    xl: { col: 3 , row: '5:1' },
-    lg: { col: 3 , row: '5:2' },
-    md: { col: 2 , row: '5:2' },
-    sm: { col: 1 , row: '5:1' },
-    xs: { col: 1 , row: '3:1' },
+    xl: { col: 3 },
+    lg: { col: 3 },
+    md: { col: 2 },
+    sm: { col: 1 },
+    xs: { col: 1 }
+
   };
   private gridCol = this.gridByBreakpoint['lg'].col;
-  private gridRow = this.gridByBreakpoint['lg'].row;
+  
 
   destroyed$: Subject<any> = new Subject();
 
@@ -56,7 +57,7 @@ export class RecordsComponent implements OnInit, OnDestroy  {
   private initResponsive() {
     this.mediaObserver.media$.pipe(takeUntil(this.destroyed$)).subscribe((change: MediaChange) => {
       this.gridCol = this.gridByBreakpoint[change.mqAlias].col;
-      this.gridRow = this.gridByBreakpoint[change.mqAlias].row;
+      
     },
       (error) => { },
       () => { },

@@ -1,6 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+
+export interface IResponse {
+
+  success: boolean;
+  message: string;
+}
+
+
+
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +29,7 @@ public getEngagements(ide , idl ) {
 
 public updateEngagements(ide , idl, datas ) {
   const url = this.url + '/' + ide + '/' + idl ;
-  return this.http.put( url , datas ) ;
+  return this.http.put<IResponse>( url , datas ) ;
 }
 
 
