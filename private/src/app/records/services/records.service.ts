@@ -9,7 +9,7 @@ export class RecordsService {
 
   constructor(private http: HttpClient) { }
 
-  private url = '/api/private/records' ;
+  private url = '/api/private/torecords' ;
 
   public  getDatas() {
     //  from , dests, compet

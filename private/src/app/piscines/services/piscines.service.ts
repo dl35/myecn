@@ -9,7 +9,7 @@ export class PiscinesService {
 
   constructor(private http: HttpClient) { }
 
-  private url = '/api/private/piscines' ;
+  private url = '/api/private/topiscines' ;
 
   public  getdatas() {
     //  from , dests, compet

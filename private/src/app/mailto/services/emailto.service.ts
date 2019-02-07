@@ -9,7 +9,7 @@ export class EmailtoService {
 
   constructor(private http: HttpClient) { }
 
-  private url = '/api/private/mailto' ;
+  private url = '/api/private/tomailto' ;
 
   public  getdatas() {
     //  from , dests, compet

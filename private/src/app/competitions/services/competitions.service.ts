@@ -21,7 +21,7 @@ export class CompetitionsService {
 
   }
 
-  private url = '/api/private/competitions' ;
+  private url = '/api/private/tocompetitions' ;
 
    public getListAll() {
         //  if ( !this.cache  ||  this.cache.length === 0 ) {
