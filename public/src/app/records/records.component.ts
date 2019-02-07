@@ -32,7 +32,7 @@ export class RecordsComponent implements OnInit, OnDestroy  {
 
   };
   private gridCol = this.gridByBreakpoint['lg'].col;
-  
+
 
   destroyed$: Subject<any> = new Subject();
 
@@ -57,7 +57,7 @@ export class RecordsComponent implements OnInit, OnDestroy  {
   private initResponsive() {
     this.mediaObserver.media$.pipe(takeUntil(this.destroyed$)).subscribe((change: MediaChange) => {
       this.gridCol = this.gridByBreakpoint[change.mqAlias].col;
-      
+
     },
       (error) => { },
       () => { },
