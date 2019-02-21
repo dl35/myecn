@@ -1,5 +1,5 @@
-
-<div fxFlex="100" fxLayout="column"  style='margin-top: 10px' >
+<app-edit *ngIf="edited" [item]="item"  (hideForm)='edited=false' ></app-edit>
+<div fxFlex="100" fxLayout="column"  style='margin-top: 10px' *ngIf="!edited" >
  
 
     <div fxLayout="row" fxFlex="90" fxLayoutAlign="start center"  style='font-size: 13px'>
@@ -39,9 +39,13 @@
             </mat-select>
             </mat-form-field>
 
+            <button fxFlexOffset="3"  mat-mini-fab color="primary"  (click)="editForm(null)"  >
+            <mat-icon>add</mat-icon>
+            </button>
+
           </div>
 
-
+   
 
  <div>
  
@@ -69,14 +73,14 @@
 
     <!-- Color Column -->
     <ng-container matColumnDef="categorie">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+      <th mat-header-cell *matHeaderCellDef >
           <mat-form-field style='width:78px' >
-              <mat-select placeholder="Catégories"  color="primary" >
+              <mat-select placeholder="Catégories"  color="primary" [(ngModel)]="myfilter.categorie"   (ngModelChange)="toFilter($event)"  >
                   <mat-option></mat-option>
-                  <mat-option value="av" >Avenirs</mat-option>
-                  <mat-option value="je">Jeunes</mat-option>
-                  <mat-option value="se">Seniors</mat-option>
-                  <mat-option value="ma">Masters</mat-option>
+                  <mat-option value="AV" >Avenirs</mat-option>
+                  <mat-option value="JE">Jeunes</mat-option>
+                  <mat-option value="SE">Seniors</mat-option>
+                  <mat-option value="MA">Masters</mat-option>
                 </mat-select>
               </mat-form-field>
         </th>
@@ -93,7 +97,7 @@
    <ng-container matColumnDef="type">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> 
           <mat-form-field style="width:50px;" >
-          <mat-select placeholder="Type"  color="primary" >
+          <mat-select placeholder="Type"  color="primary" [(ngModel)]="myfilter.type"   (ngModelChange)="toFilter($event)"  >
               <mat-option></mat-option>
               <mat-option value="R" >Renouvellement</mat-option>
               <mat-option value="N">Nouveau</mat-option>
@@ -109,10 +113,10 @@
    
     <th mat-header-cell *matHeaderCellDef   >  
         <mat-form-field style="width:50px;" > 
-      <mat-select placeholder="Sexe"  color="primary" >
-          <mat-option></mat-option>
+      <mat-select placeholder="Sexe"  color="primary"  [(ngModel)]="myfilter.sexe"   (ngModelChange)="toFilter($event)" >
+        <mat-option></mat-option>
         <mat-option value="F" >Femme</mat-option>
-        <mat-option value="H">Homme</mat-option>
+        <mat-option value="H" >Homme</mat-option>
       </mat-select>
       </mat-form-field>
 
@@ -123,7 +127,7 @@
 <ng-container matColumnDef="officiel">
     <th mat-header-cell *matHeaderCellDef   >  
         <mat-form-field style="width:50px"> 
-      <mat-select placeholder="Off"  color="primary" >
+      <mat-select placeholder="Off"  color="primary" [(ngModel)]="myfilter.officiel"   (ngModelChange)="toFilter($event)" >
         <mat-option></mat-option>
         <mat-option value="A" >A</mat-option>
         <mat-option value="B">B</mat-option>
@@ -144,10 +148,10 @@
   <ng-container matColumnDef="valide">
       <th mat-header-cell *matHeaderCellDef   >  
           <mat-form-field style="width:70px" >
-              <mat-select placeholder="Valide"  color="primary" >
+              <mat-select placeholder="Valide"  color="primary" [(ngModel)]="myfilter.valide"   (ngModelChange)="toFilter($event)" >
                   <mat-option></mat-option>
                 <mat-option value="true" >Oui</mat-option>
-                <mat-option value="false">Non</mat-option>
+                <mat-option value="false" >Non</mat-option>
               </mat-select>
             </mat-form-field>
   
@@ -162,7 +166,7 @@
    <ng-container matColumnDef="id">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Actions</th>
     <td mat-cell *matCellDef="let row"> 
-      <mat-icon color='primary'  (click)="editForm(row.id)" >edit</mat-icon>&nbsp;&nbsp;   
+      <mat-icon color='primary'  (click)="editForm(row)" >edit</mat-icon>&nbsp;&nbsp;   
       <mat-icon color='primary' (click)="deleteForm(row.id)" >delete</mat-icon>
   </td>
   </ng-container>
@@ -174,5 +178,11 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;">
     </tr>
   </table>
-  <mat-paginator [pageSizeOptions]="[10, 25, 50, 100 , 300 , 500]" showFirstLastButtons></mat-paginator>
-
+ 
+  <mat-paginator #paginator
+  [showFirstLastButtons]=true
+  [length]="dataSource?.datas?.length"
+  [pageIndex]="0"
+  [pageSize]="10"
+  [pageSizeOptions]="[5, 10 ,25]">
+</mat-paginator>

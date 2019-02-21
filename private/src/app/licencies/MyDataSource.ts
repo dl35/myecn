@@ -2,31 +2,31 @@ import { DataSource } from '@angular/cdk/table';
 import { MatSort, MatPaginator } from '@angular/material';
 import { Observable, BehaviorSubject, Subject, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { CollectionViewer } from '@angular/cdk/collections';
 
 export class MyDataSource extends DataSource<any> {
 
     /** Stream emitting render data to the table (depends on ordered data changes). */
     private readonly _renderData = new BehaviorSubject<[]>([]);
 
-    /** Stream that emits when a new filter string is set on the data source. */
-    private readonly _filter = new BehaviorSubject<string>('');
 
     /** Used to react to internal changes of the paginator that are made by the data source itself. */
     private readonly _internalPageChanges = new Subject<void>();
 
+    private readonly _filterChange = new BehaviorSubject<string>('');
+    get filter(): string { return this._filterChange.value; }
+    set filter(filter: string) { this._filterChange.next(filter); }
 
-    get filter(): string { return this._filter.value; }
-    set filter(filter: string) { this._filter.next(filter); }
 
-    private readonly _dataChange: BehaviorSubject<[]>;
-    get data() { return this._dataChange.value; }
-    set data(data: []) { this._dataChange.next(data); }
+    private readonly _datasChange = new BehaviorSubject<[]>([]);
+    get datas(): any { return this._datasChange.value; }
+    set datas(data: any ) { this._datasChange.next(data); }
 
     private readonly _allFilterChange = new BehaviorSubject({});
     get allfilter(): any { return this._allFilterChange.value; }
     set allfilter(myfilter: any) { this._allFilterChange.next(myfilter); }
 
- 
+
 
 
 
@@ -48,13 +48,12 @@ export class MyDataSource extends DataSource<any> {
 
 
 
-    constructor() {
+    constructor( datas ) {
         super();
-      //  this._data = new BehaviorSubject<[]>(initialData);
-     //   this._updateChangeSubscription();
+        this.datas = datas ;
     }
 
-    _updateChangeSubscription() {
+     _updateChangeSubscription() {
 
 
 
@@ -62,21 +61,34 @@ export class MyDataSource extends DataSource<any> {
 
 
 
-
-    connect(): Observable<any[]> {
+    connect(collectionViewer: CollectionViewer): Observable<[]> {
         const displayDataChanges = [
-            this._dataChange,
+            this._datasChange,
             this._sort.sortChange,
-            //    this._filterChange,
+            this._filterChange,
             this._allFilterChange,
             this._paginator.page
         ];
 
-        return merge(...displayDataChanges).pipe(
-            map((e) => {
+        return merge(...displayDataChanges)
+          .pipe(map(() => {
 
-                return this.data.slice();
-            }));
+            let datafilter = this.getSearchAllFilter( this.datas );
+            datafilter = this.getSearchString( datafilter );
+
+            return this.setPaginator( datafilter);
+          }));
+      }
+
+      private setPaginator(datafilter) {
+      this.paginator.length = datafilter.length;
+
+        if (this.paginator.pageIndex * this.paginator.pageSize >  this.paginator.length ) {
+           this.paginator.pageIndex = 0; }
+
+        const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
+        return datafilter.splice(startIndex, this.paginator.pageSize);
+
     }
 
     private getSortedData(datas): Element[] {
@@ -103,6 +115,10 @@ export class MyDataSource extends DataSource<any> {
 
 
     private getSearchString(datas) {
+     if ( this.filter.length ===  0) {
+         return datas ;
+     }
+
         const datafilter = datas.slice().filter((item: any) => {
             const searchStr = (item.nom + ' ' + item.prenom + ' ' + item.ville).toLowerCase();
             return searchStr.indexOf(this.filter.toLowerCase()) !== -1;
@@ -119,23 +135,42 @@ export class MyDataSource extends DataSource<any> {
                 return true;
             }
 
-            if (this.allfilter.sexe === '') {
+
+            if ( !this.allfilter.officiel ) {
                 flag = true;
             } else {
-                if (item.sexe === this.allfilter.sexe) {
+                if (item.officiel === this.allfilter.officiel) {
                     flag = true;
                 } else { flag = false; }
             }
 
-            if (this.allfilter.categorie === '') {
+
+            if ( !this.allfilter.sexe  ) {
                 flag = flag && true;
             } else {
-                if (item.categorie === this.allfilter.categorie.toLowerCase()) {
+                if (item.sexe === this.allfilter.sexe) {
                     flag = flag && true;
                 } else { flag = false; }
             }
 
-            if (this.allfilter.type === '') {
+
+            if ( !this.allfilter.valide  ) {
+                flag = flag && true;
+            } else {
+                if (item.valide === this.allfilter.valide) {
+                    flag = flag && true;
+                } else { flag = false; }
+            }
+
+            if ( !this.allfilter.categorie  ) {
+                flag = flag && true;
+            } else {
+                if (item.categorie === this.allfilter.categorie  ) {
+                    flag = flag && true;
+                } else { flag = false; }
+            }
+
+            if ( !this.allfilter.type  ) {
                 flag = flag && true;
             } else {
                 if (item.type === this.allfilter.type) {
@@ -144,6 +179,8 @@ export class MyDataSource extends DataSource<any> {
             }
             return flag;
         });
+
+
 
         return datafilter;
     }
