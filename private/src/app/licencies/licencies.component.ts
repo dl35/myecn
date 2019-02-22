@@ -1,46 +1,60 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { LicenciesService } from './services/licencies.service';
-import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+import { MatPaginator, MatSort } from '@angular/material';
 import { MyDataSource } from './MyDataSource';
-import { Validators, FormControl, FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-licencies',
   templateUrl: './licencies.component.html',
   styleUrls: ['./licencies.component.scss']
 })
-export class LicenciesComponent implements OnInit {
+/*
+export interface IFilter {
+  sexe: 'F' | 'H' | undefined ;
+  categorie: string ;
+  type: 'R' | 'N' | undefined ;
+  valide: boolean ;
+}
+*/
+
+export class LicenciesComponent implements OnInit , AfterViewInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   edited = false ;
   item: any ;
 
-  public myfilter = {sexe: undefined , categorie: undefined , type: undefined , valide : undefined };
+
+
+
+  public myfilter = {sexe: undefined , officiel: undefined , categorie: undefined , type: undefined , valide: undefined };
   public dataSource: MyDataSource = null;
   public displayedColumns: string[] = ['nom', 'prenom', 'ville', 'categorie' , 'rang' , 'type'  , 'sexe',
   'officiel' , 'cotisation' , 'valide' , 'id' ];
 
 
-  constructor(private formBuilder: FormBuilder,  private lserv: LicenciesService ) { }
+  constructor( private lserv: LicenciesService ) { }
 
   ngOnInit() {
+    this.lserv.getdatas().subscribe(
+      (datas) =>  {   this.setDataSource( datas ) ; console.log( 'long '  , datas.length ) ; }
+    );
 
-this.lserv.getdatas().subscribe(
-  (datas) =>  { this.setDataSource( datas ) ; }
 
-);
+  }
+
+  ngAfterViewInit() {
+ 
 
   }
 
 
+
+
 private setDataSource( datas ) {
-  // this.dataSource = new MatTableDataSource<any>(datas) ;
   this.dataSource = new MyDataSource( datas ) ;
- // this.dataSource.datas = datas ;
-  this.dataSource.allfilter = this.myfilter;
   this.dataSource.paginator = this.paginator;
-  this.dataSource.sort = this.sort;
+//  this.dataSource.sort = this.sort;
 
 }
 
@@ -57,8 +71,6 @@ applyFilter(filterValue: string) {
 
 editForm(row) {
   this.edited = true ;
-console.log( row );
-
   this.item = row;
 
 }

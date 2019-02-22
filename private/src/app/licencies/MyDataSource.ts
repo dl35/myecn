@@ -1,6 +1,6 @@
 import { DataSource } from '@angular/cdk/table';
 import { MatSort, MatPaginator } from '@angular/material';
-import { Observable, BehaviorSubject, Subject, merge } from 'rxjs';
+import { Observable, BehaviorSubject, Subject, merge, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CollectionViewer } from '@angular/cdk/collections';
 
@@ -14,6 +14,7 @@ export class MyDataSource extends DataSource<any> {
     private readonly _internalPageChanges = new Subject<void>();
 
     private readonly _filterChange = new BehaviorSubject<string>('');
+    _customerDatabase: any;
     get filter(): string { return this._filterChange.value; }
     set filter(filter: string) { this._filterChange.next(filter); }
 
@@ -60,27 +61,67 @@ export class MyDataSource extends DataSource<any> {
     }
 
 
+    connect(collectionViewer: CollectionViewer): Observable<[]> {
+        const displayDataChanges = [
+            this._datasChange,
+            this._paginator.page,
+        //    this._sort.sortChange,
+        //    this._filterChange,
+       //     this._allFilterChange
+        ];
+
+        let lastFilter = null;
+        let lastSort = null;
+
+        return combineLatest(...displayDataChanges).pipe(
+          map(  ([newData, newFilter, newSort, newPage]) => {
+            let data =  this._datasChange.value;
+      
+            if (newFilter !== lastFilter) {
+              data = this.getFilteredData(data);
+              lastFilter = newFilter ;
+            }
+      
+            if (newSort !== lastSort) {
+              data = this.getSortedData(data);
+              lastSort = newSort;
+            }
+      
+            const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
+            return data.splice(startIndex, this._paginator.pageSize);
+       }));
+      }
+  
+
+
 
     connect(collectionViewer: CollectionViewer): Observable<[]> {
         const displayDataChanges = [
             this._datasChange,
-            this._sort.sortChange,
-            this._filterChange,
-            this._allFilterChange,
-            this._paginator.page
+            this._paginator.page,
+        //    this._sort.sortChange,
+        //    this._filterChange,
+       //     this._allFilterChange
         ];
-
+        console.log( this._paginator.page );
+     //   this.paginator.length = this.datas.length;
+      //  this.setPaginator( this.datas );
         return merge(...displayDataChanges)
-          .pipe(map(() => {
+          .pipe(map(( d ) => {
 
-            let datafilter = this.getSearchAllFilter( this.datas );
-            datafilter = this.getSearchString( datafilter );
+            console.log ( 'len' , d.length , this._datasChange.value.length ) ;
 
-            return this.setPaginator( datafilter);
+        //    let datafilter = this.getSearchAllFilter( d );
+        //    datafilter = this.getSearchString( datafilter );
+        return this.setPaginator( this.datas );
+      
           }));
       }
 
       private setPaginator(datafilter) {
+
+
+            console.log( this.paginator ) ;
       this.paginator.length = datafilter.length;
 
         if (this.paginator.pageIndex * this.paginator.pageSize >  this.paginator.length ) {
@@ -98,12 +139,9 @@ export class MyDataSource extends DataSource<any> {
             let propertyA: number | string = '';
             let propertyB: number | string = '';
             switch (this._sort.active) {
-                case 'id': [propertyA, propertyB] = [a.id, b.id]; break;
                 case 'nom': [propertyA, propertyB] = [a.nom, b.nom]; break;
                 case 'prenom': [propertyA, propertyB] = [a.prenom, b.prenom]; break;
-                case 'date': [propertyA, propertyB] = [a.date, b.date]; break;
-                // case 'progress': [propertyA, propertyB] = [a.progress, b.progress]; break;
-                // case 'color': [propertyA, propertyB] = [a.color, b.color]; break;
+                case 'ville': [propertyA, propertyB] = [a.ville, b.ville]; break;
             }
             const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
             const valueB = isNaN(+propertyB) ? propertyB : +propertyB;
@@ -128,14 +166,23 @@ export class MyDataSource extends DataSource<any> {
     }
 
 
+    private isSearchAllFilter() {
+
+       return (  !this.allfilter.officiel && !this.allfilter.sexe &&
+             !this.allfilter.valide && !this.allfilter.categorie && !this.allfilter.type ) ;
+
+
+    }
+
     private getSearchAllFilter(datas) {
+        return datas;
+        if ( this.isSearchAllFilter() ) {
+            console.log( datas.length );
+            return datas;
+        }
+
         const datafilter = datas.slice().filter((item: any) => {
             let flag = false;
-            if (!this.allfilter) {
-                return true;
-            }
-
-
             if ( !this.allfilter.officiel ) {
                 flag = true;
             } else {
@@ -153,11 +200,11 @@ export class MyDataSource extends DataSource<any> {
                 } else { flag = false; }
             }
 
-
             if ( !this.allfilter.valide  ) {
                 flag = flag && true;
             } else {
-                if (item.valide === this.allfilter.valide) {
+                const v =  ( this.allfilter.valide === 'true' );
+                if (item.valide === v ) {
                     flag = flag && true;
                 } else { flag = false; }
             }
