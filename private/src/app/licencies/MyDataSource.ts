@@ -1,41 +1,30 @@
 import { DataSource } from '@angular/cdk/table';
 import { MatSort, MatPaginator } from '@angular/material';
-import { Observable, BehaviorSubject, Subject, merge, combineLatest } from 'rxjs';
+import { Observable, BehaviorSubject, Subject, merge, combineLatest, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CollectionViewer } from '@angular/cdk/collections';
+import { IDataLicencies } from './models/data-licencies';
 
 export class MyDataSource extends DataSource<any> {
 
-    /** Stream emitting render data to the table (depends on ordered data changes). */
-    private readonly _renderData = new BehaviorSubject<[]>([]);
-
-
-    /** Used to react to internal changes of the paginator that are made by the data source itself. */
-    private readonly _internalPageChanges = new Subject<void>();
 
     private readonly _filterChange = new BehaviorSubject<string>('');
-    _customerDatabase: any;
     get filter(): string { return this._filterChange.value; }
     set filter(filter: string) { this._filterChange.next(filter); }
 
 
-    private readonly _datasChange = new BehaviorSubject<[]>([]);
-    get datas(): any { return this._datasChange.value; }
-    set datas(data: any ) { this._datasChange.next(data); }
+    private readonly _datasChange = new BehaviorSubject<IDataLicencies[]>([]);
+    get datas(): IDataLicencies[] { return this._datasChange.value; }
+    set datas(data: IDataLicencies[] ) { this._datasChange.next(data); }
+
 
     private readonly _allFilterChange = new BehaviorSubject({});
     get allfilter(): any { return this._allFilterChange.value; }
     set allfilter(myfilter: any) { this._allFilterChange.next(myfilter); }
 
-
-
-
-
-
     get sort(): MatSort | null { return this._sort; }
     set sort(sort: MatSort | null) {
         this._sort = sort;
-        this._updateChangeSubscription();
     }
     private _sort: MatSort | null;
 
@@ -43,88 +32,43 @@ export class MyDataSource extends DataSource<any> {
     get paginator(): MatPaginator | null { return this._paginator; }
     set paginator(paginator: MatPaginator | null) {
         this._paginator = paginator;
-        this._updateChangeSubscription();
-    }
+            }
     private _paginator: MatPaginator | null;
 
 
-
-    constructor( datas ) {
+    constructor( datas: any[] ) {
         super();
         this.datas = datas ;
     }
 
-     _updateChangeSubscription() {
 
-
-
-    }
-
-
-    connect(collectionViewer: CollectionViewer): Observable<[]> {
+    connect(collectionViewer: CollectionViewer): Observable<any[]> {
         const displayDataChanges = [
-            this._datasChange,
-            this._paginator.page,
-        //    this._sort.sortChange,
-        //    this._filterChange,
-       //     this._allFilterChange
+           this._datasChange,
+           this.paginator.page,
+           this._sort.sortChange,
+           this._filterChange,
+           this._allFilterChange
         ];
 
-        let lastFilter = null;
-        let lastSort = null;
 
-        return combineLatest(...displayDataChanges).pipe(
-          map(  ([newData, newFilter, newSort, newPage]) => {
-            let data =  this._datasChange.value;
-      
-            if (newFilter !== lastFilter) {
-              data = this.getFilteredData(data);
-              lastFilter = newFilter ;
-            }
-      
-            if (newSort !== lastSort) {
-              data = this.getSortedData(data);
-              lastSort = newSort;
-            }
-      
-            const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
-            return data.splice(startIndex, this._paginator.pageSize);
-       }));
-      }
-  
-
-
-
-    connect(collectionViewer: CollectionViewer): Observable<[]> {
-        const displayDataChanges = [
-            this._datasChange,
-            this._paginator.page,
-        //    this._sort.sortChange,
-        //    this._filterChange,
-       //     this._allFilterChange
-        ];
-        console.log( this._paginator.page );
-     //   this.paginator.length = this.datas.length;
-      //  this.setPaginator( this.datas );
         return merge(...displayDataChanges)
-          .pipe(map(( d ) => {
+          .pipe(map(() => {
 
-            console.log ( 'len' , d.length , this._datasChange.value.length ) ;
+           let datafilter = this.getSearchAllFilter( [...this.datas] );
+           datafilter = this.getSearchString( datafilter );
+           datafilter = this.getSortedData( datafilter );
+           return this.setPaginator( datafilter );
 
-        //    let datafilter = this.getSearchAllFilter( d );
-        //    datafilter = this.getSearchString( datafilter );
-        return this.setPaginator( this.datas );
-      
           }));
+
       }
 
       private setPaginator(datafilter) {
 
+        this.paginator.length = datafilter.length;
 
-            console.log( this.paginator ) ;
-      this.paginator.length = datafilter.length;
-
-        if (this.paginator.pageIndex * this.paginator.pageSize >  this.paginator.length ) {
+     if (this.paginator.pageIndex * this.paginator.pageSize >  this.paginator.length ) {
            this.paginator.pageIndex = 0; }
 
         const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
@@ -133,19 +77,19 @@ export class MyDataSource extends DataSource<any> {
     }
 
     private getSortedData(datas): Element[] {
-        if (!this._sort.active || this._sort.direction === '') { return datas; }
+        if (!this.sort.active || this.sort.direction === '') { return datas; }
 
         return datas.sort((a, b) => {
             let propertyA: number | string = '';
             let propertyB: number | string = '';
-            switch (this._sort.active) {
+            switch (this.sort.active) {
                 case 'nom': [propertyA, propertyB] = [a.nom, b.nom]; break;
                 case 'prenom': [propertyA, propertyB] = [a.prenom, b.prenom]; break;
                 case 'ville': [propertyA, propertyB] = [a.ville, b.ville]; break;
             }
             const valueA = isNaN(+propertyA) ? propertyA : +propertyA;
             const valueB = isNaN(+propertyB) ? propertyB : +propertyB;
-            return (valueA < valueB ? -1 : 1) * (this._sort.direction === 'asc' ? 1 : -1);
+            return (valueA < valueB ? -1 : 1) * (this.sort.direction === 'asc' ? 1 : -1);
         });
     }
 
@@ -169,16 +113,16 @@ export class MyDataSource extends DataSource<any> {
     private isSearchAllFilter() {
 
        return (  !this.allfilter.officiel && !this.allfilter.sexe &&
-             !this.allfilter.valide && !this.allfilter.categorie && !this.allfilter.type ) ;
-
+                 !this.allfilter.valide && !this.allfilter.categorie && !this.allfilter.type &&
+                 !this.allfilter.paye && !this.allfilter.cert_medical &&
+                 !this.allfilter.fiche_medicale && !this.allfilter.auto_parentale )  ;
 
     }
 
     private getSearchAllFilter(datas) {
-        return datas;
+
         if ( this.isSearchAllFilter() ) {
-            console.log( datas.length );
-            return datas;
+             return datas;
         }
 
         const datafilter = datas.slice().filter((item: any) => {
@@ -224,6 +168,45 @@ export class MyDataSource extends DataSource<any> {
                     flag = flag && true;
                 } else { flag = false; }
             }
+
+            if ( !this.allfilter.paye  ) {
+                flag = flag && true;
+            } else {
+                const v =  ( this.allfilter.paye === 'true' );
+                if (item.paye === v ) {
+                    flag = flag && true;
+                } else { flag = false; }
+            }
+
+            if ( !this.allfilter.auto_parentale  ) {
+                flag = flag && true;
+            } else {
+                const v =  ( this.allfilter.auto_parentale === 'true' );
+                console.log(v);
+                if (item.auto_parentale === v ) {
+                    flag = flag && true;
+                } else { flag = false; }
+            }
+
+            if ( !this.allfilter.cert_medical  ) {
+                flag = flag && true;
+            } else {
+                const v =  ( this.allfilter.cert_medical === 'true' );
+                if (item.cert_medical === v ) {
+                    flag = flag && true;
+                } else { flag = false; }
+            }
+
+            if ( !this.allfilter.fiche_medicale  ) {
+                flag = flag && true;
+            } else {
+                const v =  ( this.allfilter.fiche_medicale === 'true' );
+                if (item.fiche_medicale === v ) {
+                    flag = flag && true;
+                } else { flag = false; }
+            }
+
+
             return flag;
         });
 

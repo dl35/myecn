@@ -1,5 +1,8 @@
+import { MatSnackBar } from '@angular/material';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Validators, FormControl, FormBuilder, FormGroup } from '@angular/forms';
+import { LicenciesService } from '../services/licencies.service';
+import { IDataLicencies } from '../models/data-licencies';
 
 @Component({
   selector: 'app-edit',
@@ -8,21 +11,27 @@ import { Validators, FormControl, FormBuilder, FormGroup } from '@angular/forms'
 })
 export class EditComponent implements OnInit {
 
+  show = false ;
+
   @Input()
   item: any;
 
   @Output() hideForm = new EventEmitter();
+
+  @Output() addData: EventEmitter<IDataLicencies> = new EventEmitter();
+  @Output() updateData: EventEmitter<IDataLicencies> = new EventEmitter();
+
   public dataForm: FormGroup ;
   meta = {
     displayForm : false ,
-    rang: ['-' , '1', '2', '3', '4' ],
+    rang: ['1', '2', '3', '4' , 'C1' , 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9', 'C10', 'C10', 'C12'],
     banque: ['CA', 'CMB'],
-    officiel: ['Non', 'A', 'B', 'C'],
+    officiel: ['A', 'B', 'C'],
     sexe: ['F', 'H'] ,
     type: [{'name': 'Ren' , 'value': 'R' } , {'name': 'Nou' , 'value': 'N' } ] ,
     niveau: [{'name': 'Dep' , 'value': 'Dep' } , {'name': 'Reg' , 'value': 'Reg' } , {'name': 'Nat' , 'value': 'Nat' }] ,
     // tslint:disable-next-line:max-line-length
-    categorie: [{'name': '-' , 'value': '-' } , {'name': 'Avenir' , 'value': 'AV' } , {'name': 'Jeune' , 'value': 'JE' } , {'name': 'Junior' , 'value': 'JU' }, {'name': 'Senior' , 'value': 'SE' }, {'name': 'Master' , 'value': 'MA' }] ,
+    categorie: [ {'name': 'Avenir' , 'value': 'av' } , {'name': 'Jeune' , 'value': 'je' } , {'name': 'Junior' , 'value': 'ju' }, {'name': 'Senior' , 'value': 'se' }, {'name': 'Master' , 'value': 'ma' }] ,
     total : 0,
     totdisp : 0
   };
@@ -33,7 +42,7 @@ export class EditComponent implements OnInit {
   startDate: Date;
 
 
-  constructor(private formBuilder: FormBuilder ) { }
+  constructor(private formBuilder: FormBuilder , private lserv: LicenciesService ,private snackBar: MatSnackBar ) { }
 
   ngOnInit() {
     this.initForm();
@@ -42,33 +51,35 @@ export class EditComponent implements OnInit {
 
   initForm() {
 
+    const day = new Date();
+    day.setHours(12);
+
     this.dataForm = this.formBuilder.group({
-      id: ['-1' ],
+      id: ['-1'],
       nom: [ null , [Validators.required] ],
       prenom:  [ null , [Validators.required] ],
-      date:  [ new Date() , [Validators.required] ],
+      date:  [ day , [Validators.required] ],
       sexe:  [ null , [Validators.required] ],
 
       categorie:  [ null , [Validators.required] ],
       rang:  [ null  , [Validators.required] ],
-      officiel:  [ null   ],
+      officiel:  [ null ],
       entr:  [ null  ],
 
 
 
       adresse:  [ null , [Validators.required] ],
-      code_postal:  [ null , [Validators.required] ],
+      code_postal:  [ null , [Validators.required, Validators.pattern(/^[0-9]{5}$/)]  ],
       ville:  [ null  , [Validators.required] ],
 
-      telephone1:  [ null , [Validators.required] ],
-      telephone2:  [ null ],
-      telephone3:  [ null ],
+      telephone1:  [ null , [Validators.pattern(/^[0-9]{10}$/)] ],
+      telephone2:  [ null , [Validators.pattern(/^[0-9]{10}$/)] ],
+      telephone3:  [ null , [Validators.pattern(/^[0-9]{10}$/)] ],
 
-      // tslint:disable-next-line:max-line-length
-      email1:  [ null , [Validators.required , Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') ] ],
-      email2:  [ null  , [Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') ]],
-      // tslint:disable-next-line:max-line-length
-      email3:  [ null  , [Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') ]],
+      email1:  [ null , [ Validators.email ] ],
+      email2:  [ null  , [ Validators.email ] ],
+      email3:  [ null  , [ Validators.email ] ],
+
       licence:  [ null  ],
 
       commentaires:  [ null  ],
@@ -81,51 +92,87 @@ export class EditComponent implements OnInit {
       photo:  [ false  ],
       paye:  [ false  ],
       reglement:  [ false  ],
-      tarif:  [ null  ],
+      tarif:  [ null , [Validators.required]  ],
       cotisation: new FormControl({value: '', disabled: true }) ,
-      especes:  [ 0.0  ],
-      cheque1:  [ null  ],
-      cheque2:  [ null  ],
+      especes:  [ 0.0],
+      cheque1:  [ null ],
+      cheque2:  [ null ],
       cheque3:  [ null ],
-      ch_sport:  [null],
-      coup_sport:  [null],
-      num_cheque1:  [null],
-      num_cheque2:  [null],
-      num_cheque3:  [null],
-      num_sport:  [null],
-      num_coupsport:  [null],
-      nbre_chvac10:  [null],
-      nbre_chvac20:  [null],
-      banque:  [null],
+      ch_sport:  [ null ],
+      coup_sport:  [ null ],
+      num_cheque1:  [ null ],
+      num_cheque2:  [ null ],
+      num_cheque3:  [ null ],
+      num_sport:  [ null ],
+      num_coupsport:  [ null ],
+      nbre_chvac10:  [ null ],
+      nbre_chvac20:  [ null ],
+      banque:  [ null ],
       type:  [ 'N' , [Validators.required]  ],
-      valide:  [ false  ],
-
-
-
-
-
+      valide:  [ false ],
 
 
 
     });
 
-//     this.customValidator();
+    this.dataForm.setValidators( [this.emailsValidator , this.telsValidator ] ) ;
   }
+
+  private  telsValidator( formGroup ): any {
+    const tel1 = formGroup.get('telephone1');
+    const tel2 = formGroup.get('telephone2');
+    const tel3 = formGroup.get('telephone3');
+    if ( tel1.value && tel1.value.match(/^[0-9]{10}$/) ) {
+      return null;
+    }
+    if ( tel2.value && tel2.value.match(/^[0-9]{10}$/) ) {
+      return null;
+    }
+    if ( tel3.value && tel3.value.match(/^[0-9]{10}$/) ) {
+      return null;
+    }
+     return { required: true };
+
+}
+
+  private  emailsValidator( formGroup ): any {
+    const email1 = formGroup.get('email1');
+    const email2 = formGroup.get('email2');
+    const email3 = formGroup.get('email3');
+    if ( email1.value && !Validators.email(email1) ) {
+      return null;
+    }
+    if ( email2.value && !Validators.email(email2) ) {
+      return null;
+    }
+    if ( email3.value && !Validators.email(email3) ) {
+      return null;
+    }
+     return { required: true };
+
+}
+
+
+
+
 
 initDatas ( ) {
 
   if ( this.item !== null   ) {
     delete this.item.params;
-      this.dataForm.setValue( this.item );  /// , { onlySelf: true });
-      this.startDate = new Date( this.dataForm.get('date').value  );
+    this.show = false;
+    this.dataForm.setValue( this.item );
+    this.startDate = new Date( this.dataForm.get('date').value  );
+    this.dataForm.get('nom').disable();
   } else {
     this.dataForm.reset();
+    this.show = true;
     this.startDate = new Date();
     const dstart = ( new Date().getFullYear() )  - 10 ;
     this.startDate.setFullYear ( dstart ) ;
     this.dataForm.get('type').setValue('N');
     this.dataForm.get('id').setValue('-1');
-
+    this.dataForm.get('nom').enable();
   }
 
   }
@@ -135,6 +182,36 @@ cancelForm() {
 
 }
 
+
+saveForm() {
+const datas = this.dataForm.getRawValue();
+if ( datas.id === '-1' ) {
+  this.lserv.add( datas ).subscribe(
+     (data) => { this.addData.emit( data ); },
+     (err) => {  this.showSnackBar( err.error.message , false) ;  this.hideForm.emit( true ); }
+    );
+} else {
+  this.lserv.update( datas ).subscribe(
+    (data) => { this.updateData.emit( data ); },
+    (err) => {  this.showSnackBar( err.error.message , false) ;  this.hideForm.emit( true ); }
+
+   );
+}
+}
+
+
+private showSnackBar( message , info) {
+
+  let style = 'snack-success';
+  if ( !info ) {
+    style = 'snack-error';
+  }
+  this.snackBar.open( message  , '', {
+    duration: 1500,
+    announcementMessage : 'info',
+    panelClass: [ style ]
+  });
+}
 
 
 }

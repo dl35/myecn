@@ -7,46 +7,53 @@
    
       
             <mat-form-field fxFlex="20" fxFlexOffset="3" >
-            <input matInput placeholder="Nom" formControlName="nom"    >
+            <input matInput placeholder="Nom*" formControlName="nom"  >
+            <mat-error>Un nom est requis</mat-error>
             </mat-form-field>
       
             <mat-form-field fxFlex="20" fxFlexOffset="2" >
-            <input matInput placeholder="Prénom" formControlName="prenom"    >
+            <input matInput placeholder="Prénom*" formControlName="prenom"    >
+            <mat-error>Un prénom est requis</mat-error>
             </mat-form-field>
       
             <mat-form-field fxFlex="10" fxFlexOffset="2" >
               
-              <input matInput [matDatepicker]="day"  placeholder="Date" (click)="day.open()"  formControlName="date" [max]="maxDate" [min]="minDate"  >
+              <input matInput [matDatepicker]="day"  placeholder="Date naissance*" (click)="day.open()"  formControlName="date" [max]="maxDate" [min]="minDate"  >
               <mat-datepicker-toggle matSuffix [for]="day"  ></mat-datepicker-toggle>
               <mat-datepicker #day  [startAt]="startDate"  ></mat-datepicker>
+              <mat-error>La date de naissance est requise</mat-error>
            </mat-form-field>
   
   
     
            <mat-form-field     fxFlex="4" fxFlexOffset="2"  >
-              <mat-select placeholder="Sexe" formControlName="sexe"  >
+              <mat-select placeholder="Sexe*" formControlName="sexe"  >
                   <mat-option *ngFor="let s of meta.sexe"     [value]="s"   >{{s}} </mat-option>
               </mat-select> 
             </mat-form-field>
-    
+            <mat-slide-toggle fxFlexOffset="2" (change)="show = !show" [checked]="show" >suite...</mat-slide-toggle>
+         
           </div>
   
   
     
     
-    <div fxLayout="row" fxLayoutAlign="start baseline"  fxLayoutAlign.lt-sm="start start"   fxLayout.lt-sm="column" >
+    <div fxLayout="row" fxLayoutAlign="start baseline"  fxLayoutAlign.lt-sm="start start"   fxLayout.lt-sm="column" *ngIf="show" >
         
         <mat-form-field fxFlex="25" fxFlexOffset="3" >
-        <input matInput placeholder="Adresse" formControlName="adresse"    >
+        <input matInput placeholder="Adresse*" formControlName="adresse"    >
+        <mat-error>Adresse requise</mat-error>
         </mat-form-field>
   
         <mat-form-field fxFlex="8" fxFlexOffset="2" >
-        <input matInput #postalCode maxLength="5"  placeholder="Code Postal" formControlName="code_postal"    >
+        <input matInput #postalCode maxLength="5"  placeholder="Code Postal*" formControlName="code_postal"    >
         <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
+        <mat-error>code postal invalide</mat-error>
         </mat-form-field>
       
         <mat-form-field fxFlex="20" fxFlexOffset="2" >
-        <input matInput placeholder="Ville" formControlName="ville"    >
+        <input matInput placeholder="Ville*" formControlName="ville"    >
+        <mat-error>La ville est requise</mat-error>
         </mat-form-field>
     
     </div> 
@@ -54,43 +61,46 @@
   
   
   
-    <div fxLayout="row" fxLayoutAlign="start baseline" fxLayoutAlign.lt-sm="start start"  fxLayout.lt-sm="column"  >
+    <div fxLayout="row" fxLayoutAlign="start baseline" fxLayoutAlign.lt-sm="start start"  fxLayout.lt-sm="column" *ngIf="show" >
         
         <mat-form-field fxFlex="18" fxFlexOffset="3">
-        <input matInput placeholder="Email*" formControlName="email1"    >
+        <input matInput placeholder="Email" formControlName="email1"    >
         <mat-icon matSuffix>email</mat-icon>
-        <mat-hint align="start" *ngIf="(dataForm.get('email1').hasError('required') ||  dataForm.get('email1').hasError('pattern') ) && dataForm.get('email1').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
-            {{invalid.mail}}</mat-hint>
+        <mat-error>une adresse email valide est requise</mat-error>
+        <mat-hint><strong>1/3 adresse email obligatoire*</strong></mat-hint>
         </mat-form-field>
   
         <mat-form-field fxFlex="18" fxFlexOffset="2">
         <input matInput placeholder="Email" formControlName="email2"    >
-        <mat-hint align="start" *ngIf="( dataForm.get('email2').hasError('pattern') ) && dataForm.get('email2').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
-            {{ invalid.mail}}</mat-hint>
+        <mat-icon matSuffix>email</mat-icon>
+        <mat-error>une adresse email valide est requise</mat-error>
         </mat-form-field>
       
         <mat-form-field fxFlex="18" fxFlexOffset="2">
         <input matInput placeholder="Email" formControlName="email3"    >
-        <mat-hint align="start" *ngIf="( dataForm.get('email3').hasError('pattern') ) && dataForm.get('email3').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
-            {{ invalid.mail}}</mat-hint>
+        <mat-icon matSuffix>email</mat-icon>
+        <mat-error>une adresse email valide est requise</mat-error>
         </mat-form-field>
+    </div>
        
-      
-        <mat-form-field fxFlex="8" fxFlexOffset="2" >
-            <input matInput placeholder="Télephone*" formControlName="telephone1"   maxlength="10" >
+        <div fxLayout="row" fxLayoutAlign="start baseline" fxLayoutAlign.lt-sm="start start"  fxLayout.lt-sm="column" *ngIf="show" >    
+        <mat-form-field fxFlex="18" fxFlexOffset="3" >
+            <input matInput placeholder="Télephone" formControlName="telephone1"   maxlength="10" >
             <mat-icon matSuffix>phone</mat-icon>
+            <mat-hint align="start"><strong>1/3 numéro de tel. obligatoire*</strong> </mat-hint>
+            <mat-error>un numéro de tel. valide est requis</mat-error>
             </mat-form-field>
       
-            <mat-form-field fxFlex="8" fxFlexOffset="2" >
+            <mat-form-field fxFlex="18" fxFlexOffset="2" >
             <input matInput placeholder="Télephone" formControlName="telephone2"   maxlength="10"  >
             <mat-icon matSuffix>phone</mat-icon>
-            <mat-hint align="start" *ngIf="( dataForm.get('telephone2').hasError('required') ) && dataForm.get('telephone2').dirty " [ngStyle]="{'color': 'red','font-size':'12px'}" >
-                *Le Téléphone....              </mat-hint>
+            <mat-error>un numéro de tel. valide est requis</mat-error>
             </mat-form-field>
           
-            <mat-form-field fxFlex="8" fxFlexOffset="2" >
-            <input matInput placeholder="Télephone" formControlName="telephone3"  maxlength="10"   >
+            <mat-form-field fxFlex="18" fxFlexOffset="2" >
+            <input matInput placeholder="Télephone" formControlName="telephone3"  maxlength="10"  min="0"   >
             <mat-icon matSuffix>phone</mat-icon>
+            <mat-error>un numéro de tel. valide est requis</mat-error>
             </mat-form-field>
     
       
@@ -119,7 +129,8 @@
      
     
           <mat-form-field     fxFlex="10" fxFlexOffset="1" >
-          <mat-select placeholder="Categorie" formControlName="categorie">
+          <mat-select placeholder="Categorie*" formControlName="categorie">
+          <mat-option></mat-option>  
           <mat-option *ngFor="let r of meta.categorie"    [value]="r.value"   >{{r.name}} </mat-option>
           </mat-select> 
           </mat-form-field>
@@ -128,30 +139,33 @@
    
      
         <mat-form-field     fxFlex="5" fxFlexOffset="1" >
-        <mat-select placeholder="Rang" formControlName="rang" >
+        <mat-select placeholder="Rang*" formControlName="rang" >
+        <mat-option></mat-option> 
         <mat-option *ngFor="let r of meta.rang"    [value]="r"   >{{r}} </mat-option>
         </mat-select> 
         </mat-form-field>
      
   
      
-          <mat-form-field     fxFlex="6" fxFlexOffset="2" >
+        <mat-form-field     fxFlex="6" fxFlexOffset="2" >
         <mat-select placeholder="Officiel" formControlName="officiel"  >
+        <mat-option></mat-option> 
         <mat-option *ngFor="let r of meta.officiel"    [value]="r"   >{{r}} </mat-option>
         </mat-select> 
         </mat-form-field>
       
     
-      <mat-form-field fxFlex="10" fxFlexOffset="1" >
-          <input matInput placeholder="Licence" formControlName="licence"    >
-      </mat-form-field>
+        <mat-form-field fxFlex="10" fxFlexOffset="1" >
+        <input matInput placeholder="Licence" formControlName="licence"    >
+        </mat-form-field>
   
-      <mat-form-field fxFlex="6" fxFlexOffset="3" >
-        <input matInput placeholder="Tarif (€)" formControlName="tarif"   maxlength="7" >
-     </mat-form-field>
-     <mat-form-field fxFlex="6" fxFlexOffset="1" >
+        <mat-form-field fxFlex="6" fxFlexOffset="3" >
+        <input matInput placeholder="Tarif* (€)" formControlName="tarif" type="number"  maxlength="7" >
+        <mat-error>tarif requis</mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex="6" fxFlexOffset="1" >
         <input matInput placeholder="Total (€)"   class="cotisation"  formControlName="cotisation"    maxlength="7" >
-     </mat-form-field>
+        </mat-form-field>
   
       <section fxFlexOffset="1" >
           <mat-checkbox  formControlName="entr" color="accent" >Entraineur</mat-checkbox>
@@ -178,7 +192,7 @@
        
           <div fxLayout="column" fxLayoutAlign="start start"   fxFlexOffset="3" >
             <mat-form-field fxFlex="5"  >
-                <input matInput placeholder="Montant (€)" formControlName="cheque1"   >
+                <input matInput placeholder="Montant (€)" formControlName="cheque1"  type="number" min="0" >
               </mat-form-field>
               <mat-form-field fxFlex="10"  >
                   <input matInput placeholder="Numéro" formControlName="num_cheque1"    >
@@ -187,7 +201,7 @@
            
              <div fxLayout="column" fxLayoutAlign="start start"   fxFlexOffset="3" >
                 <mat-form-field fxFlex="5" >
-                    <input matInput placeholder="Montant (€)" formControlName="cheque2"    >
+                    <input matInput placeholder="Montant (€)" formControlName="cheque2"  type="number" min="0"  >
                   </mat-form-field>
                   <mat-form-field fxFlex="5" >
                       <input matInput placeholder="Numéro" formControlName="num_cheque2"    >
@@ -197,7 +211,7 @@
               
                  <div fxLayout="column" fxLayoutAlign="start start"   fxFlexOffset="3"  >
                     <mat-form-field fxFlex="5" >
-                        <input matInput placeholder="Montant (€)" formControlName="cheque3"    >
+                        <input matInput placeholder="Montant(€)" formControlName="cheque3"  type="number"  min="0" >
                       </mat-form-field>
                       <mat-form-field fxFlex="5" >
                           <input matInput placeholder="Numéro" formControlName="num_cheque3"    >
@@ -208,13 +222,13 @@
   
   <div  fxLayout="row" fxLayoutAlign="start baseline" fxLayoutAlign.lt-sm="start start"  fxLayout.lt-sm="column"  style='margin-top:20px'  >
           <mat-form-field fxFlex="15"  fxFlexOffset="3"  >
-              <input matInput placeholder="Cheque sport (€)" formControlName="ch_sport"   >
+              <input matInput placeholder="Cheque sport(€)" formControlName="ch_sport"  type="number" min="0" >
             </mat-form-field>
             <mat-form-field fxFlex="15"  fxFlexOffset="1"  >
                 <input matInput placeholder="Numéro" formControlName="num_sport"    >
               </mat-form-field>
               <mat-form-field fxFlex="15"  fxFlexOffset="1"  >
-                <input matInput placeholder="Coupon sport (€)" formControlName="coup_sport"   >
+                <input matInput placeholder="Coupon sport(€)" formControlName="coup_sport"  type="number"  min="0" >
               </mat-form-field>
               <mat-form-field fxFlex="15"  fxFlexOffset="1"  >
                   <input matInput placeholder="Numéro" formControlName="num_coupsport"    >
@@ -226,14 +240,14 @@
   <div  fxLayout="row" fxLayoutAlign="start baseline" fxLayoutAlign.lt-sm="start start"  fxLayout.lt-sm="column"  style='margin-top:20px' f>
     
           <mat-form-field fxFlex="15" fxFlexOffset="3" >
-              <input matInput placeholder="Nombre Ch. vacances * 10 €" formControlName="nbre_chvac10"   >
+              <input matInput placeholder="Nb Ch.vacances * 10€" formControlName="nbre_chvac10" type="number" min="0"  >
           </mat-form-field>
           <mat-form-field fxFlex="15" fxFlexOffset="1" >
-            <input matInput placeholder="Nombre Ch. vacances * 20 €" formControlName="nbre_chvac20"   >
+            <input matInput placeholder="Nb Ch.vacances * 20€" formControlName="nbre_chvac20"  type="number" min="0" >
         </mat-form-field>
      
         <mat-form-field fxFlex="15" fxFlexOffset="1" >
-            <input matInput placeholder="Espèce €" formControlName="especes"   >
+            <input matInput placeholder="Espèce €" formControlName="especes"  type="number" min="0" >
         </mat-form-field>
   
   </div>
@@ -268,11 +282,14 @@
           </mat-form-field>
     </div>
     
-      <div fxLayout="row" fxLayoutAlign="center center"  >
+      <div fxLayout="row" fxLayoutAlign="center center" style="margin-bottom: 8px " >
        
-                 <button mat-raised-button color="primary" [disabled]="dataForm.invalid" (click)="saveForm()"  >Valider</button>
-                 <button mat-raised-button color="primary" fxFlexOffset ='3'  (click)="cancelForm()"  >Annuler</button>
+                 <button mat-raised-button color="primary" type="submit" [disabled]="dataForm.invalid" (click)="saveForm()"  >Valider</button>
+                 <button mat-raised-button color="primary" type="reset"  fxFlexOffset ='3'  (click)="cancelForm()"  >Annuler</button>
         </div>
     
     </form>
+    
+
+
 </div>

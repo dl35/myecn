@@ -197,7 +197,9 @@ export class EngagementsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
+    this.mobileQuery.removeListener(this._mobileQueryListener);
   }
+
 
 
   public doUpdate() {

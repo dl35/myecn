@@ -1,5 +1,20 @@
 <mat-toolbar color="primary"  >
-    <div fxFlex="100"  fxLayout="row"  fxLayoutAlign="start center" >
+      <div *ngIf="!display"  >
+    <mat-menu #appMenu="matMenu" >
+        <button mat-menu-item  routerLink="/licencies" ><mat-icon>account_circle</mat-icon>&nbsp;Licencies</button>
+        <button mat-menu-item  routerLink="/competitions" ><mat-icon>pool</mat-icon>&nbsp;Competitions</button>
+        <button mat-menu-item  routerLink="/engagements" ><mat-icon>airport_shuttle</mat-icon>&nbsp;Engagements</button>  
+        <button mat-menu-item routerLink="/mailto" ><mat-icon>email</mat-icon>&nbsp;Mailto</button>
+        <button mat-menu-item  routerLink="/records" ><mat-icon>timer</mat-icon>&nbsp;Records</button>
+        <button mat-menu-item  routerLink="/piscines" ><mat-icon>gps_fixed</mat-icon>&nbsp;Piscines</button>
+      </mat-menu>
+      
+      <button mat-icon-button [matMenuTriggerFor]="appMenu">
+        <mat-icon>more_vert</mat-icon>
+        ECN
+      </button>
+    </div>
+    <div fxFlex="100"  fxLayout="row"  fxLayoutAlign="start center" *ngIf="display" >
         <div fxFlex="60"     fxLayoutAlign="start center" fxLayoutGap="5px"  >
         
         <button mat-raised-button color="primary"  routerLink="/licencies" ><mat-icon>account_circle</mat-icon>&nbsp;Licencies</button>
