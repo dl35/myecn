@@ -40,7 +40,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
                     console.log('error') ;
                     if (error.status === 401) {
                     this.snackBar.showSnackBar(error.statusText + ': ' + error.status, true ) ;
-                 //     this.router.navigate(['/login']);
+                      this.router.navigate(['/login']);
                     } else {
                    //   this.snack.open('Communication error: ' + err.status + ' - ' + err.statusText, null,
                    //    {duration: 5000, panelClass: 'snack-error', verticalPosition: 'top'});
