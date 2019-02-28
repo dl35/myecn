@@ -38,7 +38,7 @@ doSignUp() {
 
 this.loginService.signup( this.dataForm.value  ).subscribe(
     // tslint:disable-next-line:max-line-length
-    (data)  =>   { console.log(data) ;  sessionStorage.setItem('token' , data['token'] )  ;  sessionStorage.setItem('profile' , data['profile'] )  ;  this.router.navigate(['/']) ;  } ,
+    (data)  =>   { console.log(data) ;  sessionStorage.setItem('token' , data['token'] )  ;  sessionStorage.setItem('profile' , data['profile'] )  ; sessionStorage.setItem('user' , data['user'] )  ;   this.router.navigate(['/']) ;  } ,
     (error) => {
       this.meta.error = true ;
     setTimeout (() => {

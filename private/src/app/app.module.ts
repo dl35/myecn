@@ -68,8 +68,8 @@ registerLocaleData(localeFr, 'fr');
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
     { provide: DateAdapter, useClass: MomentUtcDateAdapter },
     { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
-]
-  ],
+],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }
