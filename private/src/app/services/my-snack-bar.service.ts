@@ -6,18 +6,15 @@ import { MatSnackBar } from '@angular/material';
 })
 export class MySnackBarService {
 
-  constructor(public snackBar: MatSnackBar) { 
-  }
+  constructor(public snackBar: MatSnackBar) {}
 
   public showSnackBar( message , err ) {
-    // tslint:disable-next-line:no-shadowed-variable
-    let style = 'snack-success';
-    if ( err ) {
-      style = 'snack-error';
-    }
+
+   const style =  ( err ) ? 'snack-error' : 'snack-success';
+
     this.snackBar.open( message  , '', {
       duration: 1500,
-      announcementMessage : 'denis',
+      announcementMessage : 'info',
       panelClass: [ style ]
     });
   }

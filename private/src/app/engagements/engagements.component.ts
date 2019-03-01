@@ -5,7 +5,7 @@ import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Observable, Subscription, Subject, EMPTY, interval } from 'rxjs';
 import { EngageService } from './services/engage.service';
 import { FormControl } from '@angular/forms';
-import { MatSnackBar, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material';
 import { takeUntil, shareReplay, catchError, finalize, map, tap, take, filter } from 'rxjs/operators';
@@ -45,7 +45,7 @@ export class EngagementsComponent implements OnInit, OnDestroy {
 ​
 
   constructor(public dialog: MatDialog, changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher, private eService: EngageService, private snackBar: MatSnackBar) {
+    media: MediaMatcher, private eService: EngageService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -72,7 +72,7 @@ export class EngagementsComponent implements OnInit, OnDestroy {
     if (response.success) {
       this.setCompetition(this.idc);
 
-    } else { this.showSnackBar(response.message, false); }
+    } else { /* this.showSnackBar(response.message, false); */ }
 
   }
 
@@ -104,10 +104,10 @@ export class EngagementsComponent implements OnInit, OnDestroy {
               } else {
                 this.engage = this.cachedDatas;
               }
-              this.showSnackBar('Suppression valide', true);
+         //     this.showSnackBar('Suppression valide', true);
             }
             ,
-            (err) => { this.showSnackBar(err.error.message, false); },
+            () => {},
             () => this.loading = false
           );
         }
@@ -133,11 +133,11 @@ export class EngagementsComponent implements OnInit, OnDestroy {
               const index = this.cachedDatas.findIndex(item => item.id === id);
               const data = this.cachedDatas[index];
               data.extranat = 1 - data.extranat;
-              this.showSnackBar('Extranat valide', true);
+         //     this.showSnackBar('Extranat valide', true);
               this.doUpdate();
             }
             ,
-            (err) => { this.showSnackBar(err.error.message, false); },
+            () => {},
             () => this.loading = false
           );
         }
@@ -162,10 +162,10 @@ export class EngagementsComponent implements OnInit, OnDestroy {
               const index = this.cachedDatas.findIndex(item => item.id === id);
               const data = this.cachedDatas[index];
               data.notification = data.notification + 1;
-              this.showSnackBar('Email valide', true);
+       //       this.showSnackBar('Email valide', true);
             }
             ,
-            (err) => { this.showSnackBar(err.error.message, false); },
+            () => {},
             () => this.loading = false
           );
         }
@@ -185,10 +185,10 @@ export class EngagementsComponent implements OnInit, OnDestroy {
           this.engage = this.cachedDatas = null;
         } else {
           this.initFiltre();
-          this.engage = this.cachedDatas = res; this.showSnackBar('Engagements: ' + res.length, true);
+          this.engage = this.cachedDatas = res; /* this.showSnackBar('Engagements: ' + res.length, true); */
         }
       },
-      (err) => { this.showSnackBar(err.error.message, false); },
+      () => {},
       () => this.loading = false
     );
   }
@@ -264,19 +264,6 @@ export class EngagementsComponent implements OnInit, OnDestroy {
   }
 
 
-  private showSnackBar(message, info) {
-    // tslint:disable-next-line:no-shadowed-variable
-    let style = 'snack-success';
-    if (!info) {
-      style = 'snack-error';
-    }
-    this.snackBar.open(message, '', {
-      duration: 1500,
-      announcementMessage: 'denis',
-      panelClass: [style]
-    });
-  }
-
   public sendMails() {
     const dialogRef = this.dialog.open(DialogEngageComponent, {
       width: '60%',
@@ -290,8 +277,8 @@ export class EngagementsComponent implements OnInit, OnDestroy {
         if (result) {
           this.loading = true;
           this.eService.sendMails(this.idc).subscribe(
-            (res) => { this.showSnackBar('send mails ok', true); this.setCompetition(this.idc); },
-            (err) => { this.showSnackBar(err.error.message, false); },
+            (res) => { this.setCompetition(this.idc); },
+            () => {},
             () => this.loading = false
 
           );
@@ -312,11 +299,11 @@ export class EngagementsComponent implements OnInit, OnDestroy {
       (result) => {
         if (result) {
           this.loading = true;
-          this.showSnackBar('ajout valide', true); this.setCompetition(this.idc);
+          this.setCompetition(this.idc);
           // (error) =>  { this.showSnackBar( error   , false ); }
         }
       },
-      (err) => { this.showSnackBar(err.error.message, false); },
+      () => {},
       () => this.loading = false
     );
   }

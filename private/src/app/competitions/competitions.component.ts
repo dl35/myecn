@@ -7,7 +7,7 @@ import { filter , distinctUntilChanged , debounceTime, map, shareReplay} from 'r
 import { FormControl } from '@angular/forms';
 
 import 'hammerjs';
-import { MatDrawer, MatDialog, MatSnackBar } from '@angular/material';
+import { MatDrawer, MatDialog } from '@angular/material';
 
 import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
 import { MessageType, MessageResponse } from './models/message-response';
@@ -58,27 +58,13 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
   private _mobileQueryListener: () => void;
 
 
-  constructor(public dialog: MatDialog, private snackBar: MatSnackBar,  changeDetectorRef: ChangeDetectorRef,
+  constructor(public dialog: MatDialog,  changeDetectorRef: ChangeDetectorRef,
                media: MediaMatcher, private compService: CompetitionsService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
 
   }
-
-  private showSnackBar( message , info) {
-    // tslint:disable-next-line:no-shadowed-variable
-    let style = 'snack-success';
-    if ( !info ) {
-      style = 'snack-error';
-    }
-    this.snackBar.open( message  , '', {
-      duration: 1500,
-      announcementMessage : 'denis',
-      panelClass: [ style ]
-    });
-  }
-
 
   switchdrawer() {
 
@@ -106,8 +92,8 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
          (result) => {
                    if (result) {
                     this.compService.delete( data.id ).subscribe(
-                        () => { this.compService.updateCache('delete', data); this.showSnackBar('Supression valide'  , true ); },
-                        (error) =>  { this.showSnackBar( error   , false ); }
+                        () => { this.compService.updateCache('delete', data); },
+                        () =>  {}
 
                     ); }},
          () => { },
@@ -122,13 +108,9 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
   onQuitte(message: MessageResponse) {
   this.dataSelected = null;
   if ( message.type === MessageType.NONE ) {  return ; }
-  this.showSnackBar( message.message  , message.success  );
-
-
-
   }
 
- 
+
   doFilter(value) {
 
     if (value === 'verif') {

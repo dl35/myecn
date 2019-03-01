@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { LicenciesService } from './services/licencies.service';
-import { MatPaginator, MatSort, MatDialog, MatSnackBar } from '@angular/material';
+import { MatPaginator, MatSort, MatDialog } from '@angular/material';
 import { MyDataSource } from './MyDataSource';
 import { IDataLicencies } from './models/data-licencies';
 import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { TexteRoutesService } from '../services/texte-routes.service';
 
 @Component({
   selector: 'app-licencies',
@@ -40,17 +41,21 @@ export class LicenciesComponent implements OnInit  {
   public displayedSmallColumns: string[] = ['nom', 'prenom', 'valide' , 'id' ];
   public displayedColumns: string[] = this.displayedAllColumns ;
 
-  constructor( private lserv: LicenciesService , private dialog: MatDialog, private snackBar: MatSnackBar,
+  constructor( private lserv: LicenciesService , private dialog: MatDialog,  private textRoute: TexteRoutesService ,
                private breakpointObserver: BreakpointObserver ) {
 
    // this.mobileQuery = media.matchMedia('(max-width: 600px)');
 
+                  this.textRoute.sendMessage('Licencies');
+
+
     const layoutChanges = breakpointObserver.observe([
-      '(max-width: 600px)'
-    ]);
+      Breakpoints.XSmall,
+      Breakpoints.Small,
+      ]);
 
     layoutChanges.subscribe(result => {
-console.log( Breakpoints.Medium  ) ;
+console.log( result  ) ;
 
       if ( result.matches ) {
         this.displayedColumns = this.displayedSmallColumns ;
@@ -116,8 +121,7 @@ deleteItem( item ) {
      (result) => {
                if (result) {
                 this.lserv.delete( item.id ).subscribe(
-                    () => { this.removeItem( item.id ) ; this.showSnackBar('Supression valide'  , true ); },
-                    (error) =>  { this.showSnackBar( error   , false ); }
+                    () => { this.removeItem( item.id ) ; }
 
                 ); }},
      () => { },
@@ -127,18 +131,6 @@ deleteItem( item ) {
 }
 
 
-private showSnackBar( message , info) {
-  // tslint:disable-next-line:no-shadowed-variable
-  let style = 'snack-success';
-  if ( !info ) {
-    style = 'snack-error';
-  }
-  this.snackBar.open( message  , '', {
-    duration: 1500,
-    announcementMessage : 'denis',
-    panelClass: [ style ]
-  });
-}
 
 
 

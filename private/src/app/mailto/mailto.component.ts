@@ -1,7 +1,6 @@
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { IMailto } from './models/mailto-models';
 import { EmailtoService } from './services/emailto.service';
-import { MatSnackBar, MatDrawer } from '@angular/material';
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -28,7 +27,7 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
     ]
   };
 
-  constructor(private formBuilder: FormBuilder, private snackBar: MatSnackBar , private eMailto: EmailtoService ) {
+  constructor(private formBuilder: FormBuilder, private eMailto: EmailtoService ) {
 
   }
 

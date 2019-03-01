@@ -1,6 +1,8 @@
 
-import { Component, OnInit } from '@angular/core';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Component } from '@angular/core';
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { Observable, of } from 'rxjs';
+import { TexteRoutesService } from '../services/texte-routes.service';
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
@@ -8,34 +10,22 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 })
 export class MenuComponent  {
 
+  title: Observable<string> ;
+  layoutChanges: Observable<BreakpointState>;
+  constructor(private breakpointObserver: BreakpointObserver, private textRoute: TexteRoutesService) {
 
-   display = true ;
-
-  constructor(private breakpointObserver: BreakpointObserver) {
-
-    const layoutChanges = breakpointObserver.observe([
+    this.layoutChanges = this.breakpointObserver.observe([
       Breakpoints.Medium,
       Breakpoints.Large,
       Breakpoints.XLarge,
     ]);
 
-    layoutChanges.subscribe(result => {
 
-
-      if ( result.matches ) {
-        this.display = true;
-
-      } else {
-        this.display = false;
-      }
-
-
-    });
-
-  }
+    this.title = this.textRoute.getMessage() ;
 
 
 
 
+}
 
 }

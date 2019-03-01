@@ -29,21 +29,22 @@ export class HttpConfigInterceptor implements HttpInterceptor {
 
         return next.handle( request ).pipe(
             map( (event: HttpEvent<any>) => {
+
                 if (event instanceof HttpResponse) {
-                    console.log('event--->>>', event);
-                    // this.errorDialogService.openDialog(event);
+                    const text = (event.body.message) ? event.body.message  :  event.statusText ;
+                    this.snackBar.showSnackBar(text , false ) ;
                 }
                return event ;
             }),
             catchError( (error: HttpErrorResponse  ) => {
                 if (error instanceof HttpErrorResponse) {
-                    console.log('error') ;
+
                     if (error.status === 401) {
                     this.snackBar.showSnackBar(error.statusText + ': ' + error.status, true ) ;
-                      this.router.navigate(['/login']);
+                    this.router.navigate(['/login']);
                     } else {
-                   //   this.snack.open('Communication error: ' + err.status + ' - ' + err.statusText, null,
-                   //    {duration: 5000, panelClass: 'snack-error', verticalPosition: 'top'});
+                    const text = (error.error.message) ? error.error.message  :  error.statusText ;
+                    this.snackBar.showSnackBar(text, true ) ;
                     }
                 return throwError(error);
             }} )

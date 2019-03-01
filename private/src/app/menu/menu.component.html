@@ -1,5 +1,5 @@
 <mat-toolbar color="primary"  >
-      <div *ngIf="!display"  >
+      <div *ngIf="!(layoutChanges | async)?.matches"  >
     <mat-menu #appMenu="matMenu" >
         <button mat-menu-item  routerLink="/licencies" ><mat-icon>account_circle</mat-icon>&nbsp;Licencies</button>
         <button mat-menu-item  routerLink="/competitions" ><mat-icon>pool</mat-icon>&nbsp;Competitions</button>
@@ -11,10 +11,10 @@
       
       <button mat-icon-button [matMenuTriggerFor]="appMenu">
         <mat-icon>more_vert</mat-icon>
-        ECN
+        ECN  {{title | async}}
       </button>
     </div>
-    <div fxFlex="100"  fxLayout="row"  fxLayoutAlign="start center" *ngIf="display" >
+    <div fxFlex="100"  fxLayout="row"  fxLayoutAlign="start center" *ngIf="(layoutChanges | async)?.matches" >
         <div fxFlex="60"     fxLayoutAlign="start center" fxLayoutGap="5px"  >
         
         <button mat-raised-button color="primary"  routerLink="/licencies" ><mat-icon>account_circle</mat-icon>&nbsp;Licencies</button>

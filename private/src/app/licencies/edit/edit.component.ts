@@ -1,4 +1,3 @@
-import { MatSnackBar } from '@angular/material';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Validators, FormControl, FormBuilder, FormGroup } from '@angular/forms';
 import { LicenciesService } from '../services/licencies.service';
@@ -17,7 +16,6 @@ export class EditComponent implements OnInit {
   item: any;
 
   @Output() hideForm = new EventEmitter();
-
   @Output() addData: EventEmitter<IDataLicencies> = new EventEmitter();
   @Output() updateData: EventEmitter<IDataLicencies> = new EventEmitter();
 
@@ -42,7 +40,7 @@ export class EditComponent implements OnInit {
   startDate: Date;
 
 
-  constructor(private formBuilder: FormBuilder , private lserv: LicenciesService ,private snackBar: MatSnackBar ) { }
+  constructor(private formBuilder: FormBuilder , private lserv: LicenciesService  ) { }
 
   ngOnInit() {
     this.initForm();
@@ -187,31 +185,18 @@ saveForm() {
 const datas = this.dataForm.getRawValue();
 if ( datas.id === '-1' ) {
   this.lserv.add( datas ).subscribe(
-     (data) => { this.addData.emit( data ); },
-     (err) => {  this.showSnackBar( err.error.message , false) ;  this.hideForm.emit( true ); }
+     (data) => { this.addData.emit( data );  },
+         () => { this.hideForm.emit( true ); }
     );
 } else {
   this.lserv.update( datas ).subscribe(
     (data) => { this.updateData.emit( data ); },
-    (err) => {  this.showSnackBar( err.error.message , false) ;  this.hideForm.emit( true ); }
+       ()  => { this.hideForm.emit( true );   }
 
    );
 }
 }
 
-
-private showSnackBar( message , info) {
-
-  let style = 'snack-success';
-  if ( !info ) {
-    style = 'snack-error';
-  }
-  this.snackBar.open( message  , '', {
-    duration: 1500,
-    announcementMessage : 'info',
-    panelClass: [ style ]
-  });
-}
 
 
 }
