@@ -1,7 +1,9 @@
 <mat-toolbar color="primary"  >
       <div *ngIf="!(layoutChanges | async)?.matches"  >
     <mat-menu #appMenu="matMenu" >
-        <button mat-menu-item  routerLink="/licencies" ><mat-icon>account_circle</mat-icon>&nbsp;Licencies</button>
+
+  
+        <button mat-menu-item  routerLink="/licencies" ><mat-icon>account_circle</mat-icon><span  >&nbsp;Licencies</span></button>
         <button mat-menu-item  routerLink="/competitions" ><mat-icon>pool</mat-icon>&nbsp;Competitions</button>
         <button mat-menu-item  routerLink="/engagements" ><mat-icon>airport_shuttle</mat-icon>&nbsp;Engagements</button>  
         <button mat-menu-item routerLink="/mailto" ><mat-icon>email</mat-icon>&nbsp;Mailto</button>
@@ -17,12 +19,14 @@
     <div fxFlex="100"  fxLayout="row"  fxLayoutAlign="start center" *ngIf="(layoutChanges | async)?.matches" >
         <div fxFlex="60"     fxLayoutAlign="start center" fxLayoutGap="5px"  >
         
-        <button mat-raised-button color="primary"  routerLink="/licencies" ><mat-icon>account_circle</mat-icon>&nbsp;Licencies</button>
-        <button mat-raised-button color="primary"  routerLink="/competitions" ><mat-icon>pool</mat-icon>&nbsp;Competitions</button>
-        <button mat-raised-button color="primary"  routerLink="/engagements" ><mat-icon>airport_shuttle</mat-icon>&nbsp;Engagements</button>  
-        <button mat-raised-button color="primary"  routerLink="/mailto" ><mat-icon>email</mat-icon>&nbsp;Mailto</button>
-        <button mat-raised-button color="primary"  routerLink="/records" ><mat-icon>timer</mat-icon>&nbsp;Records</button>
-        <button mat-raised-button color="primary"  routerLink="/piscines" ><mat-icon>gps_fixed</mat-icon>&nbsp;Piscines</button>
+        
+        <button mat-raised-button color="primary"  class='cuttextmenu' style='max-width: 125px;min-width: 125px;' matTooltip="Licenciés" routerLink="/licencies" ><mat-icon>account_circle</mat-icon>&nbsp;Licencies</button>
+        <button mat-raised-button color="primary"  class='cuttextmenu' style='max-width: 105px;min-width: 105px;' matTooltip="Niveau" routerLink="/niveau" ><mat-icon>account_circle</mat-icon>&nbsp;Niveau</button>
+        <button mat-raised-button color="primary" class='cuttextmenu' style='max-width: 145px;min-width: 145px;' matTooltip="Compétitions" routerLink="/competitions" ><mat-icon>pool</mat-icon>&nbsp;Competitions</button>
+        <button mat-raised-button color="primary" class='cuttextmenu' style='max-width: 148px;min-width: 148px;' matTooltip="Engagements" routerLink="/engagements" ><mat-icon>airport_shuttle</mat-icon>&nbsp;Engagements</button>  
+        <button mat-raised-button color="primary" class='cuttextmenu' style='max-width: 100px;min-width: 100px;' matTooltip="Mailto" routerLink="/mailto" ><mat-icon>email</mat-icon>&nbsp;Mailto</button>
+        <button mat-raised-button color="primary" class='cuttextmenu' style='max-width: 115px;min-width: 115px;' matTooltip="Records" routerLink="/records" ><mat-icon>timer</mat-icon>&nbsp;Records</button>
+        <button mat-raised-button color="primary" class='cuttextmenu' style='max-width: 120px;min-width: 120px;' matTooltip="Piscines" routerLink="/piscines" ><mat-icon>gps_fixed</mat-icon><span style='width:350px' >&nbsp;Piscines</span></button>
         
 
         
@@ -42,7 +46,7 @@
          
         <button mat-raised-button color="primary"  routerLink="/login" >
           <mat-icon>exit_to_app</mat-icon>
-          Disconnect</button>
+          Quitter</button>
            
         </div>
   

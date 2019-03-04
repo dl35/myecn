@@ -1,7 +1,7 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
 
-    <mat-icon (click)="switchdrawer()" style="cursor: pointer;">menu</mat-icon>
+    <mat-icon (click)="switchdrawer()"  *ngIf="idc !== -1 && engage !== null" style="cursor: pointer;">menu</mat-icon>
 
   </mat-toolbar-row>
 
@@ -78,8 +78,9 @@
 
     <div fxFlex="800px">
       
-      <mat-list *ngIf="engage !== null " [ngStyle]="{'width': '800px'}" [ngStyle.lt-md]="{'width': '400px'}">
-     
+      <mat-list *ngIf="engage !== null " [ngStyle]="{'width': '600px'}" [ngStyle.lt-sm]="{'width': '350px'}">
+    
+        
         
         <h2 mat-subheader>Les Engagements ({{engage?.length}})</h2>
        

@@ -1,12 +1,12 @@
-<div class="comp-body mat-elevation-z10" fxLayout="column" >
+<div class="comp-body mat-elevation-z10" >
 
-  <form style='margin-top:10px' name="form" autocomplete="off" [formGroup]="dataForm" novalidate>
+  <form style='margin-top:10px' name="form" autocomplete="off" [formGroup]="dataForm" novalidate  >
 
 
-    <div fxLayout="row" fxLayoutAlign="start center">
+    <div fxLayout="row" fxLayout.lt-sm="column"   fxLayoutAlign="start baseline" >
 
-      <mat-form-field fxFlex="55" fxFlexOffset="5">
-        <input matInput placeholder="Nom" formControlName="nom" required>
+      <mat-form-field fxFlex="40" fxFlex.lt-sm="85"  fxFlexOffset="5" >
+        <input matInput placeholder="Nom" formControlName="nom" required  >
         <mat-hint align="start" *ngIf="( dataForm.get('nom').hasError('required') ||  dataForm.get('nom').hasError('minlength') ) && dataForm.get('nom').dirty "
           [ngStyle]="{'color': 'red','font-size':'12px'}">
           *Nom sur 5 charactères minimum
@@ -14,7 +14,7 @@
       </mat-form-field>
 
 
-      <mat-form-field fxFlex="20" fxFlexOffset="5">
+      <mat-form-field fxFlex="20"  fxFlex.lt-sm="85"  fxFlexOffset="5"  >
         <input matInput placeholder="Lieu" formControlName="lieu" required>
         <mat-hint align="start" *ngIf="( dataForm.get('lieu').hasError('required') ||  dataForm.get('lieu').hasError('minlength') ) && dataForm.get('lieu').dirty "
           [ngStyle]="{'color': 'red','font-size':'12px'}">
@@ -23,29 +23,29 @@
       </mat-form-field>
 
     </div>
-    <div fxLayout="row" fxLayoutAlign="start baseline" style='margin-top:10px'>
+    <div fxLayout="row" fxLayout.lt-sm="column"  fxLayoutAlign="start baseline" style='margin-top:10px'>
 
 
-      <mat-form-field fxFlex="15" fxFlexOffset="5">
+      <mat-form-field fxFlex="15"   fxFlexOffset="5" fxFlexOffset.lt-sm="2" >
         <input required matInput [matDatepicker]="debut" placeholder="Début" (click)="debut.open()" (dateChange)="onDateStart($event)"
           formControlName="debut">
         <mat-datepicker-toggle matSuffix [for]="debut"></mat-datepicker-toggle>
         <mat-datepicker #debut></mat-datepicker>
       </mat-form-field>
-      <mat-form-field fxFlex="15" fxFlexOffset="2">
+      <mat-form-field fxFlex="15" fxFlexOffset="5">
         <input required matInput [matDatepicker]="fin" readonly placeholder="Fin" (click)="fin.open()" formControlName="fin">
         <mat-datepicker-toggle matSuffix [for]="fin"></mat-datepicker-toggle>
         <mat-datepicker #fin></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field fxFlex="15" fxFlexOffset="2">
+      <mat-form-field fxFlex="15" fxFlexOffset="5">
         <input required matInput [matDatepicker]="limite" readonly placeholder="Date Limite" (click)="limite.open()"
           formControlName="limite">
         <mat-datepicker-toggle matSuffix [for]="limite"></mat-datepicker-toggle>
         <mat-datepicker #limite></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field floatLabel="auto" fxFlex="6" fxFlexOffset="2">
+      <mat-form-field floatLabel="auto" fxFlex="6" fxFlexOffset="5">
         <mat-select required placeholder="Heure" name="heure" formControlName="heure">
           <mat-option *ngFor="let n of ['07','08','09','10','11','12','13','14']" [value]="n">
             {{n}}h
@@ -67,7 +67,7 @@
 
 
 
-    <div fxLayout="row" fxLayoutAlign="start baseline" style='margin-top:10px'>
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start baseline" style='margin-top:10px'>
 
 
       <mat-form-field floatlabel="auto" fxFlex="6" fxFlexOffset="5">
@@ -79,7 +79,7 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field floatlabel="auto" fxFlex="10" fxFlexOffset="2">
+      <mat-form-field floatlabel="auto" fxFlex="10" fxFlexOffset="5">
         <mat-select placeholder="Type" name="type" formControlName="type" (ngModelChange)="setVerif()">
           <mat-option *ngFor="let type of meta.type" [value]="type.value">
             {{type.name}}
@@ -101,10 +101,10 @@
       </mat-form-field>
 
       <div fxFlexOffset="5" fxFlex="15" *ngIf=" dataForm.controls['type'].value === 'compet' ">
-        <mat-checkbox name="choixnages" formControlName="choixnages">Avec choix des nages</mat-checkbox>
+        <mat-checkbox name="choixnages" formControlName="choixnages">Choix nages</mat-checkbox>
       </div>
 
-      <mat-form-field floatlabel="auto" fxFlex="10" fxFlexOffset="2">
+      <mat-form-field floatlabel="auto" fxFlex="10" fxFlexOffset="5">
         <mat-select required placeholder="Entraineur" name="entraineur" formControlName="entraineur">
           <mat-option *ngFor="let entr of meta.entraineur" [value]="entr.value">
             {{entr.name}}
@@ -115,9 +115,9 @@
 
 
     </div>
-    <div fxLayout="row" fxLayoutAlign="start baseline" style='margin-top:20px'>
+    <div fxLayout="row"  fxLayout.lt-sm="column wrap" fxLayoutAlign="start baseline" style='margin-top:20px'>
 
-      <div fxFlexOffset="5" fxLayout="row" fxLayoutAlign="start center" formGroupName="categories">
+      <div fxFlexOffset="5" fxLayout="row wrap" fxLayoutAlign="start center" formGroupName="categories">
         <span>Categories*:&nbsp;&nbsp;&nbsp;</span>
         <mat-checkbox formControlName="av">Av</mat-checkbox>&nbsp;
         <mat-checkbox formControlName="je">Je</mat-checkbox>&nbsp;

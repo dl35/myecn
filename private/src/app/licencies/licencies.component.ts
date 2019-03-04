@@ -50,13 +50,10 @@ export class LicenciesComponent implements OnInit  {
 
 
     const layoutChanges = breakpointObserver.observe([
-      Breakpoints.XSmall,
-      Breakpoints.Small,
+      Breakpoints.XSmall, Breakpoints.Small
       ]);
 
     layoutChanges.subscribe(result => {
-console.log( result  ) ;
-
       if ( result.matches ) {
         this.displayedColumns = this.displayedSmallColumns ;
       } else {

@@ -19,16 +19,38 @@ export class AuthGuard implements CanActivate , CanActivateChild {
 
 
     canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-
-           /* if( state.url == "/competitions"  )
-            {
-
-            }*/
-
-               
+        let profiles = ['', 'licencies', 'niveau', 'competitions', 'engagements', 'mailto', 'records', 'piscines', 'admin'];
 
 
-         return this.canActivate(route , state);
-      }
+        const profile = sessionStorage.getItem('profile') ;
+
+        if ( profile === 'user ' ) {
+            const routesToRemove = ['admin'];
+            profiles = profiles.filter(item => !routesToRemove.includes(item) ) ;
+        } else if ( profile === 'ent' ) {
+            const routesToRemove = ['licencies', 'admin'];
+            profiles = profiles.filter(item => !routesToRemove.includes(item) ) ;
+        } else if ( profile === 'admin' ) {
+          //  const routesToRemove = ['engagements'];
+         //   profiles = profiles.filter(item => !routesToRemove.includes(item) ) ;
+        } else {
+            this.router.navigate(['login']);
+            return false;
+        }
+
+        const path = route.routeConfig.path ;
+
+        const value =  profiles.find(x => x === path );
+        console.log( path , value , profiles  );
+
+        if (  value === undefined ) {
+            this.router.navigate(['login']);
+            return false;
+
+        } else {
+            return this.canActivate(route , state);
+        }
+
+    }
 
 }

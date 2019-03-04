@@ -48,14 +48,11 @@
   }
   
   .example-sidenav-content {
-     margin-left: 5px;  
-    _display: flex;
-    _flex: 1 1 auto;
     height: 100%;
-    width : 85%;
+    margin:auto;
+    width : 95%;
     background: rgb(243, 245, 242);
-    _align-items: center;
-    _justify-content: center;
+ 
   }
   
   .example-sidenav {
