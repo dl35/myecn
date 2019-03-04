@@ -1,9 +1,9 @@
    <mat-toolbar color="primary" >  
     <mat-toolbar-row>
         
-       <mat-icon (click)="switchdrawer()"  style="cursor: pointer;" >menu</mat-icon>
+       <mat-icon (click)="switchdrawer()" *ngIf="!dataSelected"   style="cursor: pointer;" >menu</mat-icon>
       
-       <mat-form-field style="width:80%;margin-left:10%">
+       <mat-form-field style="width:80%;margin-left:10%"  *ngIf="!dataSelected"  >
          <input matInput placeholder="rechercher" [formControl]="searchControl" [value]='' >
          <button mat-button *ngIf="searchControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="searchControl.setValue('')">
            <mat-icon>close</mat-icon>
@@ -83,7 +83,7 @@
      
        </div>
        <div>
-         <button mat-mini-fab color="accent" class="add-button" (click)="add()" ><mat-icon>add</mat-icon></button>
+         <button mat-mini-fab color="accent" class="add-button" (click)="add()"   ><mat-icon>add</mat-icon></button>
          </div>
       
      </mat-drawer-container>

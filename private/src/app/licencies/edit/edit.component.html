@@ -254,18 +254,19 @@
   
   
   
-  <div  fxLayout="row" fxLayoutAlign="center  baseline"    >
+  <div  fxLayout="row wrap" fxLayoutAlign="center  baseline"    >
         
-           
-          <mat-checkbox  formControlName="cert_medical" color="primary" >Cert.Médical</mat-checkbox>
+       
           <mat-checkbox fxFlexOffset="1" formControlName="auto_parentale" color="primary" >Auto.Parentale</mat-checkbox>
           <mat-checkbox fxFlexOffset="1" formControlName="fiche_medicale" color="primary" >Fich.Médicale</mat-checkbox>
           <mat-checkbox fxFlexOffset="1" formControlName="photo" color="primary" >Auto.Photo</mat-checkbox>
           <mat-checkbox fxFlexOffset="1"  formControlName="reglement" color="primary" >Réglement</mat-checkbox>
-        
-  
-          <mat-checkbox fxFlexOffset="1" formControlName="paye" color="accent"   ><label style="color:green;font-weight: bold ">Payé</label></mat-checkbox>
-  
+          <mat-checkbox [disabled]="dataForm.get('valide').value" fxFlexOffset="1" formControlName="cert_medical" color="primary" ><span style="color:green;font-weight: bold ">Cert.Médical</span></mat-checkbox>
+          <mat-checkbox [disabled]="dataForm.get('valide').value" fxFlexOffset="1" formControlName="paye" color="accent"   ><span style="color:green;font-weight: bold ">Payé</span></mat-checkbox>
+          <button mat-raised-button color="primary" fxFlexOffset="1" *ngIf="dataForm.get('valide').value"
+          matBadge="V" matBadgePosition="after" matBadgeColor="accent">
+          Validé
+      </button>
   
   
   </div> 

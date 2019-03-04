@@ -15,18 +15,18 @@
     _border: 1px solid rgba(0, 0, 0, 0.5);
   }
   
-  .example-sidenav-content {
-     margin-left: 5px;  
-    _display: flex;
-    _flex: 1 1 auto;
-    height: 100%;
-    width : 85%;
-    background: rgb(243, 245, 242);
-    _align-items: center;
-    _justify-content: center;
-  }
-  
+ 
   .example-sidenav {
     background: #c3ccbe;
     padding: 20px;
+  }
+
+
+  
+  .example-sidenav-content {
+    height: 100%;
+    margin:auto;
+    width : 95%;
+    background: rgb(243, 245, 242);
+ 
   }

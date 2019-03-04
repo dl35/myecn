@@ -74,6 +74,8 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
 
 
   add() {
+
+    console.log('denis:' , this.dataSelected) ;
    this.dataSelected = new DataCompet() ;
   }
 
