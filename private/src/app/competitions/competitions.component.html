@@ -52,10 +52,10 @@
      
     
        <div class="example-sidenav-content">
-           
+      
         <mat-list>
-               <h2 mat-subheader>Les compétitions</h2>
-        
+               <h2 mat-subheader>Les compétitions</h2>   
+   
   
                <mat-list-item *ngFor="let data of datas$ | async ; last as last"  (click)="edit(data)"  style='margin-bottom:20px' class="mat-elevation-z8"  matRipple  [matRippleCentered]="centered" [matRippleColor]="warn" >
                   <button mat-icon-button    *ngIf="data.nb === 0" color="warn" (click)="delete(data);$event.stopPropagation()" > 
@@ -83,7 +83,7 @@
      
        </div>
        <div>
-         <button mat-mini-fab color="accent" class="add-button" (click)="add()"   ><mat-icon>add</mat-icon></button>
+         <button mat-mini-fab color="primary" class="add-button" (click)="add()"   ><mat-icon>add</mat-icon></button>
          </div>
       
      </mat-drawer-container>

@@ -1,5 +1,5 @@
-<mat-toolbar color="primary"  >
-      <div *ngIf="!(layoutChanges | async)?.matches"  >
+<mat-toolbar color="primary"   >
+      <div  *ngIf="!(layoutChanges | async)?.matches"  >
     <mat-menu #appMenu="matMenu" >
 
   
@@ -16,8 +16,8 @@
         ECN  {{title | async}}
       </button>
     </div>
-    <div fxFlex="100"  fxLayout="row"  fxLayoutAlign="start center" *ngIf="(layoutChanges | async)?.matches" >
-        <div fxFlex="60"     fxLayoutAlign="start center" fxLayoutGap="5px"  >
+    <div fxFlex="100"  fxLayout="row wrap"  fxLayoutAlign="start center" *ngIf="(layoutChanges | async)?.matches" >
+        <div fxFlex="60"     fxLayoutAlign="start center" fxLayoutGap="3px"  >
         
         
         <button mat-raised-button color="primary"  class='cuttextmenu' style='max-width: 125px;min-width: 125px;' matTooltip="Licenciés" routerLink="/licencies" ><mat-icon>account_circle</mat-icon>&nbsp;Licencies</button>

@@ -6,13 +6,13 @@
       
     <div fxLayout="column"  fxFlex="65%"   >
         <mat-progress-bar *ngIf="loading"  mode="query"></mat-progress-bar>
-    <div   fxLayout="row"  fxLayoutAlign="center center" >
-      <mat-form-field  fxFlex="50%" >
+    <div   fxLayout="row"  fxLayoutAlign="start center" >
+      <mat-form-field  fxFlex="50" >
           <mat-select placeholder="From"   formControlName="from"  >
               <mat-option *ngFor="let from of typeDatas?.from" [value]="from.value" >{{from.text}}</mat-option>
             </mat-select>
         </mat-form-field>
-        <mat-form-field fxFlex="15%" fxFlexOffset="3%" fxFlexAlign="baseline"  >
+        <mat-form-field fxFlex="40" fxFlexOffset="3%" fxFlexAlign="baseline"  >
                 <mat-select placeholder="mode"   formControlName="mode"  >
                         <mat-option>-</mat-option>
                     <mat-option *ngFor="let m of typeMode" [value]="m.value">{{m.text}}</mat-option>
@@ -21,8 +21,8 @@
     </div>
 
    
-    <div fxLayoutAlign="center center" fxLayout="row" *ngIf="dataForm.get('mode').value === 'l' " >
-            <mat-form-field  fxFlex="50%"  style="margin-right:17%" >
+    <div fxLayoutAlign="start center" fxLayout="row" *ngIf="dataForm.get('mode').value === 'l' " >
+            <mat-form-field  fxFlex="100"  style="margin-right:17%" >
                     <mat-select placeholder="Destinataires"  formControlName="dests" multiple>
                             <mat-option *ngFor="let dest of typeDatas?.dests" [value]="dest.value" >{{dest.text}}</mat-option>
                             <mat-option *ngFor="let lic of typeDatas?.lic" [value]="lic.id" >{{lic.nom}}</mat-option>
@@ -31,27 +31,37 @@
     
     </div>
  
+    <div fxLayoutAlign="start center" fxLayout="row" *ngIf="dataForm.get('mode').value === 'i' " >
+            <mat-form-field  fxFlex="50" style="margin-right:17%" fxFlex.lt-md="100">
+                    <input matInput placeholder="email" formControlName="email" >
+                    <mat-error>Une adresse email valide est requise</mat-error>
+            </mat-form-field>
+    
+    </div>
 
-    <div  fxLayoutAlign="center center"  fxLayout="row" *ngIf="dataForm.get('mode').value === 'c' "  >
-      <mat-form-field fxFlex="50%"  fxFlexAlign="baseline">
+
+
+    <div  fxLayoutAlign="start center"  fxLayout="row" *ngIf="dataForm.get('mode').value === 'c' "  >
+      <mat-form-field fxFlex="50"  fxFlexAlign="baseline">
           <mat-select placeholder="Compétitions en cours..."   formControlName="compet" >
             <mat-option *ngFor="let c of typeDatas?.comp" [value]="c.id" >{{c.nom}} [{{c.lieu}}]</mat-option>
             </mat-select>
       
         </mat-form-field>
-        <mat-form-field fxFlex="15%" fxFlexOffset="3%" fxFlexAlign="baseline" >
+        <mat-form-field fxFlex="40" fxFlexOffset="3%" fxFlexAlign="baseline" >
                 <mat-select placeholder="choix"  formControlName="choix"  multiple>
                     <mat-option *ngFor="let choix of typeChoix"  [value]="choix"  >{{choix}}</mat-option>
                 </mat-select>
               </mat-form-field>
     </div>
-    <div fxLayoutAlign="center center" fxLayout="row"  >
-            <mat-form-field  fxFlex="50%" style="margin-right:17%" >
-                    <input matInput placeholder="Sujet (5 car. minimum)" formControlName="subject" fxFlex="70%" >
+    <div fxLayoutAlign="start center" fxLayout="row"  >
+            <mat-form-field  fxFlex="50" style="margin-right:17%" fxFlex.lt-md="100">
+                    <input matInput placeholder="Sujet (5 car. minimum)" formControlName="subject" >
             </mat-form-field>
     </div>  
     <div fxLayoutAlign="center center" >
-        <quill-editor fxFlex="70%" placeholder="Saisir un contenu (5 car. minimum)" [modules]="quilltoobar"   [style]="{ 'max-width':'630px', 'height':'200px','background-color': 'lightgrey'}"  formControlName="body" [modules]="quilltoobar" ></quill-editor>
+        <quill-editor fxFlex="100" placeholder="Saisir un contenu (5 car. minimum)" [modules]="quilltoobar"  
+         [style]="{ 'max-width':'100%', 'height':'200px','background-color': 'lightgrey'}"  formControlName="body" [modules]="quilltoobar" ></quill-editor>
     </div>
   
     <div style="margin-top:10px;" fxLayoutAlign="center center"  >

@@ -1,0 +1,66 @@
+<app-edit-niveau  *ngIf="edited"   [item]="item" (hideForm)='edited=false'  >
+</app-edit-niveau>
+
+<div  [style.display]="edited ? 'none' : 'block'"  >
+
+<table mat-table [dataSource]="dataSource" matSort matSortActive="nom"   matSortDisableClear matSortDirection="asc">
+
+  <ng-container matColumnDef="nom">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
+    <td mat-cell *matCellDef="let row">{{row.nom}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="prenom">
+    <th mat-header-cell *matHeaderCellDef >Prenom</th>
+    <td mat-cell *matCellDef="let row">{{row.prenom}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="categorie">
+    <th mat-header-cell *matHeaderCellDef >
+        <mat-form-field style='width:78px' >
+            <mat-select placeholder="Catégories"  color="primary" [(ngModel)]="myfilter.categorie"   (ngModelChange)="toFilter()"  >
+                <mat-option></mat-option>
+                <mat-option value="av" >Avenirs</mat-option>
+                <mat-option value="je">Jeunes</mat-option>
+                <mat-option value="se">Seniors</mat-option>
+                <mat-option value="ma">Masters</mat-option>
+              </mat-select>
+            </mat-form-field>
+      </th>
+    <td mat-cell *matCellDef="let row" [style.color]="row.categorie">{{row.categorie}}</td>
+  </ng-container>
+
+
+  <ng-container matColumnDef="rang">
+    <th mat-header-cell *matHeaderCellDef >Rang</th>
+    <td mat-cell *matCellDef="let row">{{row.rang}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="niveau">
+    <th mat-header-cell *matHeaderCellDef>
+      <mat-form-field style='width:78px'>
+        <mat-select placeholder="Niveau" color="primary" [(ngModel)]="myfilter.niveau"   (ngModelChange)="toFilter()"  >
+          <mat-option></mat-option>
+          <mat-option value="dep">Dep.</mat-option>
+          <mat-option value="reg">Reg.</mat-option>
+          <mat-option value="nat">Nat.</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </th>
+    <td mat-cell *matCellDef="let row" [style.color]="row.niveau">{{row.niveau}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef>Actions</th>
+    <td mat-cell *matCellDef="let row">
+      <mat-icon color='primary' (click)="editForm(row)" style='cursor: pointer'>edit</mat-icon>&nbsp;&nbsp;
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+  </tr>
+</table>
+<mat-paginator #paginator showFirstLastButtons [pageSize]="10"></mat-paginator>
+
+</div>

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
 import { shareReplay, filter, map, tap } from 'rxjs/operators';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { BreakpointState, BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 
 
@@ -26,12 +27,18 @@ export class RecordsComponent implements OnInit {
   bassin =  [ '25' , '50' ] ;
   sexe =  [ {value: 'F' , label: 'Dames' }, {value: 'H' , label: 'Homme' }];
 
+  layoutChanges: Observable<BreakpointState>;
 
-
-  constructor(private fb: FormBuilder, private rService: RecordsService ) { }
+  constructor(private fb: FormBuilder, private rService: RecordsService , private breakpointObserver: BreakpointObserver) { }
 
   ngOnInit() {
     this.createForm();
+
+    this.layoutChanges = this.breakpointObserver.observe([
+      Breakpoints.Medium,
+      Breakpoints.Large,
+      Breakpoints.XLarge,
+    ]);
 
   }
 

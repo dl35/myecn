@@ -1,34 +1,45 @@
-<mat-tab-group fxLayout="column"  fxLayoutAlign="space-evenly center"   fxFlex="100%" >
+
+<mat-tab-group fxLayout="column" fxLayoutAlign="space-evenly center"   >
 <mat-tab label="Liste">
-<div fxLayout="column"  fxLayoutAlign="space-evenly center"   fxFlex="100%" style="margin-top:20px" >
+
+<div fxLayout="column"   fxLayoutAlign="space-evenly center"   fxFlex="100%" style="margin-top:10px;" >
      
-          <mat-progress-bar *ngIf="loading$ | async " mode="query"></mat-progress-bar>
+    <mat-progress-bar   *ngIf="loading$ | async " mode="indeterminate"></mat-progress-bar>
      
+   
+    <div fxLayout="row"  fxLayout.lt-md="column" fxLayoutGap.lt-md="5px"  fxLayoutGap="5px"  fxLayoutAlign="space-evenly center"   [formGroup]="dataForm">
     
-    <div fxLayout="row" fxLayoutAlign="space-evenly center"  fxFlex="75%"  [formGroup]="dataForm">
-       
-      <mat-form-field  fxFlex="10%" >
+     
+      <div fxLayout.lt-md="row wrap" fxLayoutAlign="space-evenly center"  >
+      <mat-form-field  fxFlex="15%" >
            <mat-select placeholder="Bassin" (ngModelChange)="showRecord()" formControlName="fbassin"  >
               <mat-option  *ngFor="let item of bassin" [value]="item"  >
                   {{item}}
               </mat-option>
             </mat-select>
           </mat-form-field>
-      <mat-form-field fxFlex="15%" >
+      <mat-form-field fxFlex="35%"  >
           <mat-select  placeholder="Nages" (ngModelChange)="showRecord()"  formControlName="fnages"  >
             <mat-option  *ngFor="let item of nages" [value]="item.value"  >
                 {{item.label}}
             </mat-option>
           </mat-select>
       </mat-form-field>
-      <mat-form-field fxFlex="15%" >
+
+    </div>
+   
+  
+
+    <div fxLayout.lt-md="row wrap" fxLayoutAlign="space-evenly center"  >
+
+      <mat-form-field fxFlex="25%" >
             <mat-select  placeholder="Distances" (ngModelChange)="showRecord()"  formControlName="fdists"  >
               <mat-option  *ngFor="let item of dists" [value]="item"  >
                   {{item}}
               </mat-option>
             </mat-select>
       </mat-form-field>
-      <mat-form-field  fxFlex="15%"  >
+      <mat-form-field  fxFlex="18%"  >
               <mat-select  placeholder="Sexe" (ngModelChange)="showRecord()" formControlName="fsexe"  >
                  <mat-option  *ngFor="let item of sexe" [value]="item.value" >
                      {{item.label}}
@@ -37,26 +48,15 @@
       </mat-form-field>
      
       <mat-checkbox (change)="showRecord()" formControlName="fmasters" >Masters</mat-checkbox>
+    </div>
+
       </div>
 
-<!--
-      <mat-list *ngIf="!(loading$ | async )"  dense>
-          <mat-list-item style='margin-bottom:20px' class="mat-elevation-z8"  matRipple  [matRippleCentered]="centered" [matRippleColor]="warn" *ngFor="let item of datas">
-             <button mat-mini-fab style='background-color:green;color:white' >{{item.age}}</button>
-            <h4 mat-line> {{item.nom}}-{{item.prenom}}: {{item.temps}} ({{item.points}} pts)  </h4>
-            <p mat-line> {{item.lieu}} {{item.date}}</p>
-            <p mat-line><mat-chip  style='background-color:green;color:white' selected>{{item.type}}</mat-chip></p>
-          </mat-list-item>
-          </mat-list>
--->
-
-
-
-
-
-
 </div>
-<mat-grid-list cols="2" gutterSize="1px" rowHeight="3:1" *ngIf="!(loading$ | async )"  >
+
+
+
+<mat-grid-list [cols]=" (layoutChanges | async)?.matches ? 2 : 1" gutterSize="1px" rowHeight="3:1" *ngIf="!(loading$ | async )"  >
     <mat-grid-tile  *ngFor="let item of datas" colspan="1" rowspan="1"   >
         <mat-card style="width:85%" >
             <mat-card-header>

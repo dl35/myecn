@@ -1,3 +1,4 @@
+import { NiveauComponent } from './niveau/niveau.component';
 
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
@@ -22,6 +23,7 @@ export const routes: Routes = [
         //  { path: 'licencies', component: LicenciesComponent },
         { path: '', loadChildren: './licencies/licencies.module#LicenciesModule' },
         //  { path: '',  loadChildren: './competitions/competitions.module#CompetitionsModule' },
+        { path: 'niveau', component: NiveauComponent },
         { path: 'competitions', component: CompetitionsComponent },
         { path: 'engagements', component: EngagementsComponent },
         { path: 'mailto', component: MailtoComponent },

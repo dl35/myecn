@@ -1,6 +1,6 @@
 import { DialogEngageComponent } from './engagements/dialog-engage/dialog-engage.component';
-import { MomentDateAdapter, MatMomentDateModule } from '@angular/material-moment-adapter';
-import { MAT_MOMENT_DATE_FORMATS, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { EngagementsModule } from './engagements/engagements.module';
 import { PiscinesModule } from './piscines/piscines.module';
 import { RecordsModule } from './records/records.module';
@@ -35,6 +35,8 @@ import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { MomentUtcDateAdapter } from './material/MomentUtcDateAdapter';
 import { HttpConfigInterceptor } from './interceptor/HttpConfigInterceptor';
+import { NiveauComponent } from './niveau/niveau.component';
+import { EditComponent } from './niveau/edit/edit.component';
 registerLocaleData(localeFr, 'fr');
 
 @NgModule({
@@ -42,7 +44,9 @@ registerLocaleData(localeFr, 'fr');
     AppComponent,
     LoginComponent,
     MenuComponent,
-    DialogConfirmComponent
+    DialogConfirmComponent,
+    NiveauComponent,
+    EditComponent
    ],
   imports: [
     BrowserModule,
@@ -66,8 +70,8 @@ registerLocaleData(localeFr, 'fr');
     {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
     {provide: LOCALE_ID, useValue: 'fr' } ,
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
-    { provide: DateAdapter, useClass: MomentUtcDateAdapter },
-    { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
+    {provide: DateAdapter, useClass: MomentUtcDateAdapter },
+    {provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
 ],
 
   bootstrap: [AppComponent]

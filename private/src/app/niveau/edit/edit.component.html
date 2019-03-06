@@ -1,0 +1,47 @@
+<div class="mat-elevation-z10" fxLayout="column" style="margin:15px" fxLayoutAlign="center center" >
+  <form name="form" autocomplete="off" [formGroup]="dataForm" novalidate>
+
+
+    <div fxLayout="row wrap" fxLayout.lt-md="column wrap"   fxLayoutAlign="center baseline" >
+
+        <mat-form-field fxFlex="25" fxFlexOffset="2">
+            <input matInput placeholder="id*" formControlName="id">
+          </mat-form-field>
+
+      <mat-form-field fxFlex="23" fxFlexOffset="2">
+        <input matInput placeholder="Nom*" formControlName="nom">
+      </mat-form-field>
+
+      <mat-form-field fxFlex="23" fxFlexOffset="2">
+        <input matInput placeholder="Prénom*" formControlName="prenom">
+      </mat-form-field>
+
+    </div>
+      <div fxLayout="row wrap" fxLayout.lt-md="column"  fxLayoutAlign="center baseline" >
+
+      <mat-form-field fxFlex="15" fxFlexOffset="2">
+        <input matInput placeholder="Categorie*" formControlName="categorie">
+      </mat-form-field>
+
+      <mat-form-field fxFlex="15" fxFlexOffset="2">
+        <input matInput placeholder="Rang*" formControlName="rang">
+      </mat-form-field>
+
+      <mat-form-field fxFlex="20" fxFlexOffset="2">
+      <mat-select placeholder="Niveau" formControlName="niveau"  (selectionChange)='setSelection($event)'  >
+        <mat-option></mat-option>  
+        <mat-option *ngFor="let n of meta.niveau"   [value]="n.value"   >{{n.value}}</mat-option>
+        </mat-select> 
+      </mat-form-field>
+  
+  
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="center center" style="margin-bottom: 8px " >
+       
+        <button mat-raised-button color="primary" type="submit" [disabled]="!valide" (click)="saveForm()"  >Valider</button>
+        <button mat-raised-button color="primary" type="reset"  fxFlexOffset ='3'  (click)="cancelForm()"  >Annuler</button>
+</div>
+
+  </form>
+</div>

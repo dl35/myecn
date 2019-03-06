@@ -15,7 +15,7 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
   loading = true;
   destroyed$: Subject<any> = new Subject();
   typeChoix: string[] = ['Ok', 'At', 'Ko'];
-  typeMode: any[] = [ {value: 'c', text: 'Compétitions'},  {value: 'l' , text: 'Licencies' } ];
+  typeMode: any[] = [ {value: 'c', text: 'Compétitions'},  {value: 'l' , text: 'Licencies' } , {value: 'i' , text: 'Inscriptions' }  ];
   typeDatas: IMailto;
  // mode = '';
 
@@ -45,17 +45,24 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
           this.dataForm.get('choix').setValidators(Validators.required) ;
           this.dataForm.get('dests').clearValidators();
           this.dataForm.get('choix').setValue(this.typeChoix);
-
-          console.log( 'ok' );
+          this.dataForm.get('email').clearValidators();
         } else if (mode === 'l') {
           this.dataForm.get('dests').setValidators(Validators.required) ;
           this.dataForm.get('compet').clearValidators();
           this.dataForm.get('choix').clearValidators();
+          this.dataForm.get('email').clearValidators();
+        } else if ( mode === 'i' ) {
+          this.dataForm.get('compet').clearValidators();
+          this.dataForm.get('choix').clearValidators();
+          this.dataForm.get('dests').clearValidators();
+          this.dataForm.get('email').setValidators([Validators.required, Validators.email]) ;
         }
 
         this.dataForm.get('dests').updateValueAndValidity();
         this.dataForm.get('compet').updateValueAndValidity();
         this.dataForm.get('choix').updateValueAndValidity();
+        this.dataForm.get('email').updateValueAndValidity();
+
         this.dataForm.updateValueAndValidity();
       }
 
@@ -85,6 +92,7 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
       choix: new FormControl( null ),
       dests: new FormControl( null),
       compet: new FormControl( null ),
+      email: new FormControl( null ),
       mode: new FormControl( null, Validators.required)
     }
   );
@@ -97,10 +105,16 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
      const v = this.dataForm.getRawValue();
       if ( v.mode === 'c' ) {
         delete v.dests;
+      } else if ( v.mode === 'l' ) {
+        delete v.choix;
+        delete v.compet;
       } else {
         delete v.choix;
         delete v.compet;
+        delete v.dests;
       }
+
+
       delete v.mode;
       console.log( v );
       this.eMailto.sendMail( v ).pipe(

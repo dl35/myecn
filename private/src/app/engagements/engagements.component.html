@@ -63,7 +63,7 @@
         </mat-select>
       </mat-form-field>
 
-      <button mat-mini-fab mat-icon-button *ngIf="engage" (click)="addLic()">
+      <button mat-mini-fab mat-icon-button *ngIf="engage"  color="primary" (click)="addLic()">
         <mat-icon aria-label="add">add</mat-icon>
       </button>
 
@@ -94,8 +94,8 @@
     
           <div *ngFor="let node of item.eng;" [ngSwitch]="node.presence">
             <button mat-mini-fab *ngSwitchCase="'non'" color="warn"  ><s>{{node.day}}</s></button>
-            <button mat-mini-fab *ngSwitchCase="'oui'" style='background-color: green'>{{node.day}}</button>
-            <button mat-mini-fab *ngSwitchDefault color="primary" >{{node.day}}?</button>
+            <button mat-mini-fab *ngSwitchCase="'oui'" color="primary" >{{node.day}}</button>
+            <button mat-mini-fab *ngSwitchDefault >{{node.day}}?</button>
             &nbsp;&nbsp;
           </div>
     

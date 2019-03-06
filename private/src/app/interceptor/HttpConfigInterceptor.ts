@@ -6,8 +6,6 @@ import { Router } from '@angular/router';
 import { MySnackBarService } from '../services/my-snack-bar.service';
 
 @Injectable()
-
-
 export class HttpConfigInterceptor implements HttpInterceptor {
 
 
