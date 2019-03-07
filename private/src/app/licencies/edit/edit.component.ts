@@ -162,6 +162,13 @@ initDatas ( ) {
     this.dataForm.setValue( this.item );
     this.startDate = new Date( this.dataForm.get('date').value  );
     this.dataForm.get('nom').disable();
+
+    if ( this.item.valide ) {
+    this.dataForm.get('paye').disable();
+    this.dataForm.get('cert_medical').disable();
+    }
+
+
   } else {
     this.dataForm.reset();
     this.show = true;

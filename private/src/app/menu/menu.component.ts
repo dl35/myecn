@@ -19,14 +19,6 @@ export class MenuComponent  {
       Breakpoints.Large,
       Breakpoints.XLarge,
     ]);
-
-
     this.title = this.textRoute.getMessage() ;
-
-
-
-
 }
-
-
 }

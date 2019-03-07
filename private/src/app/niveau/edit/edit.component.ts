@@ -34,11 +34,11 @@ export class EditComponent implements OnInit {
 
   initForm() {
     this.dataForm = this.formBuilder.group({
-      id: [ {value: this.item.id , disabled: true} ],
-      nom: [ {value: this.item.nom , disabled: true} , [Validators.required] ],
-      prenom:  [ {value: this.item.prenom , disabled: true} , [Validators.required] ],
-      categorie:  [ {value: this.item.categorie , disabled: true} , [Validators.required] ],
-      rang:  [ {value: this.item.rang , disabled: true} , [Validators.required] ],
+      id: [ {value: this.item.id , disabled: true} , [Validators.minLength(5), Validators.required] ],
+      nom: [ {value: this.item.nom , disabled: true} , [Validators.minLength(1), Validators.required] ],
+      prenom:  [ {value: this.item.prenom , disabled: true} , [Validators.minLength(1), Validators.required] ],
+      categorie:  [ {value: this.item.categorie , disabled: true} , [Validators.minLength(1), Validators.required] ],
+      rang:  [ {value: this.item.rang , disabled: true} , [Validators.minLength(1) , Validators.required] ],
       niveau:  [ this.item.niveau   ]
       });
   }
@@ -47,7 +47,11 @@ export class EditComponent implements OnInit {
     this.hideForm.emit( true );
   }
   setSelection($event) {
-console.log($event.value , this.item.niveau  ) ;
+
+  if (typeof $event.value === 'undefined' ) {
+    $event.value = null ;
+  }
+
 
    this.valide =  ( $event.value === this.item.niveau ) ?  false : true ;
 

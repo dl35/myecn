@@ -9,7 +9,7 @@ import { MySnackBarService } from '../services/my-snack-bar.service';
 export class HttpConfigInterceptor implements HttpInterceptor {
 
 
-    constructor(private router: Router,private snackBar: MySnackBarService) { }
+    constructor(private router: Router, private snackBar: MySnackBarService) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const token: string = sessionStorage.getItem('token');
@@ -25,27 +25,28 @@ export class HttpConfigInterceptor implements HttpInterceptor {
 
         request = request.clone({ headers: request.headers.set('Accept', 'application/json') });
 
-        return next.handle( request ).pipe(
-            map( (event: HttpEvent<any>) => {
+        return next.handle(request).pipe(
+            map((event: HttpEvent<any>) => {
 
                 if (event instanceof HttpResponse) {
-                    const text = (event.body.message) ? event.body.message  :  event.statusText ;
-                    this.snackBar.showSnackBar(text , false ) ;
+                    const text = (event.body.message) ? event.body.message : event.statusText;
+                    this.snackBar.showSnackBar(text, false);
                 }
-               return event ;
+                return event;
             }),
-            catchError( (error: HttpErrorResponse  ) => {
+            catchError((error: HttpErrorResponse) => {
                 if (error instanceof HttpErrorResponse) {
 
                     if (error.status === 401) {
-                    this.snackBar.showSnackBar(error.statusText + ': ' + error.status, true ) ;
-                    this.router.navigate(['/login']);
+                        this.snackBar.showSnackBar(error.statusText + ': ' + error.status, true);
+                        this.router.navigate(['/login']);
                     } else {
-                    const text = (error.error.message) ? error.error.message  :  error.statusText ;
-                    this.snackBar.showSnackBar(text, true ) ;
+                        const text = (error.error.message) ? error.error.message : error.statusText;
+                        this.snackBar.showSnackBar(text, true);
                     }
-                return throwError(error);
-            }} )
+                    return throwError(error);
+                }
+            })
         );
-      } // intercept
-  }
+    } // intercept
+}
