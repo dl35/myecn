@@ -13,7 +13,7 @@ import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.compone
 import { MessageType, MessageResponse } from './models/message-response';
 
 
-
+/*
 @Pipe({
   name: 'searchfilter'
 })
@@ -28,7 +28,7 @@ export class SearchFilterPipe implements PipeTransform {
   }
 
 }
-
+*/
 
 
 @Component({

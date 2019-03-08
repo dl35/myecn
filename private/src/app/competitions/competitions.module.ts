@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { CompetitionsComponent, SearchFilterPipe } from './competitions.component';
+import { CompetitionsComponent } from './competitions.component';
 import { CompetitionsEditComponent } from './competitions-edit/competitions-edit.component';
 
 
@@ -13,11 +13,9 @@ import { CompetitionsEditComponent } from './competitions-edit/competitions-edit
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    MaterialModule,
-    SearchFilterPipe
-
+    MaterialModule
   ],
-  declarations: [CompetitionsComponent, CompetitionsEditComponent, SearchFilterPipe]
+  declarations: [CompetitionsComponent, CompetitionsEditComponent]
   // exports: [SearchFilterPipe]
 })
 export class CompetitionsModule { }

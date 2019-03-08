@@ -1,8 +1,8 @@
 <app-edit  *ngIf="edited"   [item]="item"  (hideForm)='edited=false'  (addData)='appendList($event)'  (updateData)='updateList($event)'  ></app-edit>
-<div fxFlex="100" fxLayout="column"  style='margin-top: 10px' [style.display]="edited ? 'none' : 'block'"  >
+<div  fxLayout="column"  style='margin-top: 10px' [fxHide]="edited" >
  
 
-    <div fxLayout="row" fxFlex="90" fxLayoutAlign="start center"  style='font-size: 13px'>
+    <div fxLayout="row" fxFlex="90" fxLayoutAlign="start center"  style='font-size: 13px' [fxHide]="small"  >
         <mat-form-field fxFlex="35" fxFlexOffset="3" >
             <input   matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtre" [(ngModel)]="fvalue">
             <button mat-button *ngIf="fvalue" matSuffix mat-icon-button aria-label="Clear" (click)="applyFilter('')">

@@ -26,6 +26,7 @@ export class LicenciesComponent implements OnInit  {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   edited = false ;
+  small  = false;
 
   item: any ;
 
@@ -56,8 +57,10 @@ export class LicenciesComponent implements OnInit  {
     layoutChanges.subscribe(result => {
       if ( result.matches ) {
         this.displayedColumns = this.displayedSmallColumns ;
+        this.small = true ;
       } else {
         this.displayedColumns = this.displayedAllColumns ;
+        this.small = false ;
       }
 
 
