@@ -10,7 +10,7 @@
 
 
 
-<mat-drawer-container class="example-container" *ngIf="!dataSelected" autosize>
+<mat-drawer-container class="example-container"  autosize>
   <mat-drawer #mdrawer class="example-sidenav" *ngIf="idc !== -1 && engage !== null"  [mode]="mobileQuery.matches ? 'over' : 'side'" [opened]="mobileQuery.matches ? 'false' : 'true'">
     <p><span class="mat-body-2">Les Engagements</span></p>
 

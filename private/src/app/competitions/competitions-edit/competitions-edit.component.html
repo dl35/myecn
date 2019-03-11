@@ -80,7 +80,7 @@
       </mat-form-field>
 
       <mat-form-field floatlabel="auto" fxFlex="10" fxFlexOffset="5">
-        <mat-select placeholder="Type" name="type" formControlName="type" (ngModelChange)="setVerif()">
+        <mat-select placeholder="Type" name="type" formControlName="type" >
           <mat-option *ngFor="let type of meta.type" [value]="type.value">
             {{type.name}}
           </mat-option>

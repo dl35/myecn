@@ -164,7 +164,7 @@ private catValidator(gcat: FormGroup ) {
 
 
  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- private onDateStart(event: MatDatepickerInputEvent<Date> ) {
+ public onDateStart(event: MatDatepickerInputEvent<Date> ) {
    const start = new Date(event.value);
    start.setHours(12);
 
