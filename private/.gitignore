@@ -11,6 +11,9 @@ package-lock.json
 proxy-config.json
 *.sh
 
+/product
+
+
 # IDEs and editors
 /.idea
 .project
