@@ -15,7 +15,7 @@ export class AdhesionComponent implements OnInit , OnDestroy {
 
 
   public maxDate: Date;
-  
+
 
   public dataForm: FormGroup ;
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute , private router: Router ,

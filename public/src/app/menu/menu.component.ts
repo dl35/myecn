@@ -13,11 +13,20 @@ export class MenuComponent {
 
 
    const keys = this.route.snapshot.queryParamMap.keys ;
-    if (  keys.length !== 1 ) {
+   console.log( keys  , keys.length ) ;
+
+   if (  keys.length !== 1 ) {
      return ;
     }
 
     const key = keys[0];
+
+
+    if ( typeof key === 'undefined' ) {
+       return ;
+    }
+
+
 
    if ( key === 'adhesion' )  {
       this.router.navigate([key]);
@@ -31,6 +40,6 @@ export class MenuComponent {
 
    }
 
- 
+
 
 }
