@@ -41,7 +41,7 @@ export class AuthGuard implements CanActivate , CanActivateChild {
         const path = route.routeConfig.path ;
 
         const value =  profiles.find(x => x === path );
-        console.log( path , value , profiles  );
+     //   console.log( path , value , profiles  );
 
         if (  value === undefined ) {
             this.router.navigate(['login']);
