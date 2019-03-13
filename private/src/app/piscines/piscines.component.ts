@@ -38,7 +38,7 @@ this.mymap =  L.map('mapid').setView([48.117266, -1.6777926], 8);
 
     this.pservices.getdatas().subscribe(
 
-      (datas) => { this.generateDatas( datas )  } ,
+      (datas) => { this.generateDatas( datas ) } ,
       (error) =>  console.log( error )
 
     );
