@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@ang
 import { MediaMatcher } from '@angular/cdk/layout';
 import { CompetitionsService } from './services/competitions.service';
 import { Observable , Subscription, Subject } from 'rxjs';
-import { filter , distinctUntilChanged , debounceTime, shareReplay} from 'rxjs/operators';
+import { filter , distinctUntilChanged , takeUntil , shareReplay} from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 
 import 'hammerjs';
@@ -11,7 +11,7 @@ import { MatDrawer, MatDialog } from '@angular/material';
 
 import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
 import { MessageType, MessageResponse } from './models/message-response';
-import { Location } from '@angular/common';
+import { Location, PlatformLocation } from '@angular/common';
 
 
 /*
@@ -56,15 +56,21 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
 
 
   private _mobileQueryListener: () => void;
-  location: Location;
+ 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(public dialog: MatDialog,  changeDetectorRef: ChangeDetectorRef, location: Location ,
+  constructor(public dialog: MatDialog,  changeDetectorRef: ChangeDetectorRef, location: PlatformLocation ,
                media: MediaMatcher, private compService: CompetitionsService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
-    this.location = location;
+
+    location.onPopState(() => {
+
+      alert(window.location);
+
+  });
+
   }
 
   switchdrawer() {
@@ -138,7 +144,7 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
      this.compService.getListAll();
      this.dataSelected = null ;
 
-     this.location.takeUntil(this.destroy$).subscribe ( () => console.log('pop' ) );
+
 /*
     this.datas$ = this.compService.getList().pipe(
       catchError(error => {
