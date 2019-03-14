@@ -29,6 +29,8 @@ export class PiscinesComponent implements OnInit {
 
 this.mymap =  L.map('mapid').setView([48.117266, -1.6777926], 8);
 
+  this.mymap.removeControl(this.mymap.zoomControl);
+
  L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' }
    ).addTo( this.mymap);
 
@@ -36,7 +38,7 @@ this.mymap =  L.map('mapid').setView([48.117266, -1.6777926], 8);
 
     this.pservices.getdatas().subscribe(
 
-      (datas) => { this.generateDatas( datas ) ; } ,
+      (datas) => { this.generateDatas( datas ); } ,
       (error) =>  console.log( error )
 
     );

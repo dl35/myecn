@@ -1,9 +1,9 @@
 import { DataCompet } from './models/data-compet';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, Pipe, Injectable, PipeTransform, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { CompetitionsService } from './services/competitions.service';
-import { Observable , Subscription } from 'rxjs';
-import { filter , distinctUntilChanged , debounceTime, map, shareReplay} from 'rxjs/operators';
+import { Observable , Subscription, Subject } from 'rxjs';
+import { filter , distinctUntilChanged , takeUntil , shareReplay} from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 
 import 'hammerjs';
@@ -11,6 +11,7 @@ import { MatDrawer, MatDialog } from '@angular/material';
 
 import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
 import { MessageType, MessageResponse } from './models/message-response';
+import { Location, PlatformLocation } from '@angular/common';
 
 
 /*
@@ -45,7 +46,6 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
   // searchfilter:searchText
    @ViewChild('mdrawer') mdrawer: MatDrawer;
   private searchControl: FormControl;
-  private subscr: Subscription;
 
 
   showFiller = false;
@@ -56,13 +56,20 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
 
 
   private _mobileQueryListener: () => void;
+ 
+  destroy$: Subject<boolean> = new Subject<boolean>();
 
-
-  constructor(public dialog: MatDialog,  changeDetectorRef: ChangeDetectorRef,
+  constructor(public dialog: MatDialog,  changeDetectorRef: ChangeDetectorRef, location: PlatformLocation ,
                media: MediaMatcher, private compService: CompetitionsService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+
+    location.onPopState(() => {
+
+      alert(window.location);
+
+  });
 
   }
 
@@ -132,19 +139,6 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
 
 
     this.searchControl = new FormControl('');
-    this.subscr =  this.searchControl.valueChanges
-        .pipe(
-          // tap ( () =>  console.log( this.searchText.length ) ),
-          filter(   (v: string) => ( v.length < this.filtre.txt.length ) || v.length >= 3   ),
-          debounceTime( 200 ),
-          distinctUntilChanged()
-          ).subscribe(query => {
-          this.filtre.txt = query ;
-          this.compService.setFiltre(this.filtre);
-          this.compService.update();
-
-        });
-
 
      this.datas$ = this.compService.getList().pipe( shareReplay(1) ) ;
      this.compService.getListAll();
@@ -165,9 +159,11 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
     );*/
   }
 
+
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
- //   this.subscr.unsubscribe();
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
 }
