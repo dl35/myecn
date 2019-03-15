@@ -7,10 +7,10 @@
     <mat-progress-bar   *ngIf="loading$ | async " mode="indeterminate"></mat-progress-bar>
      
    
-    <div fxLayout="row"  fxLayout.lt-md="column" fxLayoutGap.lt-md="5px"  fxLayoutGap="5px"  fxLayoutAlign="space-evenly center"   [formGroup]="dataForm">
+    <div fxLayout="row"  fxLayout.lt-md="column" fxLayoutGap.lt-md="5px"  fxLayoutGap="7px"  fxLayoutAlign="space-evenly center"   [formGroup]="dataForm">
     
      
-      <div fxLayout.lt-md="row wrap" fxLayoutAlign="space-evenly center"  >
+      <div fxLayout.lt-md="row wrap" fxLayoutAlign="end center" fxLayoutAlign.lt-md="space-evenly center" fxLayoutGap="7px" >
       <mat-form-field  fxFlex="15%" >
            <mat-select placeholder="Bassin" (ngModelChange)="showRecord()" formControlName="fbassin"  >
               <mat-option  *ngFor="let item of bassin" [value]="item"  >
@@ -30,7 +30,7 @@
    
   
 
-    <div fxLayout.lt-md="row wrap" fxLayoutAlign="space-evenly center"  >
+    <div fxLayout.lt-md="row wrap" fxLayoutAlign="start center"  fxLayoutAlign.lt-md="space-evenly center" fxLayoutGap="7px"  >
 
       <mat-form-field fxFlex="25%" >
             <mat-select  placeholder="Distances" (ngModelChange)="showRecord()"  formControlName="fdists"  >
