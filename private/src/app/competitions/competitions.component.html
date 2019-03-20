@@ -1,92 +1,87 @@
-   <mat-toolbar color="primary" >  
-    <mat-toolbar-row>
-        
-       <mat-icon (click)="switchdrawer()" *ngIf="!dataSelected"   style="cursor: pointer;" >menu</mat-icon>
-      
-       <mat-form-field style="width:80%;margin-left:10%"  *ngIf="!dataSelected"  >
-         <input matInput placeholder="rechercher" [formControl]="searchControl" [value]='' >
-         <button mat-button *ngIf="searchControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="searchControl.setValue('')">
-           <mat-icon>close</mat-icon>
-         </button>
-       </mat-form-field>
-  
-  
-     </mat-toolbar-row>
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+
+    <mat-icon (click)="switchdrawer()" *ngIf="!dataSelected" style="cursor: pointer;">menu</mat-icon>
+
+    <mat-form-field style="width:80%;margin-left:10%" *ngIf="!dataSelected">
+      <input matInput placeholder="rechercher" [formControl]="searchControl" [value]=''>
+      <button mat-button *ngIf="searchControl.value" matSuffix mat-icon-button aria-label="Clear"
+        (click)="searchControl.setValue('')">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
 
 
-   </mat-toolbar>
-  
+  </mat-toolbar-row>
+
+
+</mat-toolbar>
 
 
 
-   <mat-drawer-container class="example-container" *ngIf="!dataSelected" autosize>
-       <mat-drawer  #mdrawer class="example-sidenav" [mode]="mobileQuery.matches ? 'over' : 'side'"  [opened]="mobileQuery.matches ? 'false' : 'true'"  >
-         <p><span class="mat-body-2" >Les Compétitions</span></p>
-         
-         <div style="padding:5px;">
-            <mat-checkbox [ngModel]="filtre.next" [indeterminate]="filtre.next === null" (ngModelChange)="doFilter('next')"
-              [color]="filtre.next === null ? 'primary' : 'accent'">
-              <div class="mat-body-2" *ngIf="filtre.next === false">Passées</div>
-              <div class="mat-body-2" *ngIf="filtre.next === true">Futures</div>
-              <div class="mat-body-2" *ngIf="filtre.next === null">Dates</div>
-            </mat-checkbox>
-            &nbsp;
-            <mat-checkbox [ngModel]="filtre.verif" [indeterminate]="filtre.verif === null" (ngModelChange)="doFilter('verif')"
-              [color]="filtre.verif === null ? 'primary' : 'accent'">
-              <div class="mat-body-2" *ngIf="filtre.verif === false">à Verifiées</div>
-              <div class="mat-body-2" *ngIf="filtre.verif === true">Verifiées</div>
-              <div class="mat-body-2" *ngIf="filtre.verif === null">Etat</div>
-              </mat-checkbox>
-          </div>
-          <mat-divider></mat-divider>
-          <div style="padding:5px">
-            <mat-checkbox [ngModel]="filtre.type" [indeterminate]="filtre.type === null" (ngModelChange)="doFilter('type')"
-              [color]="filtre.type === null ? 'primary' : 'accent'">
-              <div class="mat-body-2" *ngIf="filtre.type === false">Stages</div>
-              <div class="mat-body-2" *ngIf="filtre.type === true">Compétitions</div>
-              <div class="mat-body-2" *ngIf="filtre.type === null">Type</div>
-      
-            </mat-checkbox>
-          </div>
-          </mat-drawer>
-     
-    
-       <div class="example-sidenav-content">
-      
-        <mat-list>
-               <h2 mat-subheader>Les compétitions</h2>   
-   
-  
-               <mat-list-item *ngFor="let data of datas$ | async ; last as last"  (click)="edit(data)"  style='margin-bottom:20px' class="mat-elevation-z8"  matRipple  [matRippleCentered]="centered" [matRippleColor]="warn" >
-                  <button mat-icon-button    *ngIf="data.nb === 0" color="warn" (click)="delete(data);$event.stopPropagation()" > 
-                  <mat-icon>delete</mat-icon></button>
-                  <mat-icon  *ngIf="data.nb > 0" matListIcon color='primary' [matBadge]="data.nb" [svgIcon]="data.verif  ? 'swimvalid' : 'swiminvalid' "></mat-icon>
-                  <mat-icon  *ngIf="data.nb === 0" matListIcon color='primary'  [svgIcon]="data.verif  ? 'swimvalid' : 'swiminvalid' "></mat-icon>
-     
-                  <p style="font-weight:500"   matLine>{{data.nom}}
-                  </p>
-                 
-               
-               
-                 <p matLine [ngSwitch]=" data.debut !== data.fin ">
-                 <span *ngSwitchCase="true" >{{data.debut | date:'dd' }} au {{data.fin | date:'dd MMM' }}</span>
-                 <span *ngSwitchCase="false" >{{data.debut | date:'dd MMM' }}</span>
-                
-                   <span class="demo-secondary-text">&nbsp;&nbsp;{{data.lieu}}</span>
-                 </p>
-                <!--
-                 <mat-divider inset *ngIf="!last"></mat-divider> -->
-               </mat-list-item>
-               
-    
-             </mat-list>
-     
-       </div>
-       <div>
-         <button mat-mini-fab color="primary" class="add-button" (click)="add()"   ><mat-icon>add</mat-icon></button>
-         </div>
-      
-     </mat-drawer-container>
-<div *ngIf="dataSelected" >
-<app-competitions-edit    [data]="dataSelected" (quitte)="onQuitte($event)" ></app-competitions-edit>
+
+<mat-drawer-container class="example-container" *ngIf="!dataSelected" autosize>
+  <mat-drawer #mdrawer class="example-sidenav" [mode]="mobileQuery.matches ? 'over' : 'side'"
+    [opened]="mobileQuery.matches ? 'false' : 'true'">
+    <p><span class="mat-body-2">Les Compétitions</span></p>
+
+    <div style="padding:5px;">
+      <mat-checkbox [ngModel]="filtre.next" [indeterminate]="filtre.next === null" (ngModelChange)="doFilter('next')"
+        [color]="filtre.next === null ? 'primary' : 'accent'">
+        <div class="mat-body-2" *ngIf="filtre.next === false">Passées</div>
+        <div class="mat-body-2" *ngIf="filtre.next === true">Futures</div>
+        <div class="mat-body-2" *ngIf="filtre.next === null">Dates</div>
+      </mat-checkbox>
+      &nbsp;
+      <mat-checkbox [ngModel]="filtre.verif" [indeterminate]="filtre.verif === null" (ngModelChange)="doFilter('verif')"
+        [color]="filtre.verif === null ? 'primary' : 'accent'">
+        <div class="mat-body-2" *ngIf="filtre.verif === false">à Verifier</div>
+        <div class="mat-body-2" *ngIf="filtre.verif === true">Verifiées</div>
+        <div class="mat-body-2" *ngIf="filtre.verif === null">Etat</div>
+      </mat-checkbox>
+    </div>
+    <mat-divider></mat-divider>
+    <div style="padding:5px">
+      <mat-checkbox [ngModel]="filtre.type" [indeterminate]="filtre.type === null" (ngModelChange)="doFilter('type')"
+        [color]="filtre.type === null ? 'primary' : 'accent'">
+        <div class="mat-body-2" *ngIf="filtre.type === false">Stages</div>
+        <div class="mat-body-2" *ngIf="filtre.type === true">Compétitions</div>
+        <div class="mat-body-2" *ngIf="filtre.type === null">Type</div>
+
+      </mat-checkbox>
+    </div>
+  </mat-drawer>
+
+
+  <div class="example-sidenav-content">
+    <mat-list>
+      <h2 mat-subheader>Les compétitions</h2>
+      <mat-list-item *ngFor="let data of datas$ | async ; last as last" (click)="edit(data)" style='margin-bottom:20px'
+        class="mat-elevation-z8" matRipple [matRippleCentered]="centered" [matRippleColor]="warn">
+        <button mat-icon-button *ngIf="data.nb === 0" color="warn" (click)="delete(data);$event.stopPropagation()">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <mat-icon *ngIf="data.nb > 0" matListIcon color='primary' [matBadge]="data.nb"
+          [svgIcon]="data.verif  ? 'swimvalid' : 'swiminvalid' "></mat-icon>
+        <mat-icon *ngIf="data.nb === 0" matListIcon color='primary'
+          [svgIcon]="data.verif  ? 'swimvalid' : 'swiminvalid' "></mat-icon>
+        <p style="font-weight:500" matLine>{{data.nom}}
+        </p>
+        <p matLine [ngSwitch]=" data.debut !== data.fin ">
+          <span *ngSwitchCase="true">{{data.debut | date:'dd' }} au {{data.fin | date:'dd MMM' }}</span>
+          <span *ngSwitchCase="false">{{data.debut | date:'dd MMM' }}</span>
+          <span class="demo-secondary-text">&nbsp;&nbsp;{{data.lieu}}</span>
+        </p>
+      </mat-list-item>
+    </mat-list>
+  </div>
+  <div>
+    <button mat-mini-fab color="primary" class="add-button" (click)="add()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</mat-drawer-container>
+
+<div *ngIf="dataSelected">
+  <app-competitions-edit [data]="dataSelected" (quitte)="onQuitte($event)"></app-competitions-edit>
 </div>

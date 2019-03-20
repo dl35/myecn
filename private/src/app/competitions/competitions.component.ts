@@ -1,5 +1,5 @@
 import { DataCompet } from './models/data-compet';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { CompetitionsService } from './services/competitions.service';
 import { Observable , Subscription, Subject } from 'rxjs';
@@ -35,7 +35,8 @@ export class SearchFilterPipe implements PipeTransform {
 @Component({
   selector: 'app-competitions',
   templateUrl: './competitions.component.html',
-  styleUrls: ['./competitions.component.css']
+  styleUrls: ['./competitions.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CompetitionsComponent implements OnInit , OnDestroy  {
 
@@ -56,8 +57,9 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
 
 
   private _mobileQueryListener: () => void;
- 
   destroy$: Subject<boolean> = new Subject<boolean>();
+
+
 
   constructor(public dialog: MatDialog,  changeDetectorRef: ChangeDetectorRef, location: PlatformLocation ,
                media: MediaMatcher, private compService: CompetitionsService) {

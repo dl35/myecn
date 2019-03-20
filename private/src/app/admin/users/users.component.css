@@ -1,0 +1,9 @@
+.add-button{
+    position: fixed;
+    top: 68px;
+    right: 15%;
+    z-index: 100;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+  }

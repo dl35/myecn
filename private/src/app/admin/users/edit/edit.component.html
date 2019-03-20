@@ -1,0 +1,83 @@
+<div  style='width:60%;margin: 0 auto '>
+  
+  <mat-horizontal-stepper [linear]="isLinear" #stepper>
+  
+    <mat-step [stepControl]="userForm">
+        <form [formGroup]="userForm">
+        <ng-template matStepLabel>Utilisateur</ng-template>
+        <mat-form-field  class='ueinput' >
+          <input matInput placeholder="Utilisateur" formControlName="user" required >
+          <mat-error>adresse email requise</mat-error>
+        </mat-form-field>
+        <div>
+               <button mat-mini-fab color="primary" matStepperNext >
+                <mat-icon aria-label="next">navigate_next</mat-icon>
+              </button>
+        </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="pwdForm">
+        <form [formGroup]="pwdForm">
+        <ng-template matStepLabel>Mot de passe</ng-template>
+        <mat-form-field class='ueinput' >
+          <input matInput placeholder="Mot de Passe" formControlName="passwd" required>
+          <mat-error>5 char. minimun requis</mat-error>
+        </mat-form-field>
+        <div>
+            <button mat-mini-fab color="primary" matStepperPrevious>
+            <mat-icon aria-label="next">navigate_before</mat-icon></button>
+            &nbsp;&nbsp;
+            <button mat-mini-fab color="primary" matStepperNext >
+            <mat-icon aria-label="next">navigate_next</mat-icon>
+          </button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="profileForm">
+        <form [formGroup]="profileForm">
+        <ng-template matStepLabel>Profile</ng-template>
+        <mat-form-field>
+            <mat-label>Profile</mat-label>
+            <mat-select formControlName="profile" >
+              <mat-option *ngFor="let role of profiles" [value]="role.value"  >
+                {{role.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        <div>
+            <button mat-mini-fab color="primary" matStepperPrevious>
+                <mat-icon aria-label="next">navigate_before</mat-icon></button>
+                &nbsp;&nbsp;
+                <button mat-mini-fab color="primary" matStepperNext >
+                <mat-icon aria-label="next">navigate_next</mat-icon>
+              </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel>Validation</ng-template>
+      <div >
+					<h4>Paramètres</h4>
+					<p>Util: {{ userForm.get('user').value }}</p>
+          <p>Pwd: {{ pwdForm.get('passwd').value }}</p>
+          <p>Profile: {{ profileForm.get('profile').value }}</p>
+				</div>
+      <div>
+          <button mat-mini-fab color="primary" matStepperPrevious>
+              <mat-icon aria-label="next">navigate_before</mat-icon></button>
+              &nbsp;&nbsp;
+        <button mat-raised-button color="primary" (click)="save()">Valider</button>
+      </div>
+    </mat-step>
+
+  </mat-horizontal-stepper>
+
+
+<div fxLayout="row" fxLayoutAlign="center center">
+
+ 
+    <button mat-raised-button color="accent" fxFlexOffset='3' (click)="doquitte()" type="button">Annuler</button>
+  </div>
+
+</div>

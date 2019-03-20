@@ -1,0 +1,68 @@
+<div class="mat-elevation-z10" fxLayout="column" style="margin:15px" fxLayoutAlign="center center">
+    <form name="form" autocomplete="off" [formGroup]="dataForm" novalidate>
+  
+      <div fxLayout="row wrap" fxLayout.lt-md="column wrap" fxLayoutGap="5px" style='margin-top:5px'
+        fxLayoutAlign="center baseline">
+        <mat-form-field fxFlex="5">
+          <input matInput placeholder="Age" formControlName="age" type="number"  >
+          <mat-error>age positif</mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex="20">
+          <input matInput placeholder="Nom" formControlName="nom" >
+          <mat-error>nom requis</mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex="20">
+            <input matInput placeholder="Prenom" formControlName="prenom" >
+            <mat-error>prenom requis</mat-error>
+          </mat-form-field>
+      </div>
+  
+
+  
+      <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="9px" fxLayoutAlign="center baseline"
+        style='margin-top:5px'>
+
+        <mat-form-field fxFlex="20">
+            <input matInput placeholder="Lieu" formControlName="lieu" >
+          </mat-form-field>
+   
+        <mat-form-field fxFlex="15" fxFlexOffset.lt-sm="2">
+          <input required matInput [matDatepicker]="date" placeholder="Début" (click)="debut.open()"
+            (dateChange)="onDateStart($event)" formControlName="date">
+          <mat-datepicker-toggle matSuffix [for]="debut"></mat-datepicker-toggle>
+          <mat-datepicker #date></mat-datepicker>
+        </mat-form-field>
+      
+        <mat-form-field fxFlex="9">
+            <input matInput placeholder="Points" formControlName="points" type="number"  >
+            <mat-error>points positifs</mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field floatlabel="auto" fxFlex="8">
+            <mat-select placeholder="Type" name="type" formControlName="type">
+              <mat-option *ngFor="let type of types" [value]="type">
+                {{type}}
+              </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+  
+  
+
+  
+      <div fxLayout="row" fxLayoutAlign="center center">
+  
+        <button mat-raised-button color="primary" [disabled]="dataForm.invalid"
+          (click)="saveForm()" type="button">Valider</button>
+        <button mat-raised-button color="primary" fxFlexOffset='3' (click)="doquitte()" type="button">Annuler</button>
+      </div>
+  
+  
+  
+  
+    </form>
+    <br>
+    <br>
+  </div>

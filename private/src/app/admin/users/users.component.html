@@ -1,0 +1,29 @@
+<app-edit  *ngIf="dataSelected" [data]='dataSelected' (quitte)='dataSelected=null' ></app-edit>
+
+<div style='width:80%;margin:0 auto' *ngIf="!dataSelected" >
+    <mat-list>
+        <h2 mat-subheader>Les Logins</h2>
+        <mat-list-item *ngFor="let data of datas$ | async ; last as last" (click)="edit(data)"
+            style='margin-bottom:20px' class="mat-elevation-z8" matRipple [matRippleCentered]="centered"
+            [matRippleColor]="warn">
+            <button mat-icon-button color='warn' (click)="delete(data);$event.stopPropagation()">
+                <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-icon-button color='primary' (click)="tomail(data);$event.stopPropagation()">
+                    <mat-icon>email</mat-icon>
+                </button>
+
+            <p style="font-weight:500" matLine>
+                <button mat-icon-button color='{{data.color}}' (click)="edit(data);$event.stopPropagation()">
+                    <mat-icon>{{ data.icon }}</mat-icon>
+                </button>
+                [{{data.profile}}] {{data.user}} || {{data.passwd}}
+            </p>
+        </mat-list-item>
+    </mat-list>
+    <div>
+            <button mat-mini-fab color="primary" class="add-button" (click)="add()">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+</div>

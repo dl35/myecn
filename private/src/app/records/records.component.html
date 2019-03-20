@@ -1,5 +1,9 @@
+<div *ngIf="dataSelected">
+    <app-edit-records [data]="dataSelected" (quitte)='dataSelected=null' ></app-edit-records>
+  </div>
 
-<mat-tab-group fxLayout="column" fxLayoutAlign="space-evenly center"   >
+
+<mat-tab-group fxLayout="column" fxLayoutAlign="space-evenly center" *ngIf="!dataSelected"  >
 <mat-tab label="Liste">
 
 <div fxLayout="column"   fxLayoutAlign="space-evenly center"   fxFlex="100%" style="margin-top:10px;" >
@@ -57,7 +61,7 @@
 
 
 <mat-grid-list [cols]=" (layoutChanges | async)?.matches ? 2 : 1" gutterSize="1px" rowHeight="3:1" *ngIf="!(loading$ | async )"  >
-    <mat-grid-tile  *ngFor="let item of datas" colspan="1" rowspan="1"   >
+    <mat-grid-tile  *ngFor="let item of datas" colspan="1" rowspan="1"  (click)='edit(item)' >
         <mat-card style="width:85%" >
             <mat-card-header>
              
@@ -74,8 +78,7 @@
 
 </mat-tab>
 <mat-tab label="Traitement">
-    <div fxLayout="column"  fxLayoutAlign="space-evenly center"   fxFlex="100%" style="margin-top:20px" >
-     traitement...</div>
+    <app-file-upload></app-file-upload>
     </mat-tab>
 </mat-tab-group>
 

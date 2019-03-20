@@ -10,6 +10,7 @@
         <button mat-menu-item routerLink="/mailto" ><mat-icon>email</mat-icon>&nbsp;Mailto</button>
         <button mat-menu-item  routerLink="/records" ><mat-icon>timer</mat-icon>&nbsp;Records</button>
         <button mat-menu-item  routerLink="/piscines" ><mat-icon>gps_fixed</mat-icon>&nbsp;Piscines</button>
+        
       </mat-menu>
       
       <button mat-icon-button [matMenuTriggerFor]="appMenu">
@@ -39,6 +40,10 @@
               <mat-icon>settings</mat-icon>
               <span>Administration</span>
             </button>
+            <button mat-menu-item routerLink="/admin/users"  >
+              <mat-icon>settings</mat-icon>
+              <span>Users</span>
+            </button>
           </mat-menu>
         
         </div>
@@ -54,6 +59,18 @@
   
     </div> 
   </mat-toolbar>
+
+<!--
+  <div  class='logoecn'  >
+
+      <img class ='imgecn2'  width="400"   height="267" *ngIf="(layoutChanges | async)?.matches"
+      src="assets/images/logo_ecn.svg" >
+
+      <img class ='imgecn2'  width="200"   height="133" *ngIf="!(layoutChanges | async)?.matches"
+      src="assets/images/logo_ecn.svg" >
+
+  </div>
+-->
   <div>
     <router-outlet></router-outlet>
  </div>

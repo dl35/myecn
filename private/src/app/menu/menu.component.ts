@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Observable, of } from 'rxjs';
 import { TexteRoutesService } from '../services/texte-routes.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
@@ -12,7 +13,7 @@ export class MenuComponent  {
 
   title: Observable<string> ;
   layoutChanges: Observable<BreakpointState>;
-  constructor(private breakpointObserver: BreakpointObserver, private textRoute: TexteRoutesService) {
+  constructor(private breakpointObserver: BreakpointObserver, private textRoute: TexteRoutesService, private router: Router) {
 
     this.layoutChanges = this.breakpointObserver.observe([
       Breakpoints.Medium,
@@ -20,5 +21,8 @@ export class MenuComponent  {
       Breakpoints.XLarge,
     ]);
     this.title = this.textRoute.getMessage() ;
+
+
+    console.log(this.router.url);
 }
 }
