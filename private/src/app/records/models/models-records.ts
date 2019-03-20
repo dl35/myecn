@@ -1,6 +1,6 @@
 export interface IRecords {
 
-    age: number;
+    age: string;
     nom: string ;
     prenom: string ;
     bassin: '25'|'50';
