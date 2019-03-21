@@ -1,9 +1,11 @@
+import { Observable, BehaviorSubject } from 'rxjs';
 import { CompetitionsService } from './../services/competitions.service';
 import { DataCompet } from '../models/data-compet';
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material';
 import { MessageResponse, MessageType } from '../models/message-response';
+import { subscribeOn } from 'rxjs/operators';
 
 
 
@@ -46,13 +48,17 @@ export class CompetitionsEditComponent implements OnInit {
   minDate = new Date(2017, 8, 1);
   maxDate = new Date(2018, 7, 31);
 
+
+  entr$: Observable<any[]>;
+
   meta = {
-    // displayForm : false ,
-    'entraineur': [{'name': 'toto@toto.fr' , 'value': 'toto@toto.fr'  }  ] ,
     'bassin': [{'name': '25' , 'value': '25'  } , {'name': '50' , 'value': '50'  }  ] ,
     'type': [{'name': 'Stage' , 'value': 'stage' } , {'name': 'Compétition' , 'value': 'compet'  } ]  };
 
-  ngOnInit() {
+
+
+    ngOnInit() {
+    this.entr$  = this.compService.getEnt();
   }
 
   doquitte() {

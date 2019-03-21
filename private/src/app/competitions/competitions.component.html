@@ -65,12 +65,21 @@
           [svgIcon]="data.verif  ? 'swimvalid' : 'swiminvalid' "></mat-icon>
         <mat-icon *ngIf="data.nb === 0" matListIcon color='primary'
           [svgIcon]="data.verif  ? 'swimvalid' : 'swiminvalid' "></mat-icon>
-        <p style="font-weight:500" matLine>{{data.nom}}
+      
+        <p style="font-weight:500"   matLine>
+          <span   class="demo-secondary-text" >{{data.nom}}</span>
         </p>
         <p matLine [ngSwitch]=" data.debut !== data.fin ">
           <span *ngSwitchCase="true">{{data.debut | date:'dd' }} au {{data.fin | date:'dd MMM' }}</span>
           <span *ngSwitchCase="false">{{data.debut | date:'dd MMM' }}</span>
-          <span class="demo-secondary-text">&nbsp;&nbsp;{{data.lieu}}</span>
+          <mat-chip-list>
+            <mat-chip>One fish</mat-chip>
+            <mat-chip>Two fish</mat-chip>
+            <mat-chip color="primary" selected>Primary fish</mat-chip>
+            <mat-chip color="accent" selected>Accent fish</mat-chip>
+          </mat-chip-list>
+          <span  *ngIf="data.type == 'stage' " class="demo-secondary-text"  MatBadgePosition='below'   matBadge="S" >&nbsp;&nbsp;{{data.lieu}}</span>
+          <span  *ngIf="data.type !== 'stage' " class="demo-secondary-text"  MatBadgePosition='above' matBadge="C" >&nbsp;&nbsp;{{data.lieu}}</span>
         </p>
       </mat-list-item>
     </mat-list>

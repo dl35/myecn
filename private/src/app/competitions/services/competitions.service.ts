@@ -3,6 +3,7 @@ import { DataCompet } from '../models/data-compet';
 import { MessageResponse } from '../models/message-response';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { shareReplay } from 'rxjs/operators';
 
 
 
@@ -101,4 +102,13 @@ export class CompetitionsService {
       const url = this.url + '/' + id;
       return  this.http.delete<MessageResponse>( url ) ;
       }
+
+      public getEnt() {
+        const url = this.url + '/ent' ;
+        return  this.http.get<any[]>( url ).pipe(
+          shareReplay(1)
+          ) ;
+        }
+
+
 }

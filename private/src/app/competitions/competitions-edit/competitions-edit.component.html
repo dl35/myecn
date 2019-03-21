@@ -83,8 +83,8 @@
 
       <mat-form-field floatlabel="auto" fxFlex="15">
         <mat-select required placeholder="Entraineur" name="entraineur" formControlName="entraineur">
-          <mat-option *ngFor="let entr of meta.entraineur" [value]="entr.value">
-            {{entr.name}}
+          <mat-option *ngFor="let entr of (entr$ | async)" [value]="entr.value">
+            {{entr.nom}}
           </mat-option>
         </mat-select>
       </mat-form-field>
