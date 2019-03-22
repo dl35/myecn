@@ -3,6 +3,8 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { MessageResponse } from 'src/app/engagements/models/data-engage';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { IRecords } from '../models/models-records';
+import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-records',
@@ -11,7 +13,7 @@ import { IRecords } from '../models/models-records';
 })
 export class EditRecordsComponent implements OnInit {
 
-
+  names$: Observable<any[]>;
   public types = ['CLUB' , 'DEP' , 'REG' , 'NAT'] ;
 
   @Output() quitte = new EventEmitter<Boolean>();
@@ -38,6 +40,12 @@ export class EditRecordsComponent implements OnInit {
   }
 
   ngOnInit() {
+   this.names$ = this.recService.getName().pipe(
+    map( data => data.filter( item => item.sexe === 'H' )  )
+
+   );
+console.log( this.names$ );
+
 
   }
   doquitte() {
@@ -51,7 +59,7 @@ export class EditRecordsComponent implements OnInit {
 
   private createForm() {
     this.dataForm = this.formBuilder.group({
-      age: [ 9, [Validators.required , Validators.min(0)] ],
+      age: [ {value: null , disabled: true} , [Validators.required ] ],
       nom: ['', [Validators.required] ],
       prenom:  ['', [Validators.required] ],
       lieu:  [''],

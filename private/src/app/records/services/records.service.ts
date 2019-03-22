@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { shareReplay } from 'rxjs/operators';
+import { shareReplay, tap } from 'rxjs/operators';
 import { IRecname } from '../models/models-recname';
 import { IRecords } from '../models/models-records';
 
@@ -15,16 +15,27 @@ export class RecordsService {
 
   public  get() {
      return this.http.get<IRecords[]>( this.url ).pipe(
-      shareReplay(1)
+     shareReplay(1)
      );
   }
 
+  public  getName() {
+    const url = this.url + '/names';
+
+    return this.http.get<any[]>( url ).pipe(
+    shareReplay(1)
+   );
+}
+
+
+
+/*
   public  getName() {
    const url = this.url + '/name' ;
    return this.http.get<IRecname[]>( url ).pipe(
     shareReplay(1)
    );
-}
+}*/
 
 
   public  upload( file ) {

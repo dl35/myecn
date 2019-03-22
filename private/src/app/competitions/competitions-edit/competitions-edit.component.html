@@ -4,11 +4,11 @@
     <div fxLayout="row wrap" fxLayout.lt-md="column wrap" fxLayoutGap="5px" style='margin-top:5px'
       fxLayoutAlign="center baseline">
       <mat-form-field fxFlex="40">
-        <input matInput placeholder="Nom" formControlName="nom" required>
+        <input matInput placeholder="Nom" formControlName="nom" >
         <mat-error>nom requis (5 char.)</mat-error>
       </mat-form-field>
       <mat-form-field fxFlex="20">
-        <input matInput placeholder="Lieu" formControlName="lieu" required>
+        <input matInput placeholder="Lieu" formControlName="lieu" >
         <mat-error>lieu requis (4 char.)</mat-error>
       </mat-form-field>
     </div>
@@ -23,27 +23,27 @@
     <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="9px" fxLayoutAlign="center baseline"
       style='margin-top:5px'>
       <mat-form-field fxFlex="15" fxFlexOffset.lt-sm="2">
-        <input required matInput [matDatepicker]="debut" placeholder="Début" (click)="debut.open()"
+        <input  matInput [matDatepicker]="debut" placeholder="Début" (click)="debut.open()"
           (dateChange)="onDateStart($event)" formControlName="debut">
         <mat-datepicker-toggle matSuffix [for]="debut"></mat-datepicker-toggle>
         <mat-datepicker #debut></mat-datepicker>
       </mat-form-field>
       <mat-form-field fxFlex="15">
-        <input required matInput [matDatepicker]="fin" readonly placeholder="Fin" (click)="fin.open()"
+        <input  matInput [matDatepicker]="fin" readonly placeholder="Fin" (click)="fin.open()"
           formControlName="fin">
         <mat-datepicker-toggle matSuffix [for]="fin"></mat-datepicker-toggle>
         <mat-datepicker #fin></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field fxFlex="15">
-        <input required matInput [matDatepicker]="limite" readonly placeholder="Date Limite" (click)="limite.open()"
+        <input  matInput [matDatepicker]="limite" readonly placeholder="Date Limite" (click)="limite.open()"
           formControlName="limite">
         <mat-datepicker-toggle matSuffix [for]="limite"></mat-datepicker-toggle>
         <mat-datepicker #limite></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field floatLabel="auto" fxFlex="6">
-        <mat-select required placeholder="Heure" name="heure" formControlName="heure">
+        <mat-select  placeholder="Heure" name="heure" formControlName="heure">
           <mat-option *ngFor="let n of ['07','08','09','10','11','12','13','14']" [value]="n">
             {{n}}h
           </mat-option>
@@ -73,7 +73,7 @@
 
       </mat-form-field>
       <mat-form-field *ngIf=" dataForm.controls['type'].value === 'stage' " fxFlex="10">
-        <input required matInput placeholder="Max" formControlName="max" maxlength="3">
+        <input  matInput placeholder="Max" formControlName="max" maxlength="3">
         <mat-error>nombre doit être >0</mat-error>
       </mat-form-field>
 
@@ -82,7 +82,7 @@
       </div>
 
       <mat-form-field floatlabel="auto" fxFlex="15">
-        <mat-select required placeholder="Entraineur" name="entraineur" formControlName="entraineur">
+        <mat-select  placeholder="Entraineur" name="entraineur" formControlName="entraineur">
           <mat-option *ngFor="let entr of (entr$ | async)" [value]="entr.value">
             {{entr.nom}}
           </mat-option>

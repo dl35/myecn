@@ -7,6 +7,14 @@
           <input matInput placeholder="Age" formControlName="age" type="number"  >
           <mat-error>age positif</mat-error>
         </mat-form-field>
+        <mat-form-field  fxFlex="20">
+          <mat-label>Nom</mat-label>
+          <mat-select>
+            <mat-option *ngFor="let n of (names$ | async) "    [value]="n.nom">
+              {{n.nom}} , {{n.prenom}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
         <mat-form-field fxFlex="20">
           <input matInput placeholder="Nom" formControlName="nom" >
           <mat-error>nom requis</mat-error>

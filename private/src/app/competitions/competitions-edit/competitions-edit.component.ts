@@ -21,14 +21,14 @@ export class CompetitionsEditComponent implements OnInit {
   public dataForm: FormGroup ;
   public response = new MessageResponse() ;
 
- 
+
 
   @Input()
   set data(data: DataCompet) {
-    
+
        this.dataForm.setValue( data , { onlySelf: true } );
-      if ( this.dataForm.get('verif').value  ===  true  ||  this.dataForm.get('id').value === null )   {
-          this.dataForm.controls['verif'].disable();
+        if ( this.dataForm.get('nb').value  > 0 )   {
+        this.dataForm.controls['verif'].disable();
         } else {
           this.dataForm.controls['verif'].enable();
         }
@@ -119,7 +119,7 @@ export class CompetitionsEditComponent implements OnInit {
       next: new FormControl({value: true}),
       choixnages: new FormControl({value: false}),
       max: new FormControl(0),
-      entraineur:  [ null , [Validators.required] ],
+      entraineur:  [ null  ],
       lien: new FormControl(null, Validators.pattern('')),
       commentaires: new FormControl(null),
       verif: new FormControl({value: false , disabled: true}),
