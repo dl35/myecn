@@ -3,6 +3,8 @@ import { tileLayer, latLng } from 'leaflet';
 import { PiscinesService } from './services/piscines.service';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
+import * as geojson from 'geojson';
+
 
 
 
@@ -18,9 +20,14 @@ export class PiscinesComponent implements OnInit {
 
   public myGeoJsonRoute = null;
   public idLayer = null;
-  markerClusterGroup: L.MarkerClusterGroup;
-  markerClusterData: any[] = [];
-  markerClusterOptions: L.MarkerClusterGroupOptions;
+ // markerClusterGroup: L.MarkerClusterGroup;
+//  markerClusterData: any[] = [];
+//  markerClusterOptions: L.MarkerClusterGroupOptions;
+
+
+
+
+
 
   options = {
     layers: [
@@ -57,12 +64,12 @@ export class PiscinesComponent implements OnInit {
            console.log( 'move end ' + e.target.getBounds().toBBoxString()    ) ;
            const b = e.target.getBounds().toBBoxString() ;
            this.pservices.getdatas(b).subscribe(
-   
-             (datas) => { console.log( datas ) } ,
+
+                (datas) => { console.log( datas ) } ,
              (error) =>  console.log( error )
-   
+
            );
-   
+
        }*
          ) ;*/
 
@@ -84,8 +91,17 @@ export class PiscinesComponent implements OnInit {
     );
   }
 
-
-
+  /*
+  .ui-icon-waze {
+    background: url(waze.png) 50% 50% no-repeat;
+    background-size: 24px 24px;
+    border-radius:0px!important;
+    -moz-border-radius:0px!important;
+    -webkit-border-radius:0px!important;
+    -ms-border-radius:0px!important;
+    -o-border-radius:0px!important;
+  }
+*/
 
   generateDatas(datas) {
 
@@ -93,7 +109,7 @@ export class PiscinesComponent implements OnInit {
       this.mymap.removeLayer(this.myGeoJsonRoute);
     }
 
-    const geojsonMarkerOptions = {
+  /*  const geojsonMarkerOptions = {
       radius: 8,
       fillColor: '#ff7800',
       color: '#000',
@@ -101,56 +117,53 @@ export class PiscinesComponent implements OnInit {
       opacity: 1,
       fillOpacity: 0.8
     };
-
-    const MonIcon = L.icon({
-      iconUrl: 'img/monicon.png',
-      shadowUrl: 'img/monicon_shadow.png',
-      iconSize: [38, 95],
-      shadowSize: [50, 64],
-      iconAnchor: [22, 94],
-      shadowAnchor: [4, 62],
-      popupAnchor: [-3, -76]
-    });
-
-
-
+*/
 
 
     this.myGeoJsonRoute = L.geoJSON(datas, {
 
       //   icon: MonIcon ,
       onEachFeature: function EachFeature(feature, layer) {
+
+
         if (feature.properties && feature.properties.name) {
+     //     const waze = 'waze://?ll=' + feature.geometry  + ',' + feature.geometry + '&navigate=yes' ;
+     const ww = 'ww' ;
+     const a = '<a class=\'waze\'   href=\'ww\' >waze</a>';
+
           layer.bindPopup('<strong>' + feature.properties.name + '</strong><br>' + feature.properties.ville +
             '<br>' + feature.properties.description + '<br>Bassin: ' + feature.properties.bassin
-            + '&nbsp;Couloirs: ' + feature.properties.couloir);
+            + '&nbsp;Couloirs: ' + feature.properties.couloir + a );
         }
       },
 
     });
+
+
     const markers = L.markerClusterGroup({
 
-      // maxClusterRadius: 60, 
+      // maxClusterRadius: 60,
       // iconCreateFunction: null,
       spiderfyOnMaxZoom: true,
-      showCoverageOnHover: true,
-      zoomToBoundsOnClick: true,
-      iconCreateFunction: function (cluster) {
-        return L.divIcon({ html: cluster.getChildCount().toString(), className: 'mycluster', iconSize: null });
-      }
+      showCoverageOnHover: false,
+      zoomToBoundsOnClick: true
+   /*   iconCreateFunction: function (cluster) {
+        return L.divIcon({ html: '<div><span>' + cluster.getChildCount() + '</span></div>' ,
+          className: 'marker-cluster marker-cluster-small', iconSize: new L.Point(40, 40) });
+      }*/
     });
     markers.addLayer(this.myGeoJsonRoute);
     this.mymap.addLayer(markers);
 
 
     /*
-    
+
      this.myGeoJsonRoute =  L.geoJSON( datas, {
-    
+
         pointToLayer: function (feature, latlng) {
-    
+
           geojsonMarkerOptions.fillColor =  feature.properties.color ;
-    
+
             return L.circleMarker(latlng, geojsonMarkerOptions);
         },
         onEachFeature: function EachFeature(feature, layer) {
@@ -160,10 +173,9 @@ export class PiscinesComponent implements OnInit {
               + '&nbsp;Couloirs: ' + feature.properties.couloir  );
           }
         },
-    
+
     }).addTo(this.mymap);
-    
-    
+
     */
 
 
