@@ -11,11 +11,9 @@ export class PiscinesService {
 
   private url = '/api/private/topiscines' ;
 
-  public  getdatas() {
-    //  from , dests, compet
-     return this.http.get<any>( this.url );
+  public  getdatas( bbox ) {
+    const d = {'bbox' : bbox } ;
+    return this.http.post<any>( this.url , d );
   }
-
-
 
 }

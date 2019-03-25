@@ -1,0 +1,27 @@
+.leaflet-default-icon-path {
+    background-image: url('/assets/marker-icon.png');
+}
+
+.leaflet-default-shadow-path {
+    background-image: url('/assets/marker-shadow.png');
+}
+
+
+#mapid {  
+height:70vw;
+width:95vw; 
+
+}
+
+.mycluster {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background-color: #3498db;
+    color: white;
+    text-align: center;
+    font-size: 20px;    
+    line-height: 40px;
+    margin-top: -20px;
+    margin-left: -20px;
+}

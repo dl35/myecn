@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { IRecords } from '../models/models-records';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+import { MatOptionSelectionChange, MatSelectChange } from '@angular/material';
 
 @Component({
   selector: 'app-edit-records',
@@ -40,13 +41,11 @@ export class EditRecordsComponent implements OnInit {
   }
 
   ngOnInit() {
+   const sexe = this.dataForm.get('sexe').value ;
    this.names$ = this.recService.getName().pipe(
-    map( data => data.filter( item => item.sexe === 'H' )  )
+    map( data => data.filter( item => item.sexe === sexe )  )
 
    );
-console.log( this.names$ );
-
-
   }
   doquitte() {
     this.quitte.emit( true );
@@ -57,11 +56,20 @@ console.log( this.names$ );
     this.quitte.emit( true );
   }
 
+
+  setNP( event: MatSelectChange)   {
+      const v = event.source.value   ;
+      const tv = v.split(',') ;
+      this.dataForm.get('nom').setValue(tv[0]) ;
+      this.dataForm.get('prenom').setValue(tv[1]) ;
+      event.source.value =  null;
+  }
+
   private createForm() {
     this.dataForm = this.formBuilder.group({
       age: [ {value: null , disabled: true} , [Validators.required ] ],
-      nom: ['', [Validators.required] ],
-      prenom:  ['', [Validators.required] ],
+      nom: [{value: null , disabled: true}, [Validators.required] ],
+      prenom:  [ {value: null , disabled: true} , [Validators.required] ],
       lieu:  [''],
       bassin: [ '25' , [Validators.required] ],
       date: [ null , [Validators.required] ],
