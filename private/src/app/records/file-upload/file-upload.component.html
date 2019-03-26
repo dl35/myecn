@@ -1,3 +1,8 @@
 <p>
-  file-upload works!
+  <input  type="file"   (change)="onFileSelected($event)" /> 
+
+  <button mat-raised-button (click)="onUpload()">Upload</button>
 </p>
+
+
+<mat-progress-bar mode="determinate" value="40"></mat-progress-bar>

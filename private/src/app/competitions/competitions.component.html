@@ -61,17 +61,18 @@
         <button mat-icon-button *ngIf="data.nb === 0" color="warn" (click)="delete(data);$event.stopPropagation()">
           <mat-icon>delete</mat-icon>
         </button>
-        <mat-chip-list>
-          <mat-chip color="accent" *ngIf="data.type == 'stage' " selected>S</mat-chip>
-          <mat-chip color="primary" *ngIf="data.type !== 'stage' " selected>C</mat-chip>
-        </mat-chip-list>
 
-
-
-        <mat-icon *ngIf="data.nb > 0" matListIcon color='primary' [matBadge]="data.nb"
+     
+        <mat-icon *ngIf="data.type === 'compet' && data.nb > 0" matListIcon color='primary' [matBadge]="data.nb"
           [svgIcon]="data.verif  ? 'swimvalid' : 'swiminvalid' "></mat-icon>
-        <mat-icon *ngIf="data.nb === 0" matListIcon color='primary'
+        <mat-icon *ngIf="data.type === 'compet' &&  data.nb === 0" matListIcon color='primary'
           [svgIcon]="data.verif  ? 'swimvalid' : 'swiminvalid' "></mat-icon>
+        <mat-icon *ngIf="data.type === 'stage' && data.verif  "   matTooltip="stage" matListIcon color='primary' [matBadge]="data.nb > 0 ? data.nb : '' "   >waves</mat-icon>
+        <mat-icon *ngIf="data.type === 'stage' && !data.verif  "  matTooltip="stage" matListIcon color='warn' >waves</mat-icon>
+        
+
+
+
 
         <p style="font-weight:500"   matLine>
           <span   class="demo-secondary-text" >{{data.nom}}</span>

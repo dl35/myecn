@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+import { IBanque } from './../models/data-licencies';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { Validators, FormControl, FormBuilder, FormGroup } from '@angular/forms';
 import { LicenciesService } from '../services/licencies.service';
@@ -12,6 +14,9 @@ export class EditComponent implements OnInit {
 
   show = false ;
 
+  banques$: Observable<IBanque[]> ;
+
+
   @Input()
   item: any;
 
@@ -23,7 +28,6 @@ export class EditComponent implements OnInit {
   meta = {
     displayForm : false ,
     rang: ['1', '2', '3', '4' , 'C1' , 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9', 'C10', 'C10', 'C12'],
-    banque: ['CA', 'CMB'],
     officiel: ['A', 'B', 'C'],
     sexe: ['F', 'H'] ,
     type: [{'name': 'Ren' , 'value': 'R' } , {'name': 'Nou' , 'value': 'N' } ] ,
@@ -45,6 +49,11 @@ export class EditComponent implements OnInit {
   ngOnInit() {
     this.initForm();
     this.initDatas();
+
+    this.banques$ = this.lserv.getBanques();
+
+
+
   }
 
   initForm() {

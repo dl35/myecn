@@ -46,7 +46,10 @@ export interface IDataLicencies {
     commentaires: string;
 }
 
-
+export interface IBanque {
+    id: string;
+    value: string;
+}
 
 
 

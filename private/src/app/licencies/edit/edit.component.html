@@ -160,7 +160,7 @@
     <div fxLayout="row wrap" fxLayout.lt-md="column wrap" fxLayoutAlign="center baseline" style='margin-top:20px' >
       <mat-form-field fxFlex="10" fxFlexOffset="3">
         <mat-select placeholder="Banque" formControlName="banque">
-          <mat-option *ngFor="let r of meta.banque" [value]="r">{{r}} </mat-option>
+          <mat-option *ngFor="let r of (banques$ | async ) " [value]="r.id">{{r.value}} </mat-option>
         </mat-select>
       </mat-form-field>
 

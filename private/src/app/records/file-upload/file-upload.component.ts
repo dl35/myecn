@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, HostListener, ElementRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { UploadService } from '../services/upload.service';
+import { HttpEventType } from '@angular/common/http';
 
 
 @Component({
@@ -14,33 +16,38 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
     }
   ]
 })
-export class FileUploadComponent  implements ControlValueAccessor {
+export class FileUploadComponent  {
 
-  @Input() progress;
-  onChange: Function;
-  private file: File | null = null;
+  selectedFile: File = null ;
+  constructor(private upService: UploadService ) {}
 
-  @HostListener('change', ['$event.target.files']) emitFiles( event: FileList ) {
-    const file = event && event.item(0);
-    this.onChange(file);
-    this.file = file;
+  onFileSelected( event ) {
+
+    this.selectedFile = event.target.files[0] ;
+
   }
 
-  constructor( private host: ElementRef<HTMLInputElement> ) {
-  }
+onUpload() {
+  const formData: FormData = new FormData();
+  formData.append('file', this.selectedFile );
 
-  writeValue( value: null ) {
-    // clear file input
-    this.host.nativeElement.value = '';
-    this.file = null;
-  }
+    this.upService.upload( formData ).subscribe(
+        (event) => { if ( event.type === HttpEventType.UploadProgress  ) {
 
-  registerOnChange( fn: Function ) {
-    this.onChange = fn;
-  }
+            console.log( 'progress ' + Math.round( event.loaded / event.total ) * 100  ) ;
+        } else if ( event.type === HttpEventType.Response )  {
+          console.log( event ) ;
 
-  registerOnTouched( fn: Function ) {
-  }
+         }
+
+      } ,
+
+      ( err) => { }  ,
+
+
+    ) 
+
+}
 
 
 }

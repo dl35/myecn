@@ -38,10 +38,7 @@ export class RecordsService {
 }*/
 
 
-  public  upload( file ) {
-     const url = this.url + '/upload' ;
-     return this.http.post<any>( url , file );
-  }
+ 
 
   public  put( data ) {
      return this.http.put<any>( this.url , data );
