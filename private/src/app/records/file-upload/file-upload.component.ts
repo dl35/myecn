@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, HostListener, ElementRef } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { Component } from '@angular/core';
 import { UploadService } from '../services/upload.service';
 import { HttpEventType } from '@angular/common/http';
 
@@ -7,14 +6,8 @@ import { HttpEventType } from '@angular/common/http';
 @Component({
   selector: 'app-file-upload',
   templateUrl: './file-upload.component.html',
-  styleUrls: ['./file-upload.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: FileUploadComponent,
-      multi: true
-    }
-  ]
+  styleUrls: ['./file-upload.component.scss']
+
 })
 export class FileUploadComponent  {
 
@@ -24,12 +17,14 @@ export class FileUploadComponent  {
   onFileSelected( event ) {
 
     this.selectedFile = event.target.files[0] ;
-
+console.log( this.selectedFile ) ;
   }
 
 onUpload() {
-  const formData: FormData = new FormData();
-  formData.append('file', this.selectedFile );
+  const formData = new FormData();
+  formData.append('file', this.selectedFile , this.selectedFile.name );
+  console.log( formData ) ;
+
 
     this.upService.upload( formData ).subscribe(
         (event) => { if ( event.type === HttpEventType.UploadProgress  ) {
@@ -45,7 +40,7 @@ onUpload() {
       ( err) => { }  ,
 
 
-    ) 
+    );
 
 }
 

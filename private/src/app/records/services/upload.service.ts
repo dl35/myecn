@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -10,11 +10,12 @@ export class UploadService {
   constructor(private http: HttpClient) {}
 
 
-  public upload( file: FormData )  {
-console.log( file ) ;
-     return  this.http.post( this.url , file , {
+  public upload( fd: FormData )  {
+     return  this.http.post( this.url , fd  ,  {
+
        reportProgress: true ,
        observe: 'events'
+
       } ) ;
 
 
