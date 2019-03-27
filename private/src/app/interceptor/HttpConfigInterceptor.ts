@@ -14,21 +14,40 @@ export class HttpConfigInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const token: string = sessionStorage.getItem('token');
 
-        if (token) {
+        console.log(  request.headers.get('Content-Type')  ) ;
+
+
+       if (token) {
             // request = request.clone({ headers: request.headers.set('Authorization', 'Bearer ' + token) });
             request = request.clone({ headers: request.headers.set('Authorization', 'Bearer ' + token) });
         }
 
+       
         if (!request.headers.has('Content-Type')) {
-            request = request.clone({ headers: request.headers.set('Content-Type', 'application/json') });
+     //    request = request.clone({ headers: request.headers.set('Content-Type', 'application/json') });
         }
 
-        request = request.clone({ headers: request.headers.set('Accept', 'application/json') });
-console.log(  request.headers ) ;
+       request = request.clone({ headers: request.headers.set('Accept', 'application/json') });
+
+
 
 
         return next.handle(request).pipe(
             map((event: HttpEvent<any>) => {
+
+           /*     if (event instanceof HttpResponse) {
+                } else if (event instanceof HttpResponse) {
+
+                } else if (event instanceof HttpResponse) {
+                    
+                } else if (event instanceof HttpResponse) {
+                    
+                }*/
+
+
+
+
+                console.log('event' , event );
 
                 if (event instanceof HttpResponse) {
                     const text = (event.body.message) ? event.body.message : event.statusText;

@@ -11,14 +11,16 @@ export class UploadService {
 
 
   public upload( fd: FormData )  {
-     return  this.http.post( this.url , fd  ,  {
 
+    const headers = new HttpHeaders();
+    //headers.set('Content-Type', null );
+    headers.set('Content-Type' , 'multipart/form-data');
+     return  this.http.post( this.url , fd  ,  {
+       headers : headers ,
        reportProgress: true ,
        observe: 'events'
 
       } ) ;
-
-
 
   }
 

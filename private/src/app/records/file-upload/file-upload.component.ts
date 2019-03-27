@@ -20,8 +20,9 @@ export class FileUploadComponent  {
 console.log( this.selectedFile ) ;
   }
 
+  /*
 onUpload() {
-  const formData = new FormData();
+  const formData: FormData = new FormData();
   formData.append('file', this.selectedFile , this.selectedFile.name );
   console.log( formData ) ;
 
@@ -31,16 +32,38 @@ onUpload() {
 
             console.log( 'progress ' + Math.round( event.loaded / event.total ) * 100  ) ;
         } else if ( event.type === HttpEventType.Response )  {
-          console.log( event ) ;
+          console.log( 'response ' , event ) ;
 
          }
-
+         console.log( 'dls35 ' , event ) ;
       } ,
 
       ( err) => { }  ,
 
 
     );
+*/
+
+
+onUpload() {
+  const formData: FormData = new FormData();
+  formData.append('file', this.selectedFile , this.selectedFile.name );
+  console.log( 'fdata' , formData.get('file') ) ;
+
+
+    this.upService.upload( formData ).subscribe(
+        (d ) => { console.log (d ) ;
+
+         } ,
+
+      ( err) => { }  ,
+
+
+    );
+
+}
+
+
 
 }
 
