@@ -1,8 +1,8 @@
 <p>
-  <input  type='file' name='file'   (change)="onFileSelected($event)" /> 
+  <input  type='file' name='file' accept="*.avi"  (change)="onFileSelected($event)" /> 
 
   <button mat-raised-button (click)="onUpload()">Upload</button>
 </p>
 
 
-<mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
+<mat-progress-bar mode="determinate" [value]="pvalue"></mat-progress-bar>

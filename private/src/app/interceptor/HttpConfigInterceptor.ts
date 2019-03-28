@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse, HttpResponse, HttpEventType } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -14,19 +14,13 @@ export class HttpConfigInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const token: string = sessionStorage.getItem('token');
 
-        console.log(  request.headers.get('Content-Type')  ) ;
-
-
        if (token) {
             // request = request.clone({ headers: request.headers.set('Authorization', 'Bearer ' + token) });
             request = request.clone({ headers: request.headers.set('Authorization', 'Bearer ' + token) });
         }
-
-       
-        if (!request.headers.has('Content-Type')) {
-     //    request = request.clone({ headers: request.headers.set('Content-Type', 'application/json') });
-        }
-
+       /* if (!request.headers.has('Content-Type')) {
+        request = request.clone({ headers: request.headers.set('Content-Type', 'application/json') });
+        } */
        request = request.clone({ headers: request.headers.set('Accept', 'application/json') });
 
 
@@ -35,19 +29,14 @@ export class HttpConfigInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(
             map((event: HttpEvent<any>) => {
 
-           /*     if (event instanceof HttpResponse) {
-                } else if (event instanceof HttpResponse) {
+/*
+                console.log('UploadProgres: 1' ,  HttpEventType.UploadProgress );
+                console.log('Response: 4' ,  HttpEventType.Response );
+                console.log('ResponseHeader: 2' ,  HttpEventType.ResponseHeader );
+                console.log('Sent: 0' ,  HttpEventType.Sent );
+                console.log('User: 5 ' ,  HttpEventType.User );
+*/
 
-                } else if (event instanceof HttpResponse) {
-                    
-                } else if (event instanceof HttpResponse) {
-                    
-                }*/
-
-
-
-
-                console.log('event' , event );
 
                 if (event instanceof HttpResponse) {
                     const text = (event.body.message) ? event.body.message : event.statusText;

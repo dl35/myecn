@@ -12,60 +12,30 @@ import { HttpEventType } from '@angular/common/http';
 export class FileUploadComponent  {
 
   selectedFile: File = null ;
+
+  pvalue = 0 ;
   constructor(private upService: UploadService ) {}
 
   onFileSelected( event ) {
-
     this.selectedFile = event.target.files[0] ;
-console.log( this.selectedFile ) ;
   }
 
-  /*
+
 onUpload() {
   const formData: FormData = new FormData();
   formData.append('file', this.selectedFile , this.selectedFile.name );
-  console.log( formData ) ;
-
-
-    this.upService.upload( formData ).subscribe(
+  this.pvalue = 0 ;
+  this.upService.upload( formData ).subscribe(
         (event) => { if ( event.type === HttpEventType.UploadProgress  ) {
-
-            console.log( 'progress ' + Math.round( event.loaded / event.total ) * 100  ) ;
+          this.pvalue = Math.round( event.loaded / event.total * 100)  ;
         } else if ( event.type === HttpEventType.Response )  {
-          console.log( 'response ' , event ) ;
-
+          this.pvalue = 0 ;
          }
-         console.log( 'dls35 ' , event ) ;
       } ,
 
-      ( err) => { }  ,
-
-
-    );
-*/
-
-
-onUpload() {
-  const formData: FormData = new FormData();
-  formData.append('file', this.selectedFile , this.selectedFile.name );
-  console.log( 'fdata' , formData.get('file') ) ;
-
-
-    this.upService.upload( formData ).subscribe(
-        (d ) => { console.log (d ) ;
-
-         } ,
-
-      ( err) => { }  ,
+      (err) => { console.log('err' , err ) }  ,
 
 
     );
 
-}
-
-
-
-}
-
-
-}
+ }}
