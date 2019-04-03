@@ -37,6 +37,7 @@ import { MomentUtcDateAdapter } from './material/MomentUtcDateAdapter';
 import { HttpConfigInterceptor } from './interceptor/HttpConfigInterceptor';
 import { NiveauComponent } from './niveau/niveau.component';
 import { EditComponent } from './niveau/edit/edit.component';
+import { LogoComponent } from './logo/logo.component';
 registerLocaleData(localeFr, 'fr');
 
 @NgModule({
@@ -46,7 +47,8 @@ registerLocaleData(localeFr, 'fr');
     MenuComponent,
     DialogConfirmComponent,
     NiveauComponent,
-    EditComponent
+    EditComponent,
+    LogoComponent
    ],
   imports: [
     BrowserModule,

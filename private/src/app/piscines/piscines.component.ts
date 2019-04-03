@@ -129,11 +129,11 @@ export class PiscinesComponent implements OnInit {
         if (feature.properties && feature.properties.name) {
      //     const waze = 'waze://?ll=' + feature.geometry  + ',' + feature.geometry + '&navigate=yes' ;
      const ww = 'ww' ;
-     const a = '<a class=\'waze\'   href=\'ww\' >waze</a>';
+     const a = '<a class=\'waze\'  target=\'_blank\'  href=\'https://waze.com/' + feature.properties.waze + '\' >waze</a>';
 
           layer.bindPopup('<strong>' + feature.properties.name + '</strong><br>' + feature.properties.ville +
             '<br>' + feature.properties.description + '<br>Bassin: ' + feature.properties.bassin
-            + '&nbsp;Couloirs: ' + feature.properties.couloir + a );
+            + '&nbsp;Couloirs: ' + feature.properties.couloir + '<br>' + a );
         }
       },
 

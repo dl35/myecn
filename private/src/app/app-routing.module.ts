@@ -1,3 +1,4 @@
+import { LogoComponent } from './logo/logo.component';
 import { NiveauComponent } from './niveau/niveau.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
@@ -16,17 +17,16 @@ export const routes: Routes = [
   {
     path: '', component: MenuComponent,   canActivate: [AuthGuard], canActivateChild: [AuthGuard], children:
       [
-        //  { path: 'licencies', component: LicenciesComponent },
+
         { path: 'licencies', loadChildren: './licencies/licencies.module#LicenciesModule' },
-        //  { path: '',  loadChildren: './competitions/competitions.module#CompetitionsModule' },
         { path: 'niveau', component: NiveauComponent },
         { path: 'competitions', component: CompetitionsComponent },
         { path: 'engagements', component: EngagementsComponent },
         { path: 'mailto', component: MailtoComponent },
         { path: 'records', component: RecordsComponent },
         { path: 'piscines', component: PiscinesComponent },
-        { path: 'admin',  loadChildren: './admin/admin.module#AdminModule' }
-
+        { path: 'admin',  loadChildren: './admin/admin.module#AdminModule' },
+        { path: '', component: LogoComponent },
       ]
   },
 
