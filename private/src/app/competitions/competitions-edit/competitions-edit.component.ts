@@ -1,3 +1,4 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { CompetitionsService } from './../services/competitions.service';
 import { DataCompet } from '../models/data-compet';
@@ -16,13 +17,13 @@ import { subscribeOn } from 'rxjs/operators';
 })
 export class CompetitionsEditComponent implements OnInit {
 
-  @Output() quitte = new EventEmitter<MessageResponse>();
+//  @Output() quitte = new EventEmitter<MessageResponse>();
 
   public dataForm: FormGroup ;
   public response = new MessageResponse() ;
 
 
-
+/*
   @Input()
   set data(data: DataCompet) {
 
@@ -35,17 +36,17 @@ export class CompetitionsEditComponent implements OnInit {
   }
 
   get data(): DataCompet {
-    // transform value for display
+   
         return this.data;
   }
+*/
 
-
-  constructor(private formBuilder: FormBuilder, private compService: CompetitionsService ) {
+  constructor(private formBuilder: FormBuilder, private compService: CompetitionsService, private route: Router ) {
     this.createForm() ;
 
   }
 
-  minDate = new Date(2017, 8, 1);
+  minDate = new Date();
   maxDate = new Date(2018, 7, 31);
 
 
@@ -59,10 +60,29 @@ export class CompetitionsEditComponent implements OnInit {
 
     ngOnInit() {
     this.entr$  = this.compService.getEnt();
+    this.compService.currentDatas$.subscribe( (d)  =>  this.setForm(d) ) ;
   }
 
+    public setForm( d ) {
+      let add = false;
+      if ( !d ) {
+        d = new DataCompet();
+        add = true ;
+      }
+
+
+      this.dataForm.setValue( d , { onlySelf: true } );
+      if ( add || this.dataForm.get('nb').value  > 0 )   {
+        this.dataForm.controls['verif'].disable();
+      } else {
+        this.dataForm.controls['verif'].enable();
+      }
+    }
+
+
   doquitte() {
-    this.quitte.emit( this.response );
+  //  this.quitte.emit( this.response );
+  this.route.navigate(['competitions']);
   }
 
   delete() {
@@ -74,7 +94,7 @@ export class CompetitionsEditComponent implements OnInit {
     this.response.type = type ;
     this.response.message = message ;
 
-    this.quitte.emit( this.response );
+   this.doquitte();
   }
 
 

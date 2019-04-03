@@ -15,6 +15,11 @@ export class CompetitionsService {
   public datas$: Observable<DataCompet[]> =  this.subject$.asObservable();
   private cache: DataCompet[] = null;
 
+
+  private messageData = new BehaviorSubject<DataCompet>(null);
+  public currentDatas$ = this.messageData.asObservable();
+
+
   filtre = { next: true, type: null, verif: null, txt: '' };
 
   constructor(private http: HttpClient) {
@@ -22,15 +27,27 @@ export class CompetitionsService {
 
   }
 
+
+
+
   private url = '/api/private/tocompetitions' ;
 
-   public getListAll() {
-        //  if ( !this.cache  ||  this.cache.length === 0 ) {
-            this.http.get<DataCompet[]>( this.url )
+
+
+  public setMessageData(data: DataCompet) {
+    this.messageData.next( data ) ;
+  }
+
+
+
+
+  public getListAll() {
+          if ( !this.cache  ||  this.cache.length === 0 ) {
+            this.http.get<DataCompet[]>( this.url ).pipe( shareReplay(1) )
             .subscribe(
               res => { this.cache = res ;  this.update(); },
             );
-   //  }
+     }
       }
 
     public getList() {
@@ -52,6 +69,7 @@ export class CompetitionsService {
         liste = this.cache.filter(item => item.verif === false);
       } else {
         liste = this.cache;
+        console.log('ici' , this.filtre , liste.length  );
 
       }
 
@@ -71,6 +89,8 @@ export class CompetitionsService {
         // tslint:disable-next-line:max-line-length
         liste = liste.filter( item =>   (item.nom.toLowerCase() + ' ' + item.lieu.toLowerCase() ) .indexOf( this.filtre.txt.toLowerCase() ) !== -1   );
      }
+     console.log('la' , this.filtre , liste.length  );
+
 
       this.subject$.next( liste ) ;
 

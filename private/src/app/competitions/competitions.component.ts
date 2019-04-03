@@ -1,3 +1,4 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataCompet } from './models/data-compet';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
@@ -48,6 +49,8 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
    @ViewChild('mdrawer') mdrawer: MatDrawer;
   private searchControl: FormControl;
 
+ 
+
 
   showFiller = false;
   hideSide = true;
@@ -61,17 +64,13 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
 
 
 
-  constructor(public dialog: MatDialog,  changeDetectorRef: ChangeDetectorRef, location: PlatformLocation ,
-               media: MediaMatcher, private compService: CompetitionsService) {
+  constructor(public dialog: MatDialog,  changeDetectorRef: ChangeDetectorRef,
+               media: MediaMatcher, private compService: CompetitionsService, private route: Router) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
 
-    location.onPopState(() => {
-
-      alert(window.location);
-
-  });
+ 
 
   }
 
@@ -84,12 +83,19 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
 
   add() {
 
-    console.log('denis:' , this.dataSelected) ;
-   this.dataSelected = new DataCompet() ;
+  //  console.log('denis:' , this.dataSelected) ;
+   // this.dataSelected = new DataCompet() ;
+   this.compService.setMessageData( null );
+   this.route.navigate(['competitions/edit'] );
   }
 
   edit(data) {
-    this.dataSelected = data ;
+ //   this.dataSelected = data ;
+
+this.compService.setMessageData( data );
+  this.route.navigate(['competitions/edit'] );
+  // ,  { queryParams: { data: data }, skipLocationChange: true } );
+ // this.route.navigateByUrl('/competitions/edit', { state: { hello: 'world' } });
   }
 
   delete(data) {
@@ -142,6 +148,8 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
 
     this.searchControl = new FormControl('');
 
+      this.filtre = this.compService.filtre ;
+   //  this.compService.setFiltre( this.filtre );
      this.datas$ = this.compService.getList().pipe( shareReplay(1) ) ;
      this.compService.getListAll();
      this.dataSelected = null ;

@@ -10,6 +10,7 @@ import { EngagementsComponent } from './engagements/engagements.component';
 import { PiscinesComponent } from './piscines/piscines.component';
 import { MenuComponent } from './menu/menu.component';
 import { RecordsComponent } from './records/records.component';
+import { CompetitionsEditComponent } from './competitions/competitions-edit/competitions-edit.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -20,7 +21,8 @@ export const routes: Routes = [
 
         { path: 'licencies', loadChildren: './licencies/licencies.module#LicenciesModule' },
         { path: 'niveau', component: NiveauComponent },
-        { path: 'competitions', component: CompetitionsComponent },
+        { path: 'competitions', component: CompetitionsComponent } ,
+        { path: 'competitions/edit', component: CompetitionsEditComponent } ,
         { path: 'engagements', component: EngagementsComponent },
         { path: 'mailto', component: MailtoComponent },
         { path: 'records', component: RecordsComponent },

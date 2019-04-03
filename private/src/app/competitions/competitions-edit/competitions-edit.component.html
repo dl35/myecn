@@ -23,7 +23,7 @@
     <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="9px" fxLayoutAlign="center baseline"
       style='margin-top:5px'>
       <mat-form-field fxFlex="15" fxFlexOffset.lt-sm="2">
-        <input  matInput [matDatepicker]="debut" placeholder="Début" (click)="debut.open()"
+        <input  matInput [matDatepicker]="debut" placeholder="Début" (click)="debut.open()"  [min]="minDate" 
           (dateChange)="onDateStart($event)" formControlName="debut">
         <mat-datepicker-toggle matSuffix [for]="debut"></mat-datepicker-toggle>
         <mat-datepicker #debut></mat-datepicker>
@@ -134,9 +134,9 @@
 
     <div fxLayout="row" fxLayoutAlign="center center">
 
-      <button mat-raised-button color="primary" [disabled]="dataForm.invalid || dataForm.get('nb').value > 0  "
+      <button mat-raised-button color="primary"  *ngIf="dataForm.get('nb').value == 0"  [disabled]="dataForm.invalid"
         (click)="saveForm()" type="button">Valider</button>
-      <button mat-raised-button color="primary" fxFlexOffset='3' (click)="doquitte()" type="button">Annuler</button>
+      <button mat-raised-button color="primary" fxFlexOffset='3' (click)="doquitte()" type="button">Quitter</button>
     </div>
 
 
