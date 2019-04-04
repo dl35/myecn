@@ -15,7 +15,8 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
   loading = true;
   destroyed$: Subject<any> = new Subject();
   typeChoix: string[] = ['Ok', 'At', 'Ko'];
-  typeMode: any[] = [ {value: 'c', text: 'Compétitions'},  {value: 'l' , text: 'Licencies' } , {value: 'i' , text: 'Inscriptions' }  ];
+// tslint:disable-next-line: max-line-length
+  typeMode: any[] = [ {value: 'c', text: 'Compétitions'},  {value: 'l' , text: 'Licencies' } , {value: 'g' , text: 'Goupe Licencies' } ,{value: 'i' , text: 'Inscriptions' }  ];
   typeDatas: IMailto;
  // mode = '';
 
@@ -39,6 +40,10 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
    ).subscribe(
 
     (mode: string) => {
+      this.dataForm.get('subject').enable();
+      this.dataForm.get('body').enable();
+      this.dataForm.get('body').setValue('');
+      this.dataForm.get('subject').setValue('');
 
         if (mode === 'c') {
           this.dataForm.get('compet').setValidators(Validators.required) ;
@@ -51,10 +56,19 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
           this.dataForm.get('compet').clearValidators();
           this.dataForm.get('choix').clearValidators();
           this.dataForm.get('email').clearValidators();
+        } else if (mode === 'g') {
+          this.dataForm.get('dests').setValidators(Validators.required) ;
+          this.dataForm.get('compet').clearValidators();
+          this.dataForm.get('choix').clearValidators();
+          this.dataForm.get('email').clearValidators();
         } else if ( mode === 'i' ) {
           this.dataForm.get('compet').clearValidators();
           this.dataForm.get('choix').clearValidators();
           this.dataForm.get('dests').clearValidators();
+          this.dataForm.get('subject').setValue('inscription');
+          this.dataForm.get('subject').disable();
+          this.dataForm.get('body').setValue(this.typeDatas.ins);
+          this.dataForm.get('body').disable();
           this.dataForm.get('email').setValidators([Validators.required, Validators.email]) ;
         }
 
@@ -105,9 +119,11 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
      const v = this.dataForm.getRawValue();
       if ( v.mode === 'c' ) {
         delete v.dests;
-      } else if ( v.mode === 'l' ) {
+        delete v.email;
+      } else if ( v.mode === 'l' ||  v.mode === 'g' ) {
         delete v.choix;
         delete v.compet;
+        delete v.email;
       } else {
         delete v.choix;
         delete v.compet;

@@ -4,6 +4,7 @@ export interface IMailto {
     lic: ILic[];
     comp: IComp[];
     from: IFrom[];
+    ins: string;
 }
 
 

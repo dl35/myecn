@@ -24,13 +24,24 @@
     <div fxLayoutAlign="start center" fxLayout="row" *ngIf="dataForm.get('mode').value === 'l' " >
             <mat-form-field  fxFlex="100"  style="margin-right:17%" >
                     <mat-select placeholder="Destinataires"  formControlName="dests" multiple>
-                            <mat-option *ngFor="let dest of typeDatas?.dests" [value]="dest.value" >{{dest.text}}</mat-option>
                             <mat-option *ngFor="let lic of typeDatas?.lic" [value]="lic.id" >{{lic.nom}}</mat-option>
                       </mat-select>
                   </mat-form-field>
     
     </div>
  
+    <div fxLayoutAlign="start center" fxLayout="row" *ngIf="dataForm.get('mode').value === 'g' " >
+        <mat-form-field  fxFlex="100"  style="margin-right:17%" >
+                <mat-select placeholder="Destinataires"  formControlName="dests" multiple>
+                        <mat-option *ngFor="let group of typeDatas?.group" [value]="group.value" >{{group.text}}</mat-option>
+                  </mat-select>
+              </mat-form-field>
+
+</div>
+
+
+
+
     <div fxLayoutAlign="start center" fxLayout="row" *ngIf="dataForm.get('mode').value === 'i' " >
             <mat-form-field  fxFlex="50" style="margin-right:17%" fxFlex.lt-md="100">
                     <input matInput placeholder="email" formControlName="email" >
