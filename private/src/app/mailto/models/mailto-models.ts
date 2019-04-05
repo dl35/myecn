@@ -27,3 +27,12 @@ interface ILic {
     rang: string;
     officiel: string;
 }
+
+
+export enum Imode {
+// competitions , Licencies , Group licencies , inscriptions
+    C ,
+    L ,
+    G ,
+    I
+}
