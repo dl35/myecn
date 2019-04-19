@@ -34,7 +34,7 @@ export class EditRecordsComponent implements OnInit {
         return this.data;
   }*/
 
-  constructor(private formBuilder: FormBuilder, private recService: RecordsService ) { 
+  constructor(private formBuilder: FormBuilder, private recService: RecordsService ) {
 
     this.createForm();
 
@@ -43,7 +43,7 @@ export class EditRecordsComponent implements OnInit {
   ngOnInit() {
    const sexe = this.dataForm.get('sexe').value ;
    this.names$ = this.recService.getName().pipe(
-    map( data => data.filter( item => item.sexe === sexe )  )
+    map( data => data.filter( item => item.sexe === sexe )  ) 
 
    );
   }

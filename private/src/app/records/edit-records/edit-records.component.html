@@ -36,9 +36,9 @@
           </mat-form-field>
    
         <mat-form-field fxFlex="15" fxFlexOffset.lt-sm="2">
-          <input required matInput [matDatepicker]="date" placeholder="Début" (click)="debut.open()"
-            (dateChange)="onDateStart($event)" formControlName="date">
-          <mat-datepicker-toggle matSuffix [for]="debut"></mat-datepicker-toggle>
+          <input required matInput [matDatepicker]="date" placeholder="Début" (click)="date.open()"
+             formControlName="date">
+          <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
           <mat-datepicker #date></mat-datepicker>
         </mat-form-field>
       
