@@ -17,8 +17,8 @@ export class NiveauService {
        return this.http.get<Array<Iniveau>>( this.url );
   }
 
-  public  post( datas: Iniveau ) {
-       return this.http.post<Iniveau>( this.url , datas );
+  public  put( datas: Iniveau ) {
+       return this.http.put<Iniveau>( this.url , datas );
   }
 
 

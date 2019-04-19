@@ -4,6 +4,8 @@ import { EmailtoService } from './services/emailto.service';
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { DiagComponent } from './diag/diag.component';
 
 @Component({
   selector: 'app-mailto',
@@ -12,11 +14,14 @@ import { Subject } from 'rxjs';
 })
 export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
 
+
+  diag: MatDialogRef<DiagComponent>;
+
   loading = true;
   destroyed$: Subject<any> = new Subject();
   typeChoix: string[] = ['Ok', 'At', 'Ko'];
 // tslint:disable-next-line: max-line-length
-  typeMode: any[] = [ {value: 'c', text: 'Compétitions'},  {value: 'l' , text: 'Licencies' } , {value: 'g' , text: 'Goupe Licencies' } ,{value: 'i' , text: 'Inscriptions' }  ];
+  typeMode: any[] = [ {value: 'c', text: 'Compétitions'},  {value: 'l' , text: 'Licencies' } , {value: 'g' , text: 'Goupe Licencies' } , {value: 'i' , text: 'Inscriptions' }  ];
   typeDatas: IMailto;
  // mode = '';
 
@@ -28,7 +33,7 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
     ]
   };
 
-  constructor(private formBuilder: FormBuilder, private eMailto: EmailtoService ) {
+  constructor(private formBuilder: FormBuilder, private eMailto: EmailtoService, private dialog: MatDialog ) {
 
   }
 
@@ -129,19 +134,22 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
         delete v.compet;
         delete v.dests;
       }
+      this.diag = this.dialog.open(DiagComponent, {
+        width: '50%',
+        disableClose: true
+      });
 
-
-      delete v.mode;
-      console.log( v );
       this.eMailto.sendMail( v ).pipe(
         takeUntil(this.destroyed$)
        ).subscribe(
-          ( response )  => { console.log( response ); this.dataForm.reset(); }  ,
-          ( err ) =>  {console.log(err.error);
-          console.log(err.name);
-          console.log(err.message);
-          console.log(err.status); },
-          ( ) => this.loading = false ,
+          ( response )  => {  this.dataForm.reset(); }  ,
+          ( err ) =>  {
+          // console.log(err.error);
+          // console.log(err.name);
+          // console.log(err.message);
+          // console.log(err.status);
+           },
+          ( ) => {  this.diag.close() ; this.loading = false ; } ,
        );
   }
 

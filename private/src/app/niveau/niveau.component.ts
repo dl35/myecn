@@ -48,5 +48,16 @@ export class NiveauComponent implements OnInit {
   }
 
 
+  setHide( $event ) {
+    if ( $event !== null  ) {
+        const cached =  this.dataSource.datas ;
+        const index =  cached.findIndex(item => item.id === $event.id);
+        cached[index] = $event;
+        this.dataSource.datas = cached ;
+    }
+    this.edited = false;
+
+  }
+
 
 }

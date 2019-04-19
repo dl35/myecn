@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MailtoComponent } from './mailto.component';
 import { MaterialModule } from '../material/material.module';
 import { QuillModule } from 'ngx-quill';
+import { DiagComponent } from './diag/diag.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,10 @@ import { QuillModule } from 'ngx-quill';
     FlexLayoutModule,
     QuillModule
   ],
-  declarations: [MailtoComponent]
+  declarations: [MailtoComponent, DiagComponent],
+  entryComponents: [
+    DiagComponent
+],
 })
 export class MailtoModule { }
 

@@ -1,4 +1,4 @@
-<app-edit-niveau *ngIf="edited"  [item]="item" (hideForm)='edited=false'  >
+<app-edit-niveau *ngIf="edited"  [item]="item" (hideForm)='setHide($event)'  >
 </app-edit-niveau>
 
 
@@ -22,10 +22,10 @@
         <mat-form-field style='width:78px' >
             <mat-select placeholder="Catégories"  color="primary" [(ngModel)]="myfilter.categorie"   (ngModelChange)="toFilter()"  >
                 <mat-option></mat-option>
-                <mat-option value="av" >Avenirs</mat-option>
-                <mat-option value="je">Jeunes</mat-option>
-                <mat-option value="se">Seniors</mat-option>
-                <mat-option value="ma">Masters</mat-option>
+                <mat-option value="AV" >Avenirs</mat-option>
+                <mat-option value="JE">Jeunes</mat-option>
+                <mat-option value="SE">Seniors</mat-option>
+                <mat-option value="MA">Masters</mat-option>
               </mat-select>
             </mat-form-field>
       </th>

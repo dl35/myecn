@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { isNgTemplate } from '@angular/compiler';
+import { NiveauService } from '../service/niveau.service';
 
 
 @Component({
@@ -23,7 +24,7 @@ export class EditComponent implements OnInit {
   };
 
 
-  constructor(private formBuilder: FormBuilder  ) { }
+  constructor(private formBuilder: FormBuilder, private servNiveau: NiveauService  ) { }
 
   ngOnInit() {
 
@@ -44,7 +45,7 @@ export class EditComponent implements OnInit {
   }
 
   cancelForm() {
-    this.hideForm.emit( true );
+    this.hideForm.emit( null );
   }
   setSelection($event) {
 
@@ -56,5 +57,18 @@ export class EditComponent implements OnInit {
    this.valide =  ( $event.value === this.item.niveau ) ?  false : true ;
 
   }
+
+
+  validate() {
+      const data = this.dataForm.getRawValue();
+      this.servNiveau.put( data ).subscribe(
+       (resp) => { this.hideForm.emit( data ); },
+       (err) => {},
+       () => {}
+
+      );
+
+    }
+
 
 }
