@@ -54,6 +54,13 @@ export class UsersService {
     );
   }
 
+  public sendMail( id ) {
+    const obj = {'email': id } ;
+    return this.http.post<any>(  this.url , obj  );
+  }
+
+
+
   public delete( id ) {
     const url = this.url + '/' + id ;
     return this.http.delete<ILogin>(  url   ).subscribe(data => {

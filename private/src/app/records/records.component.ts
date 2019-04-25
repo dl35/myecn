@@ -39,7 +39,7 @@ export class RecordsComponent implements OnInit {
     this.layoutChanges = this.breakpointObserver.observe([
       Breakpoints.Medium,
       Breakpoints.Large,
-      Breakpoints.XLarge,
+      Breakpoints.XLarge
     ]);
 
   }

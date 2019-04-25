@@ -8,7 +8,7 @@
         <mat-progress-bar *ngIf="loading"  mode="query"></mat-progress-bar>
     <div   fxLayout="row"  fxLayoutAlign="start center" >
       <mat-form-field  fxFlex="50" >
-          <mat-select placeholder="From"   formControlName="from"  >
+          <mat-select placeholder="De"   formControlName="from"  >
               <mat-option *ngFor="let from of typeDatas?.from" [value]="from.value" >{{from.text}}</mat-option>
             </mat-select>
         </mat-form-field>
@@ -24,7 +24,7 @@
     <div fxLayoutAlign="start center" fxLayout="row" *ngIf="dataForm.get('mode').value === 'l' " >
             <mat-form-field  fxFlex="100"  style="margin-right:17%" >
                     <mat-select placeholder="Destinataires"  formControlName="dests" multiple>
-                            <mat-option *ngFor="let lic of typeDatas?.lic" [value]="lic.id" >{{lic.nom}}</mat-option>
+                            <mat-option *ngFor="let lic of typeDatas?.lic" [value]="lic.id" >{{lic.prenom}} {{lic.nom}} , {{lic.categorie}}-{{lic.rang}}</mat-option>
                       </mat-select>
                   </mat-form-field>
     

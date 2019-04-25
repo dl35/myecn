@@ -22,7 +22,5 @@ export class MenuComponent  {
     ]);
     this.title = this.textRoute.getMessage() ;
 
-
-    console.log(this.router.url);
 }
 }

@@ -67,7 +67,8 @@ tomail( data ) {
    dialogRef.beforeClosed().subscribe(
      (result) => {
                if (result) {
-              //  this.uService.delete( data.id );
+                this.uService.sendMail( data.id ).subscribe();
+
                  } },
      () => {},
      () => {},

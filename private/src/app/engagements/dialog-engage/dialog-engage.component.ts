@@ -38,7 +38,7 @@ export class DialogEngageComponent implements OnInit {
   }
   }
 
-  private test() {
+  private update() {
       const datas = {ids :  this.lic.value  } ;
       this.eService.updateLicencies( this.data.id , datas ).subscribe(
         (v) => this.dialogRef.close(true)
@@ -51,7 +51,7 @@ export class DialogEngageComponent implements OnInit {
    
     this.eService.getLicencies( this.data.id )
            .subscribe(
-          (datas) => { console.log( datas  );  this.datasLic = datas.filter ( v => v.categorie === value )  ; },
+          (datas) => { this.datasLic = datas.filter ( v => v.categorie === value )  ; },
           (err) => {  console.log(err) ; }
        );
   }

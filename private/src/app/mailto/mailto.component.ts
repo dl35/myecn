@@ -23,7 +23,7 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
 // tslint:disable-next-line: max-line-length
   typeMode: any[] = [ {value: 'c', text: 'Compétitions'},  {value: 'l' , text: 'Licencies' } , {value: 'g' , text: 'Goupe Licencies' } , {value: 'i' , text: 'Inscriptions' }  ];
   typeDatas: IMailto;
- // mode = '';
+ 
 
   public dataForm: FormGroup ;
 
@@ -70,7 +70,7 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
           this.dataForm.get('compet').clearValidators();
           this.dataForm.get('choix').clearValidators();
           this.dataForm.get('dests').clearValidators();
-          this.dataForm.get('subject').setValue('inscription');
+          this.dataForm.get('subject').setValue('[Inscription]');
           this.dataForm.get('subject').disable();
           this.dataForm.get('body').setValue(this.typeDatas.ins);
           this.dataForm.get('body').disable();

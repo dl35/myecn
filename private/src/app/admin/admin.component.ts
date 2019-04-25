@@ -35,7 +35,7 @@ export class AdminComponent implements OnDestroy {
      dialogRef.beforeClosed().subscribe(
        (result) => {
                  if (result) {
-                  this.adService.reinitCompetitions().subscribe(
+                  this.adService.clearCompetitions().subscribe(
                       () => {  } ,
                       () =>  { }
 
@@ -56,7 +56,7 @@ public deleteEngagements() {
    dialogRef.beforeClosed().subscribe(
      (result) => {
                if (result) {
-                this.adService.reinitEngagements().subscribe(
+                this.adService.clearEngagements().subscribe(
                     () => { } ,
                     () =>  {  }
 
@@ -66,6 +66,49 @@ public deleteEngagements() {
    );
 
 }
+public prepare() {
+  const dialogRef = this.dialog.open(DialogConfirmComponent, {
+    width: '50%',
+    data: { info: 'Préparer la table licenciés ?'  },
+    disableClose: true
+   });
+
+   dialogRef.beforeClosed().subscribe(
+     (result) => {
+               if (result) {
+                this.adService.prepareTableLicencies().subscribe(
+                    () => { } ,
+                    () =>  {  }
+
+                ); }},
+     () => { },
+     () => {},
+   );
+
+}
+
+public send() {
+  const dialogRef = this.dialog.open(DialogConfirmComponent, {
+    width: '50%',
+    data: { info: 'Envoyer les Inscriptions ?'  },
+    disableClose: true
+   });
+
+   dialogRef.beforeClosed().subscribe(
+     (result) => {
+               if (result) {
+                this.adService.sendInscriptions().subscribe(
+                    () => { } ,
+                    () =>  {  }
+
+              ); }},
+     () => { },
+     () => {},
+   );
+
+}
+
+
 
 
   ngOnDestroy(): void {

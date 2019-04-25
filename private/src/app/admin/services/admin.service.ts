@@ -6,22 +6,29 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AdminService {
-    private url = '/api/private/admin' ;
+    private url = '/api/private/toadmin' ;
     constructor(private http: HttpClient) { }
 
-    public reinitEngagements( ) {
+    public clearEngagements( ) {
       const upost = this.url + '/engagements' ;
       return this.http.delete<any>( upost ) ;
 
     }
 
-    public reinitCompetitions() {
+    public clearCompetitions() {
       const upost = this.url + '/competitions' ;
       return this.http.delete<any>( upost ) ;
     }
 
-    public createLicencies( data ) {
-      const upost = this.url + '/licencies' ;
-      return this.http.post<any>( upost , data  ) ;
+    public prepareTableLicencies() {
+      const uget = this.url + '/prepare' ;
+      return this.http.get<any>( uget ) ;
     }
+
+    public sendInscriptions() {
+      const uget = this.url + '/send' ;
+      return this.http.get<any>( uget ) ;
+    }
+
+
 }

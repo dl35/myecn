@@ -1,9 +1,9 @@
 <div    fxLayoutAlign="center center" style="margin-top:10px;" >
 <mat-grid-list cols="2" rowHeight="4:1" style="width:85%;"  >
-    <mat-grid-tile style="background-color: grey" > <button (click)="deleteCompetitions()"  mat-raised-button color="primary">Réinitialiser Competitions</button></mat-grid-tile>
-    <mat-grid-tile style="background-color: rgb(42, 165, 124)" > <button (click)="deleteEngagements()" mat-raised-button color="primary">Réinitialiser Engagements</button></mat-grid-tile>
-    <mat-grid-tile style="background-color: rgb(42, 165, 124)"> <button mat-raised-button color="primary">Création Licenciés Saison Suivante</button></mat-grid-tile>
-    <mat-grid-tile style="background-color: rgba(109, 73, 129, 0.432)" > <button mat-raised-button color="primary">Primary</button></mat-grid-tile>
+    <mat-grid-tile style="background-color: rgba(109, 73, 129, 0.432)" > <button (click)="deleteCompetitions()"  mat-raised-button color="primary">Réinitialiser les Competitions</button></mat-grid-tile>
+    <mat-grid-tile style="background-color: rgb(42, 165, 124)" > <button (click)="deleteEngagements()" mat-raised-button color="primary">Réinitialiser les Engagements</button></mat-grid-tile>
+    <mat-grid-tile style="background-color: rgb(42, 165, 124)"> <button (click)="prepare()" mat-raised-button color="primary">Création Table Licencié Saison Suivante</button></mat-grid-tile>
+    <mat-grid-tile style="background-color: rgba(109, 73, 129, 0.432)" > <button (click)="send()" mat-raised-button color="primary">Envoyer les inscriptions</button></mat-grid-tile>
   </mat-grid-list>
 
 </div>

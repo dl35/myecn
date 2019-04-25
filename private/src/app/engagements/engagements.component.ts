@@ -52,7 +52,7 @@ export class EngagementsComponent implements OnInit, OnDestroy {
 
     this.engage = null;
     this.idc = -1;
-    console.log('create');
+
 }
 
   switchdrawer() {

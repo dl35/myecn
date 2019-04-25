@@ -69,8 +69,6 @@ export class CompetitionsService {
         liste = this.cache.filter(item => item.verif === false);
       } else {
         liste = this.cache;
-        console.log('ici' , this.filtre , liste.length  );
-
       }
 
       if (this.filtre.type === true) {
@@ -89,11 +87,7 @@ export class CompetitionsService {
         // tslint:disable-next-line:max-line-length
         liste = liste.filter( item =>   (item.nom.toLowerCase() + ' ' + item.lieu.toLowerCase() ) .indexOf( this.filtre.txt.toLowerCase() ) !== -1   );
      }
-     console.log('la' , this.filtre , liste.length  );
-
-
       this.subject$.next( liste ) ;
-
      }
 
 
