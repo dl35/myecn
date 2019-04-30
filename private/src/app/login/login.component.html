@@ -2,7 +2,7 @@
     <span>Login</span>
   </mat-toolbar>
   
-  <form   autocomplete="off" [formGroup]="dataForm"   novalidate>  
+  <form   autocomplete="off" [formGroup]="dataForm" (ngSubmit)="doSignUp()"  novalidate>  
 
   <div style="margin-top:35px" >
       <div fxLayout="row" fxLayoutAlign="center center" fxFlex="100"> 
@@ -19,7 +19,7 @@
           <div fxLayout="row" fxLayoutAlign="center center" fxFlex="100"> 
             <mat-icon color="primary" >lock</mat-icon>
             <mat-form-field  fxFlex="40" >
-              <input matInput placeholder="Mot de passe"   formControlName="pwd"  >
+              <input matInput placeholder="Mot de passe" type="password"   formControlName="pwd"  >
               <mat-error>un mot de passe requis</mat-error>
               <mat-hint>Veuillez saisir votre mot de passe</mat-hint>
             </mat-form-field>
@@ -28,7 +28,7 @@
           
           <div  style="margin-top:15px" >
           <div fxLayout="column" fxLayoutAlign="center center" fxFlex="100" fxLayoutGap="20px">
-          <button mat-raised-button color="primary"  [disabled]="dataForm.invalid"  (click)="doSignUp()"  >
+          <button mat-raised-button color="primary"  type="submit"  [disabled]="dataForm.invalid"    >
               <mat-icon>play_arrow</mat-icon>
               Login</button>
               <mat-error [fxShow]='meta.error'  >{{meta.message}}</mat-error>

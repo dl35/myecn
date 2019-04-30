@@ -23,8 +23,8 @@ ngOnInit() {
 initForm() {
             this.dataForm = this.formBuilder.group({
               // tslint:disable-next-line:max-line-length
-              user: ['test.test@test.fr', [Validators.required , Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') ] ]  ,
-              pwd: ['test', [Validators.required,  Validators.minLength(4)] ]
+              user: [ null , [Validators.required , Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') ] ]  ,
+              pwd: [ null, [Validators.required,  Validators.minLength(4)] ]
                                                 });
           }
 
