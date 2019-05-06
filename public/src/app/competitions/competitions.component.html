@@ -1,53 +1,85 @@
-<div fxLayout="column" fxLayoutAlign="space-evenly center" style="margin-top: 10px;" >
-  <mat-progress-bar *ngIf="loading$ | async" mode="query"></mat-progress-bar>
-  <div fxLayout="row" style="margin-top: 10px;"  fxLayoutAlign="space-evenly  center"    >
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
 
-    <!--
-    <mat-form-field [ngStyle]="{'width': '600px','margin-left': '10px', 'margin-right':'10px' }" [ngStyle.lt-md]="{'width': '320px','margin-left' :'5px', 'margin-right' :'5px'}">
-      <mat-select placeholder="Selection des compétitions" (ngModelChange)="getEngagements($event)" [formControl]="dataForm">
-        <mat-option *ngFor="let item of datas  ; last as last" [value]="item.id">
-          {{item.id}} - {{item.label}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
- -->
- <mat-form-field   [ngClass]="myclass"  >
-    <mat-select   placeholder="Selection des compétitions" (ngModelChange)="getEngagements($event)" [formControl]="dataForm">
-      <mat-option *ngFor="let item of datas  ; last as last" [value]="item.id">
-        {{item.id}} - {{item.label}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <button mat-mini-fab (click)="doFilter()" *ngIf="cachedEngs?.length > 0" >Filtre</button>
-  </div>
-</div>
-<div fxLayout="column" fxLayoutAlign="center center" style="margin-top: 10px;" *ngIf="cachedEngs?.length > 0 && filtreLabel.length > 0 " >
-    <mat-chip-list>
-        <mat-chip>{{filtreLabel}}</mat-chip>
-      </mat-chip-list>
-</div>
+    <mat-icon (click)="switchdrawer()" *ngIf="!dataSelected" style="cursor: pointer;">menu</mat-icon>
 
-<mat-grid-list  cols="{{mycol}}"  gutterSize="1px" rowHeight="3:1"  *ngIf="cachedEngs?.length > 0"   >
- 
-  <mat-grid-tile  *ngFor="let item of engs" colspan="1" rowspan="1"   >
-      <mat-card style="width:75%" >
-          <mat-card-header>
-            <mat-card-title style="font-size: 14px">&nbsp;{{item.prenom}} {{item.nom}} {{item.categorie}}{{item.rang}}
-             </mat-card-title>
-          </mat-card-header>
+  </mat-toolbar-row>
+
+
+</mat-toolbar>
+
+
+
+
+<mat-drawer-container class="example-container" *ngIf="!dataSelected" autosize>
+  <mat-drawer #mdrawer class="example-sidenav" [mode]="mobileQuery.matches ? 'over' : 'side'"
+    [opened]="mobileQuery.matches ? 'false' : 'true'">
+    <p><span class="mat-body-2">Les Compétitions</span></p>
+
+    <div style="padding:5px;">
+      <mat-checkbox [ngModel]="filtre.next" [indeterminate]="filtre.next === null" (ngModelChange)="doFilter('next')"
+        [color]="filtre.next === null ? 'primary' : 'accent'">
+        <div class="mat-body-2" *ngIf="filtre.next === false">Passées</div>
+        <div class="mat-body-2" *ngIf="filtre.next === true">Futures</div>
+        <div class="mat-body-2" *ngIf="filtre.next === null">Dates</div>
+      </mat-checkbox>
+      &nbsp;
+      <mat-checkbox [ngModel]="filtre.verif" [indeterminate]="filtre.verif === null" (ngModelChange)="doFilter('verif')"
+        [color]="filtre.verif === null ? 'primary' : 'accent'">
+        <div class="mat-body-2" *ngIf="filtre.verif === false">à Verifier</div>
+        <div class="mat-body-2" *ngIf="filtre.verif === true">Verifiées</div>
+        <div class="mat-body-2" *ngIf="filtre.verif === null">Etat</div>
+      </mat-checkbox>
+    </div>
+    <mat-divider></mat-divider>
+    <div style="padding:5px">
+      <mat-checkbox [ngModel]="filtre.type" [indeterminate]="filtre.type === null" (ngModelChange)="doFilter('type')"
+        [color]="filtre.type === null ? 'primary' : 'accent'">
+        <div class="mat-body-2" *ngIf="filtre.type === false">Stages</div>
+        <div class="mat-body-2" *ngIf="filtre.type === true">Compétitions</div>
+        <div class="mat-body-2" *ngIf="filtre.type === null">Type</div>
+
+      </mat-checkbox>
+    </div>
+  </mat-drawer>
+
+
+  <div class="example-sidenav-content">
+    <mat-list>
+      <h2 mat-subheader>Les compétitions</h2>
+      <mat-list-item *ngFor="let data of datas$ | async ; last as last" (click)="edit(data)" style='margin-bottom:20px'
+        class="mat-elevation-z8" matRipple [matRippleCentered]="centered" [matRippleColor]="warn">
+        <button mat-icon-button *ngIf="data.nb === 0" color="warn" (click)="delete(data);$event.stopPropagation()">
+          <mat-icon>delete</mat-icon>
+        </button>
+
+     
+        <mat-icon *ngIf="data.type === 'compet' && data.nb > 0" matListIcon color='primary' [matBadge]="data.nb"
+          [svgIcon]="data.verif  ? 'swimvalid' : 'swiminvalid' "></mat-icon>
+        <mat-icon *ngIf="data.type === 'compet' &&  data.nb === 0" matListIcon color='primary'
+          [svgIcon]="data.verif  ? 'swimvalid' : 'swiminvalid' "></mat-icon>
+        <mat-icon *ngIf="data.type === 'stage' && data.verif  "   matTooltip="stage" matListIcon color='primary' [matBadge]="data.nb > 0 ? data.nb : '' "   >waves</mat-icon>
+        <mat-icon *ngIf="data.type === 'stage' && !data.verif  "  matTooltip="stage" matListIcon color='warn' >waves</mat-icon>
         
-          <mat-card-content>
-            <mat-chip-list  aria-orientation="horizontal">
-              <div *ngFor="let node of item.eng;" [ngSwitch]="node.presence" >
-              <mat-chip *ngSwitchCase="'oui'" class="oui" >{{node.day}}</mat-chip>
-              <mat-chip *ngSwitchCase="'non'" class="non" >{{node.day}}</mat-chip>
-              <mat-chip *ngSwitchCase="'at'" class="at" >{{node.day}}?</mat-chip>
-            </div>
-            </mat-chip-list>
-          </mat-card-content>
-  
 
 
-        </mat-card>
-  </mat-grid-tile>
-</mat-grid-list>
+
+
+        <p style="font-weight:500"   matLine>
+          <span   class="demo-secondary-text" >{{data.nom}}</span>
+        </p>
+
+        <p matLine [ngSwitch]=" data.debut !== data.fin ">
+          <span *ngSwitchCase="true">{{data.debut | date:'dd' }} au {{data.fin | date:'dd MMM' }}</span>
+          <span *ngSwitchCase="false">{{data.debut | date:'dd MMM' }}</span>
+        </p>
+      </mat-list-item>
+    </mat-list>
+  </div>
+  <div>
+    <button mat-mini-fab color="accent" class="add-button" (click)="add()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</mat-drawer-container>
+
