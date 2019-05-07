@@ -1,9 +1,9 @@
+import { Router } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { CompetitionsService, ICompetitions, IEngagements } from './services/competitions.service';
-import { Subject, BehaviorSubject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { MediaChange, MediaObserver } from '@angular/flex-layout';
+import { CompetitionsService, ICompetitions } from './services/competitions.service';
+import { Observable } from 'rxjs';
+import { MatCheckboxChange } from '@angular/material';
+import { filter, map } from 'rxjs/operators';
 
 
 @Component({
@@ -13,7 +13,7 @@ import { MediaChange, MediaObserver } from '@angular/flex-layout';
 })
 export class CompetitionsComponent implements OnInit, OnDestroy {
 
-
+/*
   gridByBreakpoint = {
     xl: 4,
     lg: 4,
@@ -29,32 +29,48 @@ export class CompetitionsComponent implements OnInit, OnDestroy {
     sm: 'matselect-sm',
     xs: 'matselect-xs',
   };
+*/
 
-
-  mycol = this.gridByBreakpoint['lg'];
-  myclass = this.classByBreakpoint['lg'];
+ // mycol = this.gridByBreakpoint['lg'];
+ // myclass = this.classByBreakpoint['lg'];
 
   filtre = [ {  label: '' }, {  label: 'Les présents' } ,
   { label: 'Les Absents' } , { label: 'En Attente' } ];
   filtreLabel = this.filtre[0].label ;
   filtreValue = 0 ;
+  datas$: Observable<ICompetitions[]> ;
 
-  dataForm = new FormControl();
-  datas: ICompetitions[];
+  constructor( private cService: CompetitionsService , private router: Router) {
+  }
+  ngOnInit() {
+    this.datas$ =  this.cService.getCachedCompetitions2().pipe(
+      map( item => item.filter( d => d.next  === true ))
+    );
+ /*   this.datas$.pipe(
+        (map ( (item: ICompetitions[] )   => item.filter( (it)  => it.next === true    ) ) ) ).subscribe();*/
+ }
 
-  destroyed$: Subject<any> = new Subject();
-  loading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
-
-  cachedEngs: IEngagements[];
-  engs: IEngagements[] ;
-
-
-  constructor(private mediaObserver: MediaObserver, private cService: CompetitionsService) {
-    this.initResponsive();
+  edit( data ) {
+     // envoi data 
+    if ( data.nb > 0 ) {
+      this.router.navigate(['/competitions', data.id]);
+    }
 
   }
 
+  setFilter($event: MatCheckboxChange ) {
 
+       if ( $event.checked  )  {
+        this.datas$ =  this.cService.getCachedCompetitions2().pipe(
+          map( item => item.filter( d => d.next  === true ))
+        );
+       } else {
+        this.datas$ =  this.cService.getCachedCompetitions2();
+       }
+
+  }
+
+ /*
 private doFilter() {
 
     ( this.filtreValue === 3 ) ? this.filtreValue = 0 :  this.filtreValue = this.filtreValue + 1 ;
@@ -96,8 +112,9 @@ private doFilter() {
 
   this.engs = mtmp ;
 }
+*/
 
-
+/*
   initResponsive() {
     this.mediaObserver.media$.pipe(takeUntil(this.destroyed$)).subscribe((change: MediaChange) => {
       this.mycol = this.gridByBreakpoint[change.mqAlias];
@@ -108,16 +125,11 @@ private doFilter() {
 
     );
 
-  }
+  }*/
 
-  ngOnInit() {
-    this.cService.getCompetitions().pipe(takeUntil(this.destroyed$)).subscribe(
-      (datas) => { this.datas = datas; },
-      (error) => { console.log(error); },
-      () => { this.setLoading(); }
-    );
-  }
 
+
+  /*
   public getEngagements( id ) {
     this.loading$.next(true);
     this.cService.getEngagements(id).pipe(takeUntil(this.destroyed$)).subscribe(
@@ -127,18 +139,12 @@ private doFilter() {
       () => { this.setLoading(); }
     );
 }
+*/
 
-  private setLoading() {
-    setTimeout(() => {
-      this.loading$.next(false);
-    }, 500);
-
-  }
 
   ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
-    this.loading$.unsubscribe();
-  }
+    }
+
+
 
 }

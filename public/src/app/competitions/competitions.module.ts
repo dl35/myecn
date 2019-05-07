@@ -4,6 +4,7 @@ import { CompetitionsComponent } from './competitions.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '../material/material.module';
+import { CompetitionsEditComponent } from './competitions-edit/competitions-edit.component';
 
 
 @NgModule({
@@ -14,6 +15,6 @@ import { MaterialModule } from '../material/material.module';
     FlexLayoutModule,
     MaterialModule
   ],
-  declarations: [CompetitionsComponent]
+  declarations: [CompetitionsComponent, CompetitionsEditComponent]
 })
 export class CompetitionsModule { }

@@ -8,6 +8,7 @@ import { MenuComponent } from './menu/menu.component';
 import { AdhesionComponent } from './adhesion/adhesion.component';
 import { RecordsComponent } from './records/records.component';
 import { CompetitionsComponent } from './competitions/competitions.component';
+import { CompetitionsEditComponent } from './competitions/competitions-edit/competitions-edit.component';
 
 export const routes: Routes = [
 
@@ -17,6 +18,7 @@ export const routes: Routes = [
         { path: 'stats',  component: StatsComponent },
         { path: 'piscines',  component: PiscinesComponent },
         { path: 'competitions',  component: CompetitionsComponent },
+        { path: 'competitions/:id',  component: CompetitionsEditComponent },
         { path: 'records',  component: RecordsComponent }
       ] ,
   },

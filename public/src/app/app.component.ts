@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatIconRegistry } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -6,7 +8,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  constructor(private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer ) {
+    this.matIconRegistry.addSvgIcon(
+      'swimok',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/images/swimok.svg')
+    );
 
+
+  }
 }
 
 

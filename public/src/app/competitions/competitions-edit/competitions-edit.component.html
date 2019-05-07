@@ -1,0 +1,29 @@
+<mat-toolbar color="primary" *ngIf="(datas$ | async)?.compet ; let compet " >{{ compet.nom }} : {{ compet.lieu }}  {{ compet.debut | date: 'dd/MM'}} au {{ compet.fin | date: 'dd/MM'}}</mat-toolbar>
+<div style='overflow-y:hidden;'>
+
+<mat-grid-list  cols="{{mycol}}"  gutterSize="1px" rowHeight="3:1"     >
+ 
+  <mat-grid-tile  *ngFor="let item of ( datas$ | async )?.engage " colspan="1" rowspan="1"   >
+      <mat-card style="width:75%" >
+          <mat-card-header>
+            <mat-card-title style="font-size: 14px">&nbsp;{{item.prenom}} {{item.nom}} {{item.categorie}}{{item.rang}}
+             </mat-card-title>
+          </mat-card-header>
+        
+          <mat-card-content>
+            <mat-chip-list  aria-orientation="horizontal">
+              <div *ngFor="let node of item.eng;" [ngSwitch]="node.presence" >
+              <mat-chip *ngSwitchCase="'oui'" class="oui" >{{node.day}}</mat-chip>
+              <mat-chip *ngSwitchCase="'non'" class="non" >{{node.day}}</mat-chip>
+              <mat-chip *ngSwitchCase="'at'" class="at" >{{node.day}}?</mat-chip>
+            </div>
+            </mat-chip-list>
+          </mat-card-content>
+  
+
+
+        </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>
+
+</div>
