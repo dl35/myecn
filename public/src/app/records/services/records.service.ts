@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { shareReplay, tap } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
 
 
@@ -28,13 +29,29 @@ type: 'CLUB' | 'DEP' | 'REG' | 'NAT';
 })
 export class RecordsService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+
+  }
 
   private url = '/api/public/torecords';
 
-  public  getDatas() {
-     return this.http.get<Array<IRecords>>( this.url ).pipe( shareReplay(1) );
+  private cache = new BehaviorSubject(new Array<IRecords>() ) ;
+  public subject$ = this.cache.asObservable();
+
+  public start = true ;
+
+  public  getRecords() {
+
+      if ( this.start ) {
+        this.http.get<Array<IRecords>>( this.url ).subscribe(
+          (datas) => { this.cache.next( datas) ; this.start = false ; }
+         );
+      }
+     return this.subject$;
   }
+
+
+
 
 
 }

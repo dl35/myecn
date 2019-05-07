@@ -1,76 +1,71 @@
 
-     <div  [formGroup]="dataForm"   fxLayout="row" fxLayoutAlign="space-around center" fxLayoutAlign.lt-md="space-evenly none" fxLayout.lt-md="column" style="margin:15px 15px auto 15px"  >
+  <div fxLayout="column"   fxLayoutAlign="space-evenly center"   fxFlex="100%" style="margin-top:10px;" >
+  <div fxLayout="row"  fxLayout.lt-md="column" fxLayoutGap.lt-md="5px"  fxLayoutGap="7px"  fxLayoutAlign="space-evenly center"   [formGroup]="dataForm"  >
+    
+     
+    <div fxLayout.lt-md="row wrap" fxLayoutAlign="end center" fxLayoutAlign.lt-md="space-evenly center" fxLayoutGap="7px" >
+    <mat-form-field  fxFlex="15%" >
+         <mat-select placeholder="Bassin" (ngModelChange)="showRecord()" formControlName="fbassin"  >
+            <mat-option  *ngFor="let item of bassin" [value]="item"  >
+                {{item}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+    <mat-form-field fxFlex="35%"  >
+        <mat-select  placeholder="Nages" (ngModelChange)="showRecord()"  formControlName="fnages"  >
+          <mat-option  *ngFor="let item of nages" [value]="item.value"  >
+              {{item.label}}
+          </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+  </div>
+ 
+
+
+  <div fxLayout.lt-md="row wrap" fxLayoutAlign="start center"  fxLayoutAlign.lt-md="space-evenly center" fxLayoutGap="7px"  >
+
+    <mat-form-field fxFlex="25%" >
+          <mat-select  placeholder="Distances" (ngModelChange)="showRecord()"  formControlName="fdists"  >
+            <mat-option  *ngFor="let item of dists" [value]="item"  >
+                {{item}}
+            </mat-option>
+          </mat-select>
+    </mat-form-field>
+    <mat-form-field  fxFlex="18%"  >
+            <mat-select  placeholder="Sexe" (ngModelChange)="showRecord()" formControlName="fsexe"  >
+               <mat-option  *ngFor="let item of sexe" [value]="item.value" >
+                   {{item.label}}
+               </mat-option>
+             </mat-select>
+    </mat-form-field>
+   
+    <mat-checkbox (change)="showRecord()" formControlName="fmasters" >Masters</mat-checkbox>
+  </div>
+
+    </div>
+     
+  </div>
+     
+  
+  
+<mat-grid-list [cols]=" (layoutChanges | async)?.matches ? 2 : 1" gutterSize="1px" rowHeight="3:1"   >
+    <mat-grid-tile  *ngFor="let item of datas$ | async " colspan="1" rowspan="1"  >
+        <mat-card style="width:85%" >
+            <mat-card-header>
+             
+              <mat-card-title style="font-size: 13px"><button matTooltip="{{item.type}}" mat-mini-fab style='background-color:green;color:white' >{{item.age}}</button>&nbsp;{{item.prenom}} {{item.nom}}: {{item.temps}} ({{item.points}} pts)</mat-card-title>
+              <mat-card-subtitle style="font-size: 13px">{{item.lieu}} {{item.date}}&nbsp;<mat-chip   style='background-color:green;color:white' selected>{{item.type}}</mat-chip></mat-card-subtitle>
+            </mat-card-header>
           
-       
-            <div fxLayoutGap='15px'  fxLayoutAlign="space-evenly center"  fxFlex="0 0 calc(48% - 15px)" >
-                   
-                            <mat-form-field  fxFlex="15%"  >
-                       <mat-select placeholder="Bassin" (ngModelChange)="showRecord()" formControlName="fbassin"  >
-                          <mat-option  *ngFor="let item of bassin" [value]="item"  >
-                              {{item}}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
-              
-               
-                  <mat-form-field  fxFlex="25%"  >
-                        <mat-select  placeholder="Distances" (ngModelChange)="showRecord()"  formControlName="fdists"  >
-                          <mat-option  *ngFor="let item of dists" [value]="item"  >
-                              {{item}}
-                          </mat-option>
-                        </mat-select>
-                  </mat-form-field>
-                
-                
-                
-                
-              </div>
+ 
+           
+          </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
 
 
-            <div fxLayoutGap='15px'  fxFlex="0 0 calc(48% - 15px)"   fxLayoutAlign="space-around center" >
-                    <mat-form-field fxFlex="15%"  >
-                            <mat-select  placeholder="Sexe" (ngModelChange)="showRecord()" formControlName="fsexe"  >
-                               <mat-option  *ngFor="let item of sexe" [value]="item.value" >
-                                   {{item.value}}
-                               </mat-option>
-                             </mat-select>
-                    </mat-form-field>
-                    <mat-form-field fxFlex="25%"  >
-                            <mat-select  placeholder="Nages" (ngModelChange)="showRecord()"  formControlName="fnages"  >
-                              <mat-option  *ngFor="let item of nages" [value]="item.value"  >
-                                  {{item.label}}
-                              </mat-option>
-                            </mat-select>
-                        </mat-form-field> 
-                 
-                    <mat-checkbox  (change)="showRecord()" formControlName="fmasters" fxFlex="18%">
-                        Ma.
-                      </mat-checkbox>
-                </div>
-            
-     </div>
-
-  
-  
-     
-     
-     
-     
-  
-
-
-
-    <mat-grid-list cols="{{gridCol}}" gutterSize="1px" rowHeight="10em"  *ngIf="datas?.length > 0" >
-        <mat-grid-tile  *ngFor="let item of datas " colspan="1" rowspan="1"  style="width:50%;margin-top:5px;" >
-            <mat-card style="width:75%" >
-                <mat-card-header>
-                  <mat-card-title style="font-size: 13px"><button matTooltip="{{item.type}}" mat-mini-fab style='background-color:green;color:white' >{{item.age}}</button>&nbsp;{{item.prenom}} {{item.nom}}: {{item.temps}} ({{item.points}} pts)</mat-card-title>
-                  <mat-card-subtitle style="font-size: 13px">{{item.lieu}} {{item.date}}&nbsp;<mat-chip  [ngStyle]="getStyle(item.type)" selected>{{item.type}}</mat-chip></mat-card-subtitle>
-                </mat-card-header>
-               
-              </mat-card>
-        </mat-grid-tile>
-      </mat-grid-list>
+ 
     
 
     

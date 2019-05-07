@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { RecordsService, IRecords } from './services/records.service';
-import { MediaObserver, MediaChange } from '@angular/flex-layout';
-import { Subject, BehaviorSubject, Observable } from 'rxjs';
-import { takeUntil, map, filter, shareReplay } from 'rxjs/operators';
+import { Subject, Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
+import { BreakpointState, Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 
 
 
@@ -15,26 +15,20 @@ import { takeUntil, map, filter, shareReplay } from 'rxjs/operators';
   templateUrl: './records.component.html',
   styleUrls: ['./records.component.scss']
 })
-export class RecordsComponent implements OnInit, OnDestroy  {
+export class RecordsComponent implements OnInit  {
 
 
 
   public dataForm: FormGroup;
-  private cachedDatas: IRecords[] ;
-  public datas: IRecords[] ;
-
-  private gridByBreakpoint = {
-    xl: { col: 3 },
-    lg: { col: 3 },
-    md: { col: 2 },
-    sm: { col: 1 },
-    xs: { col: 1 }
-
-  };
-  private gridCol = this.gridByBreakpoint['lg'].col;
+  // private cachedDatas: IRecords[] ;
+  // public datas: IRecords[] ;
 
 
-  destroyed$: Subject<any> = new Subject();
+
+  datas$: Observable<IRecords[]> ;
+  layoutChanges: Observable<BreakpointState>;
+
+
 
   // tslint:disable-next-line:max-line-length
   nages =  [ {value: 'NL' , label: 'Nage libre' }, {value: 'BRA' , label: 'Brasse' }, {value: 'DOS' , label: 'Dos' }, {value: 'PAP' , label: 'Papillon' }]  ;
@@ -44,92 +38,63 @@ export class RecordsComponent implements OnInit, OnDestroy  {
 
 
 
-  constructor(private mediaObserver: MediaObserver, private fb: FormBuilder, private recService: RecordsService ) { }
+  constructor(private fb: FormBuilder, private recService: RecordsService  , private breakpointObserver: BreakpointObserver ) { }
 
   ngOnInit() {
     this.createForm();
-    this.initResponsive();
-    this.getRecords();
+
+    this.layoutChanges = this.breakpointObserver.observe([
+      Breakpoints.Medium,
+      Breakpoints.Large,
+      Breakpoints.XLarge
+    ]);
+
+    this.datas$ =  this.recService.getRecords().pipe( take(10) ) ;
+
+//    this.getRecords();
   }
 
-
-
-  private initResponsive() {
-    this.mediaObserver.media$.pipe(takeUntil(this.destroyed$)).subscribe((change: MediaChange) => {
-      this.gridCol = this.gridByBreakpoint[change.mqAlias].col;
-
-    },
-      (error) => { },
-      () => { },
-
-    );
-
-  }
-
-  private createForm() {
+  createForm() {
     this.dataForm = this.fb.group({
-          fnages : ['NL'],
-          fbassin : ['25'],
-          fsexe : ['F'],
-          fdists : [null],
-          fmasters : [false]
-            });
+      fnages: ['NL'],
+      fbassin: ['25'],
+      fsexe: ['F'],
+      fdists: [null],
+      fmasters: [false]
+    });
 
   }
 
 
-  private getRecords() {
-    this.recService.getDatas().pipe( takeUntil(this.destroyed$) ).subscribe(
-        (datas) => { this.cachedDatas = datas ; } ,
-        (error) => { } ,
-        () => {   } ,
-    );
-   }
-
-   private getStyle(type) {
-
-     if ( type === 'DEP') {
-        return {  'background-color': 'blue' , 'color': 'white' } ;
-       } else if ( type === 'REG') {
-        return {  'background-color': 'rgb(113, 0, 128)' , 'color': 'white' } ;
-       } else if ( type === 'FRA') {
-        return {  'background-color': 'rgb(173, 214, 173)' , 'color': 'white' } ;
-      } else {
-        return {  'background-color': 'green' , 'color': 'white' } ;
-      }
-
-   }
 
    public showRecord() {
 
      const test = this.dataForm.getRawValue() ;
+      console.log( test );
 
-      if ( test.fdists !== null ) {
+     this.datas$ =  this.recService.getRecords().pipe(
 
-        if ( test.fmasters ) {
+      (map( item => item.filter( (t)  => { if ( test.fmasters ) {
+                  // tslint:disable-next-line:no-unused-expression
+                  t.bassin ===  test.fbassin &&  t.sexe ===  test.fsexe
+                  &&  t.nage ===  test.fnages &&  t.distance ===  test.fdists
+                  &&  ( t.age.startsWith('C') || t.age.startsWith('R') );
+                 } else {
 
-         this.datas =  this.cachedDatas.filter( t =>   t.bassin ===  test.fbassin
-                  &&  t.sexe ===  test.fsexe
-                  &&  t.nage ===  test.fnages
-                  &&  t.distance ===  test.fdists   &&  (t.age.startsWith('C') || t.age.startsWith('R') )
-              )  ;
-        } else {
+                 // tslint:disable-next-line:no-unused-expression
+                 t.bassin ===  test.fbassin &&  t.sexe ===  test.fsexe
+                 &&  t.nage ===  test.fnages &&  t.distance ===  test.fdists
+                 &&  ( t.age.startsWith('C') === false &&  t.age.startsWith('R') === false );
+                 }  }
+                              ) ) )
+     ) ;
 
-          this.datas =  this.cachedDatas.filter( t =>   t.bassin ===  test.fbassin
-                  &&  t.sexe ===  test.fsexe
-                  &&  t.nage ===  test.fnages
-                  &&  t.distance ===  test.fdists   &&  ( t.age.startsWith('C') === false &&  t.age.startsWith('R') === false )
-              )  ;
+   
 
-        }
-        }
   }
 
 
 
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
-  }
+ 
 }
 
