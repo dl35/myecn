@@ -1,9 +1,11 @@
 
-  <div fxLayout="column"   fxLayoutAlign="space-evenly center"   fxFlex="100%" style="margin-top:10px;" >
-  <div fxLayout="row"  fxLayout.lt-md="column" fxLayoutGap.lt-md="5px"  fxLayoutGap="7px"  fxLayoutAlign="space-evenly center"   [formGroup]="dataForm"  >
+  
+  
+  <div>
+  <div  fxFlex="100%" fxLayout="row"  fxLayout.lt-md="column" fxLayoutGap.lt-md="5px"  fxLayoutGap="7px"  fxLayoutAlign="center center"   [formGroup]="dataForm"  >
     
      
-    <div fxLayout.lt-md="row wrap" fxLayoutAlign="end center" fxLayoutAlign.lt-md="space-evenly center" fxLayoutGap="7px" >
+    <div  fxLayout.lt-md="row wrap" fxLayoutAlign="end center" fxLayoutAlign.lt-md="space-evenly center" fxLayoutGap="7px" >
     <mat-form-field  fxFlex="15%" >
          <mat-select placeholder="Bassin" (ngModelChange)="showRecord()" formControlName="fbassin"  >
             <mat-option  *ngFor="let item of bassin" [value]="item"  >
@@ -18,12 +20,11 @@
           </mat-option>
         </mat-select>
     </mat-form-field>
-
-  </div>
+    </div>
  
 
 
-  <div fxLayout.lt-md="row wrap" fxLayoutAlign="start center"  fxLayoutAlign.lt-md="space-evenly center" fxLayoutGap="7px"  >
+  <div   fxLayout.lt-md="row wrap" fxLayoutAlign="start center"  fxLayoutAlign.lt-md="space-evenly center" fxLayoutGap="7px"  >
 
     <mat-form-field fxFlex="25%" >
           <mat-select  placeholder="Distances" (ngModelChange)="showRecord()"  formControlName="fdists"  >

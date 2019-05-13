@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,12 +12,11 @@ export class PiscinesService {
 
   private url = '/api/public/topiscines' ;
 
-  public  getdatas() {
-    //  from , dests, compet
-     return this.http.get<any>( this.url );
+  public  getdatas( bbox ) {
+    const d = {'bbox' : bbox } ;
+    console.log( d );
+    return this.http.post<any>( this.url , d );
   }
-
-
 
 }
 

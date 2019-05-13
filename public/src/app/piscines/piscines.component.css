@@ -1,7 +1,3 @@
-__#mapid { height:600px;width:800px  }
-#mapid { position:absolute;height:90%;width:100%; }
-
-
 .leaflet-default-icon-path {
     background-image: url('/assets/marker-icon.png');
 }
@@ -26,3 +22,4 @@ width:95vw;
     -ms-border-radius:0px!important;
     -o-border-radius:0px!important;
   }
+

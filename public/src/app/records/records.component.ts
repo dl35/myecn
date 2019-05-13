@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { RecordsService, IRecords } from './services/records.service';
 import { Subject, Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map, take, filter } from 'rxjs/operators';
 import { BreakpointState, Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 
 
@@ -49,7 +49,7 @@ export class RecordsComponent implements OnInit  {
       Breakpoints.XLarge
     ]);
 
-    this.datas$ =  this.recService.getRecords().pipe( take(10) ) ;
+ //   this.datas$ =  this.recService.getRecords().pipe( take(10) ) ;
 
 //    this.getRecords();
   }
@@ -70,24 +70,34 @@ export class RecordsComponent implements OnInit  {
    public showRecord() {
 
      const test = this.dataForm.getRawValue() ;
-      console.log( test );
 
-     this.datas$ =  this.recService.getRecords().pipe(
+     let  tmp$: Observable<IRecords[]> = null ;
+       tmp$ = this.recService.getRecords() ;
 
-      (map( item => item.filter( (t)  => { if ( test.fmasters ) {
-                  // tslint:disable-next-line:no-unused-expression
-                  t.bassin ===  test.fbassin &&  t.sexe ===  test.fsexe
-                  &&  t.nage ===  test.fnages &&  t.distance ===  test.fdists
-                  &&  ( t.age.startsWith('C') || t.age.startsWith('R') );
-                 } else {
+      if ( test.fmasters ) {
+        this.datas$ =  this.recService.getRecords().pipe(
+          (map( item => item.filter( t  => t.bassin ===  test.fbassin &&  t.sexe ===  test.fsexe 
+                      &&  t.nage ===  test.fnages &&  t.distance ===  test.fdists
+                      &&  ( t.age.startsWith('C') || t.age.startsWith('R') ) )
+                                  ) )
+         ) ;
 
-                 // tslint:disable-next-line:no-unused-expression
-                 t.bassin ===  test.fbassin &&  t.sexe ===  test.fsexe
-                 &&  t.nage ===  test.fnages &&  t.distance ===  test.fdists
-                 &&  ( t.age.startsWith('C') === false &&  t.age.startsWith('R') === false );
-                 }  }
-                              ) ) )
-     ) ;
+      } else {
+
+        this.datas$ =  tmp$.pipe(
+          (map( item => item.filter( t  => t.bassin ===  test.fbassin &&  t.sexe ===  test.fsexe
+                     // tslint:disable-next-line:no-unused-expression
+                       &&  t.nage ===  test.fnages &&  t.distance ===  test.fdists
+                      &&  ( t.age.startsWith('C') === false &&  t.age.startsWith('R') === false ) )
+                                 ) )
+         );
+
+
+
+      }
+
+
+
 
    
 

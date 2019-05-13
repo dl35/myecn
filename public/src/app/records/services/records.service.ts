@@ -21,7 +21,7 @@ temps: number;
 type: 'CLUB' | 'DEP' | 'REG' | 'NAT';
 }
 
-
+const maxAge = 60000;
 
 
 @Injectable({
@@ -29,22 +29,23 @@ type: 'CLUB' | 'DEP' | 'REG' | 'NAT';
 })
 export class RecordsService {
 
-  constructor(private http: HttpClient) {
+  private lastRead: number ;
+  private url = '/api/public/torecords';
+  private cache = new BehaviorSubject(new Array<IRecords>() ) ;
 
+
+  public subject$ = this.cache.asObservable();
+  constructor(private http: HttpClient) {
+    this.lastRead = Date.now() - maxAge ;
   }
 
-  private url = '/api/public/torecords';
-
-  private cache = new BehaviorSubject(new Array<IRecords>() ) ;
-  public subject$ = this.cache.asObservable();
-
-  public start = true ;
 
   public  getRecords() {
-
-      if ( this.start ) {
+    const isExpired =  ( this.lastRead < (Date.now() - maxAge)  );
+      if ( isExpired ) {
+        this.lastRead = Date.now() ;
         this.http.get<Array<IRecords>>( this.url ).subscribe(
-          (datas) => { this.cache.next( datas) ; this.start = false ; }
+          (datas) => { this.cache.next( datas); }
          );
       }
      return this.subject$;
