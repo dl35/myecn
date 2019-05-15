@@ -1,11 +1,36 @@
 import { Component, OnInit } from '@angular/core';
-import { tileLayer, latLng } from 'leaflet';
+import { tileLayer, latLng, Marker, icon } from 'leaflet';
 import { PiscinesService } from './services/piscines.service';
+import 'leaflet';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
 import * as geojson from 'geojson';
 
-import { icon, Marker } from 'leaflet';
+/*
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: '/assets/leaflet/dist/images/marker-icon-2x.png',
+  iconUrl: '/assets/leaflet/dist/images/marker-icon.png',
+  shadowUrl: '/assets/leaflet/dist/images/marker-shadow.png',
+}); */
+
+const iconRetinaUrl = 'assets/marker-icon-2x.png';
+const iconUrl = 'assets/marker-icon.png';
+const shadowUrl = 'assets/marker-shadow.png';
+const iconDefault = icon({
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41]
+});
+Marker.prototype.options.icon = iconDefault;
+
+
+
+
 
 
 @Component({
@@ -26,7 +51,8 @@ export class PiscinesComponent implements OnInit {
 
 
 
- iconDefault = icon({
+/*
+Marker.prototype.options.icon = icon({
    iconRetinaUrl: 'assets/marker-icon-2x.png',
   iconUrl: 'assets/marker-icon.png',
   shadowUrl: 'assets/marker-shadow.png',
@@ -35,8 +61,21 @@ export class PiscinesComponent implements OnInit {
   popupAnchor: [1, -34],
   tooltipAnchor: [16, -28],
   shadowSize: [41, 41]
-});
-Marker: any.prototype.options.icon = this.iconDefault;
+});*/
+
+
+
+/*
+L.Marker.prototype.options.icon = DefaultIcon;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: '/assets/leaflet/dist/images/marker-icon-2x.png',
+  iconUrl: '/assets/leaflet/dist/images/marker-icon.png',
+  shadowUrl: '/assets/leaflet/dist/images/marker-shadow.png',
+});`
+*/
+
+
 
 
   options = {

@@ -47,6 +47,7 @@ registerLocaleData(localeFr, 'fr');
     CompetitionsModule,
     StatsModule,
     AdhesionModule
+
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
