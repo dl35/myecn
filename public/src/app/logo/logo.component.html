@@ -1,0 +1,9 @@
+<div  class='logoecn'  >
+
+  <img class ='imgecn2'  width="800"   height="267" *ngIf="(layoutChanges | async)?.matches"
+  src="assets/images/logo_ecn.svg" >
+
+  <img class ='imgecn2'  width="200"   height="133" *ngIf="!(layoutChanges | async)?.matches"
+  src="assets/images/logo_ecn.svg" >
+
+</div>

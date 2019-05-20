@@ -20,6 +20,7 @@ import { registerLocaleData } from '@angular/common';
 import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/material';
 import localeFr from '@angular/common/locales/fr';
 import { MomentUtcDateAdapter } from './material/MomentUtcDateAdapter';
+import { LogoComponent } from './logo/logo.component';
 
 
 registerLocaleData(localeFr, 'fr');
@@ -28,7 +29,8 @@ registerLocaleData(localeFr, 'fr');
 @NgModule({
   declarations: [
     AppComponent,
-    MenuComponent
+    MenuComponent,
+    LogoComponent
   ],
   imports: [
     BrowserModule,

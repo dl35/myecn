@@ -9,6 +9,7 @@ import { AdhesionComponent } from './adhesion/adhesion.component';
 import { RecordsComponent } from './records/records.component';
 import { CompetitionsComponent } from './competitions/competitions.component';
 import { CompetitionsEditComponent } from './competitions/competitions-edit/competitions-edit.component';
+import { LogoComponent } from './logo/logo.component';
 
 export const routes: Routes = [
 
@@ -19,7 +20,8 @@ export const routes: Routes = [
         { path: 'piscines',  component: PiscinesComponent },
         { path: 'competitions',  component: CompetitionsComponent },
         { path: 'competitions/:id',  component: CompetitionsEditComponent },
-        { path: 'records',  component: RecordsComponent }
+        { path: 'records',  component: RecordsComponent },
+        { path: '', component: LogoComponent }
       ] ,
   },
   { path: 'adhesion',  component: AdhesionComponent },

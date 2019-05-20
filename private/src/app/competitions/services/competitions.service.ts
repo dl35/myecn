@@ -42,12 +42,12 @@ export class CompetitionsService {
 
 
   public getListAll() {
-          if ( !this.cache  ||  this.cache.length === 0 ) {
+     //     if ( !this.cache  ||  this.cache.length === 0 ) {
             this.http.get<DataCompet[]>( this.url ).pipe( shareReplay(1) )
             .subscribe(
               res => { this.cache = res ;  this.update(); },
             );
-     }
+  //   }
       }
 
     public getList() {
