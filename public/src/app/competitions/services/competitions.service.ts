@@ -47,18 +47,25 @@ export class CompetitionsService {
   }
 
   private url = '/api/public/tocompetitions';
-  private cache$: Observable<Array<ICompetitions>>;
+  // private cache$: Observable<Array<ICompetitions>>;
   private lastRead: number ;
 
   private subject  = new BehaviorSubject(new Array<ICompetitions>() ) ;
   public  subject$ = this.subject.asObservable();
 
-
+  public next = true ;
 
   private  getCompetitions() {
      return this.http.get<Array<ICompetitions>>( this.url );
   }
 
+  public setNext( next: boolean ) {
+
+    this.next = next ;
+
+  }
+
+/*
 
   public getCachedCompetitions() {
     if (!this.cache$) {
@@ -73,7 +80,7 @@ export class CompetitionsService {
     }
 
     return this.cache$;
-  }
+  } */
 
   public getCachedCompetitions2() {
 

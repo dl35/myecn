@@ -1,5 +1,5 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-menu',
@@ -40,6 +40,18 @@ export class MenuComponent {
 
    }
 
+
+   @HostListener('panright')
+    openSidenav() {
+        // open the sidenav
+        console.log('open');
+    }
+
+    @HostListener('panleft')
+    closeSidenav() {
+       // close the sidenav
+       console.log('close');
+    }
 
 
 }

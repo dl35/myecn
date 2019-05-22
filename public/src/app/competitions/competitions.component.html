@@ -1,11 +1,13 @@
-<mat-toolbar color="primary">Les compétitions &nbsp;&nbsp; <mat-checkbox  [checked]="true" (change)="setFilter($event)" >Futures</mat-checkbox>
+<div style='height:100%; overflow: hidden;' >
+
+<mat-toolbar color="primary">Les compétitions &nbsp;&nbsp; <mat-checkbox  [checked]="cService.next" (change)="setFilter($event)" >Futures</mat-checkbox>
 </mat-toolbar>
 
 
 
 
 
-  <div style='margin: 0 auto;width:75%' >
+  <div style='margin: 0 auto;width:75%;' >
     <mat-list>
       
       <mat-list-item *ngFor="let data of datas$ | async ; last as last" (click)="edit(data)" style='margin-bottom:20px;'
@@ -32,3 +34,4 @@
   </div>
 
 
+</div>
