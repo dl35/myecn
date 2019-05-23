@@ -69,7 +69,7 @@ export class EngagementsComponent implements OnInit {
 
   public validate() {
       const datas = this.dataForm.getRawValue();
-      console.log( datas  , this.ide , this.idl );
+      
      this.engService.updateEngagements(this.ide, this.idl , datas ).pipe( takeUntil(this.destroyed$) ).subscribe(
       data => {   this.showSnackBar( data.message  , true); this.router.navigate(['competitions']); },
       error => {  this.showSnackBar(error.error.message, false);  }

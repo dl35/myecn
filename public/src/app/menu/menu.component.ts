@@ -13,7 +13,7 @@ export class MenuComponent {
 
 
    const keys = this.route.snapshot.queryParamMap.keys ;
-   console.log( keys  , keys.length ) ;
+
 
    if (  keys.length !== 1 ) {
      return ;
@@ -40,7 +40,7 @@ export class MenuComponent {
 
    }
 
-
+/*
    @HostListener('panright')
     openSidenav() {
         // open the sidenav
@@ -52,6 +52,6 @@ export class MenuComponent {
        // close the sidenav
        console.log('close');
     }
-
+*/
 
 }

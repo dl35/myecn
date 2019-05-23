@@ -56,7 +56,12 @@
             <mat-card-header>
              
               <mat-card-title style="font-size: 13px"><button matTooltip="{{item.type}}" mat-mini-fab style='background-color:green;color:white' >{{item.age}}</button>&nbsp;{{item.prenom}} {{item.nom}}: {{item.temps}} ({{item.points}} pts)</mat-card-title>
-              <mat-card-subtitle style="font-size: 13px">{{item.lieu}} {{item.date}}&nbsp;<mat-chip   style='background-color:green;color:white' selected>{{item.type}}</mat-chip></mat-card-subtitle>
+              <mat-card-subtitle style="font-size: 13px">{{item.lieu}} {{item.date}}&nbsp;
+                <mat-chip  *ngIf="item.type === 'CLUB' "  class="CLUB"  >{{item.type}}</mat-chip>
+                <mat-chip  *ngIf="item.type === 'DEP' "  class="DEP"  >{{item.type}}</mat-chip>
+                <mat-chip  *ngIf="item.type === 'REG' "  class="REG"  >{{item.type}}</mat-chip>
+                <mat-chip  *ngIf="item.type === 'FRA' "  class="FRA"  >{{item.type}}</mat-chip>
+              </mat-card-subtitle>
             </mat-card-header>
           
  

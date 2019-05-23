@@ -14,7 +14,6 @@ export class PiscinesService {
 
   public  getdatas( bbox ) {
     const d = {'bbox' : bbox } ;
-    console.log( d );
     return this.http.post<any>( this.url , d );
   }
 

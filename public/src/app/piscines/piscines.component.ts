@@ -105,22 +105,11 @@ L.Icon.Default.mergeOptions({
     this.pservices.getdatas(bbox).subscribe(
 
       (datas) => { this.generateDatas(datas); },
-      (error) => console.log(error)
+      (error) =>  { }
 
     );
 
-    /*   this.mymap.on('moveend' , function (e , this ) {
-           console.log( 'move end ' + e.target.getBounds().toBBoxString()    ) ;
-           const b = e.target.getBounds().toBBoxString() ;
-           this.pservices.getdatas(b).subscribe(
-
-                (datas) => { console.log( datas ) } ,
-             (error) =>  console.log( error )
-
-           );
-
-       }*
-         ) ;*/
+  
 
     this.mymap.on('moveend', (e) => {
       this.test(e);
@@ -134,8 +123,8 @@ L.Icon.Default.mergeOptions({
 
     this.pservices.getdatas(b).subscribe(
 
-      (datas) => { this.generateDatas(datas); console.log(datas.length); },
-      (error) => console.log(error)
+      (datas) => { this.generateDatas(datas); },
+      (error) => { }
 
     );
   }

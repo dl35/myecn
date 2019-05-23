@@ -23,7 +23,6 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     this.uService.get();
-    console.log(this.datas$ );
   }
 
   edit( data) {

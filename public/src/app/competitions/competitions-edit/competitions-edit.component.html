@@ -16,7 +16,7 @@
               <div *ngFor="let node of item.eng;" [ngSwitch]="node.presence" >
               <mat-chip *ngSwitchCase="'oui'" selected color="primary"  >{{node.day}}</mat-chip>
               <mat-chip *ngSwitchCase="'non'" selected color="warn"  >{{node.day}}</mat-chip>
-              <mat-chip *ngSwitchCase="'at'"  selected color="accent"  >{{node.presence}}?</mat-chip>
+              <mat-chip *ngSwitchCase="'at'"  selected color="accent"  >{{node.day}}?</mat-chip>
             </div>
             </mat-chip-list>
           </mat-card-content>

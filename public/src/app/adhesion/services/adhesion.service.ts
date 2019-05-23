@@ -22,7 +22,6 @@ export class AdhesionService {
   }
 
   public addLicencies(data) {
-    console.log(data);
     return this.http.post<IMessageResponse>( this.url,  data );
   }
 
