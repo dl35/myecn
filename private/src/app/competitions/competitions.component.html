@@ -3,12 +3,40 @@
 
     <mat-icon (click)="switchdrawer()" *ngIf="!dataSelected" style="cursor: pointer;">menu</mat-icon>
 
+    <!--
     <mat-form-field style="width:80%;margin-left:10%" *ngIf="!dataSelected">
       <input matInput placeholder="rechercher" [formControl]="searchControl" [value]=''>
       <button mat-button *ngIf="searchControl.value" matSuffix mat-icon-button aria-label="Clear"
         (click)="searchControl.setValue('')">
         <mat-icon>close</mat-icon>
       </button>
+    </mat-form-field>
+-->
+    <mat-form-field style="width:10%;margin-left:10%" *ngIf="!dataSelected" >
+      <mat-label>Dates</mat-label>
+      <mat-select [(ngModel)]="filtre.next" name="date">
+        <mat-option *ngFor="let date of dates" [value]="date.value">
+          {{date.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field style="width:10%;margin-left:5%" *ngIf="!dataSelected" >
+      <mat-label>Etat</mat-label>
+      <mat-select [(ngModel)]="filtre.verif" name="etat">
+        <mat-option *ngFor="let etat of etats" [value]="etat.value">
+          {{etat.viewValue}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field style="width:10%;margin-left:5%" *ngIf="!dataSelected" >
+      <mat-label>Type</mat-label>
+      <mat-select [(ngModel)]="filtre.type" name="etat">
+        <mat-option *ngFor="let type of types" [value]="type.value">
+          {{type.viewValue}}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
 

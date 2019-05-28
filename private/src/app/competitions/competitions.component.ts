@@ -63,6 +63,24 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
   destroy$: Subject<boolean> = new Subject<boolean>();
 
 
+  dates = [
+    {value: null, viewValue: '-'},
+    {value: true, viewValue: 'Futures'},
+    {value: false, viewValue: 'Passées'}
+  ];
+  etats = [
+    {value: null, viewValue: '-'},
+    {value: true, viewValue: 'Vérifiées'},
+    {value: false, viewValue: 'à Vérifier'}
+  ];
+
+  types = [
+    {value: null, viewValue: '-'},
+    {value: 'compet', viewValue: 'compet'},
+    {value: 'stage', viewValue: 'stage'}
+  ];
+
+
 
   constructor(public dialog: MatDialog,  changeDetectorRef: ChangeDetectorRef,
                media: MediaMatcher, private compService: CompetitionsService, private route: Router) {
