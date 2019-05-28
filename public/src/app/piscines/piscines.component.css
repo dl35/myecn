@@ -13,13 +13,5 @@ width:95vw;
 
 }
 
-.waze {
-    background: url(/assets/images/waze.png) 50% 50% no-repeat;
-    background-size: 24px 24px;
-    border-radius:0px!important;
-    -moz-border-radius:0px!important;
-    -webkit-border-radius:0px!important;
-    -ms-border-radius:0px!important;
-    -o-border-radius:0px!important;
-  }
+
 
