@@ -1,61 +1,68 @@
 <mat-toolbar color="primary">
-  <mat-toolbar-row>
 
-    <mat-icon (click)="switchdrawer()"  *ngIf="idc !== -1 && engage !== null" style="cursor: pointer;">menu</mat-icon>
+  <div  fxLayout="column"  style='margin-top: 10px' [fxShow]="isCreated" >
+ 
 
-  </mat-toolbar-row>
+      <div fxLayout="row" fxFlex="100" fxLayoutAlign="center center"  style='font-size: 13px' [fxHide]="small"  >
+
+
+          <mat-form-field fxFlex="25" fxFlexOffset="3" >
+              <mat-select  color="primary" placeholder="Présence" [(ngModel)]="filtre.pre" name="pre" (ngModelChange)="doFilter()" >
+                  <mat-option *ngFor="let p of pre" [value]="p.value">
+                    {{p.viewValue}}
+                  </mat-option>
+                </mat-select>
+          </mat-form-field>
+   
+          <mat-form-field fxFlex="25" fxFlexOffset="3" >
+              <mat-select  color="primary" placeholder="Extranat" [(ngModel)]="filtre.ext" name="pre" (ngModelChange)="doFilter()" >
+                  <mat-option *ngFor="let p of ext" [value]="p.value">
+                    {{p.viewValue}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+  
+  
+              <mat-form-field fxFlex="25" fxFlexOffset="3" >
+                  <mat-select  color="primary" placeholder="Notifications" [(ngModel)]="filtre.notif" name="pre" (ngModelChange)="doFilter()" >
+                      <mat-option *ngFor="let p of notif" [value]="p.value">
+                        {{p.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                 </mat-form-field>
+  
+         
+  
+            </div>
+  
+     
+  
+   </div>
+
+
+
+
+
 
 </mat-toolbar>
 
 
 
 
-<mat-drawer-container class="example-container"  autosize>
-  <mat-drawer #mdrawer class="example-sidenav" *ngIf="idc !== -1 && engage !== null"  [mode]="mobileQuery.matches ? 'over' : 'side'" [opened]="mobileQuery.matches ? 'false' : 'true'">
-    <p><span class="mat-body-2">Les Engagements</span></p>
-
-    <div style="padding:5px">
-      <mat-checkbox [ngModel]="filtre.pre" [indeterminate]="filtre.pre === null" (ngModelChange)="doFilter('pre')"
-        [color]="filtre.pre === null ? 'primary' : 'accent'">
-        <div class="mat-body-2" *ngIf="filtre.pre === false">Absents</div>
-        <div class="mat-body-2" *ngIf="filtre.pre === true">Présents</div>
-        <div class="mat-body-2" *ngIf="filtre.pre === null">Réponses</div>
-
-      </mat-checkbox>
-      &nbsp;
-      <mat-checkbox [ngModel]="filtre.ext" [indeterminate]="filtre.ext === null" (ngModelChange)="doFilter('ext')"
-        [color]="filtre.ext === null ? 'primary' : 'accent'">
-        <div class="mat-body-2" *ngIf="filtre.ext === false">Extranat-Non</div>
-        <div class="mat-body-2" *ngIf="filtre.ext === true">Extranat-Oui</div>
-        <div class="mat-body-2" *ngIf="filtre.ext === null">Extranat</div>
-
-      </mat-checkbox>
-    </div>
-    <mat-divider></mat-divider>
-    <div style="padding:5px">
-      <mat-checkbox [ngModel]="filtre.notif" [indeterminate]="filtre.notif === null" (ngModelChange)="doFilter('notif')"
-        [color]="filtre.notif === null ? 'primary' : 'accent'">
-        <div class="mat-body-2" *ngIf="filtre.notif === false">Notification-Non</div>
-        <div class="mat-body-2" *ngIf="filtre.notif === true">Notification-Oui</div>
-        <div class="mat-body-2" *ngIf="filtre.notif === null">Notification</div>
-
-      </mat-checkbox>
-    </div>
-  </mat-drawer>
 
 
   <div fxLayout="column" fxLayoutAlign="center center" style="margin-top: 10px;">
-    <mat-progress-bar *ngIf="loading" mode="query"></mat-progress-bar>
+ 
     <div fxLayout="row" style="margin-top: 10px;">
 
-      <button mat-mini-fab color="primary" *ngIf="engage" (click)="sendMails()">
+      <button mat-mini-fab color="primary" *ngIf="isCreated" (click)="sendMails()">
         <mat-icon aria-label="email">email</mat-icon>
       </button>
 
       <mat-form-field [ngStyle]="{'width': '600px','margin-left': '10px', 'margin-right':'10px' }" [ngStyle.lt-md]="{'width': '220px','margin-left' :'5px', 'margin-right' :'5px'}">
         <mat-select placeholder="Selection des compétitions" (ngModelChange)="setCompetition($event)" [formControl]="dataForm">
 
-          <mat-option *ngFor="let item of datas  ; last as last" [value]="item.id">
+          <mat-option *ngFor="let item of datas$ | async ; last as last" [value]="item.id">
             {{item.id}} - {{item.label}}
           </mat-option>
 
@@ -63,28 +70,31 @@
         </mat-select>
       </mat-form-field>
 
-      <button mat-mini-fab mat-icon-button *ngIf="engage"  color="primary" (click)="addLic()">
+      <button mat-mini-fab mat-icon-button *ngIf="isCreated"  color="primary" (click)="addLic()">
         <mat-icon aria-label="add">add</mat-icon>
       </button>
-
+      &nbsp;
+      <button mat-mini-fab mat-icon-button *ngIf="isCreated"  color="warn" (click)="delAll()">
+          <mat-icon aria-label="add">delete</mat-icon>
+        </button>
 
 
     </div>
 
 
-    <app-engagement-create *ngIf="idc !== -1 && engage === null" [id]="idc"  (created)="setCreated($event)"   ></app-engagement-create>
+    <app-engagement-create *ngIf="idc != -1 && !isCreated" [id]="idc"  (created)="setCreated($event)"   ></app-engagement-create>
 
 
 
     <div fxFlex >
       
-      <mat-list *ngIf="engage !== null " [ngStyle]="{'width': '800px'}" [ngStyle.lt-sm]="{'width': '350px'}">
+      <mat-list *ngIf="isCreated" [ngStyle]="{'width': '800px'}" [ngStyle.lt-sm]="{'width': '350px'}">
     
         
         
-        <h2 mat-subheader>Les Engagements ({{engage?.length}})</h2>
+        <h2 mat-subheader>Les Engagements ({{(engage$ | async)?.length}})</h2>
        
-        <mat-list-item *ngFor="let item of engage ; last as last1" 
+        <mat-list-item *ngFor="let item of engage$ | async ; last as last1" 
  
         style='margin-bottom:10px' class="mat-elevation-z4"     matRipple [matRippleCentered]="centered" [matRippleColor]="warn" >
     
@@ -134,4 +144,3 @@
   </div>
 
 
-</mat-drawer-container>

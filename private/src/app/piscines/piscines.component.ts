@@ -140,13 +140,15 @@ export class PiscinesComponent implements OnInit {
 
 
         if (feature.properties && feature.properties.name) {
-     //     const waze = 'waze://?ll=' + feature.geometry  + ',' + feature.geometry + '&navigate=yes' ;
-     const ww = 'ww' ;
-     const a = '<a class=\'waze\'  target=\'_blank\'  href=\'https://waze.com/ul?ll=' + feature.properties.waze + '&navigate=yes\' >waze</a>';
+
+     const a = '<a   target=\'_blank\'  href=\'https://waze.com/ul?ll=' + feature.properties.waze + '&navigate=yes\' >' +
+               '<img border=\'0\' src=\'assets/images/waze.png\' width=\'24\'  height=\'24\' ></a>';
+     const g = '<a   target=\'_blank\'  href=\'http://maps.google.com/maps?q=' + feature.properties.waze + '\' >' +
+               '<img border=\'0\' src=\'assets/images/map.png\' width=\'24\'  height=\'24\' ></a>';
 
           layer.bindPopup('<strong>' + feature.properties.name + '</strong><br>' + feature.properties.ville +
             '<br>' + feature.properties.description + '<br>Bassin: ' + feature.properties.bassin
-            + '&nbsp;Couloirs: ' + feature.properties.couloir + '<br>' + a );
+            + '&nbsp;Couloirs: ' + feature.properties.couloir + '<br>' + a + '&nbsp;&nbsp;&nbsp;' + g);
         }
       },
 

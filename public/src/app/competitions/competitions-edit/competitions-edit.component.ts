@@ -1,4 +1,5 @@
 import { IEngagements } from './../services/competitions.service';
+import {Location} from '@angular/common';
 import { Observable, Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CompetitionsService } from '../services/competitions.service';
@@ -38,7 +39,8 @@ export class CompetitionsEditComponent implements OnInit , OnDestroy {
 
 
 
-  constructor( private cService: CompetitionsService , private route: ActivatedRoute , private mediaObserver: MediaObserver) {
+  // tslint:disable-next-line:max-line-length
+  constructor( private cService: CompetitionsService , private route: ActivatedRoute , private mediaObserver: MediaObserver, private location: Location) {
     this.initResponsive();
     this.sub = this.route.params.subscribe(params => {
       this.id = +params['id']; // (+) converts string 'id' to a number
@@ -62,7 +64,10 @@ export class CompetitionsEditComponent implements OnInit , OnDestroy {
 
       }
 
+      toback() {
+        this.location.back();
 
+      }
 
   ngOnDestroy() {
     this.destroyed$.next();

@@ -4,7 +4,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { MediaMatcher } from '@angular/cdk/layout';
 import { CompetitionsService } from './services/competitions.service';
 import { Observable , Subscription, Subject } from 'rxjs';
-import { filter , distinctUntilChanged , takeUntil , shareReplay} from 'rxjs/operators';
+import { filter , distinctUntilChanged , takeUntil , shareReplay, map, switchMap} from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 
 import 'hammerjs';
@@ -41,26 +41,38 @@ export class SearchFilterPipe implements PipeTransform {
 })
 export class CompetitionsComponent implements OnInit , OnDestroy  {
 
-  filtreEtat = [null, true, false];
-  filtre = { next: true, type: null, verif: null , txt: '' };
 
+  filtre = { next: true , type: null, verif: null , txt: '' };
 
   // searchfilter:searchText
-   @ViewChild('mdrawer') mdrawer: MatDrawer;
   private searchControl: FormControl;
-
- 
 
 
   showFiller = false;
   hideSide = true;
   mobileQuery: MediaQueryList;
   datas$: Observable<DataCompet[]> ;
-  dataSelected: DataCompet;
-
 
   private _mobileQueryListener: () => void;
   destroy$: Subject<boolean> = new Subject<boolean>();
+
+
+  dates = [
+    {value: null, viewValue: '-'},
+    {value: true, viewValue: 'Futures'},
+    {value: false, viewValue: 'Passées'}
+  ];
+  etats = [
+    {value: null, viewValue: '-'},
+    {value: true, viewValue: 'Vérifiées'},
+    {value: false, viewValue: 'à Vérifier'}
+  ];
+
+  types = [
+    {value: null, viewValue: '-'},
+    {value: 'compet' , viewValue: 'compet'},
+    {value: 'stage', viewValue: 'stage'}
+  ];
 
 
 
@@ -69,33 +81,19 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
-
- 
-
   }
 
-  switchdrawer() {
-
-    this.mdrawer.opened ? this.mdrawer.close() : this.mdrawer.open() ;
-
-  }
 
 
   add() {
-
-  //  console.log('denis:' , this.dataSelected) ;
-   // this.dataSelected = new DataCompet() ;
    this.compService.setMessageData( null );
    this.route.navigate(['competitions/edit'] );
   }
 
   edit(data) {
- //   this.dataSelected = data ;
 
-this.compService.setMessageData( data );
+  this.compService.setMessageData( data );
   this.route.navigate(['competitions/edit'] );
-  // ,  { queryParams: { data: data }, skipLocationChange: true } );
- // this.route.navigateByUrl('/competitions/edit', { state: { hello: 'world' } });
   }
 
   delete(data) {
@@ -108,8 +106,9 @@ this.compService.setMessageData( data );
        dialogRef.beforeClosed().subscribe(
          (result) => {
                    if (result) {
+                     console.log( data.id ) ;
                     this.compService.delete( data.id ).subscribe(
-                        () => { this.compService.updateCache('delete', data); },
+                        () => {  this.compService.getListAll();  },
                         () =>  {}
 
                     ); }},
@@ -119,54 +118,32 @@ this.compService.setMessageData( data );
 
   }
 
-
-
-
-  onQuitte(message: MessageResponse) {
-  this.dataSelected = null;
-  if ( message.type === MessageType.NONE ) {  return ; }
-  }
-
-
-  doFilter(value) {
-
-    if (value === 'verif') {
-      this.filtre.verif = this.filtreEtat[(this.filtreEtat.indexOf(this.filtre.verif) + 1) % this.filtreEtat.length];
-    } else if (value === 'type') {
-      this.filtre.type = this.filtreEtat[(this.filtreEtat.indexOf(this.filtre.type) + 1) % this.filtreEtat.length];
-    } else {
-      this.filtre.next = this.filtreEtat[(this.filtreEtat.indexOf(this.filtre.next) + 1) % this.filtreEtat.length];
-    }
-
+  doFilter() {
    this.compService.setFiltre( this.filtre );
-   this.compService.update();
+   this.datas$ = this.compService.getList().pipe(
+    map( item =>   item.filter( d =>   ( this.filtre.next  === null  ) ? (d) : (  d.next  === this.filtre.next ) )),
+    map( item =>   item.filter( d =>   ( this.filtre.verif === null  ) ? (d) : (  d.verif  === this.filtre.verif ) )),
+    map( item =>   item.filter( d =>   ( this.filtre.type  === null  ) ? (d) : (  d.type === this.filtre.type  ) ))
+     );
+
 
   }
+
+  doFilterInit() {
+    this.datas$ = this.compService.getList().pipe(
+     map( item =>   item.filter( d =>   ( this.filtre.next  === null  ) ? (d) : (  d.next  === this.compService.filtre.next ) )),
+     map( item =>   item.filter( d =>   ( this.filtre.verif === null  ) ? (d) : (  d.verif  === this.compService.filtre.verif ) )),
+     map( item =>   item.filter( d =>   ( this.filtre.type  === null  ) ? (d) : (  d.type === this.compService.filtre.type  ) ))
+      );
+   }
 
   ngOnInit() {
 
-
-    this.searchControl = new FormControl('');
-
+      this.searchControl = new FormControl('');
       this.filtre = this.compService.filtre ;
-   //  this.compService.setFiltre( this.filtre );
-     this.datas$ = this.compService.getList().pipe( shareReplay(1) ) ;
-     this.compService.getListAll();
-     this.dataSelected = null ;
+      this.compService.getListAll();
+      this.doFilterInit();
 
-
-/*
-    this.datas$ = this.compService.getList().pipe(
-      catchError(error => {
-          console.error('denis' , error);
-          return EMPTY;
-      }),
-      finalize(() => {
-          console.log('Done!');
-
-      }),
-       shareReplay(1)
-    );*/
   }
 
 

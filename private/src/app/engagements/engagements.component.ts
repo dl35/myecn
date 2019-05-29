@@ -1,14 +1,12 @@
 import { DialogEngageComponent } from './dialog-engage/dialog-engage.component';
-import { CompetEngage, LicEngage, MessageResponse } from './models/data-engage';
+import { CompetEngage, LicEngage } from './models/data-engage';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { Observable, Subscription, Subject, EMPTY, interval } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { EngageService } from './services/engage.service';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material';
-import { ViewChild } from '@angular/core';
-import { MatDrawer } from '@angular/material';
-import { takeUntil, shareReplay, catchError, finalize, map, tap, take, filter } from 'rxjs/operators';
+import { map, tap, filter } from 'rxjs/operators';
 
 
 @Component({
@@ -18,25 +16,42 @@ import { takeUntil, shareReplay, catchError, finalize, map, tap, take, filter } 
 })
 export class EngagementsComponent implements OnInit, OnDestroy {
 
-  @ViewChild('mdrawer') mdrawer: MatDrawer;
 
 
-  loading = false;
 
-  filtreEtat = [null, true, false];
   filtre = { notif: null, ext: null, pre: null };
+  isCreated = false;
 
-  hideSide = true;
+  notif = [
+    {value: null, viewValue: '-'},
+    {value: '1', viewValue: 'notifié'},
+    {value: '0', viewValue: 'non notifié'}
+  ];
+  ext = [
+    {value: null, viewValue: '-'},
+    {value: '1', viewValue: 'Fait'},
+    {value: '0', viewValue: 'à Faire'}
+  ];
+
+  pre = [
+    {value: null, viewValue: '-'},
+    {value: 'oui' , viewValue: 'Oui'},
+    {value: 'non', viewValue: 'Non'},
+    {value: 'at', viewValue: 'At'}
+  ];
+
+
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
-  datas: CompetEngage[];
+
+  datas$: Observable<CompetEngage[]> ;
+  engage$: Observable<LicEngage[]> ;
+
 
   dataForm = new FormControl();
 
   idc: number;
 
-  engage: LicEngage[];
-  cachedDatas: LicEngage[];
 
   destroyed$: Subject<any> = new Subject();
 
@@ -50,22 +65,15 @@ export class EngagementsComponent implements OnInit, OnDestroy {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
 
-    this.engage = null;
     this.idc = -1;
 
 }
 
-  switchdrawer() {
 
-    this.mdrawer.opened ? this.mdrawer.close() : this.mdrawer.open();
-
-  }
 
   ngOnInit() {
-    this.eService.getCompet().pipe(takeUntil(this.destroyed$)).subscribe(
-      (datas) => { this.datas = datas; }
-
-    );
+    this.eService.getCompet();
+    this.datas$ =  this.eService.getObsCompet() ;
   }
 
   public setCreated(response) {
@@ -83,6 +91,28 @@ export class EngagementsComponent implements OnInit, OnDestroy {
   }
 
 
+  public delAll() {
+    const dialogRef = this.dialog.open(DialogEngageComponent, {
+      width: '60%',
+      data: { id: this.idc, addLic: false, info: 'Supprimer tous les nageurs non notifiés ?' },
+      disableClose: true
+    });
+
+
+    dialogRef.beforeClosed().subscribe(
+      (result) => {
+        if (result) {
+          this.eService.setDeleteAll(this.idc);
+        }
+      },
+      () => { },
+      () => { } ,
+    );
+
+
+
+  }
+
   public setDelete(id) {
     const dialogRef = this.dialog.open(DialogEngageComponent, {
       width: '60%',
@@ -94,27 +124,15 @@ export class EngagementsComponent implements OnInit, OnDestroy {
     dialogRef.beforeClosed().subscribe(
       (result) => {
         if (result) {
-          this.loading = true;
-          this.eService.setDelete(id).subscribe(
-            (res) => {
-              this.cachedDatas = this.cachedDatas.filter(obj => obj.id !== id);
-              this.initFiltre();
-              if ( this.cachedDatas.length === 0  ) {
-                this.engage = null;
-              } else {
-                this.engage = this.cachedDatas;
-              }
-         //     this.showSnackBar('Suppression valide', true);
-            }
-            ,
-            () => {},
-            () => this.loading = false
-          );
+          this.eService.setDelete(id);
         }
       },
       () => { },
       () => { } ,
     );
+
+
+
   }
   public setExtranat(id) {
     const dialogRef = this.dialog.open(DialogEngageComponent, {
@@ -127,19 +145,7 @@ export class EngagementsComponent implements OnInit, OnDestroy {
     dialogRef.beforeClosed().subscribe(
       (result) => {
         if (result) {
-          this.loading = true;
-          this.eService.setExtranat(this.idc, id).subscribe(
-            (res) => {
-              const index = this.cachedDatas.findIndex(item => item.id === id);
-              const data = this.cachedDatas[index];
-              data.extranat = 1 - data.extranat;
-         //     this.showSnackBar('Extranat valide', true);
-              this.doUpdate();
-            }
-            ,
-            () => {},
-            () => this.loading = false
-          );
+          this.eService.setExtranat(this.idc, id);
         }
       },
       () => { },
@@ -153,21 +159,10 @@ export class EngagementsComponent implements OnInit, OnDestroy {
       data: { id: this.idc, addLic: false, info: 'Envoyer un Email ?' },
       disableClose: true
     });
-    dialogRef.beforeClosed().subscribe(
+  dialogRef.beforeClosed().subscribe(
       (result) => {
         if (result) {
-          this.loading = true;
-          this.eService.setNotification(this.idc, id).subscribe(
-            (res) => {
-              const index = this.cachedDatas.findIndex(item => item.id === id);
-              const data = this.cachedDatas[index];
-              data.notification = data.notification + 1;
-       //       this.showSnackBar('Email valide', true);
-            }
-            ,
-            () => {},
-            () => this.loading = false
-          );
+           this.eService.setNotification(this.idc, id);
         }
       },
       () => { },
@@ -178,19 +173,13 @@ export class EngagementsComponent implements OnInit, OnDestroy {
 
   public setCompetition(id) {
     this.idc = id;
-    this.loading = true;
-    this.eService.getEngagement(id).pipe( takeUntil(this.destroyed$)).subscribe(
-      (res) => {
-        if (res.length === 0) {
-          this.engage = this.cachedDatas = null;
-        } else {
-          this.initFiltre();
-          this.engage = this.cachedDatas = res; /* this.showSnackBar('Engagements: ' + res.length, true); */
-        }
-      },
-      () => {},
-      () => this.loading = false
-    );
+    this.eService.getEngagement(id) ;
+    this.engage$ = this.eService.getObservable();
+
+      this.engage$.subscribe(
+        (res) => ( res.length > 0 ) ? this.isCreated = true : this.isCreated = false
+      );
+
   }
 
 
@@ -201,67 +190,32 @@ export class EngagementsComponent implements OnInit, OnDestroy {
   }
 
 
+myfilter( e  ) {
+  let res = false;
+  e.forEach( c => {
+     if ( c.presence === this.filtre.pre  ) {
+          res = true ;
+     }
 
-  public doUpdate() {
+  });
+return   res  ;
 
-    let tmp = this.cachedDatas;
-
-
-    if (this.filtre.notif === true) {
-      tmp = tmp.filter(item => item.notification !== 0);
-    } else if (this.filtre.notif === false) {
-      tmp = tmp.filter(item => item.notification === 0);
-    }
-
-
-    const mtmp = Array();
-    if (this.filtre.pre === false) {
-      tmp.forEach(item => {
-
-        item.eng.forEach(e => {
-          if (e.presence === 'non') { mtmp.push(item); return; }
-        });
-
-      });
-      tmp = mtmp.slice();
-    } else if (this.filtre.pre === true) {
-      tmp.forEach(item => {
-
-        item.eng.forEach(e => {
-          if (e.presence === 'oui') { mtmp.push(item); return; }
-        });
-
-      });
-      tmp = mtmp.slice();
-    }
-
-
-    if (this.filtre.ext === true) {
-      tmp = tmp.filter(item => item.extranat === 1);
-    } else if (this.filtre.ext === false) {
-      tmp = tmp.filter(item => item.extranat === 0);
-    }
-
-
-    this.engage = tmp;
-
-  }
+}
 
 
 
-  public doFilter(value) {
+doFilter() {
 
-    if (value === 'notif') {
-      this.filtre.notif = this.filtreEtat[(this.filtreEtat.indexOf(this.filtre.notif) + 1) % this.filtreEtat.length];
-    } else if (value === 'ext') {
-      this.filtre.ext = this.filtreEtat[(this.filtreEtat.indexOf(this.filtre.ext) + 1) % this.filtreEtat.length];
-    } else {
-      this.filtre.pre = this.filtreEtat[(this.filtreEtat.indexOf(this.filtre.pre) + 1) % this.filtreEtat.length];
-    }
 
-    this.doUpdate();
+  this.engage$ = this.eService.getObservable().pipe(
+   map( item =>   item.filter( d =>   ( this.filtre.notif === '0'  ) ? (d.notification === 0 ) : (d) )),
+   map( item =>   item.filter( d =>   ( this.filtre.notif === '1'  ) ? (d.notification > 0 ) : (d) )),
+   map( item =>   item.filter( d =>   ( this.filtre.ext  === null  ) ? (d) : (  d.extranat === +this.filtre.ext  ) )),
+   map( item =>   item.filter( d =>  ( this.filtre.pre === null ) ?  (d)  :  this.myfilter(d.eng) ) ) );
 
-  }
+
+ }
+
 
 
   public sendMails() {
@@ -275,13 +229,7 @@ export class EngagementsComponent implements OnInit, OnDestroy {
     dialogRef.beforeClosed().subscribe(
       (result) => {
         if (result) {
-          this.loading = true;
-          this.eService.sendMails(this.idc).subscribe(
-            (res) => { this.setCompetition(this.idc); },
-            () => {},
-            () => this.loading = false
-
-          );
+          this.eService.sendMails(this.idc);
         }
       },
       () => { } ,
@@ -298,13 +246,11 @@ export class EngagementsComponent implements OnInit, OnDestroy {
     dialogRef.beforeClosed().subscribe(
       (result) => {
         if (result) {
-          this.loading = true;
           this.setCompetition(this.idc);
-          // (error) =>  { this.showSnackBar( error   , false ); }
         }
       },
       () => {},
-      () => this.loading = false
+      () => {}
     );
   }
 

@@ -1,4 +1,7 @@
-<mat-toolbar color="primary" *ngIf="(datas$ | async)?.compet ; let compet " >{{ compet.nom }} : {{ compet.lieu }}  {{ compet.debut | date: 'dd/MM'}} au {{ compet.fin | date: 'dd/MM'}}</mat-toolbar>
+<mat-toolbar color="primary" *ngIf="(datas$ | async)?.compet ; let compet " >{{ compet.nom }} : {{ compet.lieu }}  {{ compet.debut | date: 'dd/MM'}} au {{ compet.fin | date: 'dd/MM'}}
+  &nbsp; &nbsp;<mat-icon (click)='toback()' style='cursor: pointer;' >backspace</mat-icon>
+
+</mat-toolbar>
 <div style='overflow-y:hidden;'>
 
 <mat-grid-list  cols="{{mycol}}"  gutterSize="1px" rowHeight="3:1"     >
