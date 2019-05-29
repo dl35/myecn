@@ -14,14 +14,29 @@ export class EngageService {
 
   private url = '/api/private/toengagements' ;
 
+
+  private subject$ = new BehaviorSubject<LicEngage[]>([]) ;
+  public datas$: Observable<LicEngage[]> =  this.subject$.asObservable();
+
+  private subCompet$ = new BehaviorSubject<CompetEngage[]>([]) ;
+  public compet$: Observable<CompetEngage[]> =  this.subCompet$.asObservable();
+
+
+
   constructor(private http: HttpClient) { }
 
 
 
 
   public  getCompet() {
-        return this.http.get<CompetEngage[]>( this.url );
+        this.http.get<CompetEngage[]>( this.url ).subscribe(
+          res => {   this.subCompet$.next( res ) ; },
+        );
      }
+     public getObsCompet() {
+      return this.compet$ ;
+  }
+
 
 
   public createEngagement( id , data ) {
@@ -30,39 +45,89 @@ export class EngageService {
 
   }
 
+
+
+
+
   public getEngagement( id ) {
     const uget = this.url + '/' + id ;
-    return this.http.get<any[]>( uget  ) ;
-
+    this.http.get<any[]>( uget  ).subscribe(
+      res => {   this.subject$.next( res ) ; },
+    ) ;
   }
+  public getObservable() {
+    return this.datas$ ;
+}
+
+
 
 
   public sendMails( id ) {
     const uput = this.url + '/' + id ;
     const datas = { notifyall : true } ;
-    return this.http.put<any>( uput , datas ) ;
+    this.http.put<any>( uput , datas ).subscribe(
+
+      (res ) => {      const v =  this.subject$.value ; v.forEach( e  =>  e.notification =  1 + e.notification );
+                       this.subject$.next( v ) ;
+                   }
+
+   ) ;
 
   }
   public setExtranat( id, idext ) {
     const uput = this.url + '/' + id ;
     const data = { extranat : idext } ;
-    return this.http.put<any>( uput , data  ) ;
+    this.http.put<any>( uput , data  ).subscribe(
+
+       (res ) => { const v =  this.subject$.value ;  const index = v.findIndex( x =>  x.id === idext  ) ;
+                           v[index].extranat =  1 - v[index].extranat ;
+                           this.subject$.next( v ) ;
+                    }
+
+    ) ;
   }
   public setNotification( id, idext ) {
     const uput = this.url + '/' + id ;
     const data = { notify : idext } ;
-    return this.http.put<any>( uput , data  ) ;
+    this.http.put<any>( uput , data  ).subscribe(
+      (res ) => { const v =  this.subject$.value ;  const index = v.findIndex( x =>  x.id === idext  ) ;
+        v[index].notification =  1 + v[index].notification ;
+        this.subject$.next( v ) ;
+      }
+     );
   }
   public setDelete( iddel ) {
     const uput = this.url + '/' + iddel ;
-    return this.http.delete<any>( uput) ;
+    this.http.delete<any>( uput).subscribe(
+      (res ) => { const v =  this.subject$.value ;  const index = v.findIndex( x =>  x.id === iddel  ) ;
+        v.splice(index, 1);
+        this.subject$.next( v ) ;
+      }
+     );
   }
+
+  public setDeleteAll(idcompet) {
+    const udel = this.url + '/all_' + idcompet ;
+    this.http.delete<any>( udel).subscribe(
+      (res ) => { const v =  this.subject$.value.filter( x =>  x.notification > 0  ) ;
+                  this.subject$.next( v ) ;
+      }
+     );
+  }
+
+
+
 
 
   public addLic( id ) {
     const uput = this.url + '/' + id ;
     const datas = { addlic : true } ;
-    return this.http.put<any>( uput , datas ) ;
+    this.http.put<any>( uput , datas ).subscribe(
+      (res ) => { const v =  this.subject$.value ;
+        v.push(res);
+        this.subject$.next( v ) ;
+      }
+     );
 
   }
 

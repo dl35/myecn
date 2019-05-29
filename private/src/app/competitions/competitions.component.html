@@ -1,38 +1,26 @@
 <mat-toolbar color="primary">
-  <mat-toolbar-row>
-
-    <mat-icon (click)="switchdrawer()" *ngIf="!dataSelected" style="cursor: pointer;">menu</mat-icon>
-
-    <!--
-    <mat-form-field style="width:80%;margin-left:10%" *ngIf="!dataSelected">
-      <input matInput placeholder="rechercher" [formControl]="searchControl" [value]=''>
-      <button mat-button *ngIf="searchControl.value" matSuffix mat-icon-button aria-label="Clear"
-        (click)="searchControl.setValue('')">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
--->
-    <mat-form-field style="width:10%;margin-left:10%" *ngIf="!dataSelected" >
+    <mat-toolbar-row fxLayout="row"   fxLayoutGap.lt-md="5px"  fxLayoutGap="7px"  fxLayoutAlign="space-evenly center"     style='font-size:14px' >
+    <mat-form-field>
       <mat-label>Dates</mat-label>
-      <mat-select [(ngModel)]="filtre.next" name="date">
+      <mat-select [(ngModel)]="filtre.next" name="date" (ngModelChange)="doFilter()" >
         <mat-option *ngFor="let date of dates" [value]="date.value">
           {{date.viewValue}}
         </mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field style="width:10%;margin-left:5%" *ngIf="!dataSelected" >
+    <mat-form-field>
       <mat-label>Etat</mat-label>
-      <mat-select [(ngModel)]="filtre.verif" name="etat">
+      <mat-select [(ngModel)]="filtre.verif" name="etat" (ngModelChange)="doFilter()" >
         <mat-option *ngFor="let etat of etats" [value]="etat.value">
           {{etat.viewValue}}
         </mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field style="width:10%;margin-left:5%" *ngIf="!dataSelected" >
+    <mat-form-field>
       <mat-label>Type</mat-label>
-      <mat-select [(ngModel)]="filtre.type" name="etat">
+      <mat-select [(ngModel)]="filtre.type" name="type" (ngModelChange)="doFilter()" >
         <mat-option *ngFor="let type of types" [value]="type.value">
           {{type.viewValue}}
         </mat-option>
@@ -44,41 +32,6 @@
 
 
 </mat-toolbar>
-
-
-
-
-<mat-drawer-container class="example-container" *ngIf="!dataSelected" autosize>
-  <mat-drawer #mdrawer class="example-sidenav" [mode]="mobileQuery.matches ? 'over' : 'side'"
-    [opened]="mobileQuery.matches ? 'false' : 'true'">
-    <p><span class="mat-body-2">Les Compétitions</span></p>
-
-    <div style="padding:5px;">
-      <mat-checkbox [ngModel]="filtre.next" [indeterminate]="filtre.next === null" (ngModelChange)="doFilter('next')"
-        [color]="filtre.next === null ? 'primary' : 'accent'">
-        <div class="mat-body-2" *ngIf="filtre.next === false">Passées</div>
-        <div class="mat-body-2" *ngIf="filtre.next === true">Futures</div>
-        <div class="mat-body-2" *ngIf="filtre.next === null">Dates</div>
-      </mat-checkbox>
-      &nbsp;
-      <mat-checkbox [ngModel]="filtre.verif" [indeterminate]="filtre.verif === null" (ngModelChange)="doFilter('verif')"
-        [color]="filtre.verif === null ? 'primary' : 'accent'">
-        <div class="mat-body-2" *ngIf="filtre.verif === false">à Verifier</div>
-        <div class="mat-body-2" *ngIf="filtre.verif === true">Verifiées</div>
-        <div class="mat-body-2" *ngIf="filtre.verif === null">Etat</div>
-      </mat-checkbox>
-    </div>
-    <mat-divider></mat-divider>
-    <div style="padding:5px">
-      <mat-checkbox [ngModel]="filtre.type" [indeterminate]="filtre.type === null" (ngModelChange)="doFilter('type')"
-        [color]="filtre.type === null ? 'primary' : 'accent'">
-        <div class="mat-body-2" *ngIf="filtre.type === false">Stages</div>
-        <div class="mat-body-2" *ngIf="filtre.type === true">Compétitions</div>
-        <div class="mat-body-2" *ngIf="filtre.type === null">Type</div>
-
-      </mat-checkbox>
-    </div>
-  </mat-drawer>
 
 
   <div class="example-sidenav-content">
@@ -118,7 +71,7 @@
       <mat-icon>add</mat-icon>
     </button>
   </div>
-</mat-drawer-container>
+
 
 <!--
 <div *ngIf="dataSelected">

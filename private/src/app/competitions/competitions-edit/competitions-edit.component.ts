@@ -20,7 +20,7 @@ export class CompetitionsEditComponent implements OnInit {
 //  @Output() quitte = new EventEmitter<MessageResponse>();
 
   public dataForm: FormGroup ;
-  public response = new MessageResponse() ;
+
 
 
 /*
@@ -36,7 +36,6 @@ export class CompetitionsEditComponent implements OnInit {
   }
 
   get data(): DataCompet {
-   
         return this.data;
   }
 */
@@ -81,21 +80,10 @@ export class CompetitionsEditComponent implements OnInit {
 
 
   doquitte() {
-  //  this.quitte.emit( this.response );
-  this.route.navigate(['competitions']);
+    this.route.navigate(['competitions']);
   }
 
-  delete() {
-    this.compService.delete ( this.dataForm.getRawValue().id );
-  }
 
-  doexit(success: boolean, type: MessageType , message: string) {
-    this.response.success = success ;
-    this.response.type = type ;
-    this.response.message = message ;
-
-   this.doquitte();
-  }
 
 
   saveForm() {
@@ -103,13 +91,13 @@ export class CompetitionsEditComponent implements OnInit {
     if ( data.id === null ) {
       delete data.id;
       return this.compService.post( data ).subscribe(
-        (value) =>  { this.compService.updateCache('post', value); this.doexit(true, MessageType.POST , 'Ajout valide' ) ; },
-        (error) =>  { this.doexit(false, MessageType.POST , error ); }
+        (value) =>  { this.doquitte(); },
+        (error) =>  {  }
       );
    } else {
     return this.compService.put( data ).subscribe(
-      (value) =>  { this.compService.updateCache('put', value); this.doexit(true, MessageType.PUT , 'Modification valide' ); },
-      (error) =>  { console.log( JSON.stringify( error ) )  ; this.doexit(false, MessageType.PUT , error.error.message ); }
+      (value) =>  { this.doquitte(); },
+      (error) =>  {  }
     );
   }
 
