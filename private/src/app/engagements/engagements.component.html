@@ -1,10 +1,10 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary">Engagements
 
-  <div  fxLayout="column"  style='margin-top: 10px' [fxShow]="isCreated" >
+  <div  fxLayout="column"  fxFlex="100" fxLayoutAlign="center center" style='margin-top: 10px' [fxShow]="isCreated" >
  
 
-      <div fxLayout="row" fxFlex="100" fxLayoutAlign="center center"  style='font-size: 13px'   >
-
+      <div fxLayout="row" fxFlex="100" fxLayoutAlign="center center"  style='font-size: 14px'   >
+          
 
           <mat-form-field fxFlex="25" fxFlexOffset="3" >
               <mat-select  color="primary" placeholder="Présence" [(ngModel)]="filtre.pre" name="pre" (ngModelChange)="doFilter()" >

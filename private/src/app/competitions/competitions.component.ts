@@ -1,7 +1,7 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataCompet } from './models/data-compet';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MediaMatcher } from '@angular/cdk/layout';
+import { MediaMatcher, BreakpointObserver } from '@angular/cdk/layout';
 import { CompetitionsService } from './services/competitions.service';
 import { Observable , Subscription, Subject } from 'rxjs';
 import { filter , distinctUntilChanged , takeUntil , shareReplay, map, switchMap} from 'rxjs/operators';
@@ -47,15 +47,15 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
 
   // searchfilter:searchText
   private searchControl: FormControl;
-
+  public isSmallScreen: false;
 
   showFiller = false;
-  hideSide = true;
-  mobileQuery: MediaQueryList;
+  // hideSide = true;
+  // mobileQuery: MediaQueryList;
   datas$: Observable<DataCompet[]> ;
 
-  private _mobileQueryListener: () => void;
-  destroy$: Subject<boolean> = new Subject<boolean>();
+//  private _mobileQueryListener: () => void;
+//  destroy$: Subject<boolean> = new Subject<boolean>();
 
 
   dates = [
@@ -77,11 +77,12 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
 
 
 
-  constructor(public dialog: MatDialog,  changeDetectorRef: ChangeDetectorRef,
-               media: MediaMatcher, private compService: CompetitionsService, private route: Router) {
-    this.mobileQuery = media.matchMedia('(max-width: 600px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
+// tslint:disable-next-line: max-line-length
+  constructor(public breakpointObserver: BreakpointObserver, public dialog: MatDialog, private compService: CompetitionsService, private route: Router) {
+   // this.mobileQuery = media.matchMedia('(max-width: 600px)');
+   // this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+  //  this.mobileQuery.addListener(this._mobileQueryListener);
+
   }
 
 
@@ -149,9 +150,9 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
 
 
   ngOnDestroy(): void {
-    this.mobileQuery.removeListener(this._mobileQueryListener);
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
+  //  this.mobileQuery.removeListener(this._mobileQueryListener);
+  //  this.destroy$.next(true);
+  //  this.destroy$.unsubscribe();
   }
 
 }
