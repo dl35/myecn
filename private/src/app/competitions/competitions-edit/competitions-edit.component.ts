@@ -4,7 +4,7 @@ import { CompetitionsService } from './../services/competitions.service';
 import { DataCompet } from '../models/data-compet';
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { MatDatepickerInputEvent } from '@angular/material';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MessageResponse, MessageType } from '../models/message-response';
 import { subscribeOn } from 'rxjs/operators';
 

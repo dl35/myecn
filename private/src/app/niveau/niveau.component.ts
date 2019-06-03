@@ -1,7 +1,8 @@
 import { NiveauService } from './service/niveau.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NDataSource } from './NDataSource';
-import { MatPaginator, MatSort } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { Iniveau } from './service/Iniveau';
 
 @Component({
@@ -16,8 +17,8 @@ export class NiveauComponent implements OnInit {
   public edited = false;
   public item: any;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   public dataSource: NDataSource = null;
   public myfilter = { categorie: undefined, niveau: undefined };

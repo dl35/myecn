@@ -25,7 +25,7 @@ import { MenuComponent } from './menu/menu.component';
 import 'hammerjs';
 import { DialogConfirmComponent } from './dialog-confirm/dialog-confirm.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
+import { MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 
 
 import { QuillModule } from 'ngx-quill';

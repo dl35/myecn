@@ -5,7 +5,8 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { IRecords } from '../models/models-records';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { MatOptionSelectionChange, MatSelectChange } from '@angular/material';
+import { MatOptionSelectionChange } from '@angular/material/core';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-edit-records',

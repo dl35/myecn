@@ -4,7 +4,7 @@ import { EmailtoService } from './services/emailto.service';
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DiagComponent } from './diag/diag.component';
 
 @Component({

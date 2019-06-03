@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { LicenciesService } from './services/licencies.service';
-import { MatPaginator, MatSort, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MyDataSource } from './MyDataSource';
 import { IDataLicencies } from './models/data-licencies';
 import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
@@ -23,8 +25,8 @@ export interface IFilter {
 
 export class LicenciesComponent implements OnInit  {
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
   edited = false ;
   small  = false;
 

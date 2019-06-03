@@ -8,7 +8,8 @@ import { filter , distinctUntilChanged , takeUntil , shareReplay, map, switchMap
 import { FormControl } from '@angular/forms';
 
 import 'hammerjs';
-import { MatDrawer, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatDrawer } from '@angular/material/sidenav';
 
 import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
 import { MessageType, MessageResponse } from './models/message-response';

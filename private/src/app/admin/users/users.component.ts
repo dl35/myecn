@@ -2,7 +2,7 @@ import { ILogin } from './../models/iLogin';
 import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../services/users.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogConfirmComponent } from 'src/app/dialog-confirm/dialog-confirm.component';
 
 @Component({

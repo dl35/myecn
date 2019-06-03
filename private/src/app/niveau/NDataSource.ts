@@ -1,5 +1,6 @@
 import { DataSource } from '@angular/cdk/table';
-import { MatSort, MatPaginator } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { Observable, BehaviorSubject, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CollectionViewer } from '@angular/cdk/collections';

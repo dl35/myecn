@@ -1,6 +1,6 @@
 import { AdminService } from './services/admin.service';
 import { Component,  OnDestroy  } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
 
 export interface Tile {

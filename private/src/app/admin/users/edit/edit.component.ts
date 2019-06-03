@@ -2,7 +2,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ILogin } from '../../models/iLogin';
 import { UsersService } from '../../services/users.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogConfirmComponent } from 'src/app/dialog-confirm/dialog-confirm.component';
 
 @Component({
