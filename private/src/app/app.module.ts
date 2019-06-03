@@ -2,8 +2,6 @@ import { DialogEngageComponent } from './engagements/dialog-engage/dialog-engage
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { EngagementsModule } from './engagements/engagements.module';
-import { PiscinesModule } from './piscines/piscines.module';
-import { RecordsModule } from './records/records.module';
 import { MailtoModule } from './mailto/mailto.module';
 import { CompetitionsModule } from './competitions/competitions.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -35,8 +33,6 @@ import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { MomentUtcDateAdapter } from './material/MomentUtcDateAdapter';
 import { HttpConfigInterceptor } from './interceptor/HttpConfigInterceptor';
-import { NiveauComponent } from './niveau/niveau.component';
-import { EditComponent } from './niveau/edit/edit.component';
 import { LogoComponent } from './logo/logo.component';
 registerLocaleData(localeFr, 'fr');
 
@@ -46,8 +42,6 @@ registerLocaleData(localeFr, 'fr');
     LoginComponent,
     MenuComponent,
     DialogConfirmComponent,
-    NiveauComponent,
-    EditComponent,
     LogoComponent
    ],
   imports: [
@@ -62,8 +56,6 @@ registerLocaleData(localeFr, 'fr');
     CompetitionsModule,
     EngagementsModule,
     MailtoModule,
-    RecordsModule,
-    PiscinesModule,
     AppRoutingModule,
     MatMomentDateModule
   ],

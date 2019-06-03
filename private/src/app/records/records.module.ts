@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { RecordsComponent } from './records.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { EditRecordsComponent } from './edit-records/edit-records.component';
+import { RecordsRoutingModule } from './records-routing.module';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { EditRecordsComponent } from './edit-records/edit-records.component';
     ReactiveFormsModule,
     MaterialModule,
     FlexLayoutModule,
+    RecordsRoutingModule
   ],
   declarations: [RecordsComponent, FileUploadComponent, EditRecordsComponent]
 })
