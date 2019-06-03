@@ -45,10 +45,10 @@
 </mat-toolbar>
 
 
-<mat-sidenav-container fxFlexFill style='height:100%' >
+<mat-sidenav-container fxFlexFill style='height:100vh;' >
     <mat-sidenav color="primary" #sidenav fxLayout="column" mode="side" opened="true" fxHide.gt-md="true" >
-      <div fxLayout="column" fxLayoutAlign="center center" >
-          <mat-form-field style='width:80%'  >
+      <div fxLayout="column" fxLayoutAlign="center center"  >
+          <mat-form-field style='width:80%;'  >
               <mat-label>Dates</mat-label>
               <mat-select [(ngModel)]="filtre.next" name="date" (ngModelChange)="doFilter()" >
                 <mat-option *ngFor="let date of dates" [value]="date.value">
@@ -76,16 +76,11 @@
     
       </div>
     </mat-sidenav>
-    <mat-sidenav-content fxFlexFill>
+    <mat-sidenav-content>
    
-  <div class="example-sidenav-content">
+  <div fxLayout="column" fxFlex="85" style='margin: auto'>
 
-
-
-
-
-
-    <mat-list>
+    <mat-list fxLayout="column"  fxLayoutAlign="center center" >
       <h2 mat-subheader>Les compétitions</h2>
       <mat-list-item *ngFor="let data of datas$ | async ; last as last" (click)="edit(data)" style='margin-bottom:20px'
         class="mat-elevation-z8" matRipple [matRippleCentered]="centered" [matRippleColor]="warn">
