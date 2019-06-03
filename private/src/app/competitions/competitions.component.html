@@ -1,4 +1,8 @@
-<mat-toolbar color="primary">Competitions
+<mat-toolbar color="primary">
+    <button mat-icon-button (click)="sidenav.toggle()" fxShow.sm="true" fxShow.gt-sm="false">
+        <mat-icon>menu</mat-icon>
+      </button>
+  Competitions
   
      
  
@@ -41,10 +45,10 @@
 </mat-toolbar>
 
 
-<mat-sidenav-container fxFlexFill class="example-container">
-    <mat-sidenav color="primary" #sidenav fxLayout="column" mode="over" opened="true" fxHide.gt-md="true" >
-      <div fxLayout="column">
-          <mat-form-field fxFlex="25" fxFlexOffset="3" >
+<mat-sidenav-container fxFlexFill style='height:100%' >
+    <mat-sidenav color="primary" #sidenav fxLayout="column" mode="side" opened="true" fxHide.gt-md="true" >
+      <div fxLayout="column" fxLayoutAlign="center center" >
+          <mat-form-field style='width:80%'  >
               <mat-label>Dates</mat-label>
               <mat-select [(ngModel)]="filtre.next" name="date" (ngModelChange)="doFilter()" >
                 <mat-option *ngFor="let date of dates" [value]="date.value">
@@ -52,10 +56,24 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-        <a mat-button routerLink="/prices">Prices</a>
-        <a mat-button routerLink="/start-page">Start page</a>
-        <a mat-button routerLink="/offer">Offer</a>
-        <a mat-button routerLink="/contact">Contact</a>
+            <mat-form-field style='width:80%'  >
+                <mat-label>Etat</mat-label>
+                <mat-select [(ngModel)]="filtre.verif" name="etat" (ngModelChange)="doFilter()" >
+                  <mat-option *ngFor="let etat of etats" [value]="etat.value">
+                    {{etat.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+          
+              <mat-form-field style='width:80%'  >
+                <mat-label>Type</mat-label>
+                <mat-select [(ngModel)]="filtre.type" name="type" (ngModelChange)="doFilter()" >
+                  <mat-option *ngFor="let type of types" [value]="type.value">
+                    {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+    
       </div>
     </mat-sidenav>
     <mat-sidenav-content fxFlexFill>
