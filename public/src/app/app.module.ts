@@ -17,7 +17,7 @@ import { CompetitionsModule } from './competitions/competitions.module';
 import { StatsModule } from './stats/stats.module';
 import { AdhesionModule } from './adhesion/adhesion.module';
 import { registerLocaleData } from '@angular/common';
-import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/material';
+import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/material/core';
 import localeFr from '@angular/common/locales/fr';
 import { MomentUtcDateAdapter } from './material/MomentUtcDateAdapter';
 import { LogoComponent } from './logo/logo.component';

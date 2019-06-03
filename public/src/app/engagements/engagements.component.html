@@ -15,7 +15,7 @@
     </div> 
 
 
-    <div fxLayout="column" *ngIf="data?.valide === true" fxLayoutAlign="center center" fxFlex="75%">
+    <div fxLayout="column" *ngIf="data?.valide === true" fxLayoutAlign="center center" fxFlex="95%">
         <h2 class="mat-h2" matLine>{{data?.message}}</h2> 
       <div fxLayoutAlign="center center" fxLayout="column"  >
           <mat-list *ngFor="let item of data?.engage" >
@@ -28,9 +28,16 @@
               </mat-list-item>
               <mat-divider></mat-divider>
              </mat-list>
-
+             <p>
+          <mat-form-field *ngIf="data?.choixnages === true"  style='width: 100%' >
+              <textarea matInput placeholder="saisir le choix des nages ...."></textarea>
+          </mat-form-field>
+          </p>
         
       </div>
+
+
+
       <div style="margin-top:10px;" fxLayoutAlign="center center">
           <button mat-raised-button color="primary" [disabled]="dataForm.invalid" (click)="validate()">Valider</button>
         </div>

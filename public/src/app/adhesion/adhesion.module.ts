@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '../material/material.module';
-import { MAT_DATE_LOCALE } from '@angular/material';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { AdhesionComponent } from './adhesion.component';
 
 

@@ -2,7 +2,7 @@ import { Router } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CompetitionsService, ICompetitions } from './services/competitions.service';
 import { Observable } from 'rxjs';
-import { MatCheckboxChange } from '@angular/material';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { filter, map } from 'rxjs/operators';
 
 
@@ -41,7 +41,7 @@ export class CompetitionsComponent implements OnInit, OnDestroy {
   datas$: Observable<ICompetitions[]> ;
 
 
-  constructor( private cService: CompetitionsService , private router: Router) {
+  constructor( public cService: CompetitionsService , private router: Router) {
   }
   ngOnInit() {
 

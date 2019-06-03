@@ -2,7 +2,7 @@ import { EngagementsService } from './services/engagements.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -69,7 +69,7 @@ export class EngagementsComponent implements OnInit {
 
   public validate() {
       const datas = this.dataForm.getRawValue();
-      
+
      this.engService.updateEngagements(this.ide, this.idl , datas ).pipe( takeUntil(this.destroyed$) ).subscribe(
       data => {   this.showSnackBar( data.message  , true); this.router.navigate(['competitions']); },
       error => {  this.showSnackBar(error.error.message, false);  }
