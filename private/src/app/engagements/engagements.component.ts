@@ -208,10 +208,10 @@ doFilter() {
 
 
   this.engage$ = this.eService.getObservable().pipe(
-   map( item =>   item.filter( d =>   ( this.filtre.notif === '0'  ) ? (d.notification === 0 ) : (d) )),
-   map( item =>   item.filter( d =>   ( this.filtre.notif === '1'  ) ? (d.notification > 0 ) : (d) )),
-   map( item =>   item.filter( d =>   ( this.filtre.ext  === null  ) ? (d) : (  d.extranat === +this.filtre.ext  ) )),
-   map( item =>   item.filter( d =>  ( this.filtre.pre === null ) ?  (d)  :  this.myfilter(d.eng) ) ) );
+   map( item =>   item.filter( d =>   ( this.filtre.notif === '0'  ) ?  (d.notification === 0 ) : (d) )),
+   map( item =>   item.filter( d =>   ( this.filtre.notif === '1'  ) ?  (d.notification > 0 ) : (d) )),
+   map( item =>   item.filter( d =>   ( this.filtre.ext  === null  ) ?  (d) : (  d.extranat === +this.filtre.ext  ) )),
+   map( item =>   item.filter( d =>   ( this.filtre.pre === null   ) ?  (d)  :  this.myfilter(d.eng) ) ) );
 
 
  }
