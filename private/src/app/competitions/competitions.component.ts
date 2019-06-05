@@ -88,7 +88,7 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
    // this._mobileQueryListener = () => changeDetectorRef.detectChanges();
   //  this.mobileQuery.addListener(this._mobileQueryListener);
       this.isMedium$ = this.breakpointObserver.observe([ Breakpoints.XSmall , Breakpoints.Small , Breakpoints.Medium ] ) ;
-     
+
   }
 
 
