@@ -1,7 +1,7 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataCompet } from './models/data-compet';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MediaMatcher, BreakpointObserver } from '@angular/cdk/layout';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { MediaMatcher, BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
 import { CompetitionsService } from './services/competitions.service';
 import { Observable , Subscription, Subject } from 'rxjs';
 import { filter , distinctUntilChanged , takeUntil , shareReplay, map, switchMap} from 'rxjs/operators';
@@ -9,7 +9,7 @@ import { FormControl } from '@angular/forms';
 
 import 'hammerjs';
 import { MatDialog } from '@angular/material/dialog';
-import { MatDrawer } from '@angular/material/sidenav';
+import { MatDrawer, MatSidenav } from '@angular/material/sidenav';
 
 import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
 import { MessageType, MessageResponse } from './models/message-response';
@@ -34,6 +34,7 @@ export class SearchFilterPipe implements PipeTransform {
 */
 
 
+
 @Component({
   selector: 'app-competitions',
   templateUrl: './competitions.component.html',
@@ -42,6 +43,9 @@ export class SearchFilterPipe implements PipeTransform {
 })
 export class CompetitionsComponent implements OnInit , OnDestroy  {
 
+
+  @ViewChild('sidenav', {static: false} )
+   private sidenav: MatSidenav ;
 
   filtre = { next: true , type: null, verif: null , txt: '' };
 
@@ -75,6 +79,7 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
     {value: 'stage', viewValue: 'stage'}
   ];
 
+  isMedium$: Observable<BreakpointState>;
 
 
 // tslint:disable-next-line: max-line-length
@@ -82,7 +87,8 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
    // this.mobileQuery = media.matchMedia('(max-width: 600px)');
    // this._mobileQueryListener = () => changeDetectorRef.detectChanges();
   //  this.mobileQuery.addListener(this._mobileQueryListener);
-
+      this.isMedium$ = this.breakpointObserver.observe([ Breakpoints.XSmall , Breakpoints.Small , Breakpoints.Medium ] ) ;
+     
   }
 
 
