@@ -1,6 +1,6 @@
 import { DialogEngageComponent } from './dialog-engage/dialog-engage.component';
 import { CompetEngage, LicEngage } from './models/data-engage';
-import { MediaMatcher } from '@angular/cdk/layout';
+import { MediaMatcher, BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { EngageService } from './services/engage.service';
@@ -15,6 +15,8 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./engagements.component.scss']
 })
 export class EngagementsComponent implements OnInit, OnDestroy {
+
+ 
 
 
 
@@ -41,8 +43,6 @@ export class EngagementsComponent implements OnInit, OnDestroy {
   ];
 
 
-  mobileQuery: MediaQueryList;
-  private _mobileQueryListener: () => void;
 
   datas$: Observable<CompetEngage[]> ;
   engage$: Observable<LicEngage[]> ;
@@ -57,18 +57,19 @@ export class EngagementsComponent implements OnInit, OnDestroy {
 
 
   engageList$: Observable<LicEngage[]>;
-​
+  ​layoutChanges: Observable<BreakpointState>;
+constructor(public breakpointObserver: BreakpointObserver, public dialog: MatDialog, private eService: EngageService) {
 
-  constructor(public dialog: MatDialog, changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher, private eService: EngageService) {
-    this.mobileQuery = media.matchMedia('(max-width: 600px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
+  this.idc = -1;
 
-    this.idc = -1;
+  this.layoutChanges = this.breakpointObserver.observe([
+    Breakpoints.Medium,
+    Breakpoints.Large,
+    Breakpoints.XLarge,
+  ]);
+
 
 }
-
 
 
   ngOnInit() {
@@ -182,11 +183,10 @@ export class EngagementsComponent implements OnInit, OnDestroy {
 
   }
 
-
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
-    this.mobileQuery.removeListener(this._mobileQueryListener);
+ //   this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
 

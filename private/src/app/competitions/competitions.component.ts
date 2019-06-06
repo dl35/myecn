@@ -79,16 +79,16 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
     {value: 'stage', viewValue: 'stage'}
   ];
 
-  isMedium$: Observable<BreakpointState>;
-
+  
+  layoutChanges: Observable<BreakpointState>;
 
 // tslint:disable-next-line: max-line-length
   constructor(public breakpointObserver: BreakpointObserver, public dialog: MatDialog, private compService: CompetitionsService, private route: Router) {
-   // this.mobileQuery = media.matchMedia('(max-width: 600px)');
-   // this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-  //  this.mobileQuery.addListener(this._mobileQueryListener);
-      this.isMedium$ = this.breakpointObserver.observe([ Breakpoints.XSmall , Breakpoints.Small , Breakpoints.Medium ] ) ;
-
+      this.layoutChanges = this.breakpointObserver.observe([
+        Breakpoints.Medium,
+        Breakpoints.Large,
+        Breakpoints.XLarge,
+      ]);
   }
 
 

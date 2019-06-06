@@ -1,11 +1,13 @@
-<mat-toolbar color="primary">Engagements
+<mat-toolbar color="primary">
+    <button mat-icon-button (click)="sidenav.toggle()" *ngIf="isCreated && !(layoutChanges | async)?.matches" >
+        <mat-icon>menu</mat-icon>
+      </button>
+  Engagements
 
-  <div  fxLayout="column"  fxFlex="100" fxLayoutAlign="center center" style='margin-top: 10px' [fxShow]="isCreated" >
- 
 
-      <div fxLayout="row" fxFlex="100" fxLayoutAlign="center center"  style='font-size: 14px'   >
-          
-
+  <div  *ngIf="isCreated && (layoutChanges | async)?.matches"  fxLayout="column"  fxLayout="column"  fxFlex="100" fxLayoutAlign="center center" style='margin-top: 10px'  >
+    
+    <div  fxLayout="row" fxFlex="100" fxLayoutAlign="center center"  style='font-size: 14px'   >
           <mat-form-field fxFlex="25" fxFlexOffset="3" >
               <mat-select  color="primary" placeholder="Présence" [(ngModel)]="filtre.pre" name="pre" (ngModelChange)="doFilter()" >
                   <mat-option *ngFor="let p of pre" [value]="p.value">
@@ -22,7 +24,6 @@
                 </mat-select>
             </mat-form-field>
   
-  
               <mat-form-field fxFlex="25" fxFlexOffset="3" >
                   <mat-select  color="primary" placeholder="Notifications" [(ngModel)]="filtre.notif" name="pre" (ngModelChange)="doFilter()" >
                       <mat-option *ngFor="let p of notif" [value]="p.value">
@@ -31,36 +32,54 @@
                     </mat-select>
                  </mat-form-field>
   
-         
-  
             </div>
-  
-     
   
    </div>
 
-
-
-
-
-
 </mat-toolbar>
+<mat-sidenav-container  style='height: 100vh;'  >
+    <mat-sidenav color="primary" #sidenav style='height: 100vh;' fxLayout="column" mode="over" opened="false"   >
+      <div fxLayout="column" fxLayoutAlign="center center" *ngIf="isCreated && !(layoutChanges | async)?.matches" >
+          <mat-form-field style='width:60%' >
+              <mat-select  color="primary" placeholder="Présence" [(ngModel)]="filtre.pre" name="pre" (ngModelChange)="doFilter()" >
+                  <mat-option *ngFor="let p of pre" [value]="p.value">
+                    {{p.viewValue}}
+                  </mat-option>
+                </mat-select>
+          </mat-form-field>
+          <mat-form-field style='width:60%' >
+              <mat-select  color="primary" placeholder="Extranat" [(ngModel)]="filtre.ext" name="pre" (ngModelChange)="doFilter()" >
+                  <mat-option *ngFor="let p of ext" [value]="p.value">
+                    {{p.viewValue}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+             <mat-form-field style='width:60%'>
+                  <mat-select  color="primary" placeholder="Notifications" [(ngModel)]="filtre.notif" name="pre" (ngModelChange)="doFilter()" >
+                      <mat-option *ngFor="let p of notif" [value]="p.value">
+                        {{p.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                 </mat-form-field>
+        
+    
+      </div>
+    </mat-sidenav>
+    <mat-sidenav-content>
 
 
 
 
-
-
-  <div fxLayout="column" fxLayoutAlign="center center" style="margin-top: 10px;">
+  <div fxLayout="column"  fxFlex="95"  style='margin: auto;height: 100vh;' >
  
-    <div fxLayout="row" style="margin-top: 10px;">
+    <div fxLayout="row" fxLayoutAlign="center center" style="margin-top: 10px;"  >
 
       <button mat-mini-fab color="primary" *ngIf="isCreated" (click)="sendMails()">
         <mat-icon aria-label="email">email</mat-icon>
       </button>
 
-      <mat-form-field [ngStyle]="{'width': '600px','margin-left': '10px', 'margin-right':'10px' }" [ngStyle.lt-md]="{'width': '220px','margin-left' :'5px', 'margin-right' :'5px'}">
-        <mat-select placeholder="Selection des compétitions" (ngModelChange)="setCompetition($event)" [formControl]="dataForm">
+      <mat-form-field style="width:60vw;margin-left:2vw;margin-right:2vw" >
+        <mat-select  placeholder="Selection des compétitions" (ngModelChange)="setCompetition($event)" [formControl]="dataForm">
 
           <mat-option *ngFor="let item of datas$ | async ; last as last" [value]="item.id">
             {{item.id}} - {{item.label}}
@@ -85,11 +104,10 @@
     <app-engagement-create *ngIf="idc != -1 && !isCreated" [id]="idc"  (created)="setCreated($event)"   ></app-engagement-create>
 
 
+    <div>
 
-    <div fxFlex >
+        <mat-list *ngIf="isCreated" >
       
-      <mat-list *ngIf="isCreated" [ngStyle]="{'width': '800px'}" [ngStyle.lt-sm]="{'width': '350px'}">
-    
         
         
         <h2 mat-subheader>Les Engagements ({{(engage$ | async)?.length}})</h2>
@@ -101,14 +119,24 @@
           <p matLine style="margin-top:4em">
             <span class="mat-body-2">{{item.prenom}} {{item.nom}} ({{item.categorie}}{{item.rang}}-{{item.sexe}})</span>
           </p>
-    
+    <!--
           <div *ngFor="let node of item.eng;" [ngSwitch]="node.presence">
             <button mat-mini-fab *ngSwitchCase="'non'" color="warn"  ><s>{{node.day}}</s></button>
             <button mat-mini-fab *ngSwitchCase="'oui'" color="primary" >{{node.day}}</button>
-            <button mat-mini-fab *ngSwitchDefault >{{node.day}}?</button>
+            <button class="smallbutton" mat-mini-fab *ngSwitchDefault >{{node.day}}?</button>
             &nbsp;&nbsp;
           </div>
-    
+          -->
+          <div style='width:20vw;float:right;' class="mat-body-2" >
+          <mat-grid-list cols="3" rowHeight="28px">
+              <mat-grid-tile *ngFor="let node of item.eng;" [ngSwitch]="node.presence" >
+              <label *ngSwitchCase="'non'" style='border-radius:20%;background-color:red'color="warn"  ><s>&nbsp;&nbsp;{{node.day}}&nbsp;&nbsp;</s></label>
+              <label  *ngSwitchCase="'oui'" style='border-radius:20%;background-color:green'color="primary" >&nbsp;&nbsp;{{node.day}}&nbsp;&nbsp;</label>
+              <label *ngSwitchDefault  style='border-radius:20%;background-color:lightskyblue' >&nbsp;&nbsp;{{node.day}}?&nbsp;&nbsp;</label>
+              </mat-grid-tile>
+            </mat-grid-list>
+          </div>
+
           <div matLine style='margin-bottom:2em;' >
             &nbsp;
             <button mat-icon-button style='margin-bottom:2em;' (click)="setNotification(item.id)" >
@@ -143,4 +171,5 @@
 
   </div>
 
-
+</mat-sidenav-content>
+</mat-sidenav-container>
