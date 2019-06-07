@@ -7,15 +7,15 @@
 
 <form fxLayoutAlign="center center" style="margin-top:20px;" autocomplete="off" [formGroup]="dataForm" novalidate>
 
-    <div  *ngIf="data?.valide === false" fxLayout="column" fxLayoutAlign="center center" fxFlex="75%">
-            <h3 matLine>{{data?.message}}</h3>
+    <div  *ngIf="data?.valide === false" fxLayout="column" fxLayoutAlign="center center" fxFlex="75vh">
+            <h2 matLine>{{data?.message}}</h2>
             <div style="margin-top:10px;" fxLayoutAlign="center center">
             <button mat-raised-button color="primary"  (click)="quitte()">Quitter</button>
             </div>
     </div> 
 
 
-    <div fxLayout="column" *ngIf="data?.valide === true" fxLayoutAlign="center center" fxFlex="95%">
+    <div fxLayout="column" *ngIf="data?.valide === true" fxLayoutAlign="center center" fxFlex="60vh">
         <h2 class="mat-h2" matLine>{{data?.message}}</h2> 
       <div fxLayoutAlign="center center" fxLayout="column"  >
           <mat-list *ngFor="let item of data?.engage" >
@@ -29,8 +29,8 @@
               <mat-divider></mat-divider>
              </mat-list>
              <p>
-          <mat-form-field *ngIf="data?.choixnages === true"  style='width: 100%' >
-              <textarea matInput placeholder="saisir le choix des nages ...."></textarea>
+          <mat-form-field *ngIf="data?.choixnages === true"  style='width:50vw' >
+              <textarea formControlName="commentaire" matInput placeholder="saisir le choix des nages ...."></textarea>
           </mat-form-field>
           </p>
         

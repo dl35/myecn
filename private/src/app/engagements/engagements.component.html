@@ -119,7 +119,8 @@
           <p matLine style="margin-top:4em">
             <span class="mat-body-2">{{item.prenom}} {{item.nom}} ({{item.categorie}}{{item.rang}}-{{item.sexe}})</span>
           </p>
-    <!--
+
+           <!--
           <div *ngFor="let node of item.eng;" [ngSwitch]="node.presence">
             <button mat-mini-fab *ngSwitchCase="'non'" color="warn"  ><s>{{node.day}}</s></button>
             <button mat-mini-fab *ngSwitchCase="'oui'" color="primary" >{{node.day}}</button>
@@ -136,7 +137,7 @@
               </mat-grid-tile>
             </mat-grid-list>
           </div>
-
+        
           <div matLine style='margin-bottom:2em;' >
             &nbsp;
             <button mat-icon-button style='margin-bottom:2em;' (click)="setNotification(item.id)" >
@@ -153,9 +154,9 @@
             
            
             &nbsp;&nbsp;&nbsp;&nbsp;
-    
-            <mat-form-field style="min-width:10px;max-width:400px;width:100%"    > 
-              <input   matInput placeholder="commentaires" readonly value="{{item.comment}}" >
+   
+            <mat-form-field  style="min-width:10px;max-width:400px;width:100%"    > 
+              <input   matInput placeholder="" readonly value="{{item.commentaire}}" >
             </mat-form-field>
     
           </div>
