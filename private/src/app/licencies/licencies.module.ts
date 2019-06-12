@@ -9,6 +9,7 @@ import { EditComponent } from './edit/edit.component';
 import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/material/core';
 import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { MomentUtcDateAdapter } from '../material/MomentUtcDateAdapter';
+import { AddComponent } from './add/add.component';
 
 
 @NgModule({
@@ -20,7 +21,7 @@ import { MomentUtcDateAdapter } from '../material/MomentUtcDateAdapter';
     FlexLayoutModule,
     LicenciesRoutingModule
   ],
-  declarations: [LicenciesComponent, EditComponent],
+  declarations: [LicenciesComponent, EditComponent, AddComponent],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},

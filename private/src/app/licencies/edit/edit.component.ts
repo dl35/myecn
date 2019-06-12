@@ -1,9 +1,10 @@
 import { Observable } from 'rxjs';
 import { IBanque } from './../models/data-licencies';
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Validators, FormControl, FormBuilder, FormGroup } from '@angular/forms';
 import { LicenciesService } from '../services/licencies.service';
-import { IDataLicencies } from '../models/data-licencies';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-edit',
@@ -12,17 +13,10 @@ import { IDataLicencies } from '../models/data-licencies';
 })
 export class EditComponent implements OnInit {
 
-  show = false ;
+
 
   banques$: Observable<IBanque[]> ;
 
-
-  @Input()
-  item: any;
-
-  @Output() hideForm = new EventEmitter();
-  @Output() addData: EventEmitter<IDataLicencies> = new EventEmitter();
-  @Output() updateData: EventEmitter<IDataLicencies> = new EventEmitter();
 
   public dataForm: FormGroup ;
   meta = {
@@ -44,15 +38,13 @@ export class EditComponent implements OnInit {
   startDate: Date;
 
 
-  constructor(private formBuilder: FormBuilder , private lserv: LicenciesService  ) { }
+  constructor(private route: Router , private formBuilder: FormBuilder , private lserv: LicenciesService  ) { }
 
   ngOnInit() {
+
     this.initForm();
     this.initDatas();
-
     this.banques$ = this.lserv.getBanques();
-
-
 
   }
 
@@ -99,8 +91,8 @@ export class EditComponent implements OnInit {
       photo:  [ false  ],
       paye:  [ false  ],
       reglement:  [ false  ],
-      tarif:  [ null , [Validators.required]  ],
-      cotisation: new FormControl({value: '', disabled: true }) ,
+      cotisation:  [ 0.0 , [Validators.required]  ],
+      total: new FormControl({value: '', disabled: true }) ,
       especes:  [ 0.0],
       cheque1:  [ null ],
       cheque2:  [ null ],
@@ -165,53 +157,40 @@ export class EditComponent implements OnInit {
 
 initDatas ( ) {
 
-  if ( this.item !== null   ) {
-    delete this.item.params;
-    this.show = false;
-    this.dataForm.setValue( this.item );
+ const item = this.lserv.item ;
+
+  if ( item !== null  && item !== undefined  ) {
+   /// delete item.params;
+    this.dataForm.setValue( item );
     this.startDate = new Date( this.dataForm.get('date').value  );
     this.dataForm.get('nom').disable();
 
-    if ( this.item.valide ) {
+    if ( item.valide ) {
     this.dataForm.get('paye').disable();
     this.dataForm.get('cert_medical').disable();
     }
 
-
   } else {
-    this.dataForm.reset();
-    this.show = true;
-    this.startDate = new Date();
-    const dstart = ( new Date().getFullYear() )  - 10 ;
-    this.startDate.setFullYear ( dstart ) ;
-    this.dataForm.get('type').setValue('N');
-    this.dataForm.get('id').setValue('-1');
-    this.dataForm.get('nom').enable();
+    this.route.navigate(['/licencies']);
   }
 
   }
 
 cancelForm() {
-  this.hideForm.emit( true );
-
+  this.route.navigate(['/licencies']);
 }
 
 
 saveForm() {
 const datas = this.dataForm.getRawValue();
-if ( datas.id === '-1' ) {
-  this.lserv.add( datas ).subscribe(
-     (data) => { this.addData.emit( data );  },
-         () => { this.hideForm.emit( true ); }
-    );
-} else {
-  this.lserv.update( datas ).subscribe(
-    (data) => { this.updateData.emit( data ); },
-       ()  => { this.hideForm.emit( true );   }
-
+this.lserv.update( datas ).subscribe(
+    () => { this.route.navigate(['/licencies']); },
+       ()  => {  }
    );
 }
-}
+
+
+
 
 
 

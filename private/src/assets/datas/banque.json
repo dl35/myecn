@@ -1,0 +1,20 @@
+[
+{ "id": "BNP" , "value" :"Bnp" },
+{ "id": "BP" , "value" :"Banque Populaire" },
+{ "id": "BPO" , "value" :"Banque Populaire de l'Ouest" },
+{ "id": "BRED" , "value" :"Banque régionale d'escompte et de dépots" },
+{ "id": "CA" , "value" :"Crédit agricole" },
+{ "id": "CDN" , "value" :"Crédit du nord" },
+{ "id": "CE" , "value" :"Caisse d'Epargne" },
+{ "id": "CIC" , "value" :"Crédit industriel et Commercial" },
+{ "id": "CIO" , "value" :"Crédit industriel de l'Ouest" },
+{ "id": "CMB" , "value" :"Crédit Mutuel de Bretagne" },
+{ "id": "CM" , "value" :"Crédit Mutuel" },
+{ "id": "LCL" , "value" :"Lcl" },
+{ "id": "POSTE" , "value" :"La Poste" },
+{ "id": "SG" , "value" :"Société Générale" },
+{ "id": "AUTRE" , "value" :"Autre" }
+
+]
+
+

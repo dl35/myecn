@@ -8,6 +8,7 @@ import { IDataLicencies } from './models/data-licencies';
 import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { TexteRoutesService } from '../services/texte-routes.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-licencies',
@@ -27,9 +28,8 @@ export class LicenciesComponent implements OnInit  {
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-  edited = false ;
-  small  = false;
 
+  small  = false;
   item: any ;
 
   fvalue = '' ;
@@ -39,12 +39,12 @@ export class LicenciesComponent implements OnInit  {
   paye: undefined, auto_parentale: undefined, cert_medical: undefined, fiche_medicale: undefined };
 
   public dataSource: MyDataSource = null;
-  public displayedAllColumns: string[] = ['nom', 'prenom', 'ville', 'categorie' , 'rang' , 'type'  , 'sexe',
-  'officiel' , 'cotisation' , 'valide' , 'id' ];
-  public displayedSmallColumns: string[] = ['nom', 'prenom', 'valide' , 'id' ];
+  public displayedAllColumns: string[] = ['nom', 'prenom', 'categorie' , 'rang' , 'type'  , 'sexe',
+  'officiel' , 'c.medical' , 'a.parentale' , 'f.medical' , 'cotisation' , 'total' , 'valide' , 'paye' , 'id' ];
+  public displayedSmallColumns: string[] = ['nom', 'prenom', 'valide' ,  'id' ];
   public displayedColumns: string[] = this.displayedAllColumns ;
 
-  constructor( private lserv: LicenciesService , private dialog: MatDialog,  private textRoute: TexteRoutesService ,
+  constructor( private route: Router , private lserv: LicenciesService , private dialog: MatDialog,  private textRoute: TexteRoutesService ,
                private breakpointObserver: BreakpointObserver ) {
 
    // this.mobileQuery = media.matchMedia('(max-width: 600px)');
@@ -106,9 +106,13 @@ applyFilter(filterValue: string) {
 }
 
 editForm(row) {
-  this.edited = true ;
-  this.item = row;
+ // this.edited = true ;
+ // this.item = row;
+  this.lserv.item = row ;
+  this.route.navigate(['/licencies/edit']);
+
 }
+
 
 
 
@@ -143,21 +147,24 @@ private removeItem( id ) {
 }
 
 
+/*
 appendList( item ) {
-  this.edited = false ;
+  
   const d = [...this.dataSource.datas]  ;
   d.push( item ) ;
   this.dataSource.datas = d ;
 
 }
 updateList( item ) {
-  this.edited = false ;
+ 
   const d = [...this.dataSource.datas]  ;
   const itemIndex = d.findIndex( it => it.id === item.id);
   d[itemIndex] = item ;
   this.dataSource.datas = d ;
 
 }
+*/
+
 
 
 }

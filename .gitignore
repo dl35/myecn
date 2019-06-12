@@ -2,6 +2,7 @@
 
 docker
 
+ftp.sh
 
 # compiled output
 /dist

@@ -19,7 +19,7 @@ export interface IDataLicencies {
     officiel: string;
     entr: boolean ;
     licence: number;
-    tarif: number;
+    total: number;
     cotisation: number;
     banque: string;
     cheque1: number;

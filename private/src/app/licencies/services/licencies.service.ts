@@ -9,13 +9,13 @@ import { IDataLicencies } from '../models/data-licencies';
 export class LicenciesService {
 
   private url = '/api/private/tolicencies' ;
+  public item: IDataLicencies ;
 
   constructor(private http: HttpClient) { }
 
 
   public  getBanques() {
-    const url = this.url + '/banque' ;
-    return this.http.get<IBanque[]>( url );
+    return this.http.get<IBanque[]>('./assets/datas/banque.json');
  }
 
 
