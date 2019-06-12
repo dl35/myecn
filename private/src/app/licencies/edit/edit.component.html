@@ -128,14 +128,14 @@
       </mat-form-field>
 
       <mat-form-field fxFlex="10" fxFlexOffset="1">
-        <mat-select placeholder="Categorie*" formControlName="categorie">
+        <mat-select placeholder="Categorie" formControlName="categorie" (selectionChange)="change($event)" >
           <mat-option></mat-option>
-          <mat-option *ngFor="let r of meta.categorie" [value]="r.value">{{r.name}} </mat-option>
+          <mat-option *ngFor="let r of meta.categorie" [value]="r.value"  >{{r.name}} </mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field fxFlex="5" fxFlexOffset="1">
-        <mat-select placeholder="Rang*" formControlName="rang">
+        <mat-select placeholder="Rang" formControlName="rang" (selectionChange)="change($event)" >
           <mat-option></mat-option>
           <mat-option *ngFor="let r of meta.rang" [value]="r">{{r}} </mat-option>
         </mat-select>
@@ -146,16 +146,14 @@
           <mat-option *ngFor="let r of meta.officiel" [value]="r">{{r}} </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field fxFlex="10" fxFlexOffset="1">
-        <input matInput placeholder="Licence" formControlName="licence">
-      </mat-form-field>
+      
 
       <mat-form-field fxFlex="6" fxFlexOffset="3">
         <input matInput placeholder="Cotis.*(€)" formControlName="cotisation" type="number" step="0.1"  maxlength="7">
         <mat-error>tarif requis</mat-error>
       </mat-form-field>
       <mat-form-field fxFlex="6" fxFlexOffset="1">
-        <input matInput placeholder="Total (€)" class="cotisation" formControlName="total" maxlength="7">
+        <input matInput placeholder="Total (€)" class="cotisation" formControlName="total" style='color:green'  maxlength="7">
       </mat-form-field>
 
       <section fxFlexOffset="1">
@@ -163,7 +161,19 @@
       </section>
 
     </div>
-
+    <div fxLayout="row wrap" fxLayout.lt-md="column wrap" fxLayoutAlign="center baseline" style='margin-top:5px' >
+        <mat-form-field fxFlex="10" fxFlexOffset="3">
+          <mat-select placeholder="Carte" formControlName="carte" >
+            <mat-option *ngFor="let r of (cartes$ | async ) " [value]="r.id"  [matTooltip]="r.value"  >{{r.id}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field fxFlex="10" fxFlexOffset="3">
+            <input matInput placeholder="Numéro" formControlName="num_carte" >
+          </mat-form-field>
+          <mat-form-field fxFlex="15" fxFlexOffset="1">
+            <input matInput placeholder="licence" formControlName="licence">
+          </mat-form-field>
+    </div>    
 
    
     <div fxLayout="row wrap" fxLayout.lt-md="column wrap" fxLayoutAlign="center baseline" style='margin-top:20px' >

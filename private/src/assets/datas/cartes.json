@@ -1,0 +1,20 @@
+[
+    { "id": "Natation" , "value" :"Natation" },
+    { "id": "Aikido" , "value" :"Aikido" },
+    { "id": "Athlétisme" , "value" :"Athlétisme" },
+    { "id": "Badminton" , "value" :"Badminton" },
+    { "id": "Basket" , "value" :"Basket" },
+    { "id": "Cercle celt." , "value" :"Cercle celt." },
+    { "id": "Cyclotourisme" , "value" :"Cyclotourisme" },
+    { "id": "Fitness" , "value" :"Fitness" },
+    { "id": "Football" , "value" :"Football" },
+    { "id": "Gym-Sport." , "value" :"Gym-Sport." },
+    { "id": "Hand" , "value" :"Hand" },
+    { "id": "Yoga" , "value" :"Yoga" },
+    { "id": "Karaté" , "value" :"Karaté" },
+    { "id": "Plongée" , "value" :"Plongée" },
+    { "id": "Tennis" , "value" :"Tennis" },
+    { "id": "Tennis de table" , "value" :"Tennis de table" },
+    { "id": "Triathlon de table" , "value" :"Triathlon de table" },
+    { "id": "Twirling" , "value" :"Twirling" }
+    ]

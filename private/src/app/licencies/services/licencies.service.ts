@@ -1,4 +1,4 @@
-import { IBanque } from './../models/data-licencies';
+import { IBanque, ICarte } from './../models/data-licencies';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IDataLicencies } from '../models/data-licencies';
@@ -15,10 +15,12 @@ export class LicenciesService {
 
 
   public  getBanques() {
-    return this.http.get<IBanque[]>('./assets/datas/banque.json');
+    return this.http.get<IBanque[]>('./assets/datas/banques.json');
  }
 
-
+ public  getCartes() {
+  return this.http.get<ICarte[]>('./assets/datas/cartes.json');
+}
 
   public  getdatas() {
      return this.http.get<IDataLicencies[]>( this.url );

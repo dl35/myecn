@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { IBanque } from './../models/data-licencies';
+import { IBanque, ICarte } from './../models/data-licencies';
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormControl, FormBuilder, FormGroup } from '@angular/forms';
 import { LicenciesService } from '../services/licencies.service';
@@ -16,6 +16,7 @@ export class EditComponent implements OnInit {
 
 
   banques$: Observable<IBanque[]> ;
+  cartes$: Observable<ICarte[]> ;
 
 
   public dataForm: FormGroup ;
@@ -45,6 +46,7 @@ export class EditComponent implements OnInit {
     this.initForm();
     this.initDatas();
     this.banques$ = this.lserv.getBanques();
+    this.cartes$ = this.lserv.getCartes();
 
   }
 
@@ -60,8 +62,8 @@ export class EditComponent implements OnInit {
       date:  [ day , [Validators.required] ],
       sexe:  [ null , [Validators.required] ],
 
-      categorie:  [ null , [Validators.required] ],
-      rang:  [ null  , [Validators.required] ],
+      categorie:  [ null ],
+      rang:  [ null ],
       officiel:  [ null ],
       entr:  [ null  ],
 
@@ -83,7 +85,9 @@ export class EditComponent implements OnInit {
 
       commentaires:  [ null  ],
 
-      carte:  [ '0' ],
+      carte:  [ null ],
+      num_carte:  [ null ],
+
 
       auto_parentale:  [ false  ] ,
       cert_medical:  [ false  ],
@@ -152,7 +156,20 @@ export class EditComponent implements OnInit {
 }
 
 
+private change( $event )  {
+  if ( $event.value === undefined ) {
+      this.dataForm.get('rang').setValue( null )  ;
+      this.dataForm.get('categorie').setValue( null )  ;
+      this.dataForm.get('rang').clearValidators();
+      this.dataForm.get('categorie').clearValidators();
+  } else {
+      this.dataForm.get('rang').setValidators( [Validators.required] )  ;
+      this.dataForm.get('categorie').setValidators( [Validators.required] )  ;
+      this.dataForm.get('rang').updateValueAndValidity();
+      this.dataForm.get('categorie').updateValueAndValidity();
+  }
 
+}
 
 
 initDatas ( ) {

@@ -51,7 +51,10 @@ export interface IBanque {
     value: string;
 }
 
-
+export interface ICarte {
+    id: string;
+    value: string;
+}
 
 
 
