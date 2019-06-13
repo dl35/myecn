@@ -72,7 +72,7 @@ export class EngagementsComponent implements OnInit {
 
   public validate() {
       const datas = this.dataForm.getRawValue();
-console.log ( datas );
+
 
      this.engService.updateEngagements(this.ide, this.idl , datas ).pipe( takeUntil(this.destroyed$) ).subscribe(
       data => {   this.showSnackBar( data.message  , true); this.router.navigate(['competitions']); },
@@ -90,7 +90,7 @@ console.log ( datas );
       }
       this.snackBar.open(message, '', {
         duration: 1500,
-        announcementMessage: 'denis',
+        announcementMessage: 'message',
         panelClass: [style]
       });
     }

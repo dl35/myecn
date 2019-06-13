@@ -1,7 +1,7 @@
 import { DialogEngageComponent } from './dialog-engage/dialog-engage.component';
 import { CompetEngage, LicEngage } from './models/data-engage';
 import { MediaMatcher, BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
-import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { EngageService } from './services/engage.service';
 import { FormControl } from '@angular/forms';
@@ -12,7 +12,9 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-engagements',
   templateUrl: './engagements.component.html',
-  styleUrls: ['./engagements.component.scss']
+  styleUrls: ['./engagements.component.scss'],
+  encapsulation: ViewEncapsulation.None
+
 })
 export class EngagementsComponent implements OnInit, OnDestroy {
 
@@ -229,8 +231,8 @@ doFilter() {
     dialogRef.beforeClosed().subscribe(
       (result) => {
         if (result) {
-          this.eService.sendMails(this.idc);
-        }
+          this.eService.sendMails(this.idc) ;
+              }
       },
       () => { } ,
       () => { } ,
