@@ -113,53 +113,40 @@
         <h2 mat-subheader>Les Engagements ({{(engage$ | async)?.length}})</h2>
        
         <mat-list-item *ngFor="let item of engage$ | async ; last as last1" 
- 
-        style='margin-bottom:10px' class="mat-elevation-z4"     matRipple [matRippleCentered]="centered" [matRippleColor]="warn" >
+         style='margin-bottom:5px' class="mat-elevation-z4"     matRipple [matRippleCentered]="centered" [matRippleColor]="warn" >
     
-          <p matLine style="margin-top:4em">
+          <p matLine style="margin-top:2em">
             <span class="mat-body-2">{{item.prenom}} {{item.nom}} ({{item.categorie}}{{item.rang}}-{{item.sexe}})</span>
           </p>
-
-           <!--
-          <div *ngFor="let node of item.eng;" [ngSwitch]="node.presence">
-            <button mat-mini-fab *ngSwitchCase="'non'" color="warn"  ><s>{{node.day}}</s></button>
-            <button mat-mini-fab *ngSwitchCase="'oui'" color="primary" >{{node.day}}</button>
-            <button class="smallbutton" mat-mini-fab *ngSwitchDefault >{{node.day}}?</button>
-            &nbsp;&nbsp;
-          </div>
-          -->
           <div style='width:20vw;float:right;' class="mat-body-2" >
           <mat-grid-list cols="3" rowHeight="28px">
               <mat-grid-tile *ngFor="let node of item.eng;" [ngSwitch]="node.presence" >
-              <label *ngSwitchCase="'non'" style='border-radius:20%;background-color:red'color="warn"  ><s>&nbsp;&nbsp;{{node.day}}&nbsp;&nbsp;</s></label>
-              <label  *ngSwitchCase="'oui'" style='border-radius:20%;background-color:green'color="primary" >&nbsp;&nbsp;{{node.day}}&nbsp;&nbsp;</label>
-              <label *ngSwitchDefault  style='border-radius:20%;background-color:lightskyblue' >&nbsp;&nbsp;{{node.day}}?&nbsp;&nbsp;</label>
+              <label *ngSwitchCase="'non'" style='border-radius:20%;background-color:red'color="warn" matTooltip="absent" ><s>&nbsp;&nbsp;{{node.day}}&nbsp;&nbsp;</s></label>
+              <label  *ngSwitchCase="'oui'" style='border-radius:20%;background-color:green'color="primary" matTooltip="présent" >&nbsp;&nbsp;{{node.day}}&nbsp;&nbsp;</label>
+              <label *ngSwitchDefault matTooltip="en attente"  style='border-radius:20%;background-color:lightskyblue' >&nbsp;&nbsp;{{node.day}}?&nbsp;&nbsp;</label>
               </mat-grid-tile>
             </mat-grid-list>
           </div>
         
-          <div matLine style='margin-bottom:2em;' >
-            &nbsp;
+          <div matLine style='margin-bottom:1em;' >
+                   &nbsp;
             <button mat-icon-button style='margin-bottom:2em;' (click)="setNotification(item.id)" >
-              <mat-icon aria-label="Email"   matBadge="{{item.notification}}" matBadgeSize="medium" matBadgePosition="before"
+              <mat-icon aria-label="Email"   matBadge="{{item.notification}}" matBadgeSize="small" matBadgePosition="before"
               [ngStyle]="{color: item.notification > 0 ? 'green' : 'red' }"  >contact_mail</mat-icon>
             </button>
             &nbsp;&nbsp;
             <button mat-icon-button color="primary"  (click)="setExtranat(item.id)" *ngIf="item.notification > 0" >
-              <mat-icon aria-label="Extranat" [ngStyle]="{color: item.extranat === 1 ? 'green' : 'red' }" matBadge="{{item.extranat}}" matBadgeSize="medium" matBadgePosition="before">save</mat-icon>
+              <mat-icon aria-label="Extranat" [ngStyle]="{color: item.extranat === 1 ? 'green' : 'red' }" matBadge="{{item.extranat}}" matBadgeSize="small" matBadgePosition="before">save</mat-icon>
             </button>
             <button mat-icon-button color="primary"  (click)="setDelete(item.id)"  *ngIf="item.notification === 0" >
               <mat-icon aria-label="Extranat" style='color:red' >delete</mat-icon>
             </button>
             
-           
-            &nbsp;&nbsp;&nbsp;&nbsp;
-   
-            <mat-form-field  style="min-width:10px;max-width:400px;width:100%"    > 
-              <input   matInput placeholder="" readonly value="{{item.commentaire}}" >
-            </mat-form-field>
-    
-          </div>
+            <button  *ngIf="item.commentaire.length > 0"  mat-icon-button color="primary"  matTooltip="{{item.commentaire}}"  >
+              <mat-icon aria-label="Comment" color="accent" >comment</mat-icon>
+            </button>
+
+                  </div>
     
           <mat-divider inset *ngIf="!last"></mat-divider>
         </mat-list-item>

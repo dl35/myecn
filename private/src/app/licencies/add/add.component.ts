@@ -14,6 +14,11 @@ export class AddComponent implements OnInit {
   meta = {
     sexe: ['F', 'H']
   };
+
+  maxDate: Date;
+  minDate: Date;
+  startDate: Date;
+
   constructor(private route: Router , private formBuilder: FormBuilder , private lserv: LicenciesService  ) { }
 
 
@@ -85,7 +90,9 @@ export class AddComponent implements OnInit {
      return { required: true };
 
 }
-
+cancelForm() {
+  this.route.navigate(['/licencies']);
+}
 saveForm() {
  const datas = this.dataForm.getRawValue();
   this.lserv.add( datas ).subscribe(

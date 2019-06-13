@@ -128,14 +128,14 @@
       </mat-form-field>
 
       <mat-form-field fxFlex="10" fxFlexOffset="1">
-        <mat-select placeholder="Categorie" formControlName="categorie" (selectionChange)="change($event)" >
+        <mat-select placeholder="Categorie" formControlName="categorie" (selectionChange)="setChange($event)" >
           <mat-option></mat-option>
           <mat-option *ngFor="let r of meta.categorie" [value]="r.value"  >{{r.name}} </mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field fxFlex="5" fxFlexOffset="1">
-        <mat-select placeholder="Rang" formControlName="rang" (selectionChange)="change($event)" >
+        <mat-select placeholder="Rang" formControlName="rang" (selectionChange)="setChange($event)" >
           <mat-option></mat-option>
           <mat-option *ngFor="let r of meta.rang" [value]="r">{{r}} </mat-option>
         </mat-select>
