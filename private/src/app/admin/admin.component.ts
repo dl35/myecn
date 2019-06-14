@@ -23,6 +23,12 @@ export class AdminComponent implements OnDestroy {
 
   }
 
+  public addtest() {
+    this.adService.addTest().subscribe() ;
+  }
+  public deltest() {
+    this.adService.delTest().subscribe() ;
+  }
 
 
   public deleteCompetitions() {

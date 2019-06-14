@@ -30,5 +30,14 @@ export class AdminService {
       return this.http.get<any>( uget ) ;
     }
 
+    public addTest() {
+      const uget = this.url + '/addtest' ;
+      return this.http.get<any>( uget ) ;
+    }
+
+    public delTest() {
+      const uget = this.url + '/deltest' ;
+      return this.http.get<any>( uget ) ;
+    }
 
 }
