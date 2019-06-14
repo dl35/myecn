@@ -156,7 +156,7 @@ export class EditComponent implements OnInit {
 }
 
 
-private change( $event )  {
+public setChange( $event )  {
   if ( $event.value === undefined ) {
       this.dataForm.get('rang').setValue( null )  ;
       this.dataForm.get('categorie').setValue( null )  ;

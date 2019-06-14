@@ -29,8 +29,10 @@
               <mat-divider></mat-divider>
              </mat-list>
              <p>
+            
           <mat-form-field *ngIf="data?.choixnages === true"  style='width:50vw' >
-              <textarea formControlName="commentaire" matInput placeholder="saisir le choix des nages ...."></textarea>
+              <textarea formControlName="commentaire" matInput placeholder="saisir le choix des nages ...." value="{{data?.commentaire}}" >
+              </textarea>
           </mat-form-field>
           </p>
         

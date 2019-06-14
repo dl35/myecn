@@ -67,8 +67,9 @@ export class EngageService {
     const datas = { notifyall : true } ;
     this.http.put<any>( uput , datas ).subscribe(
 
-      (res ) => {      const v =  this.subject$.value ; v.forEach( e  =>  e.notification =  1 + e.notification );
-                       this.subject$.next( v ) ;
+      (res ) => {   /*   const v =  this.subject$.value ; v.forEach( e  =>  e.notification =  1 + e.notification );
+                       this.subject$.next( v ) ; */
+                       this.getEngagement(id);
                    }
 
    ) ;
@@ -91,7 +92,7 @@ export class EngageService {
     const data = { notify : idext } ;
     this.http.put<any>( uput , data  ).subscribe(
       (res ) => { const v =  this.subject$.value ;  const index = v.findIndex( x =>  x.id === idext  ) ;
-        v[index].notification =  1 + v[index].notification ;
+        v[index].notification =  1 + +v[index].notification ;
         this.subject$.next( v ) ;
       }
      );
