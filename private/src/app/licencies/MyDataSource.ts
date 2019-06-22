@@ -116,7 +116,7 @@ export class MyDataSource extends DataSource<any> {
        return (  !this.allfilter.officiel && !this.allfilter.sexe &&
                  !this.allfilter.valide && !this.allfilter.categorie && !this.allfilter.type &&
                  !this.allfilter.paye && !this.allfilter.cert_medical &&
-                 !this.allfilter.fiche_medicale && !this.allfilter.auto_parentale )  ;
+                 !this.allfilter.fiche_medicale && !this.allfilter.auto_parentale  && !this.allfilter.inscription )  ;
 
     }
 
@@ -162,6 +162,16 @@ export class MyDataSource extends DataSource<any> {
                 } else { flag = false; }
             }
 
+            if ( !this.allfilter.inscription  ) {
+                flag = flag && true;
+            } else {
+                if (item.inscription === this.allfilter.inscription  ) {
+                    flag = flag && true;
+                } else { flag = false; }
+            }
+
+
+
             if ( !this.allfilter.type  ) {
                 flag = flag && true;
             } else {
@@ -206,12 +216,8 @@ export class MyDataSource extends DataSource<any> {
                     flag = flag && true;
                 } else { flag = false; }
             }
-
-
             return flag;
         });
-
-
 
         return datafilter;
     }

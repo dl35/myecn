@@ -36,7 +36,7 @@ export class LicenciesComponent implements OnInit  {
 
 
   public myfilter = {sexe: undefined, officiel: undefined, categorie: undefined, type: undefined, valide: undefined,
-  paye: undefined, auto_parentale: undefined, cert_medical: undefined, fiche_medicale: undefined };
+  paye: undefined, auto_parentale: undefined, cert_medical: undefined, fiche_medicale: undefined , inscription: undefined };
 
   public dataSource: MyDataSource = null;
   public displayedAllColumns: string[] = ['nom', 'prenom', 'categorie' , 'rang' , 'type'  , 'sexe',

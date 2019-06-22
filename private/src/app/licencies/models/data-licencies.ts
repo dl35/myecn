@@ -42,6 +42,7 @@ export interface IDataLicencies {
     photo: boolean;
     paye: boolean;
     reglement: boolean;
+    inscription: string;
 
     commentaires: string;
 }

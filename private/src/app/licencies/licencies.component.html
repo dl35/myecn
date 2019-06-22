@@ -190,11 +190,33 @@
 
 
    <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef>Actions</th>
-    <td mat-cell *matCellDef="let row">
-      <mat-icon  color='primary' (click)="editForm(row)" style='cursor: pointer' >edit</mat-icon>&nbsp;&nbsp;   
-      <mat-icon color='primary' *ngIf="!row.valide" (click)="deleteItem(row)" style='cursor: pointer'  >delete</mat-icon>
-  </td>
+      <th mat-header-cell *matHeaderCellDef   >  
+          <mat-form-field style="width:50px" matTooltip="ins" >
+              <mat-select placeholder="inscription"  color="primary" [(ngModel)]="myfilter.inscription"   (ngModelChange)="toFilter()" >
+                  <mat-option></mat-option>
+                <mat-option value="1" >Oui</mat-option>
+                <mat-option value="-1" >Non</mat-option>
+                <mat-option value="0" >Attente</mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+     </th>
+    <td mat-cell *matCellDef="let row"  [ngSwitch]="row.inscription" >
+   
+      <div *ngSwitchCase="'-1'" >
+      <mat-icon matTooltip='Non inscrit'  matTooltipClass="noninscrit" color='warn'  (click)="deleteItem(row)" style='cursor: pointer'  >delete</mat-icon>
+      </div>
+      
+      <div *ngSwitchCase="'1'" >
+          <mat-icon  color='primary' (click)="editForm(row)" style='cursor: pointer' >edit</mat-icon>&nbsp;&nbsp;   
+          <mat-icon  color='primary' matTooltip='Pas validé'  *ngIf="!row.valide" (click)="deleteItem(row)" style='cursor: pointer'  >delete</mat-icon>
+        </div>
+        <div *ngSwitchDefault >
+            <mat-icon matTooltip='Attente ?'  matTooltipClass="enattente" color='accent' (click)="deleteItem(row)" style='cursor: pointer'  >delete</mat-icon>
+            </div>
+      
+    </td>
+
   </ng-container>
 
   
