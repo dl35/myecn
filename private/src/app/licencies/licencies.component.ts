@@ -149,14 +149,13 @@ private removeItem( id ) {
 
 /*
 appendList( item ) {
-  
   const d = [...this.dataSource.datas]  ;
   d.push( item ) ;
   this.dataSource.datas = d ;
 
 }
 updateList( item ) {
- 
+
   const d = [...this.dataSource.datas]  ;
   const itemIndex = d.findIndex( it => it.id === item.id);
   d[itemIndex] = item ;
