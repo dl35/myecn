@@ -113,7 +113,7 @@ export class EditComponent implements OnInit {
       banque:  [ null ],
       type:  [ 'N' , [Validators.required]  ],
       valide:  [ false ],
-
+      inscription :[null]
 
 
     });
