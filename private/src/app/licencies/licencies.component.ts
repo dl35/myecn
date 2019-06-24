@@ -28,7 +28,7 @@ export class LicenciesComponent implements OnInit  {
 
 
   public myfilter = {sexe: undefined, officiel: undefined, categorie: undefined, type: undefined, valide: undefined,
-  paye: undefined, auto_parentale: undefined, cert_medical: undefined, fiche_medicale: undefined , inscription: undefined };
+  paye: undefined, auto_parentale: undefined, cert_medical: undefined, fiche_medicale: undefined , inscription: '1' };
 
   public dataSource: MyDataSource = null;
   public displayedAllColumns: string[] = ['nom', 'prenom', 'categorie' , 'rang' , 'type'  , 'sexe',
@@ -68,7 +68,7 @@ export class LicenciesComponent implements OnInit  {
 
   ngOnInit() {
     this.lserv.getdatas().subscribe(
-      (datas) =>  {  this.setDataSource( datas ) ; }
+      (datas) =>  {   this.setDataSource( datas ) ; }
     );
 
   }
@@ -79,6 +79,7 @@ private setDataSource( datas: IDataLicencies[] ) {
   this.dataSource = new MyDataSource( datas) ;
   this.dataSource.paginator = this.paginator;
   this.dataSource.sort = this.sort;
+  this.dataSource.allfilter = this.myfilter;
 
 }
 
