@@ -142,7 +142,7 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
       this.eMailto.sendMail( v ).pipe(
         takeUntil(this.destroyed$)
        ).subscribe(
-          ( response )  => {  this.dataForm.reset(); }  ,
+          ( response )  => { if ( v.mode === 'i' ) { this.dataForm.get('email').reset(); } else { this.dataForm.reset(); } }  ,
           ( err ) =>  {
           // console.log(err.error);
           // console.log(err.name);
