@@ -1,0 +1,68 @@
+<div class="mat-elevation-z10" fxLayout="column" style="margin:15px" fxLayoutAlign="center center">
+  <form name="form" autocomplete="off" [formGroup]="dataForm" novalidate>
+
+    <div fxLayout="column wrap" fxLayout.lt-md="column wrap" fxLayoutGap="5px" style='margin-top:5px'
+      fxLayoutAlign="center baseline">
+      <mat-form-field fxFlex="30">
+          <mat-select  placeholder="mode dev" name="dev" formControlName="dev">
+              <mat-option value="1">oui</mat-option>
+              <mat-option value="0">non</mat-option>
+          </mat-select>
+      </mat-form-field>
+      <mat-form-field fxFlex="70">
+        <input matInput placeholder="dev email" formControlName="dev_email" >
+        <mat-error>adresse email requise </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="column wrap" fxLayout.lt-md="column" fxLayoutGap="9px" fxLayoutAlign="center center"
+    style='margin-top:5px'>
+
+    <mat-form-field fxFlex="110">
+      <input matInput placeholder="date du forum" formControlName="dateforum" >
+      <mat-error>date du forum requis</mat-error>
+    </mat-form-field>
+
+    <mat-form-field fxFlex="110">
+      <input matInput placeholder="saison_enc" formControlName="saison_enc" >
+      <mat-error>saison encours requis (9 char.)</mat-error>
+    </mat-form-field>
+    <mat-form-field fxFlex="110">
+      <input matInput placeholder="saison_last" formControlName="saison_last" >
+      <mat-error>saison last requis (9 char.)</mat-error>
+    </mat-form-field>
+
+
+
+  </div>
+
+  <div fxLayout="column wrap" fxLayout.lt-md="column" fxLayoutGap="9px" fxLayoutAlign="center center"
+  style='margin-top:5px'>
+  <mat-form-field fxFlex="110">
+    <input matInput placeholder="tlicencies_encours" formControlName="tlicencies_encours" >
+    <mat-error>licencies encours requis (4 char.)</mat-error>
+  </mat-form-field>
+  <mat-form-field fxFlex="110">
+    <input matInput placeholder="tlicencies_last" formControlName="tlicencies_last" >
+    <mat-error>licencies last requis (4 char.)</mat-error>
+  </mat-form-field>
+
+  <mat-form-field fxFlex="40">
+      <mat-select  placeholder="table licencies" name="tlicencies" formControlName="tlicencies">
+          <mat-option value="tlicencies_encours">en cours</mat-option>
+          <mat-option value="tlicencies_last">last</mat-option>
+      </mat-select>
+   </mat-form-field>
+
+</div>
+
+<div fxLayout="row" fxLayoutAlign="center center">
+
+  <button mat-raised-button color="primary"   [disabled]="dataForm.invalid"
+    (click)="saveForm()" type="button">Valider</button>
+  <button mat-raised-button color="primary" fxFlexOffset='3' (click)="doquitte()" type="button">Quitter</button>
+</div>
+
+
+  </form>  
+</div>

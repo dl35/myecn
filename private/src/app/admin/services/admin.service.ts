@@ -9,6 +9,19 @@ export class AdminService {
     private url = '/api/private/toadmin' ;
     constructor(private http: HttpClient) { }
 
+    public getParams( ) {
+      const uget = this.url + '/params' ;
+      return this.http.get<any>( uget ) ;
+
+    }
+
+    public updateParams( datas ) {
+      return this.http.put<any>( this.url , datas ) ;
+
+    }
+
+
+
     public clearEngagements( ) {
       const upost = this.url + '/engagements' ;
       return this.http.delete<any>( upost ) ;

@@ -8,9 +8,17 @@ import { AdminComponent } from './admin.component';
 import { UsersComponent } from './users/users.component';
 import { EditComponent } from './users/edit/edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ParamsComponent } from './params/params.component';
 
 
+import { Routes, RouterModule } from '@angular/router';
 
+const routes: Routes = [
+  {
+    path: 'params',
+    component: ParamsComponent
+  }
+];
 
 
 @NgModule({
@@ -21,9 +29,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FlexLayoutModule,
     ScrollingModule,
     FormsModule,
-    ReactiveFormsModule
-
+    ReactiveFormsModule,
+    RouterModule.forChild(routes)
   ],
-  declarations: [AdminComponent, UsersComponent, EditComponent]
+  exports: [RouterModule],
+  declarations: [AdminComponent, UsersComponent, EditComponent, ParamsComponent]
 })
 export class AdminModule { }

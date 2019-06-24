@@ -2,6 +2,7 @@ import { AdminService } from './services/admin.service';
 import { Component,  OnDestroy  } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
+import { Router } from '@angular/router';
 
 export interface Tile {
   color: string;
@@ -19,7 +20,7 @@ export class AdminComponent implements OnDestroy {
 
 
   loading = false;
-  constructor(public dialog: MatDialog, private adService: AdminService ) {
+  constructor(public dialog: MatDialog, private adService: AdminService , private route: Router ) {
 
   }
 
@@ -30,6 +31,11 @@ export class AdminComponent implements OnDestroy {
     this.adService.delTest().subscribe() ;
   }
 
+  public setParams() {
+
+      this.route.navigate(['admin/params']);
+
+  }
 
   public deleteCompetitions() {
     const dialogRef = this.dialog.open(DialogConfirmComponent, {

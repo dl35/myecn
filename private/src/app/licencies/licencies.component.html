@@ -203,11 +203,11 @@
      </th>
     <td mat-cell *matCellDef="let row"  [ngSwitch]="row.inscription" >
    
-      <div *ngSwitchCase="'-1'" >
+      <div *ngSwitchCase="-1" >
       <mat-icon matTooltip='Non inscrit'  matTooltipClass="noninscrit" color='warn'  (click)="deleteItem(row)" style='cursor: pointer'  >delete</mat-icon>
       </div>
       
-      <div *ngSwitchCase="'1'" >
+      <div *ngSwitchCase="1" >
           <mat-icon  color='primary' (click)="editForm(row)" style='cursor: pointer' >edit</mat-icon>&nbsp;&nbsp;   
           <mat-icon  color='primary' matTooltip='Pas validé'  *ngIf="!row.valide" (click)="deleteItem(row)" style='cursor: pointer'  >delete</mat-icon>
         </div>

@@ -15,14 +15,6 @@ import { Router } from '@angular/router';
   templateUrl: './licencies.component.html',
   styleUrls: ['./licencies.component.scss']
 })
-/*
-export interface IFilter {
-  sexe: 'F' | 'H' | undefined ;
-  categorie: string ;
-  type: 'R' | 'N' | undefined ;
-  valide: boolean ;
-}
-*/
 
 export class LicenciesComponent implements OnInit  {
 
@@ -76,13 +68,10 @@ export class LicenciesComponent implements OnInit  {
 
   ngOnInit() {
     this.lserv.getdatas().subscribe(
-      (datas) =>  {   this.setDataSource( datas ) ; }
+      (datas) =>  {  this.setDataSource( datas ) ; }
     );
 
-
   }
-
-
 
 
 
@@ -106,14 +95,10 @@ applyFilter(filterValue: string) {
 }
 
 editForm(row) {
- // this.edited = true ;
- // this.item = row;
   this.lserv.item = row ;
   this.route.navigate(['/licencies/edit']);
 
 }
-
-
 
 
 deleteItem( item ) {
@@ -138,31 +123,11 @@ deleteItem( item ) {
 
 
 
-
-
-
 private removeItem( id ) {
   const d = [...this.dataSource.datas]  ;
   this.dataSource.datas =  d.filter( item => item.id !== id);
 }
 
-
-/*
-appendList( item ) {
-  const d = [...this.dataSource.datas]  ;
-  d.push( item ) ;
-  this.dataSource.datas = d ;
-
-}
-updateList( item ) {
-
-  const d = [...this.dataSource.datas]  ;
-  const itemIndex = d.findIndex( it => it.id === item.id);
-  d[itemIndex] = item ;
-  this.dataSource.datas = d ;
-
-}
-*/
 
 
 

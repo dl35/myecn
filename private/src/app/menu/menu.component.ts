@@ -32,7 +32,6 @@ ngOnInit() {
 
       // admin, user, ent
       const profile = sessionStorage.getItem('profile') ;
-      console.log( profile );
       this.role[profile] = true ;    // admin, user, ent
 
 
