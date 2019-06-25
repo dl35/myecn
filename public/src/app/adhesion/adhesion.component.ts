@@ -48,13 +48,15 @@ export class AdhesionComponent implements OnInit , OnDestroy {
     const data = this.dataForm.getRawValue();
     if ( this.id ) {
       this.adhesion.updateLicencies(this.id, data).pipe( takeUntil(this.destroyed$) ).subscribe(
-        res => { this.showSnackBar(res.message, true);  this.router.navigate(['/']); } ,
+// tslint:disable-next-line: max-line-length
+        res => { this.showSnackBar(res.message, true);  this.router.navigate(['/']).then(result => { window.location.href = 'http://www.ecnatation.fr/'; }); } ,
         error => {  this.showSnackBar(error.error.message, false);  }
        ) ;
     } else {
 
       this.adhesion.addLicencies(data).pipe( takeUntil(this.destroyed$) ).subscribe(
-        res => { this.showSnackBar(res.message, true);  this.router.navigate(['/']); } ,
+// tslint:disable-next-line: max-line-length
+        res => { this.showSnackBar(res.message, true);  this.router.navigate(['/']).then(result => { window.location.href = 'http://www.ecnatation.fr/'; }); } ,
         error => { this.showSnackBar(error.error.message, false);  }
        ) ;
     }
