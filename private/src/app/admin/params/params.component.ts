@@ -45,7 +45,7 @@ export class ParamsComponent implements OnInit {
       this.dataForm.setValue( d , { onlySelf: true } );
                 }
 
-  private saveForm() {
+  public saveForm() {
       const data = this.dataForm.getRawValue() ;
         this.adService.updateParams (data ).subscribe(
           (value) =>  { this.route.navigate(['admin']); },
@@ -54,7 +54,7 @@ export class ParamsComponent implements OnInit {
 
                 }
 
-  private doquitte() {
+  public doquitte() {
     this.route.navigate(['admin']);
   }
 
