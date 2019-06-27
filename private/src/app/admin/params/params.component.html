@@ -1,62 +1,61 @@
 <div class="mat-elevation-z10" fxLayout="column" style="margin:15px" fxLayoutAlign="center center">
   <form name="form" autocomplete="off" [formGroup]="dataForm" novalidate>
 
-    <div fxLayout="column wrap" fxLayout.lt-md="column wrap" fxLayoutGap="5px" style='margin-top:5px'
+    <div fxLayout="row" fxLayout.lt-md="column wrap" fxLayoutGap="5px" style='margin-top:8px'
       fxLayoutAlign="center baseline">
-      <mat-form-field fxFlex="30">
-          <mat-select  placeholder="mode dev" name="dev" formControlName="dev">
-              <mat-option value="1">oui</mat-option>
-              <mat-option value="0">non</mat-option>
+      <mat-form-field fxFlex="15" fxFlexOffset="3" >
+          <mat-select  placeholder="Mode" name="dev" formControlName="dev">
+              <mat-option value="1">DEV</mat-option>
+              <mat-option value="0">PROD</mat-option>
           </mat-select>
       </mat-form-field>
-      <mat-form-field fxFlex="70">
-        <input matInput placeholder="dev email" formControlName="dev_email" >
+      <mat-form-field fxFlex="70" fxFlexOffset="3" >
+        <input matInput placeholder="Dev email" formControlName="dev_email" >
         <mat-error>adresse email requise </mat-error>
       </mat-form-field>
     </div>
+    <div fxLayout="row" fxLayout.lt-md="column wrap" fxLayoutAlign="center baseline" >
 
-    <div fxLayout="column wrap" fxLayout.lt-md="column" fxLayoutGap="9px" fxLayoutAlign="center center"
-    style='margin-top:5px'>
 
-    <mat-form-field fxFlex="110">
-      <input matInput placeholder="date du forum" formControlName="dateforum" >
+    <mat-form-field fxFlex="70" fxFlexOffset="3" >
+      <input matInput placeholder="Date du forum" formControlName="dateforum" >
       <mat-error>date du forum requis</mat-error>
     </mat-form-field>
 
-    <mat-form-field fxFlex="110">
-      <input matInput placeholder="saison_enc" formControlName="saison_enc" >
-      <mat-error>saison encours requis (9 char.)</mat-error>
+    <mat-form-field fxFlex="15" fxFlexOffset="3" >
+      <input matInput placeholder="saison encours" maxlength="9" formControlName="saison_enc" >
+      <mat-error>requis (9 char.)</mat-error>
     </mat-form-field>
-    <mat-form-field fxFlex="110">
-      <input matInput placeholder="saison_last" formControlName="saison_last" >
-      <mat-error>saison last requis (9 char.)</mat-error>
+    <mat-form-field fxFlex="15" fxFlexOffset="3" >
+      <input matInput placeholder="saison passées" maxlength="9" formControlName="saison_last" >
+      <mat-error>requis (9 char.)</mat-error>
     </mat-form-field>
 
 
 
   </div>
 
-  <div fxLayout="column wrap" fxLayout.lt-md="column" fxLayoutGap="9px" fxLayoutAlign="center center"
+  <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="9px" fxLayoutAlign="center baseline"
   style='margin-top:5px'>
-  <mat-form-field fxFlex="110">
-    <input matInput placeholder="tlicencies_encours" formControlName="tlicencies_encours" >
+  <mat-form-field fxFlex="20">
+    <input matInput placeholder="tlicencies_encours" maxlength="4" formControlName="tlicencies_encours" >
     <mat-error>licencies encours requis (4 char.)</mat-error>
   </mat-form-field>
-  <mat-form-field fxFlex="110">
-    <input matInput placeholder="tlicencies_last" formControlName="tlicencies_last" >
+  <mat-form-field fxFlex="20">
+    <input matInput placeholder="tlicencies_last" maxlength="4" formControlName="tlicencies_last" >
     <mat-error>licencies last requis (4 char.)</mat-error>
   </mat-form-field>
 
-  <mat-form-field fxFlex="40">
-      <mat-select  placeholder="table licencies" name="tlicencies" formControlName="tlicencies">
-          <mat-option value="tlicencies_encours">en cours</mat-option>
-          <mat-option value="tlicencies_last">last</mat-option>
+  <mat-form-field fxFlex="50">
+      <mat-select  placeholder="licencies" name="tlicencies" formControlName="tlicencies">
+          <mat-option value="tlicencies_encours">tlicencies_encours</mat-option>
+          <mat-option value="tlicencies_last">tlicencies_last</mat-option>
       </mat-select>
    </mat-form-field>
 
 </div>
 
-<div fxLayout="row" fxLayoutAlign="center center">
+<div fxLayout="row" fxLayoutAlign="center center" style="margin-top:10px;margin-bottom: 8px " >
 
   <button mat-raised-button color="primary"   [disabled]="dataForm.invalid"
     (click)="saveForm()" type="button">Valider</button>

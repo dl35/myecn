@@ -83,6 +83,14 @@ private setDataSource( datas: IDataLicencies[] ) {
 
 }
 
+tostats() {
+  window.open('/api/public/scripts/stats.php' , '_blank' );
+}
+
+tocsv() {
+  window.open('/api/public/scripts/csv.php' , '_blank' );
+}
+
  toFilter() {
   if (!this.dataSource) { return; }
   this.dataSource.allfilter = this.myfilter;

@@ -1,5 +1,5 @@
 import { AdminService } from './services/admin.service';
-import { Component,  OnDestroy  } from '@angular/core';
+import { Component,  OnDestroy, OnInit  } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
 import { Router } from '@angular/router';
@@ -16,14 +16,18 @@ export interface Tile {
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 })
-export class AdminComponent implements OnDestroy {
+export class AdminComponent implements OnInit, OnDestroy {
 
 
+   mode = null;
   loading = false;
   constructor(public dialog: MatDialog, private adService: AdminService , private route: Router ) {
 
   }
 
+  ngOnInit() {
+    this.adService.getParams().subscribe( (d) => (d.dev === '0' ) ? this.mode = 'PROD'  : this.mode = 'DEV' ) ;
+  }
   public addtest() {
     this.adService.addTest().subscribe() ;
   }

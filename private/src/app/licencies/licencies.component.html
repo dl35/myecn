@@ -6,9 +6,15 @@
               <mat-icon>close</mat-icon>
             </button>
           </mat-form-field>
-           <button fxFlexOffset="3"  mat-mini-fab color="primary" routerLink="/licencies/add"  >
+           <button matTooltip="ajouter" fxFlexOffset="3"  mat-mini-fab color="primary" routerLink="/licencies/add"  >
             <mat-icon>add</mat-icon>
-            </button>
+           </button>
+           <button matTooltip="fichier csv" fxFlexOffset="1"  mat-mini-fab color="accent" (click)="tocsv()"   >
+            <mat-icon>backup</mat-icon>
+           </button>
+           <button matTooltip="les stats" fxFlexOffset="1"  mat-mini-fab color="accent" (click)="tostats()"   >
+            <mat-icon>bar_chart</mat-icon>
+           </button>
          </div>
  <div>
   <table mat-table [dataSource]="dataSource" matSort matSortActive="nom" matSortDisableClear matSortDirection="asc"  >

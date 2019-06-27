@@ -35,8 +35,9 @@ export class ParamsComponent implements OnInit {
       saison_enc: [ null , [Validators.required , Validators.minLength(9) , Validators.maxLength(9)] ],
       saison_last: [ null , [ Validators.required ,   Validators.minLength(9) , Validators.maxLength(9)]] ,
       dateforum: [ null , [Validators.required, Validators.minLength(5)] ],
-      tlicencies_encours: [ null  , [Validators.required,   Validators.minLength(4) , Validators.maxLength(4)] ],
-      tlicencies_last: [null, [Validators.required,   Validators.minLength(4) , Validators.maxLength(4)] ],
+
+      tlicencies_encours: [ null  , [Validators.required, Validators.pattern('^(20)[0-9]{2}$') ] ],
+      tlicencies_last: [null, [Validators.required, Validators.pattern('^(20)[0-9]{2}$') ] ],
       tlicencies: [ null  , [Validators.required] ],
           });
                  }
