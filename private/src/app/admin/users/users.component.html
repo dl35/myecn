@@ -1,9 +1,28 @@
+<mat-toolbar color="primary">
+Les Logins
+<div fxHide.lt-md="true"  fxLayout="column"  fxFlex="100" fxLayoutAlign="center center" style='margin-top: 10px'  >
+ 
+
+    <div fxLayout="row" fxFlex="100" fxLayoutAlign="center center"  style='font-size: 14px'   >
+
+  <mat-form-field fxFlex="60" fxFlexOffset="3" >
+  <mat-label>Profile</mat-label>
+  <mat-select [(ngModel)]="filtre.profile"  >
+    <mat-option *ngFor="let p of profiles" [value]="p.value">
+      {{p.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+    </div>
+  </div>
+
+</mat-toolbar>
 <app-edit  *ngIf="dataSelected" [data]='dataSelected' (quitte)='dataSelected=null' ></app-edit>
 
 <div style='width:80%;margin:0 auto' *ngIf="!dataSelected" >
     <mat-list>
-        <h2 mat-subheader>Les Logins</h2>
-        <mat-list-item *ngFor="let data of datas$ | async ; last as last" (click)="edit(data)"
+        
+        <mat-list-item *ngFor="let data of filteredStates$ | async ; last as last" (click)="edit(data)"
             style='margin-bottom:20px' class="mat-elevation-z8" matRipple [matRippleCentered]="centered"
             [matRippleColor]="warn">
             <button mat-icon-button color='warn' (click)="delete(data);$event.stopPropagation()">
