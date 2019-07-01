@@ -15,6 +15,9 @@
            <button matTooltip="les stats" fxFlexOffset="1"  mat-mini-fab color="accent" (click)="tostats()"   >
             <mat-icon>bar_chart</mat-icon>
            </button>
+           <button matTooltip="refresh" fxFlexOffset="1"  mat-mini-fab color="primary" (click)="refresh()"   >
+              <mat-icon>refresh</mat-icon>
+             </button>
          </div>
  <div>
   <table mat-table [dataSource]="dataSource" matSort matSortActive="nom" matSortDisableClear matSortDirection="asc"  >

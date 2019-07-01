@@ -73,7 +73,13 @@ export class LicenciesComponent implements OnInit  {
 
   }
 
+refresh() {
+  this.lserv.name = '' ;
+  this.lserv.getdatas().subscribe(
+    (datas) =>  {   this.setDataSource( datas ) ; }
+  );
 
+}
 
 private setDataSource( datas: IDataLicencies[] ) {
   this.dataSource = new MyDataSource( datas) ;

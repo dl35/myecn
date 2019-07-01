@@ -35,6 +35,11 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.adService.delTest().subscribe() ;
   }
 
+  getdoc() {
+    window.open('/api/public/scripts/doc.pdf' , '_blank' );
+  }
+
+
   public setParams() {
 
       this.route.navigate(['admin/params']);

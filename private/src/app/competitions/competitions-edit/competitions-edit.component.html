@@ -108,7 +108,7 @@
       </div>
 
       <div fxFlexOffset="3" fxFlex="10">
-        <mat-checkbox formControlName="verif">Vérification</mat-checkbox>
+        <mat-checkbox  [disabled]="!dataForm.get('id').value"  formControlName="verif">Vérification</mat-checkbox>
       </div>
 
 
