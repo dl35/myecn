@@ -199,16 +199,12 @@ cancelForm() {
 
 
 saveForm() {
+const n = this.dataForm.get('nom').value;
 const datas = this.dataForm.getRawValue();
 this.lserv.update( datas ).subscribe(
-    () => { this.route.navigate(['/licencies']); },
-       ()  => {  }
+    () =>  { this.lserv.name = n ; this.route.navigate(['/licencies']); },
+    () => {  }
    );
-}
 
-
-
-
-
-
+  }
 }

@@ -97,7 +97,7 @@ export class RecordsComponent implements OnInit {
             && t.distance === test.fdists && (t.age.startsWith('C') === false && t.age.startsWith('R') === false)
           ))).subscribe(
 
-            (datas) => { this.datas = datas; console.log(datas); },
+            (datas) => { this.datas = datas; },
             () => { },
             () => { setTimeout(() => { this.loading$.next(false); }, 500); }
 

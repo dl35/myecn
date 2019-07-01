@@ -1,30 +1,4 @@
-
-
-export class DataCompet implements IDataCompet {
-    bassin = '25';
-    categories: Categories = {'av': true, 'dep': true, 'je': true, 'ma': true, 'nat': true, 'reg': true};
-    choixnages = false;
-    commentaires = '';
-    debut: Date = null;
-    nb = 0 ;
-    entraineur = '';
-    fin: Date  = null;
-    heure = '07';
-    id = null;
-    lien = '';
-    lieu = '';
-    limite: Date  = null;
-    max = 0;
-    nom = '';
-    type = 'compet';
-    verif = false;
-    next ? = true;
-
-    constructor() { }
-
-}
-
- interface Categories {
+interface Categories {
 
     av: boolean;
     dep: boolean;
@@ -56,3 +30,29 @@ export class DataCompet implements IDataCompet {
     next?: boolean;
 
 }
+
+export class DataCompet implements IDataCompet {
+    bassin = '25';
+    categories: Categories = {'av': true, 'dep': true, 'je': true, 'ma': true, 'nat': true, 'reg': true};
+    choixnages = false;
+    commentaires = '';
+    debut: Date = null;
+    nb = 0 ;
+    entraineur = '';
+    fin: Date  = null;
+    heure = '07';
+    id = null;
+    lien = '';
+    lieu = '';
+    limite: Date  = null;
+    max = 0;
+    nom = '';
+    type = 'compet';
+    verif = false;
+    next ? = true;
+
+    constructor() { }
+
+}
+
+

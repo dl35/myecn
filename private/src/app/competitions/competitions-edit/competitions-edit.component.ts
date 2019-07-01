@@ -1,12 +1,10 @@
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { CompetitionsService } from './../services/competitions.service';
 import { DataCompet } from '../models/data-compet';
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { MessageResponse, MessageType } from '../models/message-response';
-import { subscribeOn } from 'rxjs/operators';
 
 
 
@@ -17,13 +15,11 @@ import { subscribeOn } from 'rxjs/operators';
 })
 export class CompetitionsEditComponent implements OnInit {
 
-//  @Output() quitte = new EventEmitter<MessageResponse>();
 
   public dataForm: FormGroup ;
 
+  @Output() quitte = new EventEmitter<Boolean>();
 
-
-/*
   @Input()
   set data(data: DataCompet) {
 
@@ -38,9 +34,9 @@ export class CompetitionsEditComponent implements OnInit {
   get data(): DataCompet {
         return this.data;
   }
-*/
 
-  constructor(private formBuilder: FormBuilder, private compService: CompetitionsService, private route: Router ) {
+
+  constructor(private formBuilder: FormBuilder, private compService: CompetitionsService ) {
     this.createForm() ;
 
   }
@@ -57,9 +53,8 @@ export class CompetitionsEditComponent implements OnInit {
 
 
 
-    ngOnInit() {
+   ngOnInit() {
     this.entr$  = this.compService.getEnt();
-    this.compService.currentDatas$.subscribe( (d)  =>  this.setForm(d) ) ;
   }
 
     public setForm( d ) {
@@ -80,7 +75,7 @@ export class CompetitionsEditComponent implements OnInit {
 
 
   doquitte() {
-    this.route.navigate(['competitions']);
+    this.quitte.emit( true );
   }
 
 
@@ -89,17 +84,11 @@ export class CompetitionsEditComponent implements OnInit {
   saveForm() {
     const data = this.dataForm.getRawValue() ;
     if ( data.id === null ) {
-      delete data.id;
-      return this.compService.post( data ).subscribe(
-        (value) =>  { this.doquitte(); },
-        (error) =>  {  }
-      );
-   } else {
-    return this.compService.put( data ).subscribe(
-      (value) =>  { this.doquitte(); },
-      (error) =>  {  }
-    );
-  }
+      this.compService.post( data );
+      } else {
+      this.compService.put( data );
+      }
+      this.doquitte();
 
   }
 

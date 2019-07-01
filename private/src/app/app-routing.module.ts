@@ -18,8 +18,7 @@ export const routes: Routes = [
 
         { path: 'licencies', loadChildren: () => import('./licencies/licencies.module').then(m => m.LicenciesModule) },
         { path: 'niveau', loadChildren: () => import('./niveau/niveau.module').then(m => m.NiveauModule) },
-        { path: 'competitions', component: CompetitionsComponent } ,
-        { path: 'competitions/edit', component: CompetitionsEditComponent } ,
+        { path: 'competitions', component: CompetitionsComponent },
         { path: 'engagements', component: EngagementsComponent },
         { path: 'mailto', component: MailtoComponent },
         { path: 'records', loadChildren: () => import('./records/records.module').then(m => m.RecordsModule) },

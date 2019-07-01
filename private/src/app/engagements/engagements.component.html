@@ -122,7 +122,7 @@
           <mat-grid-list cols="3" rowHeight="28px">
               <mat-grid-tile *ngFor="let node of item.eng;" [ngSwitch]="node.presence" >
               <label *ngSwitchCase="'non'" style='border-radius:20%;background-color:red'color="warn" matTooltip="absent" ><s>&nbsp;&nbsp;{{node.day}}&nbsp;&nbsp;</s></label>
-              <label  *ngSwitchCase="'oui'" style='border-radius:20%;background-color:green'color="primary" matTooltip="présent" >&nbsp;&nbsp;{{node.day}}&nbsp;&nbsp;</label>
+              <label  *ngSwitchCase="'oui'" style='border-radius:20%;color:white;background-color:green'color="primary" matTooltip="présent" >&nbsp;&nbsp;{{node.day}}&nbsp;&nbsp;</label>
               <label *ngSwitchDefault matTooltip="en attente"  style='border-radius:20%;background-color:lightskyblue' >&nbsp;&nbsp;{{node.day}}?&nbsp;&nbsp;</label>
               </mat-grid-tile>
             </mat-grid-list>

@@ -81,6 +81,14 @@ private setDataSource( datas: IDataLicencies[] ) {
   this.dataSource.sort = this.sort;
   this.dataSource.allfilter = this.myfilter;
 
+    if ( this.lserv.name ) {
+      const n = this.lserv.name ;
+      this.lserv.name = '';
+      this.applyFilter( n );
+
+    }
+
+
 }
 
 tostats() {

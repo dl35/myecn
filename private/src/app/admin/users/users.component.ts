@@ -1,18 +1,20 @@
-import { ILogin } from './../models/iLogin';
-import { Observable, combineLatest, of } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { ILogin ,Ifilter } from './../models/iLogin';
+import { Observable, combineLatest, of, BehaviorSubject } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UsersService } from '../services/users.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogConfirmComponent } from 'src/app/dialog-confirm/dialog-confirm.component';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css'],
 })
-export class UsersComponent implements OnInit {
-  filtre = { profile: null , txt: '' };
+export class UsersComponent implements OnInit, OnDestroy {
+
+  filtre: Ifilter = { profile: null , user: ''} ;
+
 
   profiles = [
     {value: null, viewValue: '-'},
@@ -21,44 +23,45 @@ export class UsersComponent implements OnInit {
     {value: 'ent', viewValue: 'entraineur'}
   ];
 
-  filter$: Observable<any>;
+  subject$ = new BehaviorSubject(this.filtre);
   filteredStates$: Observable<ILogin[]>;
   datas$: Observable<ILogin[]> ;
+
+
   dataSelected: ILogin;
   constructor(private uService: UsersService , public dialog: MatDialog) {
-  this.datas$ = this.uService.datas$ ;
-  this.filter$ = of( this.filtre ) ;
-  this.filteredStates$ = combineLatest( [this.datas$, this.filter$] ).pipe(
-    map(([s, d]) => s.filter( ts => ts.profile === d.profile ))
-  );
-
-  }
 
 
-  /*
-  https://blog.angulartraining.com/dynamic-filtering-with-rxjs-and-angular-forms-a-tutorial-6daa3c44076a
-states$: Observable<State[]>;
-filteredStates$: Observable<State[]>;
-filter: FormControl;
-filter$: Observable<string>;
-
-constructor(private http: HttpClient) {
-  this.states$ = http.get<State[]>('http://localhost:8000/states');
-  this.filter = new FormControl('');
-  this.filter$ = this.filter.valueChanges;
-  this.filteredStates$ = combineLatest(this.states$, this.filter$).pipe(
-    map(([states, filterString]) => states.filter(state => state.name.indexOf(filterString) !== -1))
-  );
-}
-  */
-  doFilter() {
-// tslint:disable-next-line: max-line-length
-console.log( this.filtre.profile ) ;
-    this.datas$.pipe( switchMap( item =>   item.filter( d =>   ( this.filtre.profile  === null  ) ? (d) : (  d.profile  === this.filtre.profile ) )) );
   }
 
   ngOnInit() {
     this.uService.get();
+    this.datas$ = this.uService.datas$ ;
+
+    this.filteredStates$ = combineLatest( [this.datas$, this.subject$] ).pipe(
+       map(([s, d]) =>   this.myfiltre( s , d ) )
+     );
+
+
+  }
+  clearfiltre() {
+    this.filtre.user = '' ;
+    this.subject$.next(this.filtre);
+  }
+  tokeyup( value ) {
+      this.subject$.next(this.filtre);
+  }
+
+
+  myfiltre(s , d ) {
+    if (d.profile) {
+      s = s.filter( ts => ts.profile === d.profile );
+    }
+    if (d.user) {
+      s = s.filter( n => n.user.indexOf(d.user.toLowerCase()) !== -1 );
+    }
+    return s;
+
   }
 
   edit( data) {
@@ -69,8 +72,6 @@ console.log( this.filtre.profile ) ;
     const d: ILogin  = {'id' : '-1' , 'user': '' , 'passwd': '' , 'profile': 'user'};
     this.dataSelected = d ;
   }
-
-
 
   delete( data ) {
     const dialogRef = this.dialog.open(DialogConfirmComponent, {
@@ -112,5 +113,11 @@ tomail( data ) {
 }
 
 
+ngOnDestroy(): void {
+
+    this.subject$.next({ profile: null , user: ''});
+    this.subject$.complete();
+
+  }
 
 }

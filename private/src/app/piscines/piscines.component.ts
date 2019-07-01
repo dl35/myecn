@@ -98,7 +98,7 @@ export class PiscinesComponent implements OnInit {
 
     this.pservices.getdatas(b).subscribe(
 
-      (datas) => { this.generateDatas(datas); console.log(datas.length); },
+      (datas) => { this.generateDatas(datas);  },
       (error) => console.log(error)
 
     );

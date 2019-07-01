@@ -1,13 +1,18 @@
 <mat-toolbar color="primary">
 Les Logins
-<div fxHide.lt-md="true"  fxLayout="column"  fxFlex="100" fxLayoutAlign="center center" style='margin-top: 10px'  >
+<div fxHide.lt-md="true" fxFlex fxLayout="column"  fxLayoutAlign="center center" style='margin-top: 10px'  >
  
 
-    <div fxLayout="row" fxFlex="100" fxLayoutAlign="center center"  style='font-size: 14px'   >
-
-  <mat-form-field fxFlex="60" fxFlexOffset="3" >
+    <div fxLayout="row" fxFlex fxLayoutAlign="center baseline"  style='font-size: 14px'   >
+      <mat-form-field fxFlex="80" fxFlexOffset="1" >
+        <input   matInput (keyup)="tokeyup(filtre.user)" placeholder="email" [(ngModel)]="filtre.user">
+        <button mat-button *ngIf="filtre.user" matSuffix mat-icon-button aria-label="Clear" (click)="clearfiltre()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+  <mat-form-field fxFlex="20" fxFlexOffset="3" >
   <mat-label>Profile</mat-label>
-  <mat-select [(ngModel)]="filtre.profile"  >
+  <mat-select [(ngModel)]="filtre.profile" (ngModelChange)="subject$.next(filtre)"  >
     <mat-option *ngFor="let p of profiles" [value]="p.value">
       {{p.viewValue}}
     </mat-option>

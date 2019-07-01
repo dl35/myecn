@@ -13,66 +13,65 @@ export class CompetitionsService {
 
   private subject$ = new BehaviorSubject<DataCompet[]>([]) ;
   public datas$: Observable<DataCompet[]> =  this.subject$.asObservable();
-//  private cache: DataCompet[] = null;
+  private url = '/api/private/tocompetitions' ;
+  private dataStore: Array<DataCompet> ;
 
 
-  private messageData = new BehaviorSubject<DataCompet>(null);
-  public currentDatas$ = this.messageData.asObservable();
-
-
-  filtre = { next: true, type: null, verif: null, txt: '' };
 
   constructor(private http: HttpClient) {
-     // this.getListAll() ;
+      this.dataStore = [] ;
+      this.get();
+   }
 
+
+   private get( ) {
+    this.http.get<DataCompet[]>( this.url ).pipe( shareReplay(1) )
+    .subscribe(
+      data => {  this.dataStore = data;  this.subject$.next( data ) ; },
+    );
   }
 
-
-
-
-  private url = '/api/private/tocompetitions' ;
-
-
-
-  public setMessageData(data: DataCompet) {
-    this.messageData.next( data ) ;
-  }
-
-
-
-
-  public getListAll() {
-
-            this.http.get<DataCompet[]>( this.url ).pipe( shareReplay(1) )
-            .subscribe(
-              res => {   this.subject$.next( res ) ; },
-            );
-
-      }
 
     public getList() {
-             return this.datas$ ;
+
+        return this.datas$ ;
     }
 
 
-    public setFiltre( filtre ) {
-        this.filtre = filtre ;
-    }
-
-
-    public post(json) {
-      return this.http.post<DataCompet>( this.url , json );
-    }
-    public put(json) {
-      const url = this.url + '/' + json.id;
-      return this.http.put<DataCompet>( url , json );
-    }
-
-  
-    public delete(id) {
-      const url = this.url + '/' + id;
-      return  this.http.delete<MessageResponse>( url ) ;
+    public post( data ) {
+      return this.http.post<DataCompet>(  this.url , data  ).subscribe( (d) => {
+        this.dataStore.push ( d );
+        this.subject$.next( this.dataStore ) ;
       }
+      );
+    }
+
+    public put( data ) {
+      const url = this.url + '/' + data.id;
+      return this.http.put<DataCompet>(  url , data ).subscribe( (d) => {
+        this.putCache( d );
+        this.subject$.next( this.dataStore ) ;
+      }
+      );
+    }
+    private putCache( data ) {
+      const index = this.dataStore.findIndex(item => item.id === data.id);
+      this.dataStore[index] = data;
+    }
+
+    public delete( id ) {
+      const url = this.url + '/' + id ;
+      return this.http.delete<MessageResponse>(  url   ).subscribe(data => {
+        this.deleteCache(id) ;
+        this.subject$.next( this.dataStore ) ;
+      } );
+    }
+
+    private deleteCache( id ) {
+      this.dataStore = this.dataStore.filter(obj => obj.id !== id );
+    }
+
+
 
       public getEnt() {
         const url = this.url + '/ent' ;

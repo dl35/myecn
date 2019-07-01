@@ -10,6 +10,7 @@ export class LicenciesService {
 
   private url = '/api/private/tolicencies' ;
   public item: IDataLicencies ;
+  public name: string;
 
   constructor(private http: HttpClient) { }
 

@@ -6,3 +6,10 @@ export interface ILogin {
     color?: string;
     profile: 'admin' | 'user' | 'ent' ;
 }
+
+
+export interface Ifilter {
+    profile: null | 'admin' | 'user' | 'ent' ;
+    user: string;
+
+}

@@ -1,37 +1,14 @@
-import { ActivatedRoute, Router } from '@angular/router';
 import { DataCompet } from './models/data-compet';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { MediaMatcher, BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/layout';
 import { CompetitionsService } from './services/competitions.service';
-import { Observable , Subscription, Subject } from 'rxjs';
-import { filter , distinctUntilChanged , takeUntil , shareReplay, map, switchMap} from 'rxjs/operators';
-import { FormControl } from '@angular/forms';
+import { Observable , BehaviorSubject, combineLatest } from 'rxjs';
+import { map} from 'rxjs/operators';
 
 import 'hammerjs';
 import { MatDialog } from '@angular/material/dialog';
-import { MatDrawer, MatSidenav } from '@angular/material/sidenav';
 
 import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';
-import { MessageType, MessageResponse } from './models/message-response';
-import { Location, PlatformLocation } from '@angular/common';
-
-
-/*
-@Pipe({
-  name: 'searchfilter'
-})
-@Injectable()
-export class SearchFilterPipe implements PipeTransform {
-  transform(items: any[], value: string): any[] {
-    if (!items || !value) {
-      return items;
-    }
-    return items.filter( e =>   (e.nom.toLowerCase() + ' ' + e.lieu.toLowerCase() ) .indexOf( value.toLowerCase() ) !== -1    );
-
-  }
-
-}
-*/
 
 
 
@@ -44,33 +21,27 @@ export class SearchFilterPipe implements PipeTransform {
 export class CompetitionsComponent implements OnInit , OnDestroy  {
 
 
-  @ViewChild('sidenav', {static: false} )
-   private sidenav: MatSidenav ;
 
-  filtre = { next: true , type: null, verif: null , txt: '' };
+  filtre = { next: 'true' , type: null, verif: null , txt: '' };
 
-  // searchfilter:searchText
-  private searchControl: FormControl;
   public isSmallScreen: false;
 
   showFiller = false;
-  // hideSide = true;
-  // mobileQuery: MediaQueryList;
   datas$: Observable<DataCompet[]> ;
+  filteredStates$: Observable<DataCompet[]>;
 
-//  private _mobileQueryListener: () => void;
-//  destroy$: Subject<boolean> = new Subject<boolean>();
-
+  subject$ = new BehaviorSubject(this.filtre);
+  dataSelected = null;
 
   dates = [
     {value: null, viewValue: '-'},
-    {value: true, viewValue: 'Futures'},
-    {value: false, viewValue: 'Passées'}
+    {value: 'true', viewValue: 'Futures'},
+    {value: 'false', viewValue: 'Passées'}
   ];
   etats = [
     {value: null, viewValue: '-'},
-    {value: true, viewValue: 'Vérifiées'},
-    {value: false, viewValue: 'à Vérifier'}
+    {value: 'true', viewValue: 'Vérifiées'},
+    {value: 'false', viewValue: 'à Vérifier'}
   ];
 
   types = [
@@ -79,11 +50,11 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
     {value: 'stage', viewValue: 'stage'}
   ];
 
-  
+
   layoutChanges: Observable<BreakpointState>;
 
 // tslint:disable-next-line: max-line-length
-  constructor(public breakpointObserver: BreakpointObserver, public dialog: MatDialog, private compService: CompetitionsService, private route: Router) {
+  constructor(public breakpointObserver: BreakpointObserver, public dialog: MatDialog, private compService: CompetitionsService) {
       this.layoutChanges = this.breakpointObserver.observe([
         Breakpoints.Medium,
         Breakpoints.Large,
@@ -92,16 +63,40 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
   }
 
 
+  ngOnInit() {
+
+      this.datas$ = this.compService.getList();
+      this.filteredStates$ = combineLatest( [this.datas$, this.subject$] ).pipe(
+        map(([s, d]) =>   this.myfiltre( s , d ) )
+      );
+
+  }
+
+  myfiltre(s , d ) {
+
+    if (d.next) {
+      s = s.filter( ts => String(ts.next) === d.next );
+    }
+    if (d.type) {
+      s = s.filter( ts => ts.type === d.type );
+    }
+    if (d.verif) {
+
+      s = s.filter( ts => String(ts.verif) === d.verif );
+    }
+
+
+
+    return s;
+
+  }
 
   add() {
-   this.compService.setMessageData( null );
-   this.route.navigate(['competitions/edit'] );
+   this.dataSelected = new DataCompet() ;
   }
 
   edit(data) {
-
-  this.compService.setMessageData( data );
-  this.route.navigate(['competitions/edit'] );
+  this.dataSelected = data ;
   }
 
   delete(data) {
@@ -113,46 +108,15 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
 
        dialogRef.beforeClosed().subscribe(
          (result) => {
-                   if (result) {
-                     console.log( data.id ) ;
-                    this.compService.delete( data.id ).subscribe(
-                        () => {  this.compService.getListAll();  },
-                        () =>  {}
-
-                    ); }},
-         () => { },
+                  if (result) {
+                       this.compService.delete( data.id );
+                      } },
+         () => {},
          () => {},
        );
 
   }
 
-  doFilter() {
-   this.compService.setFiltre( this.filtre );
-   this.datas$ = this.compService.getList().pipe(
-    map( item =>   item.filter( d =>   ( this.filtre.next  === null  ) ? (d) : (  d.next  === this.filtre.next ) )),
-    map( item =>   item.filter( d =>   ( this.filtre.verif === null  ) ? (d) : (  d.verif  === this.filtre.verif ) )),
-    map( item =>   item.filter( d =>   ( this.filtre.type  === null  ) ? (d) : (  d.type === this.filtre.type  ) ))
-     );
-
-
-  }
-
-  doFilterInit() {
-    this.datas$ = this.compService.getList().pipe(
-     map( item =>   item.filter( d =>   ( this.filtre.next  === null  ) ? (d) : (  d.next  === this.compService.filtre.next ) )),
-     map( item =>   item.filter( d =>   ( this.filtre.verif === null  ) ? (d) : (  d.verif  === this.compService.filtre.verif ) )),
-     map( item =>   item.filter( d =>   ( this.filtre.type  === null  ) ? (d) : (  d.type === this.compService.filtre.type  ) ))
-      );
-   }
-
-  ngOnInit() {
-
-      this.searchControl = new FormControl('');
-      this.filtre = this.compService.filtre ;
-      this.compService.getListAll();
-      this.doFilterInit();
-
-  }
 
 
   ngOnDestroy(): void {

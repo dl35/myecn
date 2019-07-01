@@ -94,9 +94,10 @@ cancelForm() {
   this.route.navigate(['/licencies']);
 }
 saveForm() {
+ const n = this.dataForm.get('nom').value;
  const datas = this.dataForm.getRawValue();
   this.lserv.add( datas ).subscribe(
-     (data) => { this.route.navigate(['/licencies']); },
+     (data) => { this.lserv.name = n ; this.route.navigate(['/licencies']); },
          () => {  }
     );
 }
