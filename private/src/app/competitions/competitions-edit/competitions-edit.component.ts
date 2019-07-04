@@ -82,6 +82,8 @@ export class CompetitionsEditComponent implements OnInit {
 
 
   saveForm() {
+
+
     const data = this.dataForm.getRawValue() ;
     if ( data.id === null ) {
       this.compService.post( data );
@@ -116,7 +118,7 @@ export class CompetitionsEditComponent implements OnInit {
       next: new FormControl({value: true}),
       choixnages: new FormControl({value: false}),
       max: new FormControl(0),
-      entraineur:  [ null  ],
+      entraineur:  [ '-'  ],
       lien: new FormControl(null, Validators.pattern('')),
       commentaires: new FormControl(null),
       verif: new FormControl({value: false , disabled: true}),
@@ -162,6 +164,7 @@ private catValidator(gcat: FormGroup ) {
       const start = Date.parse( input.get('debut').value);
       const end = Date.parse( input.get( 'fin' ).value);
       const limite = Date.parse( input.get( 'limite' ).value);
+
        return  ( start <=  end && limite < start  ) ?  null :  {dateError: true};
  }
 

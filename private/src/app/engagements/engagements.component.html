@@ -118,12 +118,12 @@
           <p matLine style="margin-top:2em">
             <span class="mat-body-2">{{item.prenom}} {{item.nom}} ({{item.categorie}}{{item.rang}}-{{item.sexe}})</span>
           </p>
-          <div style='width:20vw;float:right;' class="mat-body-2" >
-          <mat-grid-list cols="3" rowHeight="28px">
+          <div style='width:15vw;float:right;' class="mat-body-2" >
+          <mat-grid-list cols="3" rowHeight="15px">
               <mat-grid-tile *ngFor="let node of item.eng;" [ngSwitch]="node.presence" >
-              <label *ngSwitchCase="'non'" style='border-radius:20%;background-color:red'color="warn" matTooltip="absent" ><s>&nbsp;&nbsp;{{node.day}}&nbsp;&nbsp;</s></label>
-              <label  *ngSwitchCase="'oui'" style='border-radius:20%;color:white;background-color:green'color="primary" matTooltip="présent" >&nbsp;&nbsp;{{node.day}}&nbsp;&nbsp;</label>
-              <label *ngSwitchDefault matTooltip="en attente"  style='border-radius:20%;background-color:lightskyblue' >&nbsp;&nbsp;{{node.day}}?&nbsp;&nbsp;</label>
+              <label *ngSwitchCase="'non'" style='border-radius:20%;background-color:red'color="warn" matTooltip="absent" ><s>&nbsp;{{node.day}}&nbsp;</s></label>
+              <label  *ngSwitchCase="'oui'" style='border-radius:20%;color:white;background-color:green'color="primary" matTooltip="présent" >&nbsp;{{node.day}}&nbsp;</label>
+              <label *ngSwitchDefault matTooltip="en attente"  style='border-radius:20%;background-color:lightskyblue' >&nbsp;{{node.day}}&nbsp;</label>
               </mat-grid-tile>
             </mat-grid-list>
           </div>
@@ -135,13 +135,13 @@
               [ngStyle]="{color: item.notification > 0 ? 'green' : 'red' }"  >contact_mail</mat-icon>
             </button>
             &nbsp;&nbsp;
-            <button mat-icon-button color="primary"  (click)="setExtranat(item.id)" *ngIf="item.notification > 0" >
+            <button mat-icon-button color="primary"  (click)="setExtranat(item.id)" *ngIf="item.notification !== '0'" >
               <mat-icon aria-label="Extranat" [ngStyle]="{color: item.extranat === 1 ? 'green' : 'red' }" matBadge="{{item.extranat}}" matBadgeSize="small" matBadgePosition="before">save</mat-icon>
             </button>
-            <button mat-icon-button color="primary"  (click)="setDelete(item.id)"  *ngIf="item.notification === 0" >
-              <mat-icon aria-label="Extranat" style='color:red' >delete</mat-icon>
+            <button mat-icon-button color="accent"  (click)="setDelete(item.id)"  *ngIf="item.notification === '0'" >
+              <mat-icon aria-label="supp" >delete</mat-icon>
             </button>
-            
+
             <button  *ngIf="item.commentaire.length > 0"  mat-icon-button color="primary"   matTooltipClass="my-tooltip"  matTooltip="{{item.commentaire}}"  >
               <mat-icon aria-label="Comment" color="accent" >comment</mat-icon>
             </button>
