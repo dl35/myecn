@@ -64,7 +64,7 @@ export class CompetitionsComponent implements OnInit , OnDestroy  {
 
 
   ngOnInit() {
-
+      this.compService.get();
       this.datas$ = this.compService.getList();
       this.filteredStates$ = combineLatest( [this.datas$, this.subject$] ).pipe(
         map(([s, d]) =>   this.myfiltre( s , d ) )

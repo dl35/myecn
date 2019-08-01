@@ -261,9 +261,10 @@
             style="color:green;font-weight: bold"  >Payé</span></mat-checkbox>
       <mat-checkbox *ngIf="!dataForm.get('valide').value" fxFlexOffset="1" formControlName="paye" color="accent"  ><span
               style="color:green;font-weight: bold"  >Payé</span></mat-checkbox>
- 
-              
-
+          
+              <button (click)="sendAttest()" fxFlexOffset="2" *ngIf="dataForm.get('valide').value" mat-mini-fab aria-label="attestation">
+                <mat-icon>drafts</mat-icon>
+              </button>
 
     </div>
 

@@ -1,0 +1,94 @@
+<div class="mat-elevation-z10" fxLayout="column"  style="margin:15px" fxLayoutAlign="space-evenly center">
+
+  <form name="form" autocomplete="off"  [formGroup]="dataForm" novalidate>
+      <div fxLayout="row wrap" fxLayout.lt-md="column wrap" fxLayoutGap="3%" style='margin-top:5px' >
+          <mat-form-field fxFlex="60" >
+              <input matInput placeholder="Libelle" formControlName="libelle" >
+              <mat-error>libelle requis</mat-error>
+            </mat-form-field>
+      
+        <mat-form-field fxFlex="15">
+        <input matInput placeholder="Latitude" formControlName="latitude" >
+        <mat-error>ex:48.117</mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="15">
+        <input matInput placeholder="Longitude" formControlName="longitude" >
+        <mat-error>ex:-1.677</mat-error>
+      </mat-form-field>
+      
+      </div>
+
+
+    <div fxLayout="row"  fxLayout.lt-md="column wrap"  fxLayoutGap="3%" style='margin-top:5px' >
+      <mat-form-field fxFlex="52">
+        <input matInput placeholder="Adresse" formControlName="adresse" >
+        <mat-error>adresse requis</mat-error>
+      </mat-form-field>
+
+    <mat-form-field fxFlex="10">
+      <input matInput placeholder="Cp" formControlName="cp" >
+      <mat-error>requis</mat-error>
+    </mat-form-field>
+    <mat-form-field fxFlex="34">
+      <input matInput placeholder="Ville" formControlName="ville" >
+      <mat-error>ville requis</mat-error>
+    </mat-form-field>
+    </div>
+
+  
+
+
+    <mat-card formArrayName="bassins">
+     <mat-card-title>Bassins
+        <button mat-mini-fab color="accent" (click)="addBassin()">
+            <mat-icon>add</mat-icon>
+          </button>
+
+     </mat-card-title>
+     <mat-divider></mat-divider>
+        
+     <div *ngFor="let index of bassins.controls; let i=index">
+        
+        <mat-divider *ngIf="bassins.controls.length > 1 && i > 0" ></mat-divider><br>
+        
+        <div [formGroupName]="i"><div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="center">
+            <mat-label>bassin</mat-label>
+            <mat-form-field  fxFlex="30%"> 
+            <mat-select placeholder="Longueur" formControlName="longueur" >
+                <mat-option *ngFor="let long of allLongueur" [value]="long">
+                   {{ long }} m.
+                </mat-option>
+           </mat-select>
+            </mat-form-field>
+
+            <mat-form-field  fxFlex="30%"> 
+                <mat-select placeholder="Couloirs" formControlName="couloirs" >
+                    <mat-option *ngFor="let coul of allCouloirs" [value]="coul">
+                       {{ coul }} coul.
+                    </mat-option>
+               </mat-select>
+                         
+              </mat-form-field>
+  
+            <button mat-mini-fab color="warn" 
+                    *ngIf="i > 0" (click)="deleteBassin(i)"><mat-icon>delete forever</mat-icon></button></div></div></div>
+
+      
+      </mat-card>
+
+
+
+    <div fxLayout="row" style='margin-top:5px'  fxLayoutAlign="center center">
+
+      <button mat-raised-button color="primary"  [disabled]="dataForm.invalid"
+        (click)="dosave()" type="button">Valider</button>
+      <button mat-raised-button color="primary" fxFlexOffset='3' (click)="doquitte()" type="button">Quitter</button>
+    </div>
+
+
+
+
+  </form>
+  <br>
+  <br>
+</div>

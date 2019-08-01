@@ -119,7 +119,7 @@ export class CompetitionsEditComponent implements OnInit {
       choixnages: new FormControl({value: false}),
       max: new FormControl(0),
       entraineur:  [ '-'  ],
-      lien: new FormControl(null, Validators.pattern('')),
+      lien: new FormControl(null, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')),
       commentaires: new FormControl(null),
       verif: new FormControl({value: false , disabled: true}),
     },

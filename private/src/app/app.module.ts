@@ -34,6 +34,7 @@ import localeFr from '@angular/common/locales/fr';
 import { MomentUtcDateAdapter } from './material/MomentUtcDateAdapter';
 import { HttpConfigInterceptor } from './interceptor/HttpConfigInterceptor';
 import { LogoComponent } from './logo/logo.component';
+
 registerLocaleData(localeFr, 'fr');
 
 @NgModule({
@@ -43,6 +44,7 @@ registerLocaleData(localeFr, 'fr');
     MenuComponent,
     DialogConfirmComponent,
     LogoComponent
+
    ],
   imports: [
     BrowserModule,

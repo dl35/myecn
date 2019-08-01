@@ -193,6 +193,15 @@ initDatas ( ) {
 
   }
 
+sendAttest() {
+  const id = this.dataForm.get('id').value;
+ this.lserv.attest(id).subscribe(
+  () =>  { alert('ok') },
+  () => { alert('ko') }
+ );
+
+}
+
 cancelForm() {
   this.route.navigate(['/licencies']);
 }

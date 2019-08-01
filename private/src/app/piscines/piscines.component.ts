@@ -4,6 +4,7 @@ import { PiscinesService } from './services/piscines.service';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
 import * as geojson from 'geojson';
+import { EditComponent } from './edit/edit.component';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -28,6 +29,9 @@ L.Marker.prototype.options.icon = iconDefault;
 })
 export class PiscinesComponent implements OnInit {
 
+
+  public modeEdit = false;
+
   public mymap: any;
   public geojson: any[] = [];
 
@@ -37,7 +41,7 @@ export class PiscinesComponent implements OnInit {
 //  markerClusterData: any[] = [];
 //  markerClusterOptions: L.MarkerClusterGroupOptions;
 
-
+  public idSelected = '-1';
 
 
 
@@ -93,6 +97,22 @@ export class PiscinesComponent implements OnInit {
 
   }
 
+    add() {
+      this.idSelected = '1' ;
+      this.modeEdit = true ;
+    }
+
+    edit(id) {
+      alert('edit') ;
+      this.idSelected = id ;
+      this.modeEdit = true ;
+    }
+
+    onQuitte($event) {
+      this.modeEdit = false ;
+      this.idSelected = '1' ;
+    }
+
   test(e) {
     const b = e.target.getBounds().toBBoxString();
 
@@ -140,15 +160,18 @@ export class PiscinesComponent implements OnInit {
 
 
         if (feature.properties && feature.properties.name) {
-
+  
+          const id = feature.properties.id ; 
      const a = '<a   target=\'_blank\'  href=\'https://waze.com/ul?ll=' + feature.properties.waze + '&navigate=yes\' >' +
                '<img border=\'0\' src=\'assets/images/waze.png\' width=\'24\'  height=\'24\' ></a>';
      const g = '<a   target=\'_blank\'  href=\'http://maps.google.com/maps?q=' + feature.properties.waze + '\' >' +
                '<img border=\'0\' src=\'assets/images/map.png\' width=\'24\'  height=\'24\' ></a>';
+     // tslint:disable-next-line: max-line-length
+  //   const sp = '<span>' +  '<img border=\'0\' src=\'assets/images/map.png\' onClick=\"' + this.edit(10) + '\" width=\'24\'  height=\'24\' ></span>';
 
           layer.bindPopup('<strong>' + feature.properties.name + '</strong><br>' + feature.properties.ville +
-            '<br>' + feature.properties.description + '<br>Bassin: ' + feature.properties.bassin
-            + '&nbsp;Couloirs: ' + feature.properties.couloir + '<br>' + a + '&nbsp;&nbsp;&nbsp;' + g);
+            '<br>' + feature.properties.description + '<br>Bassin: ' + feature.properties.bassins +
+            '<br>' + a + '&nbsp;&nbsp;&nbsp;' + g  );
         }
       },
 

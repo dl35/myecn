@@ -14,19 +14,16 @@ export class CompetitionsService {
   private subject$ = new BehaviorSubject<DataCompet[]>([]) ;
   public datas$: Observable<DataCompet[]> =  this.subject$.asObservable();
   private url = '/api/private/tocompetitions' ;
-  private dataStore: Array<DataCompet> ;
+  private dataStore: Array<DataCompet>  = [];
 
 
 
   constructor(private http: HttpClient) {
-      this.dataStore = [] ;
-      this.get();
    }
 
 
-   private get( ) {
-    this.http.get<DataCompet[]>( this.url ).pipe( shareReplay(1) )
-    .subscribe(
+   public get( ) {
+    this.http.get<DataCompet[]>( this.url ).subscribe(
       data => {  this.dataStore = data;  this.subject$.next( data ) ; },
     );
   }
