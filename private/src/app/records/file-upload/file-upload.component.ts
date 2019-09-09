@@ -16,6 +16,12 @@ export class FileUploadComponent  {
   pvalue = 0 ;
   constructor(private upService: UploadService ) {}
 
+torecords() {
+  window.open('https://ecnatation.org/records/manage_resultats.php?admin', '_blank');
+
+}
+
+
   onFileSelected( event ) {
     this.selectedFile = event.target.files[0] ;
   }

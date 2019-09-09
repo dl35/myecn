@@ -38,7 +38,11 @@ export class AdminComponent implements OnInit, OnDestroy {
   getdoc() {
     window.open('/api/public/scripts/doc.pdf' , '_blank' );
   }
+  public delinscrit() {
 
+    this.route.navigate(['admin/invalid']);
+
+}
 
   public setParams() {
 

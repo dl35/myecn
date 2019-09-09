@@ -21,7 +21,7 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
   destroyed$: Subject<any> = new Subject();
   typeChoix: string[] = ['Ok', 'At', 'Ko'];
 // tslint:disable-next-line: max-line-length
-  typeMode: any[] = [ {value: 'c', text: 'Compétitions'},  {value: 'l' , text: 'Licencies' } , {value: 'g' , text: 'Goupe Licencies' } , {value: 'i' , text: 'Inscriptions' }  ];
+  typeMode: any[] = [ {value: 'c', text: 'Compétitions'},  {value: 'l' , text: 'Licenciés' } , {value: 'g' , text: 'Goupe Licenciés' } , {value: 'i' , text: 'Inscriptions' }  ];
   typeDatas: IMailto;
  
 

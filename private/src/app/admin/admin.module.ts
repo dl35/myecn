@@ -13,6 +13,7 @@ import { ParamsComponent } from './params/params.component';
 
 import { Routes, RouterModule } from '@angular/router';
 
+
 const routes: Routes = [
   {
     path: 'params',

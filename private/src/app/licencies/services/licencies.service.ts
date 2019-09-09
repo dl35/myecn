@@ -36,6 +36,11 @@ export class LicenciesService {
     return this.http.put<IDataLicencies>( this.url , json );
  }
 
+ public  invalidate( id ) {
+  const json = { 'invalidate': id };
+  return this.http.put<IDataLicencies>( this.url , json );
+}
+
  public  delete( id ) {
    const url = this.url + '/' + id ;
    return this.http.delete<any>( url  );

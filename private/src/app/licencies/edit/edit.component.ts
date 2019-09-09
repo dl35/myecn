@@ -4,6 +4,8 @@ import { Component, OnInit } from '@angular/core';
 import { Validators, FormControl, FormBuilder, FormGroup } from '@angular/forms';
 import { LicenciesService } from '../services/licencies.service';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogConfirmComponent } from 'src/app/dialog-confirm/dialog-confirm.component';
 
 
 @Component({
@@ -39,7 +41,7 @@ export class EditComponent implements OnInit {
   startDate: Date;
 
 
-  constructor(private route: Router , private formBuilder: FormBuilder , private lserv: LicenciesService  ) { }
+  constructor(private route: Router , private formBuilder: FormBuilder ,public dialog: MatDialog, private lserv: LicenciesService  ) { }
 
   ngOnInit() {
 
@@ -196,11 +198,41 @@ initDatas ( ) {
 sendAttest() {
   const id = this.dataForm.get('id').value;
  this.lserv.attest(id).subscribe(
-  () =>  { alert('ok') },
-  () => { alert('ko') }
+  () =>  {},
+  () => {}
  );
 
 }
+
+invalidate() {
+  const id = this.dataForm.get('id').value;
+  const n = this.dataForm.get('nom').value;
+
+  const dialogRef = this.dialog.open(DialogConfirmComponent, {
+    width: '50%',
+    data: { id: id , info: 'Voulez vous invalider cette inscription ?'  },
+    disableClose: true
+   });
+
+   dialogRef.beforeClosed().subscribe(
+     (result) => {
+              if (result) {
+                   this.setInvalidate( n , id );
+                  } },
+     () => {},
+     () => {},
+   );
+
+}
+
+setInvalidate( n , id ) {
+  this.lserv.invalidate( id ).subscribe(
+    () =>  { this.lserv.name = n ; this.route.navigate(['/licencies']); },
+    () => {  }
+   ); 
+}
+
+
 
 cancelForm() {
   this.route.navigate(['/licencies']);

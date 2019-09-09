@@ -112,13 +112,14 @@
     </div>
 
   </mat-expansion-panel>
+ 
   <mat-expansion-panel  [expanded]="true"  >
       <mat-expansion-panel-header>
       <mat-panel-title>
         Cotisations , Validation
       </mat-panel-title>
     </mat-expansion-panel-header>
-
+     
     <div fxLayout="row wrap" fxLayout.lt-md="column wrap" fxLayoutAlign="center baseline">
 
       <mat-form-field fxFlex="6" fxFlexOffset="3">
@@ -262,9 +263,13 @@
       <mat-checkbox *ngIf="!dataForm.get('valide').value" fxFlexOffset="1" formControlName="paye" color="accent"  ><span
               style="color:green;font-weight: bold"  >Payé</span></mat-checkbox>
           
-              <button (click)="sendAttest()" fxFlexOffset="2" *ngIf="dataForm.get('valide').value" mat-mini-fab aria-label="attestation">
+              <button (click)="sendAttest()"  matTooltip="Renvoyer Attestation" fxFlexOffset="2" *ngIf="dataForm.get('valide').value" mat-mini-fab aria-label="attestation">
                 <mat-icon>drafts</mat-icon>
               </button>
+
+              <button (click)="invalidate()" color='warn' matTooltip="Invalider cette Inscription" fxFlexOffset="2" *ngIf="dataForm.get('valide').value" mat-mini-fab aria-label="delins">
+                  <mat-icon>delete</mat-icon>
+                </button>
 
     </div>
 
