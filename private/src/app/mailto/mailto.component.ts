@@ -23,7 +23,6 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
 // tslint:disable-next-line: max-line-length
   typeMode: any[] = [ {value: 'c', text: 'Compétitions'},  {value: 'l' , text: 'Licenciés' } , {value: 'g' , text: 'Goupe Licenciés' } , {value: 'i' , text: 'Inscriptions' }  ];
   typeDatas: IMailto;
- 
 
   public dataForm: FormGroup ;
 
@@ -119,6 +118,35 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
   }
 
 
+  public setSelection( v ) {
+  if ( v === 'at' ) {
+  this.dataForm.controls.dests.patchValue(['at']);
+  } else if ( v === 'me' ) {
+    this.dataForm.controls.dests.patchValue(['me']);
+  } else if ( v === 'pre' ) {
+    this.dataForm.controls.dests.patchValue(['pre']);
+  }
+
+  const a = this.dataForm.controls.dests.value ;
+
+   const va = Array();
+    for ( const e of a ) {
+    if ( e === 'me'  || e === 'at' || e === 'pre' ) {
+      continue ;
+    } else {
+      va.push( e ) ;
+    }
+
+    this.dataForm.controls.dests.patchValue( va );
+
+
+  }
+
+
+
+  }
+
+
   public sendMail() {
      this.loading = true ;
      const v = this.dataForm.getRawValue();
@@ -142,7 +170,8 @@ export class MailtoComponent implements OnInit, OnDestroy , AfterViewInit   {
       this.eMailto.sendMail( v ).pipe(
         takeUntil(this.destroyed$)
        ).subscribe(
-          ( response )  => { if ( v.mode === 'i' ) { this.dataForm.get('email').reset(); } /*else { this.dataForm.reset(); } */ }  ,
+          // tslint:disable-next-line: max-line-length
+          ( response )  => { if ( v.mode === 'i' ) { this.dataForm.get('email').reset(); } else { this.dataForm.get('subject').setValue(''); }  }  ,
           ( err ) =>  { this.diag.close() ; this.loading = false ;
           // console.log(err.error);
           // console.log(err.name);

@@ -27,8 +27,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
 
     this.isLoggin = this.lservice.checkCredentials();
-    console.log(this.isLoggin);
-
 
   }
 
