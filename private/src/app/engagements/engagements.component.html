@@ -119,11 +119,11 @@
             <span class="mat-body-2">{{item.prenom}} {{item.nom}} ({{item.categorie}}{{item.rang}}-{{item.sexe}})</span>
           </p>
           <div style='width:15vw;float:right;' class="mat-body-2" >
-          <mat-grid-list cols="3" rowHeight="15px">
+          <mat-grid-list cols="3" rowHeight="25px">
               <mat-grid-tile *ngFor="let node of item.eng;" [ngSwitch]="node.presence" >
-              <label *ngSwitchCase="'non'" style='border-radius:20%;background-color:red'color="warn" matTooltip="absent" ><s>&nbsp;{{node.day}}&nbsp;</s></label>
-              <label  *ngSwitchCase="'oui'" style='border-radius:20%;color:white;background-color:green'color="primary" matTooltip="présent" >&nbsp;{{node.day}}&nbsp;</label>
-              <label *ngSwitchDefault matTooltip="en attente"  style='border-radius:20%;background-color:lightskyblue' >&nbsp;{{node.day}}&nbsp;</label>
+              <span  *ngSwitchCase="'non'" style='border-radius:20%;background-color:red;color:white'  matTooltip="absent" ><s>&nbsp;{{node.day}}&nbsp;</s></span>
+              <span  *ngSwitchCase="'oui'" style='border-radius:20%;color:white;background-color:green'color="primary" matTooltip="présent" >&nbsp;{{node.day}}&nbsp;</span>
+              <span  *ngSwitchDefault matTooltip="en attente"  style='border-radius:20%;background-color:lightskyblue' >&nbsp;{{node.day}}&nbsp;</span>
               </mat-grid-tile>
             </mat-grid-list>
           </div>

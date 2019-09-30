@@ -113,7 +113,7 @@ export class MyDataSource extends DataSource<any> {
 
     private isSearchAllFilter() {
 
-       return (  !this.allfilter.officiel && !this.allfilter.sexe &&
+       return (  !this.allfilter.officiel && !this.allfilter.sexe && !this.allfilter.entr &&
                  !this.allfilter.valide && !this.allfilter.categorie && !this.allfilter.type &&
                  !this.allfilter.paye && !this.allfilter.cert_medical &&
                  !this.allfilter.fiche_medicale && !this.allfilter.auto_parentale  && !this.allfilter.inscription )  ;
@@ -141,6 +141,15 @@ export class MyDataSource extends DataSource<any> {
                 flag = flag && true;
             } else {
                 if (item.sexe === this.allfilter.sexe) {
+                    flag = flag && true;
+                } else { flag = false; }
+            }
+
+            if ( !this.allfilter.entr  ) {
+                flag = flag && true;
+            } else {
+                const v =  ( this.allfilter.entr === 'true' );
+                if (item.entr === v ) {
                     flag = flag && true;
                 } else { flag = false; }
             }

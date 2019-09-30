@@ -28,20 +28,20 @@ export class EngagementsComponent implements OnInit, OnDestroy {
 
   notif = [
     {value: null, viewValue: '-'},
-    {value: '1', viewValue: 'notifié'},
-    {value: '0', viewValue: 'non notifié'}
+    {value: '1', viewValue: 'Oui'},
+    {value: '0', viewValue: 'Non'}
   ];
   ext = [
     {value: null, viewValue: '-'},
-    {value: '1', viewValue: 'Fait'},
-    {value: '0', viewValue: 'à Faire'}
+    {value: '1', viewValue: 'Oui'},
+    {value: '0', viewValue: 'Non'}
   ];
 
   pre = [
     {value: null, viewValue: '-'},
     {value: 'oui' , viewValue: 'Oui'},
     {value: 'non', viewValue: 'Non'},
-    {value: 'at', viewValue: 'At'}
+    {value: 'at', viewValue: 'Attente'}
   ];
 
 
@@ -138,22 +138,7 @@ constructor(public breakpointObserver: BreakpointObserver, public dialog: MatDia
 
   }
   public setExtranat(id) {
-    const dialogRef = this.dialog.open(DialogEngageComponent, {
-      width: '60%',
-      data: { id: this.idc, addLic: false, info: 'Valider Extranat ?' },
-      disableClose: true
-    });
-
-
-    dialogRef.beforeClosed().subscribe(
-      (result) => {
-        if (result) {
-          this.eService.setExtranat(this.idc, id);
-        }
-      },
-      () => { },
-      () => { } ,
-    );
+    this.eService.setExtranat(this.idc, id);
   }
 
   public setNotification(id) {
@@ -212,7 +197,7 @@ doFilter() {
   this.engage$ = this.eService.getObservable().pipe(
    map( item =>   item.filter( d =>   ( this.filtre.notif === '0'  ) ?  (d.notification === 0 ) : (d) )),
    map( item =>   item.filter( d =>   ( this.filtre.notif === '1'  ) ?  (d.notification > 0 ) : (d) )),
-   map( item =>   item.filter( d =>   ( this.filtre.ext  === null  ) ?  (d) : (  d.extranat === +this.filtre.ext  ) )),
+   map( item =>   item.filter( d =>   ( this.filtre.ext  === null  ) ?  (d) : (  d.extranat === this.filtre.ext  ) )),
    map( item =>   item.filter( d =>   ( this.filtre.pre === null   ) ?  (d)  :  this.myfilter(d.eng) ) ) );
 
 

@@ -15,14 +15,21 @@ export class PiscinesService {
     return this.http.post<any>( this.url , data );
   }
 
-  public  put( data ) {
-    return this.http.put<any>( this.url , data );
+  public  put( data , id ) {
+    const url = this.url + '/' + id ;
+    return this.http.put<any>( url , data );
   }
 
   public  get( id ) {
     const url = this.url + '/' + id ;
     return this.http.get<any>( url );
   }
+
+  public  delete( id ) {
+    const url = this.url + '/' + id ;
+    return this.http.delete<any>( url );
+  }
+
 
   public  getdatas( bbox ) {
     const d = {'bbox' : bbox } ;

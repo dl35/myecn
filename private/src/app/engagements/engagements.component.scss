@@ -45,3 +45,18 @@ min-height: 10px;
     background: #b17d00;
     
 }
+.abs {
+
+  background-color: red;
+  border: 2px solid black;
+  border-radius: 50%;
+  box-shadow: 1px 1px 1px black;
+  color: white;
+  font: bold 15px/13px Helvetica, Verdana, Tahoma;
+  height: 16px; 
+  width: 16px;
+  padding: 2px 2px 2px 2px;
+  text-align: center;
+  display: inline-block;
+  float:none;
+}

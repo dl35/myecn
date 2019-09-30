@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ComponentRef, ComponentFactoryResolver, Injector } from '@angular/core';
 import { tileLayer, latLng } from 'leaflet';
 import { PiscinesService } from './services/piscines.service';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
-import * as geojson from 'geojson';
-import { EditComponent } from './edit/edit.component';
+import { PopupComponent } from './popup/popup.component';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -30,18 +29,13 @@ L.Marker.prototype.options.icon = iconDefault;
 export class PiscinesComponent implements OnInit {
 
 
-  public modeEdit = false;
 
-  public mymap: any;
-  public geojson: any[] = [];
 
-  public myGeoJsonRoute = null;
-  public idLayer = null;
- // markerClusterGroup: L.MarkerClusterGroup;
-//  markerClusterData: any[] = [];
-//  markerClusterOptions: L.MarkerClusterGroupOptions;
-
-  public idSelected = '-1';
+cref: Array<ComponentRef<PopupComponent>> = [] ;
+markerClusterGroup: L.MarkerClusterGroup;
+markerClusterData: L.Marker[] = [];
+markerClusterOptions: L.MarkerClusterGroupOptions;
+map: L.Map ;
 
 
 
@@ -54,183 +48,74 @@ export class PiscinesComponent implements OnInit {
     center: latLng(48.117266, -1.6777926)
   };
 
-  constructor(private pservices: PiscinesService) { }
+  constructor(private pservices: PiscinesService ,
+      private componentFactoryResolver: ComponentFactoryResolver,
+      private injector: Injector)  { }
 
   ngOnInit() {
 
+     }
 
-    this.mymap = L.map('mapid').setView([48.117266, -1.6777926], 8);
-
-    this.mymap.removeControl(this.mymap.zoomControl);
-
-    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' }
-    ).addTo(this.mymap);
-
-    const bbox = this.mymap.getBounds().toBBoxString();
-
-
-
+  onMapReady(map: L.Map) {
+    this.map = map ;
+    const bbox =  map.getBounds().toBBoxString() ;
     this.pservices.getdatas(bbox).subscribe(
-
-      (datas) => { this.generateDatas(datas); },
-      (error) => console.log(error)
-
-    );
-
-    /*   this.mymap.on('moveend' , function (e , this ) {
-           console.log( 'move end ' + e.target.getBounds().toBBoxString()    ) ;
-           const b = e.target.getBounds().toBBoxString() ;
-           this.pservices.getdatas(b).subscribe(
-
-                (datas) => { console.log( datas ) } ,
-             (error) =>  console.log( error )
-
-           );
-
-       }*
-         ) ;*/
-
-    this.mymap.on('moveend', (e) => {
-      this.test(e);
-    });
-
-
-  }
-
-    add() {
-      this.idSelected = '1' ;
-      this.modeEdit = true ;
-    }
-
-    edit(id) {
-      alert('edit') ;
-      this.idSelected = id ;
-      this.modeEdit = true ;
-    }
-
-    onQuitte($event) {
-      this.modeEdit = false ;
-      this.idSelected = '1' ;
-    }
-
-  test(e) {
-    const b = e.target.getBounds().toBBoxString();
-
-    this.pservices.getdatas(b).subscribe(
-
-      (datas) => { this.generateDatas(datas);  },
-      (error) => console.log(error)
-
-    );
-  }
-
-  /*
-  .ui-icon-waze {
-    background: url(waze.png) 50% 50% no-repeat;
-    background-size: 24px 24px;
-    border-radius:0px!important;
-    -moz-border-radius:0px!important;
-    -webkit-border-radius:0px!important;
-    -ms-border-radius:0px!important;
-    -o-border-radius:0px!important;
-  }
-*/
-
-  generateDatas(datas) {
-
-    if (this.myGeoJsonRoute) {
-      this.mymap.removeLayer(this.myGeoJsonRoute);
-    }
-
-  /*  const geojsonMarkerOptions = {
-      radius: 8,
-      fillColor: '#ff7800',
-      color: '#000',
-      weight: 1,
-      opacity: 1,
-      fillOpacity: 0.8
-    };
-*/
-
-
-    this.myGeoJsonRoute = L.geoJSON(datas, {
-
-      //   icon: MonIcon ,
-      onEachFeature: function EachFeature(feature, layer) {
-
-
-        if (feature.properties && feature.properties.name) {
-  
-          const id = feature.properties.id ; 
-     const a = '<a   target=\'_blank\'  href=\'https://waze.com/ul?ll=' + feature.properties.waze + '&navigate=yes\' >' +
-               '<img border=\'0\' src=\'assets/images/waze.png\' width=\'24\'  height=\'24\' ></a>';
-     const g = '<a   target=\'_blank\'  href=\'http://maps.google.com/maps?q=' + feature.properties.waze + '\' >' +
-               '<img border=\'0\' src=\'assets/images/map.png\' width=\'24\'  height=\'24\' ></a>';
-     // tslint:disable-next-line: max-line-length
-  //   const sp = '<span>' +  '<img border=\'0\' src=\'assets/images/map.png\' onClick=\"' + this.edit(10) + '\" width=\'24\'  height=\'24\' ></span>';
-
-          layer.bindPopup('<strong>' + feature.properties.name + '</strong><br>' + feature.properties.ville +
-            '<br>' + feature.properties.description + '<br>Bassin: ' + feature.properties.bassins +
-            '<br>' + a + '&nbsp;&nbsp;&nbsp;' + g  );
+        (datas) => { this.generateDatas(datas); },
+        () =>  { }
+      );
         }
-      },
 
-    });
-
-
-    const markers = L.markerClusterGroup({
-
-      // maxClusterRadius: 60,
-      // iconCreateFunction: null,
-      spiderfyOnMaxZoom: true,
-      showCoverageOnHover: false,
-      zoomToBoundsOnClick: true
-   /*   iconCreateFunction: function (cluster) {
-        return L.divIcon({ html: '<div><span>' + cluster.getChildCount() + '</span></div>' ,
-          className: 'marker-cluster marker-cluster-small', iconSize: new L.Point(40, 40) });
-      }*/
-    });
-    markers.addLayer(this.myGeoJsonRoute);
-    this.mymap.addLayer(markers);
-
-
-    /*
-
-     this.myGeoJsonRoute =  L.geoJSON( datas, {
-
-        pointToLayer: function (feature, latlng) {
-
-          geojsonMarkerOptions.fillColor =  feature.properties.color ;
-
-            return L.circleMarker(latlng, geojsonMarkerOptions);
-        },
-        onEachFeature: function EachFeature(feature, layer) {
-          if (feature.properties && feature.properties.name) {
-              layer.bindPopup('<strong>' + feature.properties.name + '</strong><br>' + feature.properties.ville +
-              '<br>' + feature.properties.description + '<br>Bassin: ' + feature.properties.bassin
-              + '&nbsp;Couloirs: ' + feature.properties.couloir  );
-          }
-        },
-
-    }).addTo(this.mymap);
-
-    */
+        markerClusterReady(group: L.MarkerClusterGroup) {
+          this.markerClusterGroup = group;
+       }
 
 
 
+    generateDatas(data: any) {
 
-
-
-
-
+      this.clearCref();
+      const result: any[] = [];
+      data.forEach(function (item) {
+  
+          const  marker =  new L.Marker([item.geometry.coordinates[1], item.geometry.coordinates[0]]);
+          marker.bindPopup(  this.createPopup( item.properties ) );
+          result.push( marker );
+      }, this );
+  
+      this.markerClusterData =  result ;
   }
 
 
+ refreshData(): void {
+ const bbox =  this.map.getBounds().toBBoxString() ;
+    this.pservices.getdatas(bbox).subscribe(
+   (datas) => { this.generateDatas(datas); },
+   () =>  { }
+ );
+ }
 
+  clearCref() {
+    this.cref.forEach(element => {
+      element.destroy() ;
+    });
+   }
 
-
-
-
+   ngOnDestroy(): void {
+    this.clearCref();
+ 
+   }
+ 
+ 
+   public createPopup( data ) {
+     const factory = this.componentFactoryResolver.resolveComponentFactory(PopupComponent);
+     const component = factory.create(this.injector);
+     this.cref.push( component );
+     //Set the component inputs manually 
+     component.instance.data = data  ;
+     component.changeDetectorRef.detectChanges();
+ 
+     return component.location.nativeElement;
+   }
 
 
 

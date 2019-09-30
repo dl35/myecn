@@ -6,6 +6,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PiscinesComponent } from './piscines.component';
 import { PiscinesRoutingModule } from './piscines-routing.module';
 import { EditComponent } from './edit/edit.component';
+import { PopupComponent } from './popup/popup.component';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
+
 
 @NgModule({
   imports: [
@@ -14,8 +18,13 @@ import { EditComponent } from './edit/edit.component';
     ReactiveFormsModule,
     MaterialModule,
     FlexLayoutModule,
-    PiscinesRoutingModule
+    PiscinesRoutingModule,
+    LeafletModule.forRoot(),
+    LeafletMarkerClusterModule
   ],
-  declarations: [PiscinesComponent, EditComponent]
+  entryComponents: [
+    PopupComponent
+],
+  declarations: [PiscinesComponent, EditComponent, PopupComponent]
 })
 export class PiscinesModule { }

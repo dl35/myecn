@@ -46,7 +46,7 @@
 
      </mat-card-title>
      <mat-divider></mat-divider>
-        
+  
      <div *ngFor="let index of bassins.controls; let i=index">
         
         <mat-divider *ngIf="bassins.controls.length > 1 && i > 0" ></mat-divider><br>
@@ -82,7 +82,10 @@
 
       <button mat-raised-button color="primary"  [disabled]="dataForm.invalid"
         (click)="dosave()" type="button">Valider</button>
-      <button mat-raised-button color="primary" fxFlexOffset='3' (click)="doquitte()" type="button">Quitter</button>
+      <button mat-raised-button color="primary" fxFlexOffset='3' routerLink="/piscines" type="button">Quitter</button>
+     &nbsp;&nbsp;
+      <button mat-mini-fab color="warn" *ngIf="dataForm.get('id').value" (click)="deletePiscine()"><mat-icon>delete forever</mat-icon></button>
+
     </div>
 
 
