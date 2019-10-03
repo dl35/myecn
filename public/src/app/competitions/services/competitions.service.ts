@@ -95,8 +95,8 @@ export class CompetitionsService {
     return this.subject$;
   }
 
-
   public  getEngagements(id) {
+    this.engageCached = [] ;
     const url = this.url + '/' + id ;
     this.http.get<Cdatas>( url ).subscribe(
       (d) =>  { this.engageCached = d.engage ;  this.compet.next(d.compet) ; this.engage.next(d.engage) }

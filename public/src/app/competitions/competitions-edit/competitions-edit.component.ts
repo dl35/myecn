@@ -20,6 +20,15 @@ export class CompetitionsEditComponent implements OnInit , OnDestroy {
   filter = { pre: true , abs: true ,  att: true } ;
   compet$: Observable<ICompetitions>;
 
+  rowHeight = {
+    xl: '3:1',
+    lg: '5:2',
+    md: '5:2',
+    sm: '4:2',
+    xs: '5:2'
+  };
+
+
 
   gridByBreakpoint = {
     xl: 4,
@@ -39,6 +48,7 @@ export class CompetitionsEditComponent implements OnInit , OnDestroy {
 
   mycol = this.gridByBreakpoint['lg'];
   myclass = this.classByBreakpoint['lg'];
+  myrowheight =this.rowHeight['lg'];
   destroyed$: Subject<any> = new Subject();
 
 
@@ -98,6 +108,7 @@ export class CompetitionsEditComponent implements OnInit , OnDestroy {
         this.mediaObserver.media$.pipe(takeUntil(this.destroyed$)).subscribe((change: MediaChange) => {
           this.mycol = this.gridByBreakpoint[change.mqAlias];
           this.myclass = this.classByBreakpoint[change.mqAlias];
+          this.myrowheight = this.rowHeight[change.mqAlias];
         },
           () => { },
           () => { },

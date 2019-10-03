@@ -6,17 +6,17 @@
       <mat-icon class="compet-icon" (click)='toback()' style='cursor: pointer;' aria-hidden="false" aria-label="">backspace</mat-icon>
     </mat-toolbar-row>
     <mat-toolbar-row *ngIf="compet.lien">
-    <span>Informations: <a style='color:white' href="{{compet.lien}}" target="_blank" >{{compet.lien}}</a></span>
+    <span><a style='color:white' matTooltip="{{compet.lien}}" href="{{compet.lien}}" target="_blank" >Informations</a></span>
     </mat-toolbar-row>
 </mat-toolbar>
 <div style='overflow-y:hidden;'>
 <div style='margin:0 auto;text-align:center;margin-top:5px;' >&nbsp;<mat-checkbox [(ngModel)]="filter.pre" (ngModelChange)="doFilter()" >Présents</mat-checkbox>
   &nbsp;<mat-checkbox [(ngModel)]="filter.abs" (ngModelChange)="doFilter()" >Absents</mat-checkbox>
   &nbsp;<mat-checkbox [(ngModel)]="filter.att" (ngModelChange)="doFilter()" >Attente</mat-checkbox></div>
-<mat-grid-list style='margin-top:10px;overflow-y:hidden;' cols="{{mycol}}"  gutterSize="1px" rowHeight="3:1"     >
+<mat-grid-list style='margin-top:10px;overflow-y:hidden;' cols="{{mycol}}"  gutterSize="1px" rowHeight="8em"    >
  
-  <mat-grid-tile  *ngFor="let item of ( datas$ | async )" colspan="1" rowspan="1"   >
-      <mat-card style="width:75%" >
+  <mat-grid-tile   *ngFor="let item of ( datas$ | async )" colspan="1" rowspan="1"   >
+      <mat-card style="width:75%;" >
           <mat-card-header>
             <mat-card-title style="font-size: 14px">&nbsp;{{item.prenom}} {{item.nom}} {{item.categorie}}{{item.rang}}
              </mat-card-title>
