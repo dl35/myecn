@@ -1,10 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { shareReplay, switchMap } from 'rxjs/operators';
-import { Observable, timer, pipe, of, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+
+export class Cdatas {
+
+  compet: ICompetitions ;
+  engage: Array<IEngagements>;
+
+}
 
 
-export interface ICompetitions {
+
+
+export class ICompetitions {
 
   id: number;
   nom: string;
@@ -16,7 +24,7 @@ export interface ICompetitions {
 
 }
 
-export interface IEngagements {
+export class IEngagements {
 
   nom: string;
   prenom: string;
@@ -32,8 +40,6 @@ interface IEng {
    presence: string;
 }
 
-const REFRESH_INTERVAL = 10000 ;
-const CACHE_SIZE = 1 ;
 
 const maxAge = 10000;
 
@@ -52,8 +58,17 @@ export class CompetitionsService {
 
   private subject  = new BehaviorSubject(new Array<ICompetitions>() ) ;
   public  subject$ = this.subject.asObservable();
-
   public next = true ;
+
+
+  public engageCached: Array<IEngagements> = [] ;
+  private engage  = new BehaviorSubject(new Array<IEngagements>() ) ;
+  public  engages$ = this.engage.asObservable();
+
+  private compet  = new BehaviorSubject(new ICompetitions() ) ;
+  public  compet$ = this.compet.asObservable();
+
+
 
   private  getCompetitions() {
      return this.http.get<Array<ICompetitions>>( this.url );
@@ -65,22 +80,6 @@ export class CompetitionsService {
 
   }
 
-/*
-
-  public getCachedCompetitions() {
-    if (!this.cache$) {
-      // Set up timer that ticks every X milliseconds
-      const timer$ = timer(0, REFRESH_INTERVAL);
-
-      // For each tick make an http request to fetch new data
-      this.cache$ = timer$.pipe(
-        switchMap(_ => this.getCompetitions()),
-        shareReplay(CACHE_SIZE)
-      );
-    }
-
-    return this.cache$;
-  } */
 
   public getCachedCompetitions2() {
 
@@ -88,7 +87,7 @@ export class CompetitionsService {
     if ( isExpired ) {
       this.lastRead = Date.now() ;
       this.getCompetitions().subscribe(
-          (datas)  =>   this.subject.next( datas )
+          (datas)  =>  {this.subject.next( datas ) }
       ) ;
 
     }
@@ -97,10 +96,44 @@ export class CompetitionsService {
   }
 
 
-
   public  getEngagements(id) {
     const url = this.url + '/' + id ;
-    return this.http.get<Array<any>>( url );
+    this.http.get<Cdatas>( url ).subscribe(
+      (d) =>  { this.engageCached = d.engage ;  this.compet.next(d.compet) ; this.engage.next(d.engage) }
+    );
+    }
+
+
+    public doFilter( f ) {
+
+       const r = this.engageCached.filter(
+        ( d ) => this.myfilter(d.eng , f )
+        );
+      this.engage.next (r );
+
+
+
+    }
+
+    myfilter( e , f ) {
+      let res = false;
+      e.forEach( c => {
+         if ( f.pre &&  c.presence === 'oui'  ) {
+              res = true ;
+         }
+         if ( f.abs &&  c.presence === 'non'  ) {
+          res = true ;
+        }
+        if ( f.att  &&  c.presence === 'at'  ) {
+          res = true ;
+        }
+      });
+    return   res  ;
+    }
+
  }
 
-}
+
+
+
+

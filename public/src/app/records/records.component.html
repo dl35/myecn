@@ -1,4 +1,4 @@
-<div style='height:100%; overflow: auto;' >
+<div style='height:100%; overflow-y:hidden;' >
   <mat-toolbar color="primary">Les Records</mat-toolbar>
   
   <div style='margin-top:15px'>
@@ -50,7 +50,7 @@
      
   
   
-<mat-grid-list [cols]=" (layoutChanges | async)?.matches ? 2 : 1" gutterSize="1px" rowHeight="3:1"  style='margin-bottom: 10px;' >
+<mat-grid-list  [cols]=" (layoutChanges | async)?.matches ? 2 : 1" gutterSize="1px" rowHeight="3:1"   >
     <mat-grid-tile  *ngFor="let item of datas$ | async " colspan="1" rowspan="1"  >
         <mat-card style="width:85%" >
             <mat-card-header>

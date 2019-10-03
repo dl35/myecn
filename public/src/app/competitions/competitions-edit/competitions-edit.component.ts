@@ -1,11 +1,11 @@
-import { IEngagements } from './../services/competitions.service';
+import { IEngagements, ICompetitions } from './../services/competitions.service';
 import {Location} from '@angular/common';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CompetitionsService } from '../services/competitions.service';
 import {  ActivatedRoute } from '@angular/router';
 import { MediaObserver, MediaChange } from '@angular/flex-layout';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, filter, tap, map, concatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-competitions-edit',
@@ -16,6 +16,10 @@ export class CompetitionsEditComponent implements OnInit , OnDestroy {
   private sub: any;
   id: number;
   datas$: Observable<IEngagements[]> ;
+
+  filter = { pre: true , abs: true ,  att: true } ;
+  compet$: Observable<ICompetitions>;
+
 
   gridByBreakpoint = {
     xl: 4,
@@ -48,9 +52,47 @@ export class CompetitionsEditComponent implements OnInit , OnDestroy {
   }
 
   ngOnInit() {
-    this.datas$ =  this.cService.getEngagements( this.id ) ;
+    this.cService.getEngagements( this.id);
+    this.datas$ = this.cService.engages$ ;
+    this.compet$ = this.cService.compet$ ;
+
+   
       }
 
+  doFilter() {
+ 
+    
+    this.cService.doFilter ( this.filter );
+
+  }
+
+  /*
+  myfilter( e  ) {
+    let res = false;
+    e.forEach( c => {
+       if ( c.presence === this.filtre.pre  ) {
+            res = true ;
+       }
+  
+    });
+  return   res  ;
+  
+  }*/
+  
+  
+  /*
+  doFilter() {
+  
+  
+    this.engage$ = this.eService.getObservable().pipe(
+     map( item =>   item.filter( d =>   ( this.filtre.notif === '0'  ) ?  (d.notification === 0 ) : (d) )),
+     map( item =>   item.filter( d =>   ( this.filtre.notif === '1'  ) ?  (d.notification > 0 ) : (d) )),
+     map( item =>   item.filter( d =>   ( this.filtre.ext  === null  ) ?  (d) : (  d.extranat === this.filtre.ext  ) )),
+     map( item =>   item.filter( d =>   ( this.filtre.pre === null   ) ?  (d)  :  this.myfilter(d.eng) ) ) );
+  
+  
+   }*/
+  
 
       initResponsive() {
         this.mediaObserver.media$.pipe(takeUntil(this.destroyed$)).subscribe((change: MediaChange) => {
