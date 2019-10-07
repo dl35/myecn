@@ -1,6 +1,7 @@
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ActuService } from './services/actu.service';
 import { Component, OnInit } from '@angular/core';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-actualites',
@@ -9,12 +10,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ActualitesComponent implements OnInit {
 
+  
   datas$ = new Observable<any>();
   constructor(public serv: ActuService) { }
 
   ngOnInit() {
-    this.datas$ = this.serv.get();
+    this.datas$ = this.serv.getDatas();
+    this.serv.get();
 
+  }
+
+  toNext() {
+    this.serv.next();
   }
 
 }
