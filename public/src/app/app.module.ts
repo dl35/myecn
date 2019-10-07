@@ -21,6 +21,7 @@ import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/materia
 import localeFr from '@angular/common/locales/fr';
 import { MomentUtcDateAdapter } from './material/MomentUtcDateAdapter';
 import { LogoComponent } from './logo/logo.component';
+import { ActualitesComponent } from './actualites/actualites.component';
 
 
 registerLocaleData(localeFr, 'fr');
@@ -30,7 +31,8 @@ registerLocaleData(localeFr, 'fr');
   declarations: [
     AppComponent,
     MenuComponent,
-    LogoComponent
+    LogoComponent,
+    ActualitesComponent
   ],
   imports: [
     BrowserModule,

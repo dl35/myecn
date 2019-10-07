@@ -13,6 +13,7 @@
 
         <div fxFlex="60" fxHide.sm fxHide.lt-sm  fxLayoutAlign="start center" fxLayoutGap="5px"  >
         
+        <button mat-raised-button color="primary"  routerLink="/actualites" ><mat-icon>pool</mat-icon>&nbsp;Actualités</button>
         <button mat-raised-button color="primary"  routerLink="/competitions" ><mat-icon>pool</mat-icon>&nbsp;Competitions</button>
         <button mat-raised-button color="primary"  routerLink="/records" ><mat-icon>timer</mat-icon>&nbsp;Records</button>
         <button mat-raised-button color="primary"  routerLink="/piscines" ><mat-icon>gps_fixed</mat-icon>&nbsp;Piscines</button>
@@ -27,7 +28,7 @@
   <mat-sidenav-container  fxFlexFill  >
       <mat-sidenav color="primary"  #sidenav  mode="over" opened="false"    >
         <div fxLayout="column" fxFlex fxLayoutAlign="start start" >
-            
+            <button mat-button color="primary"  routerLink="/actualites" (click)="sidenav.toggle()" ><mat-icon>pool</mat-icon>&nbsp;Actualités</button> 
             <button mat-button color="primary"  routerLink="/competitions" (click)="sidenav.toggle()" ><mat-icon>pool</mat-icon>&nbsp;Competitions</button>
             <button mat-button color="primary"  routerLink="/records" (click)="sidenav.toggle()" ><mat-icon>timer</mat-icon>&nbsp;Records</button>
             <button mat-button color="primary"  routerLink="/piscines" (click)="sidenav.toggle()" ><mat-icon>gps_fixed</mat-icon>&nbsp;Piscines</button>

@@ -1,12 +1,11 @@
-<div style='height:100%; overflow: hidden;' >
-<mat-toolbar color="primary">Les Piscines</mat-toolbar>
-<div fxLayout="column" fxLayoutAlign="center center" style='max-height: 500px;' style="margin-top:5px;">
-
-    <div fxLayout="row" fxLayoutAlign="center  center">
-      <div id="mapid"></div>
-  
-    </div>
-  
-  
+<div  class='mdiv'  >
+       
+  <div   leaflet style="height: 100vh ;width: 95vw;margin:0 auto;margin-top:5px; "  [leafletOptions]="options" 
+  [leafletMarkerCluster]="markerClusterData"
+  (leafletMapReady)="onMapReady($event)"
+  (leafletMarkerClusterReady)="markerClusterReady($event)"
+  [leafletMarkerClusterOptions]="markerClusterOptions"
+  (leafletMapMoveEnd)="refreshData()"
+   >
   </div>
-</div>
+</div> 

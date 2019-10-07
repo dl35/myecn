@@ -4,19 +4,12 @@ import { PiscinesService } from './services/piscines.service';
 import 'leaflet';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
-import * as geojson from 'geojson';
 
-/*
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: '/assets/leaflet/dist/images/marker-icon-2x.png',
-  iconUrl: '/assets/leaflet/dist/images/marker-icon.png',
-  shadowUrl: '/assets/leaflet/dist/images/marker-shadow.png',
-}); */
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
 const shadowUrl = 'assets/marker-shadow.png';
-const iconDefault = icon({
+const iconDefault = L.icon({
   iconRetinaUrl,
   iconUrl,
   shadowUrl,
@@ -26,7 +19,7 @@ const iconDefault = icon({
   tooltipAnchor: [16, -28],
   shadowSize: [41, 41]
 });
-Marker.prototype.options.icon = iconDefault;
+L.Marker.prototype.options.icon = iconDefault;
 
 
 
@@ -40,42 +33,11 @@ Marker.prototype.options.icon = iconDefault;
 })
 export class PiscinesComponent implements OnInit {
 
-  public mymap: any;
-  public geojson: any[] = [];
 
-  public myGeoJsonRoute = null;
-  public idLayer = null;
- // markerClusterGroup: L.MarkerClusterGroup;
-//  markerClusterData: any[] = [];
-//  markerClusterOptions: L.MarkerClusterGroupOptions;
-
-
-
-/*
-Marker.prototype.options.icon = icon({
-   iconRetinaUrl: 'assets/marker-icon-2x.png',
-  iconUrl: 'assets/marker-icon.png',
-  shadowUrl: 'assets/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  tooltipAnchor: [16, -28],
-  shadowSize: [41, 41]
-});*/
-
-
-
-/*
-L.Marker.prototype.options.icon = DefaultIcon;
-
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: '/assets/leaflet/dist/images/marker-icon-2x.png',
-  iconUrl: '/assets/leaflet/dist/images/marker-icon.png',
-  shadowUrl: '/assets/leaflet/dist/images/marker-shadow.png',
-});`
-*/
-
-
+  markerClusterGroup: L.MarkerClusterGroup;
+  markerClusterData: L.Marker[] = [];
+  markerClusterOptions: L.MarkerClusterGroupOptions;
+  map: L.Map ;
 
 
   options = {
@@ -91,149 +53,75 @@ L.Icon.Default.mergeOptions({
   ngOnInit() {
 
 
-    this.mymap = L.map('mapid').setView([48.117266, -1.6777926], 8);
 
-    this.mymap.removeControl(this.mymap.zoomControl);
-
-    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' }
-    ).addTo(this.mymap);
-
-    const bbox = this.mymap.getBounds().toBBoxString();
+  }
 
 
-
-    this.pservices.getdatas(bbox).subscribe(
-
+onMapReady(map: L.Map) {
+  this.map = map ;
+  const bbox =  map.getBounds().toBBoxString() ;
+  this.pservices.getdatas(bbox).subscribe(
       (datas) => { this.generateDatas(datas); },
-      (error) =>  { }
-
+      () =>  { }
     );
+      }
 
-  
-
-    this.mymap.on('moveend', (e) => {
-      this.test(e);
-    });
+      markerClusterReady(group: L.MarkerClusterGroup) {
+        this.markerClusterGroup = group;
+     }
 
 
-  }
 
-  test(e) {
-    const b = e.target.getBounds().toBBoxString();
+      generateDatas(data: any) {
 
-    this.pservices.getdatas(b).subscribe(
+        
+          const result: any[] = [];
+          data.forEach(function (item) {
 
+              const  marker =  new L.Marker([item.geometry.coordinates[1], item.geometry.coordinates[0]]);
+              marker.bindPopup(  this.createPopup( item.properties ) );
+              result.push( marker );
+          }, this );
+
+          this.markerClusterData =  result ;
+      }
+
+
+      refreshData(): void {
+      const bbox =  this.map.getBounds().toBBoxString() ;
+        this.pservices.getdatas(bbox).subscribe(
       (datas) => { this.generateDatas(datas); },
-      (error) => { }
-
-    );
-  }
-
-  /*
-  .ui-icon-waze {
-    background: url(waze.png) 50% 50% no-repeat;
-    background-size: 24px 24px;
-    border-radius:0px!important;
-    -moz-border-radius:0px!important;
-    -webkit-border-radius:0px!important;
-    -ms-border-radius:0px!important;
-    -o-border-radius:0px!important;
-  }
-*/
-
-  generateDatas(datas) {
-
-    if (this.myGeoJsonRoute) {
-      this.mymap.removeLayer(this.myGeoJsonRoute);
-    }
-
-  /*  const geojsonMarkerOptions = {
-      radius: 8,
-      fillColor: '#ff7800',
-      color: '#000',
-      weight: 1,
-      opacity: 1,
-      fillOpacity: 0.8
-    };
-*/
+      () =>  { }
+      );
+      }
 
 
-    this.myGeoJsonRoute = L.geoJSON(datas, {
+      createPopup( item ) {
+      let str = '' ;
 
-      //   icon: MonIcon ,
-      onEachFeature: function EachFeature(feature, layer) {
+        if (item && item.name) {
 
-
-        if (feature.properties && feature.properties.name) {
-
-     const a = '<a   target=\'_blank\'  href=\'https://waze.com/ul?ll=' + feature.properties.waze + '&navigate=yes\' >' +
+     const a = '<a   target=\'_blank\'  href=\'https://waze.com/ul?ll=' + item.waze + '&navigate=yes\' >' +
      '<img border=\'0\' src=\'assets/images/waze.png\' width=\'24\'  height=\'24\' ></a>';
-      const g = '<a   target=\'_blank\'  href=\'http://maps.google.com/maps?q=' + feature.properties.waze + '\' >' +
+      const g = '<a   target=\'_blank\'  href=\'http://maps.google.com/maps?q=' + item.waze + '\' >' +
      '<img border=\'0\' src=\'assets/images/map.png\' width=\'24\'  height=\'24\' ></a>';
 
-          layer.bindPopup('<strong>' + feature.properties.name + '</strong><br>' + feature.properties.ville +
-            '<br>' + feature.properties.description + '<br>Bassin: ' + feature.properties.bassin
-            + '&nbsp;Couloirs: ' + feature.properties.couloir + '<br>' + a + '&nbsp;&nbsp;&nbsp;' + g);
+      str = '<strong>' + item.name + '</strong><br>' + item.ville +
+            '<br>' + item.description + '<br>Bassin:<br> ' ;
+      item.bassins.forEach( function (e) {
+        str += e ;
+        str += '<br>';
+      }
+      )  ;
+
+      str +=  a + '&nbsp;&nbsp;&nbsp;' + g ;
+
         }
-      },
-
-    });
-
-
-    const markers = L.markerClusterGroup({
-
-      // maxClusterRadius: 60,
-      // iconCreateFunction: null,
-      spiderfyOnMaxZoom: true,
-      showCoverageOnHover: false,
-      zoomToBoundsOnClick: true
-   /*   iconCreateFunction: function (cluster) {
-        return L.divIcon({ html: '<div><span>' + cluster.getChildCount() + '</span></div>' ,
-          className: 'marker-cluster marker-cluster-small', iconSize: new L.Point(40, 40) });
-      }*/
-    });
-    markers.addLayer(this.myGeoJsonRoute);
-    this.mymap.addLayer(markers);
-
-
-    /*
-
-     this.myGeoJsonRoute =  L.geoJSON( datas, {
-
-        pointToLayer: function (feature, latlng) {
-
-          geojsonMarkerOptions.fillColor =  feature.properties.color ;
-
-            return L.circleMarker(latlng, geojsonMarkerOptions);
-        },
-        onEachFeature: function EachFeature(feature, layer) {
-          if (feature.properties && feature.properties.name) {
-              layer.bindPopup('<strong>' + feature.properties.name + '</strong><br>' + feature.properties.ville +
-              '<br>' + feature.properties.description + '<br>Bassin: ' + feature.properties.bassin
-              + '&nbsp;Couloirs: ' + feature.properties.couloir  );
-          }
-        },
-
-    }).addTo(this.mymap);
-
-    */
+        return str ;
+      }
 
 
 
 
+      }
 
-
-
-
-  }
-
-
-
-
-
-
-
-
-
-
-}

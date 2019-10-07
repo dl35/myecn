@@ -1,3 +1,4 @@
+import { ActualitesComponent } from './actualites/actualites.component';
 
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -16,6 +17,7 @@ export const routes: Routes = [
   {
     path: '', component: MenuComponent,  children:
       [
+        { path: 'actualites',  component: ActualitesComponent },
         { path: 'stats',  component: StatsComponent },
         { path: 'piscines',  component: PiscinesComponent },
         { path: 'competitions',  component: CompetitionsComponent },
