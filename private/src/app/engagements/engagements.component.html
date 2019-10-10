@@ -113,12 +113,13 @@
         <h2 mat-subheader>Les Engagements ({{(engage$ | async)?.length}})</h2>
        
         <mat-list-item *ngFor="let item of engage$ | async ; last as last1" 
-         style='margin-bottom:5px' class="mat-elevation-z4"     matRipple [matRippleCentered]="centered" [matRippleColor]="warn" >
-    
-          <p matLine style="margin-top:2em">
+         style='margin-bottom:3px;height: auto;' class="mat-elevation-z4"     matRipple [matRippleCentered]="centered" [matRippleColor]="warn" >
+         
+          <p matLine style="margin-top:0em">
             <span class="mat-body-2">{{item.prenom}} {{item.nom}} ({{item.categorie}}{{item.rang}}-{{item.sexe}})</span>
+           <br> <span class="mat-small"  *ngIf="item.date_reponse" >réponse: {{item.date_reponse  | date:'medium' }} </span>
           </p>
-          <div style='width:15vw;float:right;' class="mat-body-2" >
+          <div style='width:10vw;float:right;' class="mat-body-2" >
           <mat-grid-list cols="3" rowHeight="25px">
               <mat-grid-tile *ngFor="let node of item.eng;" [ngSwitch]="node.presence" >
               <span  *ngSwitchCase="'non'" style='border-radius:20%;background-color:red;color:white'  matTooltip="absent" ><s>&nbsp;{{node.day}}&nbsp;</s></span>
@@ -130,9 +131,9 @@
         
           <div matLine style='margin-bottom:1em;' >
                    &nbsp;
-            <button mat-icon-button style='margin-bottom:2em;' (click)="setNotification(item.id)" >
+            <button mat-icon-button style='margin-bottom:0em;' (click)="setNotification(item.id)" >
               <mat-icon aria-label="Email"   matBadge="{{item.notification}}" matBadgeSize="small" matBadgePosition="before"
-              [ngStyle]="{color: item.notification > 0 ? 'green' : 'red' }"  >contact_mail</mat-icon>
+              [ngStyle]="{color: item.notification > 0 ? 'green' : 'red' }"  matTooltip="{{item.notify | date:'medium'}}" >contact_mail</mat-icon>
             </button>
             &nbsp;&nbsp;
             <button mat-icon-button color="primary"  (click)="setExtranat(item.id)" *ngIf="item.notification !== '0'" >
