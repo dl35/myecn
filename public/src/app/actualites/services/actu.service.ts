@@ -1,47 +1,71 @@
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { InitModels } from './initmodels';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ActuService {
 
-  ffn = '/api/public/rss/ffn/ffn.json';
-  rmc = '/api/public/rss/rmc/rmc.json';
-  equipe = '/api/public/rss/equipe/equipe.json';
-  sport = '/api/public/rss/sport/sport.json';
 
-  rss = [ this.ffn , this.rmc , this.equipe , this.sport ];
-  indice = 0;
+  init =  '/api/public/rss/init.json';
   subject$ = new BehaviorSubject(null);
-  
+  logo$ = new BehaviorSubject(null);
+  actif$ = new BehaviorSubject(false);
 
-  constructor(private http: HttpClient) { }
+  params =  {
+    'actif': false ,
+    'scenario': [ ] ,
+    } ;
 
-  public getDatas() {
-  return  this.subject$.asObservable();
+  index = 0 ;
+ 
+
+  constructor(private http: HttpClient)  {
+  this.getInit().subscribe(
+    ( d ) => {  this.actif$.next( d.actif ) ; this.params = d;  } ,
+    ( err )  => { this.actif$.next( false ) ; }
+     );
 
   }
 
+  public getDatas() {
+  return  this.subject$.asObservable();
+  }
+
+  public getLogo() {
+    return  this.logo$.asObservable();
+    }
+  public getActif() {
+    return  this.actif$.asObservable();
+    }
+
+
+  private getInit() {
+    return this.http.get<InitModels>( this.init );
+  }
+
+
+
 
   public get() {
-    this.indice = 0 ;
-    const url = this.rss [ 0 ] ;
-    this.http.get( url ).subscribe(
-      ( m ) => this.subject$.next( m )
+    const url = this.params.scenario[this.index].url ;
+    const logo = this.params.scenario[this.index].logo ;
+    
+
+    this.http.get<any>( url ).subscribe(
+      ( m ) => {  this.logo$.next(logo) ; this.subject$.next( m ) ; }
     )
   }
 
   public next() {
-    this.indice = this.indice + 1 ;
-    if( this.indice >= this.rss.length  ) {
-      this.indice = 0 ;
+    this.index = this.index + 1 ;
+    if ( this.index >= this.params.scenario.length ) {
+      this.index = 0 ;
     }
-    const url = this.rss [ this.indice ] ;
-    return this.http.get( url ).subscribe(
-      ( m ) => this.subject$.next( m )
-    )
+
+    this.get() ;
   }
  
 

@@ -1,5 +1,7 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, HostListener } from '@angular/core';
+import { ActuService } from '../actualites/services/actu.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-menu',
@@ -8,8 +10,11 @@ import { Component, OnInit, HostListener } from '@angular/core';
 })
 export class MenuComponent {
 
-  constructor(private router: Router , private route: ActivatedRoute ) {
+public actuActif$ : Observable<boolean> ;
 
+  constructor(private router: Router , private route: ActivatedRoute ,public serv: ActuService  ) {
+
+   this.actuActif$ = this.serv.getActif();
 
 
    const keys = this.route.snapshot.queryParamMap.keys ;
@@ -37,6 +42,8 @@ export class MenuComponent {
    } else {
     this.router.navigate(['']);
    }
+
+
 
    }
 

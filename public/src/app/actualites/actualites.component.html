@@ -1,17 +1,21 @@
 
 <div>
-    <button mat-mini-fab color="accent" class="add-button" (click)="toNext()">
+    <button mat-mini-fab color="accent" class="next-button" (click)="toNext()">
       <mat-icon>add</mat-icon>
     </button>
   </div>
 
 <div class="main-div">
   
-    <mat-card  *ngIf="(datas$ | async)?.channel as channel "  class="example-card">
+    <mat-card  *ngIf="(datas$ | async)?.channel as channel "    class="actu-card"  >
         <mat-card-header>
-          <div mat-card-avatar class="example-header-image"></div>
+          
+          <div *ngIf="(logo$ | async) as logo "   mat-card-avatar [ngStyle]="{'background-image':'url(' + logo + ')' ,'background-size': 'cover' }"   >
+          </div>
+          
+        
           <mat-card-title>{{channel.title}}</mat-card-title>
-          <mat-card-subtitle>{{channel.lastdate}}</mat-card-subtitle>
+          <mat-card-subtitle>{{channel.lastdate | date:'medium' }}</mat-card-subtitle>
           <mat-card-subtitle>{{channel.copyright}}</mat-card-subtitle>
         </mat-card-header>
         
@@ -20,16 +24,19 @@
             {{channel.description}}
           </p>
           <p>
-              {{channel.link}}
-            </p>
+            <a href="{{channel.link}}" target="_blank" >{{channel.link}}</a>
+          </p>
         </mat-card-content>
       </mat-card>
   
-      <mat-card *ngFor="let item of (datas$ | async)?.items" class="example-card">
+      <mat-card *ngFor="let item of (datas$ | async)?.items"  class="actu-card"  >
           <mat-card-header>
-            <div mat-card-avatar class="example-header-image"></div>
+              <div *ngIf="(logo$ | async) as logo "   mat-card-avatar [ngStyle]="{'background-image':'url(' + logo + ')' ,'background-size': 'cover' }"   >
+                </div>
+                
+               
             <mat-card-title>{{item.title}}</mat-card-title>
-            <mat-card-subtitle>{{item.date}}</mat-card-subtitle>
+            <mat-card-subtitle>{{item.date | date:'medium' }}</mat-card-subtitle>
           </mat-card-header>
           <img  *ngIf="item.img"  mat-card-image src="{{item.img}}"  >
           <mat-card-content>
