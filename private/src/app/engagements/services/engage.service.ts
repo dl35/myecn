@@ -94,7 +94,7 @@ public clearData() {
       (res ) => { const v =  this.subject$.value ;  const index = v.findIndex( x =>  x.id === idext  ) ;
         // tslint:disable-next-line: radix
         const d =  1 +  parseInt( v[index].notification ) ;
-        v[index].notification =  d.toString()
+        v[index].notification =  d.toString();
         this.subject$.next( v ) ;
       }
      );
