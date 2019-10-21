@@ -1,6 +1,6 @@
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { InitModels } from './initmodels';
 
 @Injectable({
@@ -43,7 +43,12 @@ export class ActuService {
 
 
   private getInit() {
-    return this.http.get<InitModels>( this.init );
+    const headers = new HttpHeaders({
+      'Cache-Control':  'no-cache, no-store, must-revalidate, post-check=0, pre-check=0',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    }) ;
+    return this.http.get<InitModels>( this.init , {headers: headers}  );
   }
 
 

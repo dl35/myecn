@@ -1,4 +1,4 @@
-<div  fxLayout="column" *ngIf="data.addLic === true"  fxLayoutAlign="center center"  >
+<div  fxLayout="column" *ngIf="data.mode === 'add' "  fxLayoutAlign="center center"  >
     
         <div mat-dialog-title>
         <p>{{data.info}}</p>
@@ -45,7 +45,7 @@
 </div>
       
 
-      <div  fxLayout="column" *ngIf="data.addLic === false" >
+<div  fxLayout="column" *ngIf="data.mode !== 'add' && data.mode !== 'modif' " >
       
               <div mat-dialog-title>
               <p>{{data.info}}</p>
@@ -58,3 +58,29 @@
   
     
     </div>
+
+
+<div  fxLayout="column" *ngIf="data.mode === 'modif' " >
+      
+    <mat-card style="max-width:80%" >
+        <mat-card-header>
+    
+          <mat-card-title>[Modif] {{data.item.nom}} {{data.item.prenom}} {{data.item.categorie}}{{data.item.rang}}</mat-card-title>
+          <mat-card-subtitle *ngIf="data.item.date_reponse" >{{data.item.date_reponse }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <div  style='display: inline-block;margin:0 auto;' *ngFor="let node of data.item.eng;" [ngSwitch]="node.presence" >
+                <button *ngSwitchCase="'non'"   matTooltip="absent" style='background-color:red;color:white' (click)="next(node.day , 'non')" mat-mini-fab>{{node.day}}</button>
+                <button *ngSwitchCase="'oui'"  matTooltip="présent"  style='color:white;background-color:green' (click)="next(node.day , 'oui')"  mat-mini-fab>{{node.day}}</button>
+                <button *ngSwitchDefault  matTooltip="en attente" style='background-color:lightskyblue' (click)="next(node.day , '')"  mat-mini-fab>{{node.day}}</button>
+                &nbsp;
+            </div>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button color="primary" [mat-dialog-close]="true" (click)='saveModif()'  >Valider</button>
+            <button mat-raised-button  [mat-dialog-close]="false" (click)='cancelModif()'  cdkFocusInitial     >Annuler</button>
+          
+        </mat-card-actions>
+      </mat-card>
+
+</div>

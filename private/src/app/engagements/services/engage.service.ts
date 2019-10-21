@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { CompetEngage, LicEngage } from './../models/data-engage';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -16,11 +16,7 @@ export class EngageService {
 
 
   private subject$ = new BehaviorSubject<LicEngage[]>([]) ;
-  public datas$: Observable<LicEngage[]> =  this.subject$.asObservable();
-
-  private subCompet$ = new BehaviorSubject<CompetEngage[]>([]) ;
-  public compet$: Observable<CompetEngage[]> =  this.subCompet$.asObservable();
-
+  private subCompet$ = new Subject<CompetEngage[]>() ;
 
 
   constructor(private http: HttpClient) { }
@@ -34,7 +30,7 @@ export class EngageService {
         );
      }
      public getObsCompet() {
-      return this.compet$ ;
+      return this.subCompet$.asObservable();
   }
 
 
@@ -50,16 +46,21 @@ export class EngageService {
 
 
   public getEngagement( id ) {
+
+
     const uget = this.url + '/' + id ;
     this.http.get<any[]>( uget  ).subscribe(
-      res => {   this.subject$.next( res ) ; },
+      res =>   { this.subject$.next( res ) ;  }
+
     ) ;
   }
-  public getObservable() {
-    return this.datas$ ;
+  public getData() {
+    return this.subject$.asObservable();
 }
 
-
+public clearData() {
+  this.subject$.next( [] ) ;
+}
 
 
   public sendMails( id ) {
@@ -132,20 +133,22 @@ export class EngageService {
 
   }
 
-
   public getLicencies( id ) {
     const uget = this.url + '/' + id + '/lic';
     return this.http.get<LicEngage[]>( uget ) ;
   }
 
-
-
-    public updateLicencies( id , datas ) {
+  public updateLicencies( id , datas ) {
       const uput = this.url + '/' + id ;
       datas.append = true ;
       return  this.http.post<any>( uput , datas );
     }
 
+  public modifLicencies( id , datas ) {
+    const uput = this.url + '/' + id ;
+    datas.modif = true ;
+    return  this.http.put<any>( uput , datas );
+    }
 
 
 }

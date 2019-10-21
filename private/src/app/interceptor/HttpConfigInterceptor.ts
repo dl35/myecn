@@ -40,6 +40,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
 
                 if (event instanceof HttpResponse) {
                     const text = (event.body.message) ? event.body.message : event.statusText;
+
                     this.snackBar.showSnackBar(text, false);
                 }
                 return event;

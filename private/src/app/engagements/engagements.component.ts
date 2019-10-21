@@ -1,12 +1,13 @@
 import { DialogEngageComponent } from './dialog-engage/dialog-engage.component';
 import { CompetEngage, LicEngage } from './models/data-engage';
-import { MediaMatcher, BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
-import { Component, OnInit, ChangeDetectorRef, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { EngageService } from './services/engage.service';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { map } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
+
 
 
 @Component({
@@ -18,13 +19,10 @@ import { map } from 'rxjs/operators';
 })
 export class EngagementsComponent implements OnInit, OnDestroy {
 
- 
-
-
-
+  isCreated = false;
+  listeEngage = [];
 
   filtre = { notif: null, ext: null, pre: null };
-  isCreated = false;
 
   notif = [
     {value: null, viewValue: '-'},
@@ -46,21 +44,16 @@ export class EngagementsComponent implements OnInit, OnDestroy {
 
 
 
-  datas$: Observable<CompetEngage[]> ;
-  engage$: Observable<LicEngage[]> ;
+datas$: Observable<CompetEngage[]> ;
+engage$: Observable<LicEngage[]> ;
+dataForm = new FormControl();
+idc: number;
+destroyed$: Subject<any> = new Subject();
 
 
-  dataForm = new FormControl();
-
-  idc: number;
-
-
-  destroyed$: Subject<any> = new Subject();
-
-
-  engageList$: Observable<LicEngage[]>;
-  ​layoutChanges: Observable<BreakpointState>;
-constructor(public breakpointObserver: BreakpointObserver, public dialog: MatDialog, private eService: EngageService) {
+​layoutChanges: Observable<BreakpointState>;
+// tslint:disable-next-line: max-line-length
+constructor( public breakpointObserver: BreakpointObserver, public dialog: MatDialog, private eService: EngageService) {
 
   this.idc = -1;
 
@@ -75,9 +68,14 @@ constructor(public breakpointObserver: BreakpointObserver, public dialog: MatDia
 
 
   ngOnInit() {
-    this.eService.getCompet();
-    this.datas$ =  this.eService.getObsCompet() ;
+   this.eService.getCompet();
+    this.datas$ =  this.eService.getObsCompet();
+    this.engage$ = this.eService.getData();
   }
+
+
+
+
 
   public setCreated(response) {
     if (response.success) {
@@ -97,7 +95,7 @@ constructor(public breakpointObserver: BreakpointObserver, public dialog: MatDia
   public delAll() {
     const dialogRef = this.dialog.open(DialogEngageComponent, {
       width: '60%',
-      data: { id: this.idc, addLic: false, info: 'Supprimer tous les nageurs non notifiés ?' },
+      data: { id: this.idc, mode: 'deleteall' , info: 'Supprimer tous les nageurs non notifiés ?' },
       disableClose: true
     });
 
@@ -119,7 +117,7 @@ constructor(public breakpointObserver: BreakpointObserver, public dialog: MatDia
   public setDelete(id) {
     const dialogRef = this.dialog.open(DialogEngageComponent, {
       width: '60%',
-      data: { id: this.idc, addLic: false, info: 'Supprimer ?' },
+      data: { id: this.idc, mode: 'delete', info: 'Supprimer ?' },
       disableClose: true
     });
 
@@ -144,7 +142,7 @@ constructor(public breakpointObserver: BreakpointObserver, public dialog: MatDia
   public setNotification(id) {
     const dialogRef = this.dialog.open(DialogEngageComponent, {
       width: '60%',
-      data: { id: this.idc, addLic: false, info: 'Envoyer un Email ?' },
+      data: { id: this.idc, mode: 'notif' , info: 'Envoyer un Email ?' },
       disableClose: true
     });
   dialogRef.beforeClosed().subscribe(
@@ -160,21 +158,23 @@ constructor(public breakpointObserver: BreakpointObserver, public dialog: MatDia
 
 
   public setCompetition(id) {
+    this.initFiltre();
     this.idc = id;
     this.eService.getEngagement(id) ;
-    this.engage$ = this.eService.getObservable();
+    this.engage$.pipe(takeUntil(this.destroyed$)).subscribe(
+        (v) => {
+          this.isCreated = v.length > 0 ;
+          this.listeEngage = v ;
+        }
 
-      this.engage$.subscribe(
-        (res) => ( res.length > 0 ) ? this.isCreated = true : this.isCreated = false
-      );
+    );
 
   }
 
   ngOnDestroy(): void {
-    this.destroyed$.next();
     this.destroyed$.complete();
- //   this.mobileQuery.removeListener(this._mobileQueryListener);
-  }
+    this.eService.clearData();
+    }
 
 
 myfilter( e  ) {
@@ -194,11 +194,15 @@ return   res  ;
 doFilter() {
 
 
-  this.engage$ = this.eService.getObservable().pipe(
+  this.engage$.pipe(
+   takeUntil(this.destroyed$),
    map( item =>   item.filter( d =>   ( this.filtre.notif === '0'  ) ?  (d.notification === 0 ) : (d) )),
    map( item =>   item.filter( d =>   ( this.filtre.notif === '1'  ) ?  (d.notification > 0 ) : (d) )),
    map( item =>   item.filter( d =>   ( this.filtre.ext  === null  ) ?  (d) : (  d.extranat === this.filtre.ext  ) )),
-   map( item =>   item.filter( d =>   ( this.filtre.pre === null   ) ?  (d)  :  this.myfilter(d.eng) ) ) );
+   map( item =>   item.filter( d =>   ( this.filtre.pre === null   ) ?  (d)  :  this.myfilter(d.eng) ) ) )
+   .subscribe(
+     (v) => this.listeEngage = v
+   );
 
 
  }
@@ -208,7 +212,7 @@ doFilter() {
   public sendMails() {
     const dialogRef = this.dialog.open(DialogEngageComponent, {
       width: '60%',
-      data: { id: this.idc, addLic: false, info: 'Envoyer les emails ?' },
+      data: { id: this.idc, mode: 'emails' , info: 'Envoyer les emails ?' },
       disableClose: true
     });
 
@@ -227,7 +231,7 @@ doFilter() {
   public addLic() {
     const dialogRef = this.dialog.open(DialogEngageComponent, {
       width: '80%',
-      data: { id: this.idc, addLic: true, info: 'Ajouter des licencies ?' },
+      data: { id: this.idc, mode: 'add' , info: 'Ajouter des licencies ?' },
       disableClose: true
     });
     dialogRef.beforeClosed().subscribe(
@@ -240,6 +244,30 @@ doFilter() {
       () => {}
     );
   }
+
+public forcereponse( item ) {
+
+  if ( item.notification === '0' ) {
+    return ; }
+  const dialogRef = this.dialog.open(DialogEngageComponent, {
+    width: '80%',
+    data: { item: item , mode: 'modif' , info: '' },
+    disableClose: true
+  });
+  dialogRef.beforeClosed().subscribe(
+    (result) => {
+
+      if (result) {
+        this.setCompetition(this.idc);
+      }
+    },
+    () => {},
+    () => {}
+  );
+
+}
+
+
 
 
 }
