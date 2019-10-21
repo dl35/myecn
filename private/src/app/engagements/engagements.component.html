@@ -128,7 +128,7 @@
                    &nbsp;
             <button mat-icon-button style='margin-bottom:0em;' (click)="setNotification(item.id)" >
               <mat-icon aria-label="Email"   matBadge="{{item.notification}}" matBadgeSize="small" matBadgePosition="before"
-              [ngStyle]="{color: item.notification > 0 ? 'green' : 'red' }"  matTooltip="{{item.notify | date:'medium'}}" >contact_mail</mat-icon>
+              [ngStyle]="{color: item.notification !== '0' ? 'green' : 'red' }"  matTooltip="{{item.notify | date:'medium'}}" >contact_mail</mat-icon>
             </button>
             &nbsp;&nbsp;
             <button mat-icon-button color="primary"  (click)="setExtranat(item.id)" *ngIf="item.notification !== '0'" >

@@ -2,7 +2,6 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { CompetEngage, LicEngage } from './../models/data-engage';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { shareReplay, publishReplay, refCount } from 'rxjs/operators';
 
 
 
@@ -93,7 +92,9 @@ public clearData() {
     const data = { notify : idext } ;
     this.http.put<any>( uput , data  ).subscribe(
       (res ) => { const v =  this.subject$.value ;  const index = v.findIndex( x =>  x.id === idext  ) ;
-        v[index].notification =  1 + +v[index].notification ;
+        // tslint:disable-next-line: radix
+        const d =  1 +  parseInt( v[index].notification ) ;
+        v[index].notification =  d.toString()
         this.subject$.next( v ) ;
       }
      );
@@ -111,7 +112,7 @@ public clearData() {
   public setDeleteAll(idcompet) {
     const udel = this.url + '/all_' + idcompet ;
     this.http.delete<any>( udel).subscribe(
-      (res ) => { const v =  this.subject$.value.filter( x =>  x.notification > 0  ) ;
+      (res ) => { const v =  this.subject$.value.filter( x =>  x.notification !== '0'  ) ;
                   this.subject$.next( v ) ;
       }
      );

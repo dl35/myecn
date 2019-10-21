@@ -37,7 +37,7 @@ export class LicEngage {
     prenom: string;
     categorie: string;
     rang: string;
-    notification: number;
+    notification: string;
     extranat: number;
     commentaire: string;
     eng: Array<IEngage>;
