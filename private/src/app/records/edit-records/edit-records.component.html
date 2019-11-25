@@ -12,18 +12,14 @@
           <input matInput placeholder="Nom" formControlName="nom" >
           <mat-error>nom requis</mat-error>
         </mat-form-field>
-        <mat-form-field fxFlex="20">
+        <mat-form-field fxFlex="15">
             <input matInput placeholder="Prenom" formControlName="prenom" >
             <mat-error>prenom requis</mat-error>
           </mat-form-field>
-          <mat-form-field  fxFlex="20">
-              <mat-label>Modif.</mat-label>
-              <mat-select (selectionChange)='setNP($event)'  >
-                <mat-option *ngFor="let n of (names$ | async) "  [value]="n.nom +','+ n.prenom"   >
-                  {{n.nom}} , {{n.prenom}}
-                </mat-option>
-              </mat-select>
+          <mat-form-field fxFlex="15">
+              <input matInput placeholder="Lieu" formControlName="lieu" >
             </mat-form-field>
+
       </div>
   
 
@@ -31,8 +27,8 @@
       <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="9px" fxLayoutAlign="center baseline"
         style='margin-top:5px'>
 
-        <mat-form-field fxFlex="20">
-            <input matInput placeholder="Lieu" formControlName="lieu" >
+        <mat-form-field fxFlex="15">
+            <input matInput placeholder="Temps" formControlName="temps" >
           </mat-form-field>
    
         <mat-form-field fxFlex="15" fxFlexOffset.lt-sm="2">

@@ -13,40 +13,38 @@ export class RecordsService {
 
   private url = '/api/private/torecords' ;
 
-  public  get() {
-     return this.http.get<IRecords[]>( this.url ).pipe(
-     shareReplay(1)
-     );
-  }
-
-  public  getName() {
-    const url = this.url + '/names';
-
-    return this.http.get<any[]>( url ).pipe(
-    shareReplay(1)
-   );
-}
-
-
-
-/*
-  public  getName() {
-   const url = this.url + '/name' ;
-   return this.http.get<IRecname[]>( url ).pipe(
-    shareReplay(1)
-   );
-}*/
-
+    public  get() {
+      return this.http.get<IRecords[]>( this.url ).pipe(
+      shareReplay(1)
+      );
+    }
 
  
+    public getCompetitions() {
+      const url = this.url + '/compet';
+      return this.http.get<any[]>( url );
+    }
 
-  public  put( data ) {
-     return this.http.put<any>( this.url , data );
-  }
+    public traiteRecords( name ) {
+      const url = this.url + '/traite/' + name;
+      return this.http.get<any[]>( url );
+    }
 
-  public  post( data ) {
-    return this.http.post<any>( this.url , data );
- }
+    public updateRecords( item , age ) {
+      item.ageupdate = age ;
+      const url = this.url ;
+      return this.http.put<any[]>( url , item );
+
+    }
+
+
+    public  put( data ) {
+      return this.http.put<any>( this.url , data );
+    }
+
+    public  post( data ) {
+      return this.http.post<any>( this.url , data );
+    }
 
 
 }

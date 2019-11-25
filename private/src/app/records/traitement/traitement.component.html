@@ -1,0 +1,44 @@
+<mat-form-field style="width:100%">
+    <mat-label>Competitions</mat-label>
+    <mat-select style="width:100%;"  (selectionChange)="traiteFile($event.value)">
+      <mat-option value=""></mat-option>
+      <mat-option *ngFor="let c of (compet$ | async)" [value]="c.value">
+        {{c.label}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+{{ ( datas$ |async)?.compet  | json }}
+
+ <mat-list style="min-width: 800px;margin:0 auto;width:800px;" >
+     
+      <mat-list-item style="margin:0 auto;margin-bottom:10px;max-width: 700px;"   class="mat-elevation-z3"  *ngFor="let item of ( datas$ |async)?.datas"  >
+
+        
+            <p matLine>
+              <span   class="demo-secondary-text" >{{item.nom}} {{item.prenom}} {{item.sexe}} {{item.age}} ans</span>
+              <span style="font-weight:500;color:orange" >&nbsp;&nbsp; {{item.ref}} | {{item.distance}} {{item.nage}} </span>
+              <span style="font-weight:500;color:orange;background-color: grey;" >&nbsp; {{item.temps}} &nbsp;  </span>
+            </p>
+            <div matLine>
+            <div style="display: inline-block;margin-top: 4px;" *ngFor="let perf of item.perf"  >
+           
+                <label *ngIf="perf.type === 'noperf'" style="margin-left:4px; color:white;background-color: green;" (click)='updaterec(item,perf.age)' >
+                    &nbsp; {{perf.age}}@{{perf.time}} &nbsp;
+                </label>  
+                <label *ngIf="perf.type === 'eqperf'" style="margin-left:4px; color:white;background-color: blue;" >
+                    &nbsp; {{perf.age}}@{{perf.time}} &nbsp;
+                </label>  
+            </div>
+          </div>
+         
+         
+
+        
+
+  
+     
+   
+      </mat-list-item>
+      </mat-list>
+    

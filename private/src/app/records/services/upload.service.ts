@@ -15,7 +15,6 @@ export class UploadService {
      return  this.http.post( this.url , fd  ,  {
        reportProgress: true ,
        observe: 'events'
-
       } ) ;
 
    /*   .pipe(map((event) => {

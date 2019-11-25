@@ -5,6 +5,7 @@
 
 <mat-tab-group fxLayout="column" fxLayoutAlign="space-evenly center" *ngIf="!dataSelected"  >
 <mat-tab label="Liste">
+  
 
 <div fxLayout="column"   fxLayoutAlign="space-evenly center"   fxFlex="100%" style="margin-top:10px;" >
      
@@ -77,8 +78,14 @@
 
 
 </mat-tab>
-<mat-tab label="Traitement">
-    <app-file-upload></app-file-upload>
-    </mat-tab>
+<mat-tab label="Fichiers FFnex"     >
+<app-file-upload></app-file-upload>
+</mat-tab>
+<mat-tab label="Traitement"     >
+    <app-traitement></app-traitement>
+</mat-tab>
+<mat-tab label="Outils"     >
+    remplacement........
+  </mat-tab>
 </mat-tab-group>
 

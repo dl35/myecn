@@ -7,6 +7,7 @@ import { RecordsComponent } from './records.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { EditRecordsComponent } from './edit-records/edit-records.component';
 import { RecordsRoutingModule } from './records-routing.module';
+import { TraitementComponent } from './traitement/traitement.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { RecordsRoutingModule } from './records-routing.module';
     FlexLayoutModule,
     RecordsRoutingModule
   ],
-  declarations: [RecordsComponent, FileUploadComponent, EditRecordsComponent]
+  declarations: [RecordsComponent, FileUploadComponent, EditRecordsComponent, TraitementComponent]
 })
 export class RecordsModule { }

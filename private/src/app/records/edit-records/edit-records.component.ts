@@ -15,7 +15,7 @@ import { MatSelectChange } from '@angular/material/select';
 })
 export class EditRecordsComponent implements OnInit {
 
-  names$: Observable<any[]>;
+  
   public types = ['CLUB' , 'DEP' , 'REG' , 'NAT'] ;
 
   @Output() quitte = new EventEmitter<Boolean>();
@@ -29,11 +29,6 @@ export class EditRecordsComponent implements OnInit {
 
        this.dataForm.setValue( data , { onlySelf: true } );
   }
-/*
-  get data(): Irecords {
-    // transform value for display
-        return this.data;
-  }*/
 
   constructor(private formBuilder: FormBuilder, private recService: RecordsService ) {
 
@@ -43,10 +38,6 @@ export class EditRecordsComponent implements OnInit {
 
   ngOnInit() {
    const sexe = this.dataForm.get('sexe').value ;
-   this.names$ = this.recService.getName().pipe(
-    map( data => data.filter( item => item.sexe === sexe )  ) 
-
-   );
   }
   doquitte() {
     this.quitte.emit( true );
@@ -54,23 +45,20 @@ export class EditRecordsComponent implements OnInit {
 
   saveForm() {
     const data = this.dataForm.getRawValue() ;
-    this.quitte.emit( true );
+    data.ageupdate = data.age ;
+    this.recService.put( data ).subscribe(
+      (v) =>  this.quitte.emit( true )
+    );
+
   }
 
 
-  setNP( event: MatSelectChange)   {
-      const v = event.source.value   ;
-      const tv = v.split(',') ;
-      this.dataForm.get('nom').setValue(tv[0]) ;
-      this.dataForm.get('prenom').setValue(tv[1]) ;
-      event.source.value =  null;
-  }
 
   private createForm() {
     this.dataForm = this.formBuilder.group({
       age: [ {value: null , disabled: true} , [Validators.required ] ],
-      nom: [{value: null , disabled: true}, [Validators.required] ],
-      prenom:  [ {value: null , disabled: true} , [Validators.required] ],
+      nom: [{value: null}, [Validators.required] ],
+      prenom:  [ {value: null} , [Validators.required] ],
       lieu:  [''],
       bassin: [ '25' , [Validators.required] ],
       date: [ null , [Validators.required] ],

@@ -1,9 +1,29 @@
-<!--<p>
-  <input  type='file' name='file' accept=".xml"  (change)="onFileSelected($event)" /> 
 
-  <button mat-raised-button (click)="onUpload()">Upload</button>
+    <mat-form-field style="width:100%">
+        <mat-label>Competitions</mat-label>
+        <mat-select style="width:100%;"     (selectionChange)="openFileBox($event.value)">
+          <mat-option value=""></mat-option>
+          <mat-option *ngFor="let c of (compet$ | async)" [value]="c.value">
+             {{c.label}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+<mat-progress-bar [value]="pvalue" mode="determinate"  ></mat-progress-bar>      
+
+<input style="display: none" #fileInput  type='file' name='file' accept=".xml"  (change)="onFileSelected($event)" /> 
+
+<p *ngIf="selectedFile" >
+<button   color="accent" matTooltip="{{selectedFile.name}}"   mat-raised-button (click)="onUpload()">Upload
+<mat-icon>cloud_upload</mat-icon>
+</button>
 </p>
--->
+<p *ngIf="uploadFile" > 
+Le fichier est chargé sur le serveur
+</p>
+
+<!--
 <button mat-button (click)='torecords()' color="primary">vers outils records...</button>
 
 <mat-progress-bar mode="determinate" [value]="pvalue"></mat-progress-bar>
+-->
