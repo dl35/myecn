@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { shareReplay, tap } from 'rxjs/operators';
 import { IRecname } from '../models/models-recname';
 import { IRecords } from '../models/models-records';
+import {  of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,8 @@ export class RecordsService {
   private url = '/api/private/torecords' ;
 
     public  get() {
-      return this.http.get<IRecords[]>( this.url ).pipe(
+      return this.http.get<IRecords[]>( this.url )
+      .pipe(
       shareReplay(1)
       );
     }
@@ -22,7 +24,9 @@ export class RecordsService {
  
     public getCompetitions() {
       const url = this.url + '/compet';
-      return this.http.get<any[]>( url );
+      return this.http.get<any[]>( url ).pipe(
+        shareReplay()
+        );
     }
 
     public traiteRecords( name ) {
@@ -39,7 +43,7 @@ export class RecordsService {
 
 
     public  put( data ) {
-      return this.http.put<any>( this.url , data );
+       return this.http.put<any>( this.url , data );
     }
 
     public  post( data ) {

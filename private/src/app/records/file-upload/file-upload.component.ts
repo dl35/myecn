@@ -1,8 +1,9 @@
 import { Observable } from 'rxjs';
 import { RecordsService } from './../services/records.service';
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, Input } from '@angular/core';
 import { UploadService } from '../services/upload.service';
 import { HttpEventType } from '@angular/common/http';
+import { FormControl } from '@angular/forms';
 
 
 @Component({
@@ -16,16 +17,17 @@ export class FileUploadComponent  {
   @ViewChild('fileInput', {static: false} )
   fileInput: ElementRef;
   idFile = null ;
-  
 
-  compet$: Observable<any[]> ;
+  cselect = new FormControl();
+  @Input()
+  compet: Observable<any[]> ;
   selectedFile: File = null ;
 
   pvalue = 0 ;
   uploadFile = false;
   constructor(private upService: UploadService , private recService: RecordsService  ) {
 
-    this.compet$ = this.recService.getCompetitions();
+   
 
   }
 
@@ -35,6 +37,14 @@ torecords() {
 }
 
 openFileBox(value) {
+  this.pvalue = 0 ;
+  this.selectedFile = null ;
+  this.uploadFile = false ;
+
+  if ( !value ) {
+    return;
+  }
+
   this.idFile = value + '.xml' ;
   this.fileInput.nativeElement.click();
 }
@@ -51,12 +61,12 @@ onUpload() {
   this.pvalue = 0 ;
   this.upService.upload( formData ).subscribe(
         (event) => {
-          console.log( event.type, event  );
           if ( event.type === HttpEventType.UploadProgress  ) {
           this.pvalue = Math.round( event.loaded / event.total * 100)  ;
         } else if ( event.type === HttpEventType.Response )  {
          this.selectedFile = null ;
          this.uploadFile = true ;
+         this.cselect.reset();
          }
       } ,
 

@@ -5,7 +5,7 @@ export interface IRecords {
     prenom: string ;
     bassin: '25'|'50';
     date: Date;
-    distance: string;
+    distance: number;
     lieu: string;
     modif: Date;
     nage: 'NL'|'BRA'|'PAP'|'DOS';

@@ -23,6 +23,8 @@ export class RecordsComponent implements OnInit {
 
   loading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
+  compet$: Observable<any[]>;
+
   // tslint:disable-next-line:max-line-length
   nages = [{ value: 'NL', label: 'Nage libre' }, { value: 'BRA', label: 'Brasse' }, { value: 'DOS', label: 'Dos' }, { value: 'PAP', label: 'Papillon' }];
   dists = ['50', '100', '200', '400', '800', '1500', '4x50', '4x100', '4x200', '10x100'];
@@ -31,7 +33,25 @@ export class RecordsComponent implements OnInit {
 
   layoutChanges: Observable<BreakpointState>;
 
-  constructor(private fb: FormBuilder, private rService: RecordsService, private breakpointObserver: BreakpointObserver) { }
+  constructor(private fb: FormBuilder, private rService: RecordsService, private breakpointObserver: BreakpointObserver) {
+    this.compet$ = this.rService.getCompetitions();
+
+   }
+
+   getClass( type ) {
+    let cssClasses;
+    console.log( type );
+    if (type === 'CLUB' ) {
+      cssClasses = { 'CLUB': true };
+    } else if (type === 'DEP' ) {
+      cssClasses = { 'DEP': true };
+    } else if  (type === 'REG' ) {
+      cssClasses = { 'REG': true };
+    } else {
+      cssClasses = { 'FRA': true };
+    }
+      return cssClasses ;
+  }
 
   ngOnInit() {
     this.createForm();
@@ -48,10 +68,14 @@ export class RecordsComponent implements OnInit {
     this.dataSelected = data;
   }
 
-  quitte() {
+  quitte(v) {
     this.dataSelected = null;
+    console.log( v) ;
+    if ( v ) {
+      this.showRecord();
     }
 
+    }
 
 
   createForm() {

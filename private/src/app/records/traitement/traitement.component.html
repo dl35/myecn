@@ -1,44 +1,56 @@
-<mat-form-field style="width:100%">
+<mat-form-field style="min-width: 700px;margin:0 auto;width:700px;" >
     <mat-label>Competitions</mat-label>
-    <mat-select style="width:100%;"  (selectionChange)="traiteFile($event.value)">
-      <mat-option value=""></mat-option>
-      <mat-option *ngFor="let c of (compet$ | async)" [value]="c.value">
+    <mat-select [formControl]="cselect" style="width:100%;"  (selectionChange)="traiteFile($event.value);">
+      <mat-option></mat-option>
+      <mat-option *ngFor="let c of compet " [value]="c.value">
         {{c.label}}
       </mat-option>
     </mat-select>
   </mat-form-field>
 
-{{ ( datas$ |async)?.compet  | json }}
 
- <mat-list style="min-width: 800px;margin:0 auto;width:800px;" >
-     
-      <mat-list-item style="margin:0 auto;margin-bottom:10px;max-width: 700px;"   class="mat-elevation-z3"  *ngFor="let item of ( datas$ |async)?.datas"  >
+
+ <mat-list *ngIf="datas" style="min-width: 720px;margin:0 auto;width:720px;" >
+    <mat-list-item *ngIf="datas?.compet as compet"  style="margin:0 auto;margin-bottom:10px;max-width: 700px;"   class="mat-elevation-z3"    >
+        <p matLine>
+          <span>{{compet.name}} [{{compet.startdate | date :'mediumDate' }}] [{{compet.bassin}} m] </span>
+         </p> 
+         <p matLine>
+            <mat-checkbox   [(ngModel)]="checked" (change)="filter()">Perfs!</mat-checkbox>
+          </p>
+    </mat-list-item>   
+    <mat-list-item *ngIf="datas?.error as message"  style="margin:0 auto;margin-bottom:10px;max-width: 700px;"   class="mat-elevation-z3"    >
+        <p matLine>
+          <span style="font-weight:500;color:red;" >{{message}} </span>
+         </p> 
+    </mat-list-item> 
+
+      <mat-list-item style="margin:0 auto;margin-bottom:10px;max-width: 700px;"   class="mat-elevation-z3"  *ngFor="let item of datas?.datas"  >
 
         
             <p matLine>
               <span   class="demo-secondary-text" >{{item.nom}} {{item.prenom}} {{item.sexe}} {{item.age}} ans</span>
-              <span style="font-weight:500;color:orange" >&nbsp;&nbsp; {{item.ref}} | {{item.distance}} {{item.nage}} </span>
+              <span style="font-weight:500;color:black;background-color: yellow;" *ngIf="item.ref" >&nbsp;{{item.ref}}&nbsp;</span>
+              <span style="font-weight:500;color:orange" >&nbsp;{{item.distance}} {{item.nage}} </span>
               <span style="font-weight:500;color:orange;background-color: grey;" >&nbsp; {{item.temps}} &nbsp;  </span>
+             
             </p>
             <div matLine>
+            
             <div style="display: inline-block;margin-top: 4px;" *ngFor="let perf of item.perf"  >
            
-                <label *ngIf="perf.type === 'noperf'" style="margin-left:4px; color:white;background-color: green;" (click)='updaterec(item,perf.age)' >
-                    &nbsp; {{perf.age}}@{{perf.time}} &nbsp;
+                <label *ngIf="perf.type === 'perf'" style="margin-left:4px; color:white;background-color: green;" (click)='updaterec(item,perf.age)' >
+                    &nbsp;{{perf.age}}@{{perf.rectime}}&nbsp;
                 </label>  
                 <label *ngIf="perf.type === 'eqperf'" style="margin-left:4px; color:white;background-color: blue;" >
-                    &nbsp; {{perf.age}}@{{perf.time}} &nbsp;
+                    &nbsp;{{perf.age}}@{{perf.rectime}}&nbsp;
                 </label>  
+                <label *ngIf="perf.type === 'noperf'" style="margin-left:4px; color:white;background-color: rgb(224, 16, 162);"  >
+                  &nbsp;{{perf.age}}@{{perf.rectime}}&nbsp;
+              </label>  
             </div>
           </div>
-         
-         
-
-        
-
+           </mat-list-item>
   
-     
-   
-      </mat-list-item>
       </mat-list>
     

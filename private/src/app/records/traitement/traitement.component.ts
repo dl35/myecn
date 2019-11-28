@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { UploadService } from '../services/upload.service';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { RecordsService } from '../services/records.service';
 import { Observable } from 'rxjs/internal/Observable';
+import { FormControl } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 
@@ -10,42 +12,77 @@ import { Observable } from 'rxjs/internal/Observable';
   templateUrl: './traitement.component.html',
   styleUrls: ['./traitement.component.scss']
 })
-export class TraitementComponent implements OnInit {
+export class TraitementComponent implements OnDestroy, OnInit {
 
-  compet$: Observable<any[]> ;
-  datas$: Observable<any[]> ;
+  checked = false;
+  cselect = new FormControl();
+  @Input()
+  compet: Observable<any[]>;
 
-  constructor(private upService: UploadService , private recService: RecordsService  ) {
+  destroy$: Subject<boolean> = new Subject<boolean>();
+  datas = null;
+  cached = null;
 
-    this.compet$ = this.recService.getCompetitions();
-
+  constructor(private recService: RecordsService) {
   }
 
   ngOnInit() {
   }
 
-  traiteFile( value ) {
-
-    this.datas$ = this.recService.traiteRecords( value );
-
-  }
-
-  updaterec( item, age ) {
-console.log( age , item ) ;
-this.recService.updateRecords(item ,age ).subscribe( 
- (v) => { const ip = item.perf ;
-            ip.forEach( e => {
-              if ( e.age === age ) {
-                e.type = 'eqperf' ;
-              }
-            });
-
-}
-
-);
-
+  traiteFile(value) {
+    if ( !value ) {
+      this.datas = null;
+      this.cached = null ;
+      return;
+    }
+    this.recService.traiteRecords(value).pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (v) => { this.datas = v; this.cached = Object.assign({} , v); }
+      );
+    this.cselect.reset();
 
   }
 
+  filter() {
+
+    if ( !this.checked ) {
+      this.datas.datas = this.cached.datas ;
+      return;
+    }
+
+  this.datas.datas =  this.datas.datas.filter( function( item ) {
+        let flag  = false ;
+        item.perf.filter( function( iperf ) {
+            if  ( iperf.type === 'perf' ||   iperf.type === 'eqperf' )  {
+                flag = true;
+            }
+         } );
+         return flag ;
+    });
+
+
+  }
+
+
+
+  updaterec(item, age) {
+
+    this.recService.updateRecords(item, age).subscribe(
+      () => {
+        const ip = item.perf;
+        ip.forEach(e => {
+          if (e.age === age) {
+            e.type = 'eqperf';
+            e.rectime = e.time;
+          }
+        });
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
 
 }
