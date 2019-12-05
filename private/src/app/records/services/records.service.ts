@@ -15,10 +15,21 @@ export class RecordsService {
   private url = '/api/private/torecords' ;
 
     public  get() {
-      return this.http.get<IRecords[]>( this.url )
-      .pipe(
-      shareReplay(1)
-      );
+      return this.http.get<IRecords[]>( this.url );
+    }
+
+
+
+    public getReplace() {
+      const url = this.url + '/replace';
+      return this.http.get<any[]>( url );
+    }
+
+    public replace( data ) {
+      const url = this.url + '/replace';
+      return this.http.put<any[]>( url , data ).pipe(
+        shareReplay(1)
+        );
     }
 
  
@@ -38,9 +49,13 @@ export class RecordsService {
       item.ageupdate = age ;
       const url = this.url ;
       return this.http.put<any[]>( url , item );
-
     }
 
+    public insertRecords( item , age ) {
+      item.ageupdate = age ;
+      const url = this.url ;
+      return this.http.post<any[]>( url , item );
+    }
 
     public  put( data ) {
        return this.http.put<any>( this.url , data );

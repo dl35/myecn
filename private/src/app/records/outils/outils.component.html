@@ -1,0 +1,51 @@
+<br>
+<br>
+<div>
+    <mat-form-field>
+    <mat-label>Nom</mat-label>
+    <mat-select [(ngModel)]="oldnom" >
+            <mat-option *ngFor="let item of (datas$ | async)?.nom" [value]="item">{{item}}</mat-option>
+    </mat-select>
+    </mat-form-field>
+    &nbsp;&nbsp;
+
+     <mat-form-field style="width: 200px;">
+     <input  [(ngModel)]="nom"  matInput placeholder="remplacer nom " value="">
+     </mat-form-field>
+     &nbsp;&nbsp;
+     <button mat-mini-fab color="primary"  (click)="go('nom')" >go</button>
+</div>
+    
+<div>
+        <mat-form-field>
+        <mat-label>Prénom</mat-label>
+        <mat-select [(ngModel)]="oldprenom" >
+                <mat-option *ngFor="let item of (datas$ | async)?.prenom" [value]="item">{{item}}</mat-option>
+        </mat-select>
+        </mat-form-field>
+        &nbsp;&nbsp;
+    
+         <mat-form-field style="width: 200px;" >
+         <input  [(ngModel)]="prenom"  matInput placeholder="remplacer prénom" value="">
+         </mat-form-field>
+        &nbsp;&nbsp;
+     <button mat-mini-fab color="primary"  (click)="go('prenom')" >go</button>
+    </div>
+<div>
+        <mat-form-field>
+        <mat-label>Lieu</mat-label>
+        <mat-select [(ngModel)]="oldlieu" >
+                <mat-option *ngFor="let item of (datas$ | async)?.lieu" [value]="item">{{item}}</mat-option>
+        </mat-select>
+        </mat-form-field>
+        &nbsp;&nbsp;
+    
+         <mat-form-field style="width: 200px;" >
+         <input  [(ngModel)]="lieu"   matInput placeholder="Remplacer lieu" value="">
+         </mat-form-field>
+        &nbsp;&nbsp;
+     <button mat-mini-fab color="primary"  (click)="go('lieu')"  >go</button>
+    </div>
+
+        
+             

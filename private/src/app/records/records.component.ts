@@ -26,8 +26,11 @@ export class RecordsComponent implements OnInit {
   compet$: Observable<any[]>;
 
   // tslint:disable-next-line:max-line-length
-  nages = [{ value: 'NL', label: 'Nage libre' }, { value: 'BRA', label: 'Brasse' }, { value: 'DOS', label: 'Dos' }, { value: 'PAP', label: 'Papillon' }];
-  dists = ['50', '100', '200', '400', '800', '1500', '4x50', '4x100', '4x200', '10x100'];
+  nages = [{ value: 'NL', label: 'Nage libre' }, { value: 'BRA', label: 'Brasse' }, { value: 'DOS', label: 'Dos' }, { value: 'PAP', label: 'Papillon' },{ value: '4N', label: '4 Nages' }];
+  dists_nl = ['50', '100', '200', '400', '800', '1500', '4x50', '4x100', '4x200', '10x100'];
+  dists_n = ['50', '100', '200'];
+  dists_4n = ['100', '200', '400'];
+  dists = this.dists_nl ;
   bassin = ['25', '50'];
   sexe = [{ value: 'F', label: 'Dames' }, { value: 'H', label: 'Homme' }];
 
@@ -40,7 +43,7 @@ export class RecordsComponent implements OnInit {
 
    getClass( type ) {
     let cssClasses;
-    console.log( type );
+
     if (type === 'CLUB' ) {
       cssClasses = { 'CLUB': true };
     } else if (type === 'DEP' ) {
@@ -70,7 +73,6 @@ export class RecordsComponent implements OnInit {
 
   quitte(v) {
     this.dataSelected = null;
-    console.log( v) ;
     if ( v ) {
       this.showRecord();
     }
@@ -89,15 +91,35 @@ export class RecordsComponent implements OnInit {
 
   }
 
+  setDistNage() {
+    const test = this.dataForm.getRawValue();
+       if ( test.fnages === 'NL' ) {
+        this.dists = this.dists_nl;
+      } else if ( test.fnages === '4N' ) {
+        this.dists = this.dists_4n;
+        if ( this.dists.indexOf(test.fdists) === -1 ) {
+          this.dataForm.get('fdists').setValue('400');
+        }
+
+      } else {
+        this.dists = this.dists_n ;
+        if ( this.dists.indexOf(test.fdists) === -1 ) {
+          this.dataForm.get('fdists').setValue('200');
+        }
+      }
+  }
+
+
   showRecord() {
 
-    const test = this.dataForm.getRawValue();
 
-
-    if (test.fdists !== null) {
+    if (  this.dataForm.get('fdists') ) {
       this.loading$.next(true);
-      setTimeout(function () { }, 2000);
+      this.setDistNage() ;
+      setTimeout(function () {
+      }, 2000);
 
+      const test = this.dataForm.getRawValue();
       if (test.fmasters) {
 
         this.rService.get().pipe(

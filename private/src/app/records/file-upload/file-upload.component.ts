@@ -27,14 +27,12 @@ export class FileUploadComponent  {
   uploadFile = false;
   constructor(private upService: UploadService , private recService: RecordsService  ) {
 
-   
-
   }
 
+  /*
 torecords() {
   window.open('https://ecnatation.org/records/manage_resultats.php?admin', '_blank');
-
-}
+}*/
 
 openFileBox(value) {
   this.pvalue = 0 ;
@@ -63,6 +61,7 @@ onUpload() {
         (event) => {
           if ( event.type === HttpEventType.UploadProgress  ) {
           this.pvalue = Math.round( event.loaded / event.total * 100)  ;
+          this.uploadFile = true ;
         } else if ( event.type === HttpEventType.Response )  {
          this.selectedFile = null ;
          this.uploadFile = true ;

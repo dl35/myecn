@@ -39,15 +39,16 @@
             
             <div style="display: inline-block;margin-top: 4px;" *ngFor="let perf of item.perf"  >
            
-                <label *ngIf="perf.type === 'perf'" style="margin-left:4px; color:white;background-color: green;" (click)='updaterec(item,perf.age)' >
-                    &nbsp;{{perf.age}}@{{perf.rectime}}&nbsp;
+                <label  matTooltip="{{perf.age}}" *ngIf="perf.type === 'perf'" style="margin-left:4px; color:white;background-color: green;" (click)='updaterec(item,perf.age,perf.rectime)' >
+                    &nbsp;{{perf.rectime}}&nbsp;
                 </label>  
-                <label *ngIf="perf.type === 'eqperf'" style="margin-left:4px; color:white;background-color: blue;" >
-                    &nbsp;{{perf.age}}@{{perf.rectime}}&nbsp;
+                <label matTooltip="{{perf.age}}" *ngIf="perf.type === 'eqperf'" style="margin-left:4px; color:white;background-color: blue;" >
+                    &nbsp;{{perf.rectime}}&nbsp;
                 </label>  
-                <label *ngIf="perf.type === 'noperf'" style="margin-left:4px; color:white;background-color: rgb(224, 16, 162);"  >
-                  &nbsp;{{perf.age}}@{{perf.rectime}}&nbsp;
+                <label matTooltip="{{perf.age}}" *ngIf="perf.type === 'noperf'" style="margin-left:4px; color:white;background-color: rgb(224, 16, 162);"  >
+                  &nbsp;{{perf.rectime}}&nbsp;
               </label>  
+              <div matLine></div>
             </div>
           </div>
            </mat-list-item>

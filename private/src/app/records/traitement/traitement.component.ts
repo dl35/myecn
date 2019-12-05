@@ -40,7 +40,7 @@ export class TraitementComponent implements OnDestroy, OnInit {
         (v) => { this.datas = v; this.cached = Object.assign({} , v); }
       );
     this.cselect.reset();
-
+    this.checked = false;
   }
 
   filter() {
@@ -65,7 +65,21 @@ export class TraitementComponent implements OnDestroy, OnInit {
 
 
 
-  updaterec(item, age) {
+  updaterec(item, age , rectime ) {
+  if ( rectime === '-1' ) {
+    this.recService.insertRecords(item, age).subscribe(
+      () => {
+        const ip = item.perf;
+        ip.forEach(e => {
+          if (e.age === age) {
+            e.type = 'eqperf';
+            e.rectime = e.time;
+          }
+        });
+      }
+    );
+
+  }  else {
 
     this.recService.updateRecords(item, age).subscribe(
       () => {
@@ -78,7 +92,13 @@ export class TraitementComponent implements OnDestroy, OnInit {
         });
       }
     );
+
   }
+
+  
+  }
+
+
 
   ngOnDestroy() {
     this.destroy$.next(true);
