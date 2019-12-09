@@ -1,7 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { shareReplay, tap } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs';
 
 
 
@@ -18,10 +16,9 @@ points: number;
 prenom: string;
 sexe: 'F' | 'H' ;
 temps: number;
-type: 'CLUB' | 'DEP' | 'REG' | 'NAT';
+type: 'CLUB' | 'DEP' | 'REG' | 'FRA';
 }
 
-const maxAge = 60000;
 
 
 @Injectable({
@@ -29,29 +26,14 @@ const maxAge = 60000;
 })
 export class RecordsService {
 
-  private lastRead: number ;
+
   private url = '/api/public/torecords';
-  private cache = new BehaviorSubject(new Array<IRecords>() ) ;
-
-
-  public subject$ = this.cache.asObservable();
   constructor(private http: HttpClient) {
-    this.lastRead = Date.now() - maxAge ;
   }
-
 
   public  getRecords() {
-    const isExpired =  ( this.lastRead < (Date.now() - maxAge)  );
-      if ( isExpired ) {
-        this.lastRead = Date.now() ;
-        this.http.get<Array<IRecords>>( this.url ).subscribe(
-          (datas) => { this.cache.next( datas); }
-         );
-      }
-     return this.subject$;
+   return    this.http.get<Array<IRecords>>( this.url ) ;
   }
-
-
 
 
 

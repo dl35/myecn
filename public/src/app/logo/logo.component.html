@@ -3,7 +3,23 @@
   <img class ='imgecn2'  width="800"   height="267" *ngIf="(layoutChanges | async)?.matches"
   src="assets/images/logo_ecn.svg" >
 
-  <img class ='imgecn2'  width="200"   height="133" *ngIf="!(layoutChanges | async)?.matches"
-  src="assets/images/logo_ecn.svg" >
+
+
+    <div    *ngIf="!(layoutChanges | async)?.matches" fxLayoutAlign="center center" style="margin-top:5px;" >
+      <mat-grid-list cols="2" rowHeight="2:1" style="width:90%;"  >
+ 
+          <mat-grid-tile style="background-color: rgb(42, 165,124)" ><button routerLink="/actualites" mat-raised-button color="primary">Actualités</button></mat-grid-tile> 
+          <mat-grid-tile style="background-color: rgb(42, 165,124)" ><button routerLink="/competitions" mat-raised-button color="primary">Compétitions</button></mat-grid-tile>
+          <mat-grid-tile style="background-color: rgb(42, 165,124)" ><button routerLink="/records" mat-raised-button color="primary">Records</button></mat-grid-tile>
+          <mat-grid-tile style="background-color: rgb(42, 165,124)" ><button routerLink="/piscines" mat-raised-button color="primary">Piscines</button></mat-grid-tile>
+          <mat-grid-tile style="background-color: rgb(42, 165,124)" ><button routerLink="/stats" mat-raised-button color="primary">Stats</button></mat-grid-tile>
+          <mat-grid-tile [colspan]="2">
+            <img class ='imgecn2'  width="80" src="assets/images/logo_ecn.svg" >
+          </mat-grid-tile>
+      </mat-grid-list>
+
+    </div>
+
+
 
 </div>
