@@ -58,51 +58,46 @@ export class CompetitionsService {
 
   private subject  = new BehaviorSubject(new Array<ICompetitions>() ) ;
   public  subject$ = this.subject.asObservable();
-  public next = true ;
+
 
 
   public engageCached: Array<IEngagements> = [] ;
   private engage  = new BehaviorSubject(new Array<IEngagements>() ) ;
   public  engages$ = this.engage.asObservable();
 
-  private compet  = new BehaviorSubject(new ICompetitions() ) ;
-  public  compet$ = this.compet.asObservable();
+  // private compet  = new BehaviorSubject(new ICompetitions() ) ;
+  // public  compet$ = this.compet.asObservable();
+
+  private _compet: ICompetitions ;
+
+  set compet( c: ICompetitions )  {
+    this._compet = c;
+  }
+
+  get compet() {
+    return this._compet ;
+  }
 
 
-
-  private  getCompetitions() {
+  public  getCompetitions() {
      return this.http.get<Array<ICompetitions>>( this.url );
   }
 
-  public setNext( next: boolean ) {
-
-    this.next = next ;
-
-  }
-
-
-  public getCachedCompetitions2() {
-
-    const isExpired =  ( this.lastRead < (Date.now() - maxAge)  );
-    if ( isExpired ) {
-      this.lastRead = Date.now() ;
-      this.getCompetitions().subscribe(
-          (datas)  =>  {this.subject.next( datas ) }
-      ) ;
-
+  public  getEngagements(id) {
+    const url = this.url + '/' + id ;
+    return this.http.get<Array<IEngagements>>( url ) ;
     }
 
-    return this.subject$;
-  }
 
-  public  getEngagements(id) {
+/*
+  public  getEngagements2(id) {
     this.engageCached = [] ;
     const url = this.url + '/' + id ;
     this.http.get<Cdatas>( url ).subscribe(
       (d) =>  { this.engageCached = d.engage ;  this.compet.next(d.compet) ; this.engage.next(d.engage) }
     );
     }
-
+*/
 
     public doFilter( f ) {
 

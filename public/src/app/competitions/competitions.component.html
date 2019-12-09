@@ -1,7 +1,12 @@
 <div style='height:100%;' >
 
-<mat-toolbar  color="primary">Les compétitions &nbsp;&nbsp; <mat-checkbox  [checked]="cService.next" (change)="setFilter($event)" >Futures</mat-checkbox>
+
+<mat-toolbar [formGroup]="dataForm" color="primary">Les compétitions &nbsp;&nbsp; 
+  
+<mat-checkbox formControlName="chkFutures"  >Futures</mat-checkbox>
+
 </mat-toolbar>
+
 
 
 
@@ -10,7 +15,7 @@
   <div style='margin: 0 auto;width:75%;' >
     <mat-list>
       
-      <mat-list-item *ngFor="let data of datas$ | async ; last as last" (click)="edit(data)" style='margin-bottom:20px;'
+      <mat-list-item *ngFor="let data of filteredProducts$ | async ; last as last" (click)="edit(data)" style='margin-bottom:20px;'
         class="mat-elevation-z8" matRipple [matRippleCentered]="centered" [matRippleColor]="warn">
    
 

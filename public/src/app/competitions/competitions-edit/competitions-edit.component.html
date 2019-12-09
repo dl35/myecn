@@ -1,8 +1,10 @@
-<mat-toolbar color="primary" *ngIf="(compet$ |  async) as compet" >
+
+
+<mat-toolbar color="primary" *ngIf="compet" >
     <mat-toolbar-row>
 
-      <span *ngIf="compet.debut != compet.fin" >{{ compet.nom }}: {{ compet.debut | date: 'dd/MM'}} au {{ compet.fin | date: 'dd/MM'}}</span>
-      <span *ngIf="compet.debut == compet.fin" >{{ compet.nom }}: {{ compet.debut | date: 'dd/MM'}}</span>
+      <span class="text"  *ngIf="compet.debut != compet.fin" >{{ compet.nom }}: {{ compet.debut | date: 'dd/MM'}} au {{ compet.fin | date: 'dd/MM'}}</span>
+      <span class="text" *ngIf="compet.debut == compet.fin" >{{ compet.nom }}: {{ compet.debut | date: 'dd/MM'}}</span>
       <span class="compet-spacer"></span>
       <mat-icon class="compet-icon" (click)='toback()' style='cursor: pointer;' aria-hidden="false" aria-label="">backspace</mat-icon>
     </mat-toolbar-row>
@@ -10,16 +12,20 @@
     <span><a style='color:white' matTooltip="{{compet.lien}}" href="{{compet.lien}}" target="_blank" ><mat-icon aria-hidden="false" >comment</mat-icon>Infos</a></span>
     </mat-toolbar-row>
 </mat-toolbar>
-<div style='overflow-y:hidden;'>
-<div style='margin:0 auto;text-align:center;margin-top:5px;' >
+
+
+<div>
+<div  [formGroup]="dataForm"  style='margin:0 auto;text-align:center;margin-top:5px;' >
  
-  <span>({{(datas$ | async)?.length}})</span>&nbsp;
-  &nbsp;<mat-checkbox [(ngModel)]="filter.pre" (ngModelChange)="doFilter()" >Présents</mat-checkbox>
-  &nbsp;<mat-checkbox [(ngModel)]="filter.abs" (ngModelChange)="doFilter()" >Absents</mat-checkbox>
-  &nbsp;<mat-checkbox [(ngModel)]="filter.att" (ngModelChange)="doFilter()" >Attente</mat-checkbox></div>
-<mat-grid-list style='margin-top:10px;overflow-y:hidden;' cols="{{mycol}}"  gutterSize="2px" rowHeight="10em"    >
+  <span>({{(filteredProducts$ | async)?.length}})</span>&nbsp;
+  &nbsp;<mat-checkbox formControlName="ckPresent"  >Présents</mat-checkbox>
+  &nbsp;<mat-checkbox formControlName="ckAbsent"  >Absents</mat-checkbox>
+  &nbsp;<mat-checkbox formControlName="ckAttente"  >Attente</mat-checkbox>
+
+</div>
+<mat-grid-list  cols="{{mycol}}"  gutterSize="2px" rowHeight="10em"    >
  
-  <mat-grid-tile  *ngFor="let item of ( datas$ | async )" colspan="1" rowspan="1"   >
+  <mat-grid-tile  *ngFor="let item of ( filteredProducts$ | async )" colspan="1" rowspan="1"   >
       <mat-card style="width:75%;"  class="mat-elevation-z3"   >
           <mat-card-header>
             <mat-card-title style="font-size: 14px">&nbsp;{{item.prenom}} {{item.nom}} {{item.categorie}}{{item.rang}}

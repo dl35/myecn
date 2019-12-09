@@ -1,11 +1,12 @@
 import { IEngagements, ICompetitions } from './../services/competitions.service';
 import {Location} from '@angular/common';
-import { Observable, Subject, of } from 'rxjs';
+import { Observable, Subject, BehaviorSubject, combineLatest } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CompetitionsService } from '../services/competitions.service';
 import {  ActivatedRoute } from '@angular/router';
 import { MediaObserver, MediaChange } from '@angular/flex-layout';
-import { takeUntil, filter, tap, map, concatMap } from 'rxjs/operators';
+import { takeUntil, map } from 'rxjs/operators';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-competitions-edit',
@@ -15,10 +16,15 @@ import { takeUntil, filter, tap, map, concatMap } from 'rxjs/operators';
 export class CompetitionsEditComponent implements OnInit , OnDestroy {
   private sub: any;
   id: number;
-  datas$: Observable<IEngagements[]> ;
+  compet: ICompetitions ;
+  public dataForm: FormGroup;
+
+  products$: Observable<IEngagements[]>;
+  filterForm$: Observable<any>;
+  filteredProducts$: BehaviorSubject<IEngagements[]>;
 
   filter = { pre: true , abs: true ,  att: true } ;
-  compet$: Observable<ICompetitions>;
+  
 
   rowHeight = {
     xl: '3:1',
@@ -54,55 +60,57 @@ export class CompetitionsEditComponent implements OnInit , OnDestroy {
 
 
   // tslint:disable-next-line:max-line-length
-  constructor( private cService: CompetitionsService , private route: ActivatedRoute , private mediaObserver: MediaObserver, private location: Location) {
+  constructor(private fb: FormBuilder,  private cService: CompetitionsService , private route: ActivatedRoute , private mediaObserver: MediaObserver, private location: Location) {
     this.initResponsive();
     this.sub = this.route.params.subscribe(params => {
       this.id = +params['id']; // (+) converts string 'id' to a number
    });
+
+   this.compet = this.cService.compet;
+
   }
 
   ngOnInit() {
-    this.cService.getEngagements( this.id);
-    this.datas$ = this.cService.engages$ ;
-    this.compet$ = this.cService.compet$ ;
+    this.createForm() ;
 
-   
+    this.products$ =  this.cService.getEngagements(this.id);
+    this.filteredProducts$ = new BehaviorSubject([]);
+    combineLatest( [ this.products$ , this.filterForm$ ] )
+    .pipe(
+     map ( ([ items , test ])  =>
+     items.filter( t => {
+          let res = false;
+      t.eng.forEach( c => {
+        if ( test.ckPresent  &&  c.presence === 'oui'  ) {
+          res = true ;
+         }
+        if ( test.ckPresent &&  c.presence === 'non'  ) {
+          res = true ;
+          }
+        if (test.ckAttente  &&  c.presence === 'at'  ) {
+          res = true ;
+          }
+      } ) ;
+        return res ; }
+
+     ))).subscribe(
+      (v) => this.filteredProducts$.next(v)) ;
+
+     this.dataForm.get('ckPresent').setValue(true);
+
       }
 
-  doFilter() {
- 
-    
-    this.cService.doFilter ( this.filter );
+      createForm() {
+        this.dataForm = this.fb.group({
+          ckAttente: [true],
+          ckAbsent: [true],
+          ckPresent: [false]
+        });
 
-  }
+        this.filterForm$ = this.dataForm.valueChanges ;
+      }
 
-  /*
-  myfilter( e  ) {
-    let res = false;
-    e.forEach( c => {
-       if ( c.presence === this.filtre.pre  ) {
-            res = true ;
-       }
-  
-    });
-  return   res  ;
-  
-  }*/
-  
-  
-  /*
-  doFilter() {
-  
-  
-    this.engage$ = this.eService.getObservable().pipe(
-     map( item =>   item.filter( d =>   ( this.filtre.notif === '0'  ) ?  (d.notification === 0 ) : (d) )),
-     map( item =>   item.filter( d =>   ( this.filtre.notif === '1'  ) ?  (d.notification > 0 ) : (d) )),
-     map( item =>   item.filter( d =>   ( this.filtre.ext  === null  ) ?  (d) : (  d.extranat === this.filtre.ext  ) )),
-     map( item =>   item.filter( d =>   ( this.filtre.pre === null   ) ?  (d)  :  this.myfilter(d.eng) ) ) );
-  
-  
-   }*/
-  
+
 
       initResponsive() {
         this.mediaObserver.media$.pipe(takeUntil(this.destroyed$)).subscribe((change: MediaChange) => {
