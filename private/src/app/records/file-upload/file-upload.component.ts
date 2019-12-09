@@ -61,7 +61,7 @@ onUpload() {
         (event) => {
           if ( event.type === HttpEventType.UploadProgress  ) {
           this.pvalue = Math.round( event.loaded / event.total * 100)  ;
-          this.uploadFile = true ;
+          this.selectedFile = null ;
         } else if ( event.type === HttpEventType.Response )  {
          this.selectedFile = null ;
          this.uploadFile = true ;
