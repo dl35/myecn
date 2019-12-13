@@ -1,11 +1,11 @@
 import { IEngagements, ICompetitions } from './../services/competitions.service';
-import {Location} from '@angular/common';
-import { Observable, Subject, BehaviorSubject, combineLatest } from 'rxjs';
+import { Location } from '@angular/common';
+import { Observable, Subject, combineLatest } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CompetitionsService } from '../services/competitions.service';
-import {  ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { MediaObserver, MediaChange } from '@angular/flex-layout';
-import { takeUntil, map } from 'rxjs/operators';
+import { takeUntil, map, shareReplay, startWith } from 'rxjs/operators';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
@@ -13,18 +13,17 @@ import { FormGroup, FormBuilder } from '@angular/forms';
   templateUrl: './competitions-edit.component.html',
   styleUrls: ['./competitions-edit.component.scss']
 })
-export class CompetitionsEditComponent implements OnInit , OnDestroy {
-  private sub: any;
+export class CompetitionsEditComponent implements OnInit, OnDestroy {
   id: number;
-  compet: ICompetitions ;
+  compet: ICompetitions;
   public dataForm: FormGroup;
 
-  products$: Observable<IEngagements[]>;
   filterForm$: Observable<any>;
-  filteredProducts$: BehaviorSubject<IEngagements[]>;
+  products$: Observable<IEngagements[]>;
+  data$: Observable<IEngagements[]>;
 
-  filter = { pre: true , abs: true ,  att: true } ;
-  
+  filter = { pre: true, abs: true, att: true };
+
 
   rowHeight = {
     xl: '3:1',
@@ -54,86 +53,87 @@ export class CompetitionsEditComponent implements OnInit , OnDestroy {
 
   mycol = this.gridByBreakpoint['lg'];
   myclass = this.classByBreakpoint['lg'];
-  myrowheight =this.rowHeight['lg'];
+  myrowheight = this.rowHeight['lg'];
   destroyed$: Subject<any> = new Subject();
 
 
 
   // tslint:disable-next-line:max-line-length
-  constructor(private fb: FormBuilder,  private cService: CompetitionsService , private route: ActivatedRoute , private mediaObserver: MediaObserver, private location: Location) {
+  constructor(private fb: FormBuilder, private cService: CompetitionsService, private route: ActivatedRoute, private mediaObserver: MediaObserver, private location: Location) {
     this.initResponsive();
-    this.sub = this.route.params.subscribe(params => {
-      this.id = +params['id']; // (+) converts string 'id' to a number
-   });
+    this.products$ = this.cService.getEngagementsObs();
+    this.route.params
+      .pipe(map((params) => +params['id']))
+      .subscribe((id) => { this.id = id; this.cService.getEngagements(id); });
 
-   this.compet = this.cService.compet;
+    this.compet = this.cService.compet;
 
   }
 
   ngOnInit() {
-    this.createForm() ;
-
-    this.products$ =  this.cService.getEngagements(this.id);
-    this.filteredProducts$ = new BehaviorSubject([]);
-    combineLatest( [ this.products$ , this.filterForm$ ] )
-    .pipe(
-     map ( ([ items , test ])  =>
-     items.filter( t => {
-          let res = false;
-      t.eng.forEach( c => {
-        if ( test.ckPresent  &&  c.presence === 'oui'  ) {
-          res = true ;
-         }
-        if ( test.ckPresent &&  c.presence === 'non'  ) {
-          res = true ;
+    this.createForm();
+    this.data$ = combineLatest([this.filterForm$, this.products$])
+      .pipe(
+        map(([test, items]) =>
+          items.filter(t => {
+            let res = false;
+            t.eng.forEach(c => {
+              if (test.ckPresent && c.presence === 'oui') {
+                res = true;
+              }
+              if (test.ckAbsent && c.presence === 'non') {
+                res = true;
+              }
+              if (test.ckAttente && c.presence === 'at') {
+                res = true;
+              }
+            });
+            return res;
           }
-        if (test.ckAttente  &&  c.presence === 'at'  ) {
-          res = true ;
-          }
-      } ) ;
-        return res ; }
 
-     ))).subscribe(
-      (v) => this.filteredProducts$.next(v)) ;
+          )
 
-     this.dataForm.get('ckPresent').setValue(true);
+        ),
+        shareReplay(1)
 
-      }
+      );
 
-      createForm() {
-        this.dataForm = this.fb.group({
-          ckAttente: [true],
-          ckAbsent: [true],
-          ckPresent: [false]
-        });
+  }
 
-        this.filterForm$ = this.dataForm.valueChanges ;
-      }
+  createForm() {
+    this.dataForm = this.fb.group({
+      ckAttente: [true],
+      ckAbsent: [true],
+      ckPresent: [true]
+    });
+
+    this.filterForm$ = this.dataForm.valueChanges.pipe(startWith(this.dataForm.value));
+  }
 
 
 
-      initResponsive() {
-        this.mediaObserver.media$.pipe(takeUntil(this.destroyed$)).subscribe((change: MediaChange) => {
-          this.mycol = this.gridByBreakpoint[change.mqAlias];
-          this.myclass = this.classByBreakpoint[change.mqAlias];
-          this.myrowheight = this.rowHeight[change.mqAlias];
-        },
-          () => { },
-          () => { },
+  initResponsive() {
+    this.mediaObserver.media$.pipe(takeUntil(this.destroyed$)).subscribe((change: MediaChange) => {
+      this.mycol = this.gridByBreakpoint[change.mqAlias];
+      this.myclass = this.classByBreakpoint[change.mqAlias];
+      this.myrowheight = this.rowHeight[change.mqAlias];
+    },
+      () => { },
+      () => { },
 
-        );
+    );
 
-      }
+  }
 
-      toback() {
-        this.location.back();
+  toback() {
+    this.location.back();
 
-      }
+  }
 
   ngOnDestroy() {
     this.destroyed$.next();
     this.destroyed$.complete();
-    this.sub.unsubscribe();
+
   }
 
 }

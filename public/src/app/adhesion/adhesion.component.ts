@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, switchMap, map } from 'rxjs/operators';
 import { AdhesionService } from './services/adhesion.service';
 
 @Component({
@@ -11,113 +11,114 @@ import { AdhesionService } from './services/adhesion.service';
   templateUrl: './adhesion.component.html',
   styleUrls: ['./adhesion.component.scss']
 })
-export class AdhesionComponent implements OnInit , OnDestroy {
+export class AdhesionComponent implements OnInit, OnDestroy {
 
 
   public maxDate: Date;
 
 
-  public dataForm: FormGroup ;
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute , private router: Router ,
-                private snackBar: MatSnackBar , private adhesion: AdhesionService ) {
+  public dataForm: FormGroup;
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router,
+    private snackBar: MatSnackBar, private adhesion: AdhesionService) {
 
   }
   destroyed$: Subject<any> = new Subject();
-  private id =  null;
+  private id = null;
   ngOnInit() {
 
-        this.maxDate = new Date();
-        this.maxDate.setFullYear( this.maxDate.getFullYear() - 4  ) ;
+    this.maxDate = new Date();
+    this.maxDate.setFullYear(this.maxDate.getFullYear() - 4);
 
     this.initForm();
-    this.route.params.pipe( takeUntil(this.destroyed$) ).subscribe(params => {
-     if ( params.id )  { this.initLicencies(params.id ) ; }
-       }
-     );
+
+    if (this.route.snapshot.params['id']) {
+      this.route.params.pipe(
+        map((params) => params.id),
+        switchMap((id) => this.adhesion.getLicencies(id)),
+        takeUntil(this.destroyed$)
+      ).subscribe(
+        data => this.dataForm.setValue(data),
+        error => { this.showSnackBar(error.error.message, false); this.router.navigate(['']); }
+      );
+
+    }
   }
 
-  private initLicencies( id ) {
-
-    this.adhesion.getLicencies(id).pipe( takeUntil(this.destroyed$) ).subscribe(
-      data => { this.id = id ; this.dataForm.setValue( data ) ;    },
-      error => {  this.showSnackBar(error.error.message, false); this.router.navigate(['']); }
-     ) ;
-  }
 
   public sendAdhesion() {
     const data = this.dataForm.getRawValue();
-    if ( this.id ) {
-      this.adhesion.updateLicencies(this.id, data).pipe( takeUntil(this.destroyed$) ).subscribe(
-// tslint:disable-next-line: max-line-length
-        res => { this.showSnackBar(res.message, true);  this.router.navigate(['/']).then(result => { window.location.href = 'http://www.ecnatation.fr/'; }); } ,
-        error => {  this.showSnackBar(error.error.message, false);  }
-       ) ;
+    if (this.id) {
+      this.adhesion.updateLicencies(this.id, data).pipe(takeUntil(this.destroyed$)).subscribe(
+        // tslint:disable-next-line: max-line-length
+        res => { this.showSnackBar(res.message, true); this.router.navigate(['/']).then(() => { window.location.href = 'http://www.ecnatation.fr/'; }); },
+        error => { this.showSnackBar(error.error.message, false); }
+      );
     } else {
 
-      this.adhesion.addLicencies(data).pipe( takeUntil(this.destroyed$) ).subscribe(
-// tslint:disable-next-line: max-line-length
-        res => { this.showSnackBar(res.message, true);  this.router.navigate(['/']).then(result => { window.location.href = 'http://www.ecnatation.fr/'; }); } ,
-        error => { this.showSnackBar(error.error.message, false);  }
-       ) ;
+      this.adhesion.addLicencies(data).pipe(takeUntil(this.destroyed$)).subscribe(
+        // tslint:disable-next-line: max-line-length
+        res => { this.showSnackBar(res.message, true); this.router.navigate(['/']).then(() => { window.location.href = 'http://www.ecnatation.fr/'; }); },
+        error => { this.showSnackBar(error.error.message, false); }
+      );
     }
 
   }
   private initForm() {
     this.dataForm = this.formBuilder.group({
-      nom: new FormControl( null , Validators.required),
-      prenom: new FormControl( null , [ Validators.required]),
-      sexe: new FormControl( null , [ Validators.required]),
-      date: new FormControl( null , [ Validators.required]),
-      cp: new FormControl( null , [ Validators.required, Validators.pattern(/^[0-9]{5}$/)] ),
-      adresse: new FormControl( null , [ Validators.required]),
-      ville: new FormControl( null , [ Validators.required]),
-      email1: new FormControl( null , [ Validators.email]),
-      email2: new FormControl( null,  [Validators.email]),
-      email3: new FormControl( null , [Validators.email]),
-      tel1: new FormControl( null, [ Validators.pattern(/^[0-9]{10}$/)]),
-      tel2: new FormControl( null, [ Validators.pattern(/^[0-9]{10}$/)]),
-      tel3: new FormControl( null, [ Validators.pattern(/^[0-9]{10}$/)])
+      nom: new FormControl(null, Validators.required),
+      prenom: new FormControl(null, [Validators.required]),
+      sexe: new FormControl(null, [Validators.required]),
+      date: new FormControl(null, [Validators.required]),
+      cp: new FormControl(null, [Validators.required, Validators.pattern(/^[0-9]{5}$/)]),
+      adresse: new FormControl(null, [Validators.required]),
+      ville: new FormControl(null, [Validators.required]),
+      email1: new FormControl(null, [Validators.email]),
+      email2: new FormControl(null, [Validators.email]),
+      email3: new FormControl(null, [Validators.email]),
+      tel1: new FormControl(null, [Validators.pattern(/^[0-9]{10}$/)]),
+      tel2: new FormControl(null, [Validators.pattern(/^[0-9]{10}$/)]),
+      tel3: new FormControl(null, [Validators.pattern(/^[0-9]{10}$/)])
     }
-    // {validator: this.emailsValidator  }
-  );
+      // {validator: this.emailsValidator  }
+    );
 
-     this.dataForm.setValidators( [this.emailsValidator , this.telsValidator ] ) ;
+    this.dataForm.setValidators([this.emailsValidator, this.telsValidator]);
 
   }
 
-  private  telsValidator( formGroup ): any {
+  private telsValidator(formGroup): any {
     const tel1 = formGroup.get('tel1');
     const tel2 = formGroup.get('tel2');
     const tel3 = formGroup.get('tel3');
-    if ( tel1.value && tel1.value.match(/^[0-9]{10}$/) ) {
+    if (tel1.value && tel1.value.match(/^[0-9]{10}$/)) {
       return null;
     }
-    if ( tel2.value && tel2.value.match(/^[0-9]{10}$/) ) {
+    if (tel2.value && tel2.value.match(/^[0-9]{10}$/)) {
       return null;
     }
-    if ( tel3.value && tel3.value.match(/^[0-9]{10}$/) ) {
+    if (tel3.value && tel3.value.match(/^[0-9]{10}$/)) {
       return null;
     }
-     return { required: true };
+    return { required: true };
 
-}
+  }
 
-  private  emailsValidator( formGroup ): any {
+  private emailsValidator(formGroup): any {
     const email1 = formGroup.get('email1');
     const email2 = formGroup.get('email2');
     const email3 = formGroup.get('email3');
-    if ( email1.value && !Validators.email(email1) ) {
+    if (email1.value && !Validators.email(email1)) {
       return null;
     }
-    if ( email2.value && !Validators.email(email2) ) {
+    if (email2.value && !Validators.email(email2)) {
       return null;
     }
-    if ( email3.value && !Validators.email(email3) ) {
+    if (email3.value && !Validators.email(email3)) {
       return null;
     }
-     return { required: true };
+    return { required: true };
 
-}
+  }
 
   private showSnackBar(message, info) {
     // tslint:disable-next-line:no-shadowed-variable

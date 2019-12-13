@@ -1,33 +1,22 @@
-<div style='height:100%;' >
+<div style='height:100%;'>
+  <mat-toolbar [formGroup]="dataForm" color="primary">Les compétitions &nbsp;&nbsp;
+    <mat-checkbox formControlName="chkFutures">Futures</mat-checkbox>
+  </mat-toolbar>
 
-
-<mat-toolbar [formGroup]="dataForm" color="primary">Les compétitions &nbsp;&nbsp; 
-  
-<mat-checkbox formControlName="chkFutures"  >Futures</mat-checkbox>
-
-</mat-toolbar>
-
-
-
-
-
-
-  <div style='margin: 0 auto;width:75%;' >
+  <div style='margin: 0 auto;width:75%;'>
     <mat-list>
-      
-      <mat-list-item *ngFor="let data of filteredProducts$ | async ; last as last" (click)="edit(data)" style='margin-bottom:20px;'
-        class="mat-elevation-z8" matRipple [matRippleCentered]="centered" [matRippleColor]="warn">
-   
+      <mat-list-item *ngFor="let data of filteredProducts$ | async ; last as last" (click)="edit(data)"
+        style='margin-bottom:20px;' class="mat-elevation-z8" matRipple [matRippleCentered]="centered"
+        [matRippleColor]="warn">
 
-     
-        <mat-icon *ngIf="data.type === 'compet'" [svgIcon]="'swimok'"   matListIcon matBadgeColor="warn"  [matBadge]="data.nb > 0 ? data.nb : '' "
-          ></mat-icon>
-       
-        <mat-icon *ngIf="data.type === 'stage'"  matTooltip="stage" matListIcon color='primary' [matBadge]="data.nb > 0 ? data.nb : '' "   >waves</mat-icon>
-        
+        <mat-icon *ngIf="data.type === 'compet'" [svgIcon]="'swimok'" matListIcon matBadgeColor="warn"
+          [matBadge]="data.nb > 0 ? data.nb : '' "></mat-icon>
 
-        <p style="font-weight:500"   matLine>
-          <span   class="demo-secondary-text" >{{data.lieu}} : {{data.nom}}</span>
+        <mat-icon *ngIf="data.type === 'stage'" matTooltip="stage" matListIcon color='primary'
+          [matBadge]="data.nb > 0 ? data.nb : '' ">waves</mat-icon>
+
+        <p style="font-weight:500" matLine>
+          <span class="demo-secondary-text">{{data.lieu}} : {{data.nom}}</span>
         </p>
 
         <p matLine [ngSwitch]=" data.debut !== data.fin ">
@@ -37,6 +26,4 @@
       </mat-list-item>
     </mat-list>
   </div>
-
-
 </div>
