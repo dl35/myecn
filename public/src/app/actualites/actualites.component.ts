@@ -17,7 +17,7 @@ export class ActualitesComponent implements OnInit {
   datas$ = new Observable<any>();
   logo$ = new Observable<string>();
 
-  constructor(public serv: ActuService , private breakpointObserver: BreakpointObserver) { 
+  constructor(public serv: ActuService , private breakpointObserver: BreakpointObserver) {
     this.layoutChanges$ = this.breakpointObserver.observe([
       Breakpoints.Medium,
       Breakpoints.Large,
