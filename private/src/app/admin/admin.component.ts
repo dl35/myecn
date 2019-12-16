@@ -112,6 +112,20 @@ public prepare() {
 
 }
 
+public toRappel() {
+  this.route.navigate(['admin/rappel']);
+}
+
+public toNouveau() {
+  this.route.navigate(['admin/nouveau']);
+}
+
+public toAncien() {
+  this.route.navigate(['admin/ancien']);
+}
+
+
+
 public send() {
   const dialogRef = this.dialog.open(DialogConfirmComponent, {
     width: '50%',

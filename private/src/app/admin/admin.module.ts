@@ -12,13 +12,29 @@ import { ParamsComponent } from './params/params.component';
 
 
 import { Routes, RouterModule } from '@angular/router';
+import { RappelComponent } from './rappel/rappel.component';
+import { NouveauComponent } from './nouveau/nouveau.component';
+import { AncienComponent } from './ancien/ancien.component';
+import { QuillModule } from 'ngx-quill';
 
 
 const routes: Routes = [
   {
     path: 'params',
     component: ParamsComponent
-  }
+  },
+  {
+    path: 'rappel',
+    component: RappelComponent
+  },
+  {
+    path: 'ancien',
+    component: AncienComponent
+  },
+  {
+    path: 'nouveau',
+    component: NouveauComponent
+  },
 ];
 
 
@@ -31,9 +47,11 @@ const routes: Routes = [
     ScrollingModule,
     FormsModule,
     ReactiveFormsModule,
+    CommonModule,
+    QuillModule,
     RouterModule.forChild(routes)
   ],
   exports: [RouterModule],
-  declarations: [AdminComponent, UsersComponent, EditComponent, ParamsComponent]
+  declarations: [AdminComponent, UsersComponent, EditComponent, ParamsComponent, RappelComponent, NouveauComponent, AncienComponent]
 })
 export class AdminModule { }

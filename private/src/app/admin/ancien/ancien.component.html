@@ -1,0 +1,20 @@
+<mat-toolbar color="primary">
+    Texte Re-Nouvellement&nbsp;&nbsp;<mat-radio-group (change)="update($event)" aria-label="Type">
+      <mat-radio-button value="init">Init</mat-radio-button>&nbsp;
+      <mat-radio-button  [checked]="true"  value="last">Last</mat-radio-button>
+    </mat-radio-group>
+    </mat-toolbar>
+  <form  *ngIf="body$ | async" fxLayoutAlign="center center"   style="margin-top:20px;"   autocomplete="off" [formGroup]="dataForm" novalidate>
+<div fxLayoutAlign="center center" style='margin-left:10px;margin-right:10px;' >
+    <quill-editor fxFlex="100" placeholder="Saisir un contenu (5 car. minimum)" [modules]="quilltoobar"  
+     [styles]="{ 'max-width':'100%', 'height':'350px','background-color': 'lightgrey'}"  formControlName="body"  ></quill-editor>
+</div>
+
+</form>
+
+<div fxLayout="row" fxLayoutAlign="center center" style="margin-top:10px;margin-bottom: 8px " >
+
+    <button mat-raised-button color="primary"   [disabled]="dataForm.invalid"
+      (click)="saveForm()" type="button">Valider</button>
+    <button mat-raised-button color="primary" fxFlexOffset='3' (click)="doquitte()" type="button">Quitter</button>
+  </div>
