@@ -1,8 +1,6 @@
 <mat-toolbar color="primary">
-    Texte Re-Nouvellement&nbsp;&nbsp;<mat-radio-group (change)="update($event)" aria-label="Type">
-      <mat-radio-button value="init">Init</mat-radio-button>&nbsp;
-      <mat-radio-button  [checked]="true"  value="last">Last</mat-radio-button>
-    </mat-radio-group>
+    Texte Re-Nouvellement&nbsp;&nbsp;
+    <mat-icon (click)="refresh()" style="cursor: pointer;" aria-hidden="false" aria-label="Refresh">refresh</mat-icon>
     </mat-toolbar>
   <form  *ngIf="body$ | async" fxLayoutAlign="center center"   style="margin-top:20px;"   autocomplete="off" [formGroup]="dataForm" novalidate>
 <div fxLayoutAlign="center center" style='margin-left:10px;margin-right:10px;' >

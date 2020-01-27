@@ -19,8 +19,7 @@ export class NouveauComponent implements OnInit {
   public dataForm: FormGroup ;
   constructor(private route: Router, private formBuilder: FormBuilder , private datasService: DatasService ) { }
 
-  types = ['init', 'last'] ;
-  typesel = 'last' ;
+
 
   quilltoobar = {
     formula: false,
@@ -49,7 +48,7 @@ export class NouveauComponent implements OnInit {
 
   this.body$ = this.subject$.pipe(
     startWith(''),
-    switchMap( v  => this.datasService.getNouveau( this.typesel) ),
+    switchMap( v  => this.datasService.getNouveau() ),
     tap( (v) => this.dataForm.get('body').setValue(v) )
   );
 
@@ -57,9 +56,8 @@ export class NouveauComponent implements OnInit {
 
   }
 
-  update($event) {
-    this.typesel = $event.value ;
-    this.subject$.next( $event.value );
+  refresh() {
+        this.subject$.next( 'refresh' );
   }
 
 

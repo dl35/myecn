@@ -15,8 +15,7 @@ export class AncienComponent implements OnInit {
   body$: Observable<any>;
   subject$ = new Subject<any>();
   public dataForm: FormGroup ;
-  types = ['init', 'last'] ;
-  typesel = 'last' ;
+  
 
   quilltoobar = {
     formula: false,
@@ -46,7 +45,7 @@ export class AncienComponent implements OnInit {
 
       this.body$ = this.subject$.pipe(
       startWith(''),
-      switchMap( v  => this.datasService.getAncien( this.typesel) ),
+      switchMap( v  => this.datasService.getAncien() ),
       tap( (v) => this.dataForm.get('body').setValue(v) )
     );
   
@@ -60,9 +59,8 @@ export class AncienComponent implements OnInit {
       body: [null , [Validators.required] ],
     })};
 
-    update($event) {
-      this.typesel = $event.value ;
-      this.subject$.next( $event.value );
+    refresh() {
+      this.subject$.next( 'refresh' );
     }
     
     public saveForm() {

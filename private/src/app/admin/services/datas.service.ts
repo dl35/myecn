@@ -9,8 +9,8 @@ export class DatasService {
   private url = '/api/private/toadmin' ;
     constructor(private http: HttpClient) { }
 
-    public getRappel( type ) {
-      const uget = this.url + '/rappel/' + type ;
+    public getRappel() {
+      const uget = this.url + '/rappel' ;
       return this.http.get<any>( uget );
 
     }
@@ -18,8 +18,8 @@ export class DatasService {
       const upost = this.url + '/rappel' ;
       return this.http.post<any>( upost , body ) ;
     }
-    public getAncien(type) {
-      const uget = this.url + '/ancien/' + type ;
+    public getAncien() {
+      const uget = this.url + '/ancien'  ;
       return this.http.get<any>( uget ) ;
 
     }
@@ -28,8 +28,8 @@ export class DatasService {
       return this.http.post<any>( uget , body ) ;
     }
 
-    public getNouveau( type ) {
-      const uget = this.url + '/nouveau/' + type ;
+    public getNouveau() {
+      const uget = this.url + '/nouveau' ;
       return this.http.get<any>( uget ) ;
 
     }

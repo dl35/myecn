@@ -53,4 +53,14 @@ export class AdminService {
       return this.http.get<any>( uget ) ;
     }
 
+
+    public upload( fd: FormData )  {
+      const upost = this.url + '/upload' ;
+      return  this.http.post( upost , fd  ,  {
+        reportProgress: true ,
+        observe: 'events'
+       } ) ;
+
+      }
+
 }

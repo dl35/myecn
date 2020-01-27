@@ -15,8 +15,7 @@ export class RappelComponent implements OnInit {
   body$: Observable<any>;
   subject$ = new Subject<any>();
   public dataForm: FormGroup ;
-  types = ['init', 'last'] ;
-  typesel = 'last' ;
+  
 
   quilltoobar = {
     formula: false,
@@ -47,7 +46,7 @@ export class RappelComponent implements OnInit {
 
     this.body$ = this.subject$.pipe(
       startWith(''),
-      switchMap( v  => this.datasService.getRappel( this.typesel) ),
+      switchMap( v  => this.datasService.getRappel() ),
       tap( (v) => this.dataForm.get('body').setValue(v) )
     );
 
@@ -56,9 +55,8 @@ export class RappelComponent implements OnInit {
 
   }
 
-  update($event) {
-    this.typesel = $event.value ;
-    this.subject$.next( $event.value );
+  refresh() {
+    this.subject$.next( 'refresh');
   }
 
 

@@ -124,6 +124,13 @@ public toAncien() {
   this.route.navigate(['admin/ancien']);
 }
 
+public toModele() {
+  this.route.navigate(['admin/upload']);
+}
+
+public toAttest() {
+  this.route.navigate(['admin/upload/attestation']);
+}
 
 
 public send() {

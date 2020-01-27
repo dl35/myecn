@@ -1,0 +1,38 @@
+
+
+<div style="margin:0 auto;width: 80%;text-align: center;">
+<mat-progress-bar  style="margin-top:20px" [value]="pvalue"  mode="determinate"  ></mat-progress-bar>      
+<input  style="display:none" #fileInput  type='file' name='file' accept=".pdf"  (change)="onFileSelected($event)" /> 
+<p *ngIf="id === 'modele'">
+    <a href="" (click)="tomodele()" > 
+    Modèle pdf pour les inscriptions
+    <mat-icon  matTooltip='voir le fichier' style='cursor: pointer;'  color='accent'  [svgIcon]="'pdf'"></mat-icon>
+    </a>
+
+</p>
+<p *ngIf="id === 'attestation'">
+    <a href="" (click)="toattest()" >
+    Modèle pdf pour les attestations 
+    <mat-icon  matTooltip='voir le fichier' style='cursor: pointer;' color='accent'  [svgIcon]="'pdf'"></mat-icon>
+    </a>
+    
+</p>
+
+
+<p *ngIf="!selectedFile" >
+<button    color="accent" matTooltip="choix fichier"   mat-raised-button (click)="openFileBox()">
+Fichier {{id}}  pdf
+<mat-icon>cloud_upload</mat-icon>
+</button>
+&nbsp;&nbsp;
+<button mat-raised-button color="primary"  (click)="doquitte()" type="button">Quitter</button>
+</p>
+<p  *ngIf="selectedFile" >
+<button  color="primary" matTooltip="Upload"   mat-raised-button (click)="onUpload()">
+Upload {{id}} Pdf
+<mat-icon>cloud_upload</mat-icon>
+</button>
+&nbsp;&nbsp;
+<button mat-raised-button color="accent"  (click)="doquitte()" type="button">Quitter</button>
+</p>
+</div>

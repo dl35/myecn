@@ -21,6 +21,11 @@ export class AppComponent implements OnInit {
       'swiminvalid',
       this.domSanitizer.bypassSecurityTrustResourceUrl('assets/images/swimko.svg')
     );
+    this.matIconRegistry.addSvgIcon(
+      'pdf',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/images/pdf.svg')
+    );
+
 
   }
 

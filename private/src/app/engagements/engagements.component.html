@@ -8,7 +8,7 @@
   <div  *ngIf="isCreated && (layoutChanges | async)?.matches"  fxLayout="column"  fxLayout="column"  fxFlex="100" fxLayoutAlign="center center" style='margin-top: 10px'  >
     
     <div  fxLayout="row" fxFlex="100" fxLayoutAlign="center center"  style='font-size: 14px'   >
-          <mat-form-field fxFlex="25" fxFlexOffset="3" >
+          <mat-form-field fxFlex="9" fxFlexOffset="2" >
               <mat-select  color="primary" placeholder="Présence" [(ngModel)]="filtre.pre" name="pre" (ngModelChange)="doFilter()" >
                   <mat-option *ngFor="let p of pre" [value]="p.value">
                     {{p.viewValue}}
@@ -16,7 +16,7 @@
                 </mat-select>
           </mat-form-field>
    
-          <mat-form-field fxFlex="25" fxFlexOffset="3" >
+          <mat-form-field fxFlex="9" fxFlexOffset="2" >
               <mat-select  color="primary" placeholder="Extranat" [(ngModel)]="filtre.ext" name="pre" (ngModelChange)="doFilter()" >
                   <mat-option *ngFor="let p of ext" [value]="p.value">
                     {{p.viewValue}}
@@ -24,14 +24,39 @@
                 </mat-select>
             </mat-form-field>
   
-              <mat-form-field fxFlex="25" fxFlexOffset="3" >
+              <mat-form-field fxFlex="11" fxFlexOffset="2" >
                   <mat-select  color="primary" placeholder="Notifications" [(ngModel)]="filtre.notif" name="pre" (ngModelChange)="doFilter()" >
                       <mat-option *ngFor="let p of notif" [value]="p.value">
                         {{p.viewValue}}
                       </mat-option>
                     </mat-select>
                  </mat-form-field>
+                 <mat-form-field fxFlex="9" fxFlexOffset="2" >
+                  <mat-select  color="primary" placeholder="Catégories" [(ngModel)]="filtre.cat" name="pre" (ngModelChange)="doFilter()" >
+                      <mat-option *ngFor="let p of cat" [value]="p.value">
+                        {{p.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                 </mat-form-field>
   
+                 <mat-form-field fxFlex="5" fxFlexOffset="2" >
+                  <mat-select  color="primary" placeholder="Rang" [(ngModel)]="filtre.rang" name="pre" (ngModelChange)="doFilter()" >
+                      <mat-option *ngFor="let p of rang" [value]="p.value">
+                        {{p.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                 </mat-form-field>
+                 <mat-form-field fxFlex="5" fxFlexOffset="2" >
+                  <mat-select  color="primary" placeholder="Sexe" [(ngModel)]="filtre.sexe" name="pre" (ngModelChange)="doFilter()" >
+                      <mat-option *ngFor="let p of sexe" [value]="p.value">
+                        {{p.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                 </mat-form-field>
+                  &nbsp;&nbsp;
+                 <button mat-mini-fab mat-icon-button  color="accent" (click)="refreshFilter()">
+                  <mat-icon aria-label="add">refresh</mat-icon>
+                </button>
             </div>
   
    </div>
@@ -62,7 +87,28 @@
                     </mat-select>
                  </mat-form-field>
         
-    
+                 <mat-form-field style='width:60%' >
+                  <mat-select  color="primary" placeholder="Catégories" [(ngModel)]="filtre.cat" name="pre" (ngModelChange)="doFilter()" >
+                      <mat-option *ngFor="let p of cat" [value]="p.value">
+                        {{p.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                 </mat-form-field>
+  
+                 <mat-form-field style='width:60%'>
+                  <mat-select  color="primary" placeholder="Rang" [(ngModel)]="filtre.rang" name="pre" (ngModelChange)="doFilter()" >
+                      <mat-option *ngFor="let p of rang" [value]="p.value">
+                        {{p.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                 </mat-form-field>
+                 <mat-form-field style='width:60%' >
+                  <mat-select  color="primary" placeholder="Sexe" [(ngModel)]="filtre.sexe" name="pre" (ngModelChange)="doFilter()" >
+                      <mat-option *ngFor="let p of sexe" [value]="p.value">
+                        {{p.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                 </mat-form-field>
       </div>
     </mat-sidenav>
     <mat-sidenav-content>

@@ -31,6 +31,7 @@ export class ParamsComponent implements OnInit {
     this.dataForm = this.formBuilder.group({
 
       dev: [null , [Validators.required] ],
+      president:  [ null , [Validators.required , Validators.minLength(5)] ],
       dev_email:  [ null , [Validators.required , Validators.email] ],
       saison_enc: [ null , [Validators.required , Validators.minLength(9) , Validators.maxLength(9)] ],
       saison_last: [ null , [ Validators.required ,   Validators.minLength(9) , Validators.maxLength(9)]] ,

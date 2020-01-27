@@ -16,6 +16,7 @@ import { RappelComponent } from './rappel/rappel.component';
 import { NouveauComponent } from './nouveau/nouveau.component';
 import { AncienComponent } from './ancien/ancien.component';
 import { QuillModule } from 'ngx-quill';
+import { UploadComponent } from './upload/upload.component';
 
 
 const routes: Routes = [
@@ -35,6 +36,14 @@ const routes: Routes = [
     path: 'nouveau',
     component: NouveauComponent
   },
+  {
+    path: 'upload',
+    component: UploadComponent
+  },
+  {
+    path: 'upload/:id',
+    component: UploadComponent
+  },
 ];
 
 
@@ -52,6 +61,6 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   exports: [RouterModule],
-  declarations: [AdminComponent, UsersComponent, EditComponent, ParamsComponent, RappelComponent, NouveauComponent, AncienComponent]
+  declarations: [AdminComponent, UsersComponent, EditComponent, ParamsComponent, RappelComponent, NouveauComponent, AncienComponent, UploadComponent]
 })
 export class AdminModule { }
