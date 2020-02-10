@@ -76,12 +76,12 @@ map: L.Map ;
       this.clearCref();
       const result: any[] = [];
       data.forEach(function (item) {
-  
+
           const  marker =  new L.Marker([item.geometry.coordinates[1], item.geometry.coordinates[0]]);
           marker.bindPopup(  this.createPopup( item.properties ) );
           result.push( marker );
       }, this );
-  
+
       this.markerClusterData =  result ;
   }
 
@@ -102,18 +102,17 @@ map: L.Map ;
 
    ngOnDestroy(): void {
     this.clearCref();
- 
+
    }
- 
- 
+
+
    public createPopup( data ) {
      const factory = this.componentFactoryResolver.resolveComponentFactory(PopupComponent);
      const component = factory.create(this.injector);
      this.cref.push( component );
-     //Set the component inputs manually 
+     // Set the component inputs manually
      component.instance.data = data  ;
      component.changeDetectorRef.detectChanges();
- 
      return component.location.nativeElement;
    }
 

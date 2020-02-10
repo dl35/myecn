@@ -41,7 +41,7 @@ export class EditComponent implements OnInit {
   startDate: Date;
 
 
-  constructor(private route: Router , private formBuilder: FormBuilder ,public dialog: MatDialog, private lserv: LicenciesService  ) { }
+  constructor(private route: Router , private formBuilder: FormBuilder , public dialog: MatDialog, private lserv: LicenciesService  ) { }
 
   ngOnInit() {
 
@@ -115,7 +115,7 @@ export class EditComponent implements OnInit {
       banque:  [ null ],
       type:  [ 'N' , [Validators.required]  ],
       valide:  [ false ],
-      inscription :[null]
+      inscription : [null]
 
 
     });
@@ -229,7 +229,7 @@ setInvalidate( n , id ) {
   this.lserv.invalidate( id ).subscribe(
     () =>  { this.lserv.name = n ; this.route.navigate(['/licencies']); },
     () => {  }
-   ); 
+   );
 }
 
 

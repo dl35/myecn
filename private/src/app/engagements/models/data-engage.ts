@@ -1,3 +1,17 @@
+interface ICompetEngage {
+
+    id: number;
+    label: string;
+}
+
+
+interface IEngage {
+
+    day: string;
+    presence: string;
+    edid: string;
+}
+
 export class CompetEngage implements ICompetEngage {
     id = null;
     label = '';
@@ -14,19 +28,7 @@ export class MessageResponse {
 
 
 
-interface ICompetEngage {
 
-    id: number;
-    label: string;
-}
-
-
-interface IEngage {
-
-    day: string;
-    presence: string;
-    edid: string;
-}
 
 
 

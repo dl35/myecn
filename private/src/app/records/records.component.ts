@@ -26,7 +26,7 @@ export class RecordsComponent implements OnInit {
   compet$: Observable<any[]>;
 
   // tslint:disable-next-line:max-line-length
-  nages = [{ value: 'NL', label: 'Nage libre' }, { value: 'BRA', label: 'Brasse' }, { value: 'DOS', label: 'Dos' }, { value: 'PAP', label: 'Papillon' },{ value: '4N', label: '4 Nages' }];
+  nages = [{ value: 'NL', label: 'Nage libre' }, { value: 'BRA', label: 'Brasse' }, { value: 'DOS', label: 'Dos' }, { value: 'PAP', label: 'Papillon' }, { value: '4N', label: '4 Nages' }];
   dists_nl = ['50', '100', '200', '400', '800', '1500', '4x50', '4x100', '4x200', '10x100'];
   dists_n = ['50', '100', '200'];
   dists_4n = ['100', '200', '400'];

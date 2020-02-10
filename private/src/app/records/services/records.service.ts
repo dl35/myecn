@@ -32,7 +32,6 @@ export class RecordsService {
         );
     }
 
- 
     public getCompetitions() {
       const url = this.url + '/compet';
       return this.http.get<any[]>( url ).pipe(

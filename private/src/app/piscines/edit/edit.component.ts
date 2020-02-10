@@ -29,7 +29,7 @@ export class EditComponent implements OnInit {
       switchMap( p  => this.pisService.get( p.id ))
       ).subscribe(
         (d) =>  { this.initForm( d) ; }
-    )
+    );
 
   }
 
@@ -115,7 +115,7 @@ export class EditComponent implements OnInit {
                   if (result) {
                     this.pisService.delete(id).subscribe(
                       () =>  this.router.navigate(['/piscines'])
-                    )
+                    );
                       } },
          () => {},
          () => {},

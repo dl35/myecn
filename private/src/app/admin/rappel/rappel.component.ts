@@ -15,7 +15,7 @@ export class RappelComponent implements OnInit {
   body$: Observable<any>;
   subject$ = new Subject<any>();
   public dataForm: FormGroup ;
-  
+
 
   quilltoobar = {
     formula: false,
@@ -64,7 +64,8 @@ export class RappelComponent implements OnInit {
     // Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') ,
     this.dataForm = this.formBuilder.group({
       body: [null , [Validators.required] ],
-    })};
+    }); }
+
 
 
     public saveForm() {

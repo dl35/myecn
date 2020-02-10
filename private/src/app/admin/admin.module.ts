@@ -61,6 +61,7 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   exports: [RouterModule],
+  // tslint:disable-next-line: max-line-length
   declarations: [AdminComponent, UsersComponent, EditComponent, ParamsComponent, RappelComponent, NouveauComponent, AncienComponent, UploadComponent]
 })
 export class AdminModule { }

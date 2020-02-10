@@ -15,7 +15,7 @@ export class AncienComponent implements OnInit {
   body$: Observable<any>;
   subject$ = new Subject<any>();
   public dataForm: FormGroup ;
-  
+
 
   quilltoobar = {
     formula: false,
@@ -48,7 +48,7 @@ export class AncienComponent implements OnInit {
       switchMap( v  => this.datasService.getAncien() ),
       tap( (v) => this.dataForm.get('body').setValue(v) )
     );
-  
+
       this.subject$.next('ok');
 
   }
@@ -57,12 +57,12 @@ export class AncienComponent implements OnInit {
     // Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$') ,
     this.dataForm = this.formBuilder.group({
       body: [null , [Validators.required] ],
-    })};
+    }); }
 
     refresh() {
       this.subject$.next( 'refresh' );
     }
-    
+
     public saveForm() {
       const data = this.dataForm.getRawValue() ;
         this.datasService.saveAncien( data ).subscribe(

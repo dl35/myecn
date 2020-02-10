@@ -74,7 +74,7 @@ export class EngagementsComponent implements OnInit, OnDestroy {
     {value: 'C11', viewValue: 'c11'},
     {value: 'C12', viewValue: 'c12'}
 
-  ]
+  ];
 
 
 datas$: Observable<CompetEngage[]> ;

@@ -21,7 +21,7 @@ export class UploadComponent implements OnInit {
   uploadFile = false;
 
   id = 'modele' ;
-  constructor(private adService: AdminService,private route: ActivatedRoute,private router: Router) {
+  constructor(private adService: AdminService, private route: ActivatedRoute, private router: Router) {
 
     this.route.params.subscribe( params =>  { if ( params && params.id ) {
                                 this.id =  params.id;  } });

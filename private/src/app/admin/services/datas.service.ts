@@ -37,5 +37,4 @@ export class DatasService {
       const uget = this.url + '/nouveau' ;
       return this.http.post<any>( uget , body ) ;
     }
-  
 }

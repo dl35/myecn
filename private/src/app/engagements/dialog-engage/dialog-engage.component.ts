@@ -36,7 +36,7 @@ export class DialogEngageComponent implements OnInit {
           (datas) => this.datasLic = datas
        ); */
 
-  } else if ( this.data.mode === 'modif' ) { 
+  } else if ( this.data.mode === 'modif' ) {
     this.oldeng = JSON.parse(JSON.stringify( this.data.item.eng ));
 
   }
@@ -53,7 +53,7 @@ export class DialogEngageComponent implements OnInit {
 
   private filterLic( value ) {
     this.lic.reset();
-   
+
     this.eService.getLicencies( this.data.id )
            .subscribe(
           (datas) => { this.datasLic = datas.filter ( v => v.categorie === value )  ; },
@@ -62,7 +62,7 @@ export class DialogEngageComponent implements OnInit {
   }
 
   public next( v  , r ) {
-  
+
     if ( r === 'oui' ) {
       r = 'non'; } else if ( r === 'non' ) {
       r = 'oui'; } else {
@@ -83,7 +83,7 @@ export class DialogEngageComponent implements OnInit {
 
 
 public saveModif() {
-  const datas = { eng : this.data.item.eng  , idl : this.data.item.id_licencies  }
+  const datas = { eng : this.data.item.eng  , idl : this.data.item.id_licencies  };
   this.eService.modifLicencies( this.data.item.id , datas ).subscribe(
     (v) => this.dialogRef.close(true)
 

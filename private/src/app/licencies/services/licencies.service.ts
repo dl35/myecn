@@ -46,7 +46,7 @@ export class LicenciesService {
    return this.http.delete<any>( url  );
 }
 
-public attest(id ){
+public attest( id ) {
   const url = '/api/private/toattest' + '/' + id ;
   return this.http.get<any>( url  );
 }

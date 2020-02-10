@@ -95,7 +95,6 @@ export class TraitementComponent implements OnDestroy, OnInit {
 
   }
 
-  
   }
 
 
