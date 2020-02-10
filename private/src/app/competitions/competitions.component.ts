@@ -4,8 +4,6 @@ import { BreakpointObserver, BreakpointState, Breakpoints } from '@angular/cdk/l
 import { CompetitionsService } from './services/competitions.service';
 import { Observable , BehaviorSubject, combineLatest } from 'rxjs';
 import { map} from 'rxjs/operators';
-
-import 'hammerjs';
 import { MatDialog } from '@angular/material/dialog';
 
 import { DialogConfirmComponent } from '../dialog-confirm/dialog-confirm.component';

@@ -14,7 +14,7 @@ import { FormControl } from '@angular/forms';
 })
 export class FileUploadComponent  {
 
-  @ViewChild('fileInput', {static: false} )
+  @ViewChild('fileInput')
   fileInput: ElementRef;
   idFile = null ;
 

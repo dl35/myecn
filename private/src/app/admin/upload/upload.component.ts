@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class UploadComponent implements OnInit {
 
 
-  @ViewChild('fileInput', {static: false} )
+  @ViewChild('fileInput')
   fileInput: ElementRef;
   idFile = null ;
 

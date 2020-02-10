@@ -19,8 +19,6 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './guard/guard.guard';
 import { MenuComponent } from './menu/menu.component';
-
-import 'hammerjs';
 import { DialogConfirmComponent } from './dialog-confirm/dialog-confirm.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
