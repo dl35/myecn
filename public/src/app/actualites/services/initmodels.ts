@@ -2,7 +2,6 @@
 export interface InitModels {
     actif: boolean;
     scenario: Scenario[];
-    
   }
 
 

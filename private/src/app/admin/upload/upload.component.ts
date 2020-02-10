@@ -46,9 +46,9 @@ export class UploadComponent implements OnInit {
     this.selectedFile = null ;
     this.uploadFile = false ;
     if ( this.id === 'attestation' ) {
-      this.idFile = 'attestation2.pdf' ;
+      this.idFile = 'attestation.pdf' ;
     } else {
-      this.idFile = 'modele2.pdf' ;
+      this.idFile = 'modele.pdf' ;
     }
 
 

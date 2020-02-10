@@ -74,7 +74,6 @@ onMapReady(map: L.Map) {
 
       generateDatas(data: any) {
 
-        
           const result: any[] = [];
           data.forEach(function (item) {
 

@@ -58,7 +58,7 @@ export class ActuService {
 
     this.http.get<any>(url).subscribe(
       (m) => { this.logo$.next(logo); this.subject$.next(m); }
-    )
+    );
   }
 
   public next() {

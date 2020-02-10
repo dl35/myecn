@@ -15,7 +15,7 @@ export class StatsComponent implements OnInit {
 
     ngOnInit() {
         this.sService.getDatas().subscribe(
-            (datas) => { this.initChart(datas) },
+            (datas) => { this.initChart(datas); },
             (error) => { },
             () => { }
         );

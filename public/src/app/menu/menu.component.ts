@@ -10,9 +10,9 @@ import { Observable } from 'rxjs';
 })
 export class MenuComponent {
 
-public actuActif$ : Observable<boolean> ;
+public actuActif$: Observable<boolean> ;
 
-  constructor(private router: Router , private route: ActivatedRoute ,public serv: ActuService  ) {
+  constructor(private router: Router , private route: ActivatedRoute , public serv: ActuService  ) {
 
    this.actuActif$ = this.serv.getActif();
 
