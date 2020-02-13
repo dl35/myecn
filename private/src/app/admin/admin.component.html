@@ -6,25 +6,31 @@ Administration  [{{mode}}]
 <mat-grid-list cols="3" rowHeight="4:1" style="width:85%;"  >
     <mat-grid-tile [ngStyle]="{'background-color':mode === 'DEV' ? 'red' : 'orange' }" >  <button (click)="setParams()" mat-raised-button color="primary">Paramètres</button></mat-grid-tile> 
     <mat-grid-tile style="background-color: rgb(42, 165,124)"> <button (click)="prepare()" mat-raised-button color="primary">Création Table Licencié Saison Suivante</button></mat-grid-tile>
-    <mat-grid-tile style="background-color: rgba(109, 73, 129, 0.432)" > <button (click)="send()" mat-raised-button color="primary">Envoyer les inscriptions</button></mat-grid-tile>
-    
+   
+    <mat-grid-tile style="background-color: rgba(109, 73, 129, 0.432)" ><button matTooltip="documentation" fxFlexOffset="1"  mat-raised-button color="primary" (click)="getdoc()"   >
+      <mat-icon>book</mat-icon>documentation
+     </button> </mat-grid-tile>
+
+
+    <mat-grid-tile style="background-color: rgba(42, 165, 124)" > <button (click)="toModele()" matTooltip="Envoie le fichier modele.pdf vers le serveur"  mat-raised-button color="primary">Upload Modele(pdf)</button></mat-grid-tile>
+    <mat-grid-tile style="background-color: rgba(109, 73, 129, 0.432)" > <button (click)="toAttest()"matTooltip="Envoie le fichier attestation.pdf vers le serveur"  mat-raised-button color="primary">Upload Attestation(pdf)</button></mat-grid-tile>
+    <mat-grid-tile style="background-color: rgba(42, 165, 124)" ></mat-grid-tile>
+
+    <mat-grid-tile style="background-color: rgba(109, 73, 129, 0.432)" > <button matTooltip="Texte après validation"  (click)="toRappel()"  mat-raised-button color="primary">Texte Rappel</button></mat-grid-tile>
+    <mat-grid-tile style="background-color: rgba(42, 165, 124)" > <button matTooltip="Texte pour nouvel Inscrit" (click)="toNouveau()"  mat-raised-button color="primary">Texte Nouveau</button></mat-grid-tile>
+    <mat-grid-tile style="background-color: rgba(109, 73, 129, 0.432)" > <button (click)="toAncien()"  matTooltip="Texte pour renouvellement" mat-raised-button color="primary">Texte Renouvellement</button></mat-grid-tile>
+
+
+
     <mat-grid-tile style="background-color: rgba(42, 165,124)" > <button (click)="addtest()" mat-raised-button color="primary">Ajoute Test</button></mat-grid-tile>
     <mat-grid-tile style="background-color: rgba(109, 73, 129, 0.432)" > <button (click)="deltest()" mat-raised-button color="primary">Supprime Test</button></mat-grid-tile>
     <mat-grid-tile style="background-color: rgba(42, 165,124)" ></mat-grid-tile>
 
-    <mat-grid-tile style="background-color: rgba(109, 73, 129, 0.432)" > <button (click)="deleteCompetitions()"  mat-raised-button color="primary">Réinitialiser les Competitions</button></mat-grid-tile>
-    <mat-grid-tile style="background-color: rgb(42, 165, 124)" > <button (click)="deleteEngagements()" mat-raised-button color="primary">Réinitialiser les Engagements</button></mat-grid-tile>
-    <mat-grid-tile style="background-color: rgba(109, 73, 129, 0.432)" ><button matTooltip="documentation" fxFlexOffset="1"  mat-raised-button color="primary" (click)="getdoc()"   >
-        <mat-icon>book</mat-icon>documentation
-       </button> </mat-grid-tile>
-
-       <mat-grid-tile style="background-color: rgba(42, 165, 124)" > <button (click)="toRappel()"  mat-raised-button color="primary">Texte Rappel</button></mat-grid-tile>
-       <mat-grid-tile style="background-color: rgba(109, 73, 129, 0.432)" > <button (click)="toNouveau()"  mat-raised-button color="primary">Texte Nouveau</button></mat-grid-tile>
-       <mat-grid-tile style="background-color: rgba(42, 165, 124)" > <button (click)="toAncien()"  mat-raised-button color="primary">Texte Renouvellement</button></mat-grid-tile>
-
-       <mat-grid-tile style="background-color: rgba(109, 73, 129, 0.432)" > <button (click)="toModele()"  mat-raised-button color="primary">Upload Modele(pdf)</button></mat-grid-tile>
-       <mat-grid-tile style="background-color: rgba(42, 165, 124)" > <button (click)="toAttest()"  mat-raised-button color="primary">Upload Attestation(pdf)</button></mat-grid-tile>
-
+    <mat-grid-tile style="background-color: rgba(109, 73, 129, 0.432)" > <button matTooltip="reinit la table competitions"  (click)="deleteCompetitions()"  mat-raised-button color="primary">Réinitialiser les Competitions</button></mat-grid-tile>
+    <mat-grid-tile style="background-color: rgb(42, 165, 124)" > <button matTooltip="reinit la table engagements"  (click)="deleteEngagements()" mat-raised-button color="primary">Réinitialiser les Engagements</button></mat-grid-tile>
+   
+    <mat-grid-tile style="background-color: rgba(233, 219, 23, 0.432)" > <button (click)="send()" mat-raised-button color="primary">Envoyer les inscriptions</button></mat-grid-tile>
+    
 
 
   </mat-grid-list>

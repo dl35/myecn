@@ -12,14 +12,14 @@
    
 <input  style="display:none" #fileInput  type='file' name='file' accept=".pdf"  (change)="onFileSelected($event)" /> 
 <p *ngIf="id === 'modele'">
-    <a href="" (click)="tomodele()" > 
+    <a href="" (click)="tomodele()" target="_blank" > 
     Modèle pdf pour les inscriptions
     <mat-icon  matTooltip='voir le fichier' style='cursor: pointer;'  color='accent'  [svgIcon]="'pdf'"></mat-icon>
     </a>
 
 </p>
 <p *ngIf="id === 'attestation'">
-    <a href="" (click)="toattest()" >
+    <a href="" (click)="toattest()" target="_blank" >
     Modèle pdf pour les attestations 
     <mat-icon  matTooltip='voir le fichier' style='cursor: pointer;' color='accent'  [svgIcon]="'pdf'"></mat-icon>
     </a>
@@ -27,22 +27,16 @@
 </p>
 
 
-<p *ngIf="!selectedFile" >
-<button    color="accent" matTooltip="choix fichier"   mat-raised-button (click)="openFileBox()">
+<p>
+<button *ngIf="!selectedFile && !uploadFile"   color="accent" matTooltip="choix fichier"   mat-raised-button (click)="openFileBox()">
 Fichier {{id}}  pdf
 <mat-icon>cloud_upload</mat-icon>
 </button>
+<button *ngIf="selectedFile && !uploadFile" color="primary" matTooltip="Upload"   mat-raised-button (click)="onUpload()">
+    Upload {{id}} Pdf
+    <mat-icon>cloud_upload</mat-icon>
+    </button>
 &nbsp;&nbsp;
-
-
 <button mat-raised-button color="primary"  (click)="doquitte()" type="button">Quitter</button>
-</p>
-<p  *ngIf="selectedFile" >
-<button  color="primary" matTooltip="Upload"   mat-raised-button (click)="onUpload()">
-Upload {{id}} Pdf
-<mat-icon>cloud_upload</mat-icon>
-</button>
-&nbsp;&nbsp;
-<button mat-raised-button color="accent"  (click)="doquitte()" type="button">Quitter</button>
 </p>
 </div>
