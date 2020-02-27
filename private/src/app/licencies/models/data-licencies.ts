@@ -32,8 +32,7 @@ export interface IDataLicencies {
     num_sport: string;
     coup_sport: number;
     num_coupsport: string;
-    nbre_chvac10: number;
-    nbre_chvac20: number;
+    cheque_vac: number;
     especes: number;
     valide: boolean;
     auto_parentale: boolean;
