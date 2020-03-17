@@ -40,9 +40,15 @@
           </mat-card-header>
           <img  *ngIf="item.img"  mat-card-image src="{{item.img}}"  >
           <mat-card-content>
-            <p>
-              {{item.description}}
-            </p>
+         
+              <div [innerHTML]="item.description"></div> 
+          
           </mat-card-content>
+          <div *ngFor="let itimg of (item)?.images">
+            <img  mat-card-sm-image src="{{itimg}}"  >
+  
+          </div>
+    
         </mat-card>
+    
       </div>
