@@ -32,9 +32,10 @@ export class AdhesionComponent implements OnInit, OnDestroy {
     this.initForm();
 
     if (this.route.snapshot.params['id']) {
+      this.id = this.route.snapshot.params['id'] ;
       this.route.params.pipe(
         map((params) => params.id),
-        switchMap((id) => this.adhesion.getLicencies(id)),
+        switchMap((id) => this.adhesion.getLicencies(id) ),
         takeUntil(this.destroyed$)
       ).subscribe(
         data => this.dataForm.setValue(data),
@@ -50,11 +51,10 @@ export class AdhesionComponent implements OnInit, OnDestroy {
     if (this.id) {
       this.adhesion.updateLicencies(this.id, data).pipe(takeUntil(this.destroyed$)).subscribe(
         // tslint:disable-next-line: max-line-length
-        res => { this.showSnackBar(res.message, true); this.router.navigate(['/']).then(() => { window.location.href = 'http://www.ecnatation.fr/'; }); },
+        res => { this.showSnackBar(res.message, true); this.router.navigate(['/']).then(() => { window.location.href = 'http://www.ecnatation.fr/'; });  },
         error => { this.showSnackBar(error.error.message, false); }
       );
     } else {
-
       this.adhesion.addLicencies(data).pipe(takeUntil(this.destroyed$)).subscribe(
         // tslint:disable-next-line: max-line-length
         res => { this.showSnackBar(res.message, true); this.router.navigate(['/']).then(() => { window.location.href = 'http://www.ecnatation.fr/'; }); },
