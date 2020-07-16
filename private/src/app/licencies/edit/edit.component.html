@@ -175,7 +175,7 @@
             <input matInput placeholder="licence" formControlName="licence">
           </mat-form-field>
           <mat-form-field fxFlex="8" fxFlexOffset="1">
-            <mat-select placeholder="Ass.FFN" formControlName="ass_ffn" (selectionChange)="setChange($event)" >
+            <mat-select placeholder="Ass.FFN" formControlName="ass_ffn"  >
               <mat-option></mat-option>
               <mat-option *ngFor="let r of meta.assffn" [value]="r.value"  >{{r.name}}</mat-option>
             </mat-select>
