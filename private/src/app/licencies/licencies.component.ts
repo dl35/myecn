@@ -28,11 +28,11 @@ export class LicenciesComponent implements OnInit  {
 
 
   public myfilter = {entr: undefined, sexe: undefined, officiel: undefined, categorie: undefined, type: undefined, valide: undefined,
-  paye: undefined, auto_parentale: undefined, cert_medical: undefined, lic_ffn: undefined, fiche_medicale: undefined , inscription: '1' };
+  paye: undefined, auto_parentale: undefined, cert_medical: undefined, ass_ffn: undefined, fiche_medicale: undefined , inscription: '1' };
 
   public dataSource: MyDataSource = null;
   public displayedAllColumns: string[] = ['nom', 'prenom', 'categorie' , 'rang' , 'type'  , 'entr', 'sexe',
-  'officiel' , 'c.medical' , 'a.parentale' , 'f.medical' ,'lic.ffn' , 'cotisation' , 'total' , 'valide' , 'paye' , 'id' ];
+  'officiel' , 'c.medical' , 'a.parentale' , 'f.medical' ,'ass.ffn' , 'cotisation' , 'total' , 'valide' , 'paye' , 'id' ];
   public displayedSmallColumns: string[] = ['nom', 'prenom', 'valide' ,  'id' ];
   public displayedColumns: string[] = this.displayedAllColumns ;
 

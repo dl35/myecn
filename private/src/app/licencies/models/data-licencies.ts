@@ -39,7 +39,7 @@ export interface IDataLicencies {
     cert_medical: boolean;
     fiche_medicale: boolean;
     date_certmedical: Date | null ;
-    lic_ffn: boolean | null;
+    ass_ffn: boolean | null;
     photo: boolean;
     paye: boolean;
     reglement: boolean;

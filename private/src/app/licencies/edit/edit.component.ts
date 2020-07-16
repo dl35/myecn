@@ -28,7 +28,7 @@ export class EditComponent implements OnInit, OnDestroy {
     displayForm : false ,
     rang: ['1', '2', '3', '4' , 'C1' , 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9', 'C10', 'C10', 'C12'],
     officiel: ['A', 'B', 'C'],
-    licffn: [{'name': 'Oui' , 'value': true }, {'name': 'Non' , 'value': false } ],
+    assffn: [{'name': 'Oui' , 'value': true }, {'name': 'Non' , 'value': false } ],
     sexe: ['F', 'H'] ,
     type: [{'name': 'Ren' , 'value': 'R' } , {'name': 'Nou' , 'value': 'N' } ] ,
     niveau: [{'name': 'Dep' , 'value': 'Dep' } , {'name': 'Reg' , 'value': 'Reg' } , {'name': 'Nat' , 'value': 'Nat' }] ,
@@ -58,9 +58,6 @@ export class EditComponent implements OnInit, OnDestroy {
 
   }
 
-  isDateError(){
-    return this.dataForm.controls.date_certmedical.errors ;
-  }
 
   initForm() {
 
@@ -99,7 +96,7 @@ export class EditComponent implements OnInit, OnDestroy {
 
       carte:  [ null ],
       num_carte:  [ null ],
-      lic_ffn:  [ null ],
+      ass_ffn:  [ null ],
       date_certmedical:  [ null, [ DateValidator.dateValidator ] ],
 
       auto_parentale:  [ false  ] ,
