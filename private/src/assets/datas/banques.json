@@ -1,5 +1,7 @@
 [
 { "id": "BNP" , "value" :"Bnp" },
+{ "id": "BFORB" , "value" :"BforBank" },
+{ "id": "BRAMA" , "value" :"Boursorama" },
 { "id": "BP" , "value" :"Banque Populaire" },
 { "id": "BPO" , "value" :"Banque Populaire de l'Ouest" },
 { "id": "BRED" , "value" :"Banque régionale d'escompte et de dépots" },
@@ -10,7 +12,12 @@
 { "id": "CIO" , "value" :"Crédit industriel de l'Ouest" },
 { "id": "CMB" , "value" :"Crédit Mutuel de Bretagne" },
 { "id": "CM" , "value" :"Crédit Mutuel" },
+{ "id": "FTNO" , "value" :"Fortuneo" },
+{ "id": "HBANK" , "value" :"Hello Banque" },
+{ "id": "HSBC" , "value" :"HSBC Banque" },
+{ "id": "ING" , "value" :"ING Direct" },
 { "id": "LCL" , "value" :"Lcl" },
+{ "id": "OBANK" , "value" :"Orange Banque" },
 { "id": "POSTE" , "value" :"La Poste" },
 { "id": "SG" , "value" :"Société Générale" },
 { "id": "AUTRE" , "value" :"Autre" }
