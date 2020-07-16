@@ -171,9 +171,19 @@
         <mat-form-field fxFlex="10" fxFlexOffset="3">
             <input matInput placeholder="Numéro" formControlName="num_carte" >
           </mat-form-field>
-          <mat-form-field fxFlex="15" fxFlexOffset="1">
+          <mat-form-field fxFlex="10" fxFlexOffset="1">
             <input matInput placeholder="licence" formControlName="licence">
           </mat-form-field>
+          <mat-form-field fxFlex="8" fxFlexOffset="1">
+            <mat-select placeholder="Lic.FFN" formControlName="lic_ffn" (selectionChange)="setChange($event)" >
+              <mat-option></mat-option>
+              <mat-option *ngFor="let r of meta.licffn" [value]="r.value"  >{{r.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field fxFlex="11" fxFlexOffset="1">
+            <input matInput [placeholder]="(isDateError())?'date (xx/xx/xxxx)!': 'Date certif. médical'"  maxlength="10"  formControlName="date_certmedical">
+          </mat-form-field>
+      
     </div>    
 
    

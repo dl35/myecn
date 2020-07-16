@@ -38,6 +38,8 @@ export interface IDataLicencies {
     auto_parentale: boolean;
     cert_medical: boolean;
     fiche_medicale: boolean;
+    date_certmedical: Date | null ;
+    lic_ffn: boolean | null;
     photo: boolean;
     paye: boolean;
     reglement: boolean;

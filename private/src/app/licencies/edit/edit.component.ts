@@ -1,11 +1,13 @@
-import { Observable } from 'rxjs';
+import { DateValidator } from './date.validator';
+import { Observable, Subscription } from 'rxjs';
 import { IBanque, ICarte } from './../models/data-licencies';
-import { Component, OnInit } from '@angular/core';
-import { Validators, FormControl, FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Validators, FormControl, FormBuilder, FormGroup, AbstractControl } from '@angular/forms';
 import { LicenciesService } from '../services/licencies.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogConfirmComponent } from 'src/app/dialog-confirm/dialog-confirm.component';
+import { distinctUntilChanged, pairwise } from 'rxjs/operators';
 
 
 @Component({
@@ -13,7 +15,7 @@ import { DialogConfirmComponent } from 'src/app/dialog-confirm/dialog-confirm.co
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.scss']
 })
-export class EditComponent implements OnInit {
+export class EditComponent implements OnInit, OnDestroy {
 
 
 
@@ -26,6 +28,7 @@ export class EditComponent implements OnInit {
     displayForm : false ,
     rang: ['1', '2', '3', '4' , 'C1' , 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9', 'C10', 'C10', 'C12'],
     officiel: ['A', 'B', 'C'],
+    licffn: [{'name': 'Oui' , 'value': true }, {'name': 'Non' , 'value': false } ],
     sexe: ['F', 'H'] ,
     type: [{'name': 'Ren' , 'value': 'R' } , {'name': 'Nou' , 'value': 'N' } ] ,
     niveau: [{'name': 'Dep' , 'value': 'Dep' } , {'name': 'Reg' , 'value': 'Reg' } , {'name': 'Nat' , 'value': 'Nat' }] ,
@@ -40,8 +43,11 @@ export class EditComponent implements OnInit {
   minDate: Date;
   startDate: Date;
 
+  private subscriptions$ = new Subscription();
 
   constructor(private route: Router , private formBuilder: FormBuilder , public dialog: MatDialog, private lserv: LicenciesService  ) { }
+
+
 
   ngOnInit() {
 
@@ -50,6 +56,10 @@ export class EditComponent implements OnInit {
     this.banques$ = this.lserv.getBanques();
     this.cartes$ = this.lserv.getCartes();
 
+  }
+
+  isDateError(){
+    return this.dataForm.controls.date_certmedical.errors ;
   }
 
   initForm() {
@@ -89,7 +99,8 @@ export class EditComponent implements OnInit {
 
       carte:  [ null ],
       num_carte:  [ null ],
-
+      lic_ffn:  [ null ],
+      date_certmedical:  [ null, [ DateValidator.dateValidator ] ],
 
       auto_parentale:  [ false  ] ,
       cert_medical:  [ false  ],
@@ -120,7 +131,40 @@ export class EditComponent implements OnInit {
     });
 
     this.dataForm.setValidators( [this.emailsValidator , this.telsValidator ] ) ;
+
+    this.subscriptions$.add(this.date_certmedical.valueChanges.pipe(
+      distinctUntilChanged(),
+      pairwise() // gets a pair of old and new value
+    ).subscribe(( [last , value] )  => {
+      if ( value && value.length === 1 && value > 1) {
+        value = value + '/' ;
+        this.date_certmedical.setValue( value ) ;
+      } else if ( last && value && last.length < 2 && value.length === 2 ) {
+       value = value + '/' ;
+       this.date_certmedical.setValue( value ) ;
+      } else if ( last && value && last.length === 2 && value.length === 3 ) {
+        if ( value.substring( 2 , 3 )  !== '/' ) {
+          value = value.substring(0 , 2 ) + '/' + value.substring( 2 , 3 );
+          this.date_certmedical.setValue( value ) ;
+        }
+       } else if ( last && value && last.length <= 4 && value.length === 5 ) {
+        value = value + '/' ;
+        this.date_certmedical.setValue( value ) ;
+       }
+
+
+    }));
+
   }
+
+  get date_certmedical(): AbstractControl {
+    return this.dataForm.get('date_certmedical');
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions$.unsubscribe();
+  }
+
 
   private  telsValidator( formGroup ): any {
     const tel1 = formGroup.get('telephone1');

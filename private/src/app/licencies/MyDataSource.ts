@@ -115,7 +115,7 @@ export class MyDataSource extends DataSource<any> {
 
        return (  !this.allfilter.officiel && !this.allfilter.sexe && !this.allfilter.entr &&
                  !this.allfilter.valide && !this.allfilter.categorie && !this.allfilter.type &&
-                 !this.allfilter.paye && !this.allfilter.cert_medical &&
+                 !this.allfilter.paye && !this.allfilter.cert_medical && !this.allfilter.lic_ffn &&
                  !this.allfilter.fiche_medicale && !this.allfilter.auto_parentale  && !this.allfilter.inscription )  ;
 
     }
@@ -216,6 +216,17 @@ export class MyDataSource extends DataSource<any> {
                     flag = flag && true;
                 } else { flag = false; }
             }
+
+            if ( !this.allfilter.lic_ffn  ) {
+                flag = flag && true;
+            } else {
+                const v =  ( this.allfilter.lic_ffn === 'true' );
+                if (item.lic_ffn === v ) {
+                    flag = flag && true;
+                } else { flag = false; }
+            }
+
+
 
             if ( !this.allfilter.fiche_medicale  ) {
                 flag = flag && true;
